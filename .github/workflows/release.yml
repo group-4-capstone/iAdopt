@@ -8,8 +8,11 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v2
+      - name: Set permissions for semantic-release
+        run: chmod +x ./node_modules/.bin/semantic-release
       - name: Install dependencies
         run: npm install
       - name: Release
