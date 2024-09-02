@@ -1,0 +1,123 @@
+/* Importing Google font - Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');/* Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+    }
+.body {
+    background-color: #3EB2C1;
+    padding: 50px;
+}
+
+/* Main Section Styles */
+.container {
+    display: flex;
+    overflow: hidden;
+ 
+}
+
+.form-left {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    flex: 1;
+}
+
+.form-left h1 {
+    font-family: 'Love Ya Like A Sister', cursive;
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+
+.form-left p {
+    font-size: 20px;
+    margin-top: 0;
+    color: #333;
+}
+
+.form-left .image-container {
+    margin-bottom: 20px;
+}
+
+.form-left .image-container img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    margin-top: none;
+}
+
+.form-right {
+    background-color: #3EB2C1;
+    padding: 40px;
+    flex: 1.5;
+}
+
+.input-group {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.input-container {
+    width: 48%;
+    margin-bottom: 20px;
+}
+
+.input-container label {
+    display: block;
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.input-container input,
+.input-container select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    box-sizing: border-box;
+    background-color: #D9D9D9;
+    color: #333;
+}
+
+.input-container input[type="date"] {
+    padding: 9px;
+}
+
+.input-container button {
+    width: 80%;
+    padding: 12px;
+    border: none;
+    background-color: #F57C00;
+    color: #ffffff;
+    border-radius: 50px;
+    font-size: 16px;
+    cursor: pointer;
+    margin: 0 auto; 
+    
+}
+
+.input-container button:hover {
+    background-color: #FF8A00;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .input-container {
+        width: 100%;
+    }
+
+   
+}
