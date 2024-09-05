@@ -7,3 +7,66 @@
     box-sizing: border-box;
     font-family: 'Poppins', sans-serif;
   }
+
+  /* Banner Section */
+.banner-section {
+  height: 50vh;
+  background-color: #C0690A;
+  background-image: url('assets/all-banner.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding: 60px 10px 0 10px;
+}
+
+.banner-section .content {
+  max-width: 1250px;
+  margin: 0 auto;
+  width: 100%;
+  color: #fff;
+}
+
+.banner-section .content h2 {
+  font-size: 52px;
+  color: #F90B1B;
+  font-weight: 900;
+  line-height: 70px;
+  margin: 0 auto;
+}
+
+.banner-section .content h4 {
+  font-size: 36px;
+  color: #1A1385;
+  font-weight:bold;
+  line-height: 70px;
+  margin: 0 auto;
+}
+
+.banner-section .content p {
+  font-weight: 500;
+  max-width: 500px;
+  font-size: 16px;
+  margin: 0; 
+  padding: 0 3px;
+  text-align: left; 
+  color: black;
+}
+
+  .admin-content {
+    margin-left: 281px !important;
+    padding: 20px 30px;
+    background-color: white;
+  }
+
+  /* Responsive Adjustments for Tablets and Mobile Devices */
+  @media (max-width: 768px) {
+    .admin-content {
+        margin-left: 61px !important;
+        padding: 20px 30px;
+        background-color: white;
+    }
+  
+    .admin-content .grid-s h3 {
+        font-size: 14px;
+    }
+  }
+  

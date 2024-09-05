@@ -7,7 +7,7 @@
             <li><a href="adopt.php">Adopt a Pet</a></li>
             <li><a href="donate.php">Donate Here</a></li>
             <li><a href="shop.php">Shop Merch</a></li>
-            <li><a href="about.php">About us</a></li>
+            <li><a href="home.php#about-us">About us</a></li>
             <li><a href="login.php">Login</a></li>
         </ul>
         <span id="hamburger-btn" class="material-symbols-outlined">Menu</span>
