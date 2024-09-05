@@ -18,7 +18,7 @@
       <span>Records</span>
     </h4>
     <li>
-      <a href="#">
+      <a href="rescue-records.php">
         <i class="bi bi-folder"></i>
         <span>Rescue Records</span>
       </a>
@@ -30,7 +30,7 @@
       </a>
     </li>
     <li>
-      <a href="#">
+      <a href="animal-profiles.php">
       <i class="bi bi-journals"></i>
         <span>Animal Profiles</span>
       </a>
@@ -48,7 +48,7 @@
       </a>
     </li>
     <li>
-      <a href="#">
+      <a href="liquidation-monitoring.php">
         <i class="bi bi-calculator"></i>
         <span>Liquidation Monitoring</span>
       </a>
