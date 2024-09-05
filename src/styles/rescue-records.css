@@ -1,0 +1,209 @@
+.container {
+    max-width: 900px;
+    margin: auto;
+}
+
+.card {
+    background-color: #fff !important;
+    border-radius: 10px;
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0); /* Remove box shadow */
+    padding-top: 30px;
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-bottom: 30px;
+    left: 20%;
+}
+
+
+.card-header {
+    background-color: #fff !important;
+    color: #fff;
+    font-weight: bold;
+    font-size: 1.25rem;
+    display: flex !important;
+    align-items: flex-end !important;
+}
+
+.card-body {
+    overflow-x: auto;
+}
+.card-footer {
+    background-color: #fff !important;
+    color: #fff;
+    padding-top: 80px !important;
+    padding-bottom: 10px;
+}
+.table {
+    margin-bottom: 0;
+}
+
+.table thead th {
+    background-color: #F4D03F;
+    font-weight: normal;
+    padding-top: 20px !important;
+    padding-bottom: 20px !important;
+    padding-left: 10px !important;
+    text-align: center !important; /* Centers text and inline content horizontally */
+    vertical-align: middle !important; /* Centers content vertically within the cell */
+}
+
+.table tbody tr td {
+    background-color: #fff;
+    padding-top: 20px !important;
+    padding-bottom: 20px !important;
+    padding-left: 10px !important; 
+    color: #00000088;
+    text-align: center !important; /* Centers text and inline content horizontally */
+    vertical-align: middle !important; /* Centers content vertically within the cell */
+}
+
+.table tbody tr:hover {
+    background-color: #fff;
+    
+}
+
+.table .badge.bg-red {
+    background-color: #ffff; /* Red background */
+    color: #ff0000 !important; /* Dark text color */
+    border: 1px solid #ff0000; /* Red border */
+    border-radius: 50px; /* Oval shape */
+    padding: 0.45rem  0.85rem; /* Adjust padding for oval effect */
+    font-size: 0.75rem; /* Adjust text size */
+    font-weight: normal;
+    
+}
+
+
+.pagination .page-item .page-link {
+    color: #333;
+    border: none;
+    background-color: #fff ;
+    padding-bottom: 0%;
+}
+
+
+.pagination .page-item.active .page-link {
+    background-color: #c06c3e7e; /* Background color for active item */
+    color: #fff;               /* White text for better contrast */
+    border-radius: 10px;       /* Rounded corners */
+    width: 30px;
+    padding-left: 13px;
+}
+
+.btn i{
+ /* paalis nalang*/
+ width: 30px;
+}
+
+.btn-add {
+   /* paalis nalang*/
+ width: 30px;
+  
+}
+
+.btn-add p{
+ 
+     /* paalis nalang*/
+ width: 30px;
+}
+
+.btn-delete p{
+   /* paalis nalang*/
+ width: 30px;
+}
+
+.btn-sort p{
+   /* paalis nalang*/
+ width: 30px;
+}
+
+.btn-add i {
+ /* paalis nalang*/
+ width: 30px;
+}
+
+.btn-delete {
+    /* paalis nalang*/
+ width: 30px;
+}
+
+.btn-delete i {
+    /* paalis nalang*/
+ width: 30px;
+}
+    
+
+
+.btn-sort {
+     /* paalis nalang*/
+ width: 30px;
+}
+
+.btn-sort i {
+     /* paalis nalang*/
+ width: 30px;
+}
+
+.btn-add, .btn-delete, .btn-sort {
+    border: none !important;
+}
+
+.btn-add:hover, .btn-delete:hover, .btn-sort:hover {
+    opacity: 0.9 !important;
+}
+.input-group-text {
+    border: none !important; /* Removes all borders */
+    background-color: transparent !important; /* Makes the background transparent */
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+.search-icon i {
+    color: #000; /* Sets the icon color to black */
+    padding-bottom: 4px;
+}
+
+.form-control {
+    border-radius: 100px !important; /* Gives the search input rounded corners */
+    border-color: #ccc; /* Light grey border color */
+    padding-right: 2rem; /* Adds space for the search icon */
+}
+
+.input-group {
+    position: absolute;
+   
+}
+
+.input-group-text.search-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none; /* Prevents the icon from being clickable */
+}
+.input-group.input-group-sm.w-25 {
+    position: relative;
+}
+.head-title {
+    background-color: #FFF8CC !important;
+    max-width: 930px;
+    margin: 0 auto; /* Centers the element horizontally */
+    margin-top: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0); /* Remove box shadow */
+    padding-top: 80px;
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-bottom: 30px;
+    position: relative;
+    left: 10% !important;
+}
+.head-title h1{
+   color: #C06B3E !important;
+   padding-bottom: 30px;
+}
+
+.head-title h1 u {
+    text-underline-offset: 30px; /* Adds space between the text and the underline */
+    text-decoration-thickness: 5px; /* Adjusts the thickness of the underline if needed */
+}
