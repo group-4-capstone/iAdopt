@@ -24,22 +24,24 @@
     <?php include_once 'components/sidebar.php'; ?>
    
         
-            <div class="head-title col-10">
+   <div class="admin-content">
+
+            <div class="head-title">
                 <h1><u><b>RESCUE RECORDS</b> </u></h1>
             </div>
 
     <div class="container mt-5">
-        <div class="card col-10">
+        <div class="card">
          <div class="card-header d-flex justify-content-between align-items-center">
             <div class="d-flex align-items-center ms-auto">
             <button class="btn btn-add d-flex align-items-center">
-                <i class="bi bi-plus me-1"></i><span>Add</span>
+            <span class="badge text-bg-success"><i class="bi bi-plus me-1"></i><span>Add</span></span>
             </button>
             <button class="btn btn-delete d-flex align-items-center">
-                <i class="bi bi-trash-fill me-1"></i><span>Delete</span>
+            <span class="badge text-bg-danger"><i class="bi bi-trash-fill me-1"></i><span>Delete</span></span>
             </button> 
             <button class="btn btn-sort d-flex align-items-center" style="white-space: nowrap;">
-                <i class="bi bi-arrow-down-up me-1"></i><span>Sort By</span>  
+            <span class="badge text-bg-secondary"> <i class="bi bi-arrow-down-up me-1"></i><span>Sort By</span></span>
             </button>
 
         <div class="input-group input-group-md">
@@ -113,6 +115,7 @@
     </div>
     <br>
     <br>
+   </div>
 
 
 
