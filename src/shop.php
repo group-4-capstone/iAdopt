@@ -24,7 +24,7 @@
 
    <?php include_once 'components/topnavbar.php'; ?>
 
-   <section class="banner-section">
+   <section class="user-banner-section">
       <div class="content">
         <h2>Shop Merchandise</h2>
         <h4>Buy for a cause.</h4>

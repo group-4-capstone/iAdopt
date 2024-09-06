@@ -24,7 +24,7 @@
 
    <?php include_once 'components/topnavbar.php'; ?>
 
-   <section class="banner-section">
+   <section class="user-banner-section">
       <div class="content">
         <h2>Adoption</h2>
         <h4>We Need Help. So Do They.</h4>

@@ -24,7 +24,7 @@
 
    <?php include_once 'components/topnavbar.php'; ?>
 
-   <section class="banner-section">
+   <section class="user-banner-section">
       <div class="content">
         <h2>Donation</h2>
         <h4>Make a Donation. For SECASPI.</h4>

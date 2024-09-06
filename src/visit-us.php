@@ -24,7 +24,7 @@
 
    <?php include_once 'components/topnavbar.php'; ?>
 
-   <section class="banner-section">
+   <section class="user-banner-section">
       <div class="content">
         <h2>Visit the Shelter</h2>
         <h4>Get to visit the SECASPI.</h4>
