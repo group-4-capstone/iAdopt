@@ -51,9 +51,10 @@
 
 .form-control, .form-select {
     background-color: #D9D9D9 !important;
-    border-radius: 20px;
+    border-radius: 20px !important;
     padding: 10px 15px;
     border: none;
+    color: #00000044 !important;
 }
 
 .btn {
@@ -79,7 +80,9 @@
 .remarks {
     resize: none;
     height: 120px;
+    padding-left: 30px !important; /* Adjust padding as needed */
 }
+
 
 .form-group {
     margin-bottom: 20px;
