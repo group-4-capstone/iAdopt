@@ -1,0 +1,86 @@
+.head-title {
+    background-color: #FFF8CC !important;
+    margin-top: 5px;
+    border-radius: 10px;
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0); /* Remove box shadow */
+    padding-top: 80px;
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-bottom: 30px;
+    position: relative;
+}
+.head-title h1{
+   color: #C06B3E !important;
+   padding-bottom: 30px;
+}
+
+.head-title h1 u {
+    text-underline-offset: 30px; /* Adds space between the text and the underline */
+    text-decoration-thickness: 5px; /* Adjusts the thickness of the underline if needed */
+}
+.info-card {
+    border-radius: 10px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.info-card .title {
+    font-family: 'Poppins', bold;
+    color: #002a5c;
+    font-weight: bold;
+    font-size: 28px;
+    text-align: left; /* Center the title on smaller screens */
+    margin-top: 10px;
+}
+
+.info-card img {
+    border-radius: 8px;
+    width: 250px;
+    height: auto; /* Maintain aspect ratio */
+    max-width: 100%; /* Ensure it scales on smaller screens */
+    margin-bottom: 280px;
+}
+
+@media (max-width: 768px) {
+    .info-card img {
+        margin-bottom: 0; /* Remove margin on smaller screens */
+    }
+}
+
+.form-control, .form-select {
+    background-color: #D9D9D9 !important;
+    border-radius: 20px;
+    padding: 10px 15px;
+    border: none;
+}
+
+.btn {
+    border-radius: 10px;
+    padding: 10px 30px;
+    font-weight: bold;
+}
+
+.btn-cancel {
+    background-color: #d32f2f !important;
+    color: #fff !important;
+}
+
+.btn-add {
+    background-color: #0d6efd !important;
+    color: #fff !important;
+}
+
+.form-label {
+    font-weight: bold;
+}
+
+.remarks {
+    resize: none;
+    height: 120px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
