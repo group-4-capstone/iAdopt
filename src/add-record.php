@@ -79,7 +79,7 @@
                             <textarea id="remarks" class="form-control remarks">If the world was ending I'd wanna be next to you...</textarea>
                         </div>
                         <div class="d-flex justify-content-end mt-4">
-                            <button class="btn btn-cancel me-2">Cancel</button>
+                            <button class="btn btn-cancel me-2" onclick="window.location.href='rescue-records.php'">Cancel</button>
                             <button class="btn btn-add">Add</button>
                         </div>
                     </div>
