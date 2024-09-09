@@ -57,15 +57,15 @@
       <span>Setting</span>
     </h4>
     <li>
-      <a href="#">
+      <a href="content-management.php">
          <i class="bi bi-flag"></i>
         <span>Content Management</span>
       </a>
     </li>
     <li>
       <a href="#">
-        <i class="bi bi-sliders"></i>
-        <span>Setting</span>
+       <i class="bi bi-people-fill"></i>
+        <span>Account Management</span>
       </a>
     </li>
   </ul>
@@ -73,7 +73,7 @@
     <div class="user-profile d-flex align-items-center justify-content-between">
         <div class="user-detail">
             <h3>Juan Dela Cruz</h3>
-            <span><a href="#">Profile</a></span>
+            <span><a href="settings.php">Profile</a></span>
         </div>
         <a href="#" class="logout-icon">
             <i class="bi bi-box-arrow-right"></i> <!-- Logout icon -->
@@ -97,7 +97,10 @@
 
         menuLinks.forEach(link => {
         const href = link.getAttribute('href').split("/").pop(); 
-        if (href === currentPath) {
+         // Add conditions for multiple pages
+         if ((href === 'content-management.php' && (currentPath === 'content-management.php' || currentPath === 'add-content.php')) ||
+               (href === 'animal-profiles.php' && (currentPath === 'animal-profiles.php' || currentPath === 'view-animal-profile.php')) ||
+            href === currentPath) {
             link.classList.add('active');
         }
         });
