@@ -1,0 +1,87 @@
+  /* Profile Section */
+  .content .profile-section,
+  .admin-content .profile-section {
+    background-color: white !important;
+  }
+  
+  .admin-content .banner-section {
+    background-color: #FFF8CC;
+    padding: 30px 30px;
+    border-radius: 30px;
+    margin-bottom: 20px;
+    background-image: url("assets/paws.png");
+    background-blend-mode: overlay;
+  }
+  
+  .admin-content .profile-section .end .btn,
+  .profile-section .end .btn:hover {
+    background: #C0690A;
+    color: white;
+    border: 2px solid #C0690A;
+    font-size: 18px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: 400;
+    align-items: center;
+    padding: 10px 30px;
+    display: block;
+    margin-left: auto;
+  }
+
+  .head-title {
+    background-color: #FFF8CC !important;
+    margin-top: 5px;
+    border-radius: 10px;
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0); /* Remove box shadow */
+    padding-bottom: 30px;
+    position: relative;
+}
+
+  .head-title h1{
+    color: #C06B3E !important;
+    padding-bottom: 10px;
+  }
+
+.head-title h1 u {
+    text-underline-offset: 30px; /* Adds space between the text and the underline */
+    text-decoration-thickness: 5px; /* Adjusts the thickness of the underline if needed */
+}
+
+.card {
+  padding: 20px !important;
+  background-color: #D9D9D9 !important;
+}
+
+.title {
+  padding-top: 20px;
+  font-weight: 700;
+  color: #092E5A;
+}
+
+.form-control , .form-select {
+  border-radius: 20px !important;
+}
+
+.btn-update {
+  margin-top: 5px;
+  background-color: #C0690A !important;
+  color: white !important;
+  border-radius: 5px !important;
+  padding: 5px 20px !important;
+}
+
+.btn-update:hover {
+  background-color: #8d4c08 !important;
+}
+
+.btn-cancel {
+  margin-top: 5px;
+  background-color: #707070 !important;
+  color: white !important;
+  border-radius: 5px !important;
+  padding: 5px 20px !important;
+}
+
+.btn-cancel:hover {
+  background-color: #4e4e4e !important;
+}

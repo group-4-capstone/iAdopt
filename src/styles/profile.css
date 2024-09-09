@@ -1,8 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
+.admin-content .profile-section {
+    background-color: white;
+}
 .profile-section {
     background-color: #58A5B7;
-    padding: 60px 0;
 }
 
 .profile-section h4 {
