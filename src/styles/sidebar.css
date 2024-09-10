@@ -21,7 +21,7 @@ body {
   display: flex;
   flex-direction: column;
   background: #161a2d;
-  padding: 25px 20px;
+  padding: 22px 20px;
   transition: all 0.4s ease;
   overflow-x: hidden;
 }
@@ -83,8 +83,8 @@ body {
 }
 
 .sidebar-links li a:hover {
-  color: #161a2d;
-  background: #fff;
+  color: white;
+  text-decoration: underline;
   border-radius: 4px;
 }
 

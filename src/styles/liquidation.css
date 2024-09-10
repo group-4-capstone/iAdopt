@@ -12,6 +12,25 @@
     background-image: url("assets/paws.png");
     background-blend-mode: overlay;
   }
+
+  .head-title {
+    background-color: #FFF8CC !important;
+    margin-top: 5px;
+    border-radius: 10px;
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0); /* Remove box shadow */
+    padding-bottom: 30px;
+    position: relative;
+}
+
+  .head-title h1{
+    color: #C06B3E !important;
+    padding-bottom: 10px;
+  }
+
+.head-title h1 u {
+    text-underline-offset: 30px; /* Adds space between the text and the underline */
+    text-decoration-thickness: 5px; /* Adjusts the thickness of the underline if needed */
+}
   
   /* Number Section */
   .admin-content .number-section {
