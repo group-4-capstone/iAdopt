@@ -39,8 +39,7 @@
 
       <div class="profile-section">
       <div class="content">
-     
-        <div class="grid">
+      <div class="grid">
         <div class="section_container">
           <div class="grid_container">
             <div class="updates">

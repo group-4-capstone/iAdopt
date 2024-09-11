@@ -63,7 +63,7 @@
       </a>
     </li>
     <li>
-      <a href="#">
+      <a href="account-management.php">
        <i class="bi bi-people-fill"></i>
         <span>Account Management</span>
       </a>
@@ -98,8 +98,7 @@
         menuLinks.forEach(link => {
         const href = link.getAttribute('href').split("/").pop(); 
          // Add conditions for multiple pages
-         if ((href === 'content-management.php' && (currentPath === 'content-management.php' || currentPath === 'add-content.php')) ||
-               (href === 'animal-profiles.php' && (currentPath === 'animal-profiles.php' || currentPath === 'view-animal-profile.php')) ||
+         if ((href === 'animal-profiles.php' && (currentPath === 'animal-profiles.php' || currentPath === 'view-animal-profile.php')) ||
             href === currentPath) {
             link.classList.add('active');
         }
