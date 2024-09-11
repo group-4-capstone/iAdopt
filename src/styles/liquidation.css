@@ -1,0 +1,162 @@
+  /* Profile Section */
+  .content .profile-section,
+  .admin-content .profile-section {
+    background-color: white !important;
+  }
+  
+  .admin-content .banner-section {
+    background-color: #FFF8CC;
+    padding: 30px 30px;
+    border-radius: 30px;
+    margin-bottom: 20px;
+    background-image: url("assets/paws.png");
+    background-blend-mode: overlay;
+  }
+
+  .head-title {
+    margin-top: 5px;
+    border-radius: 10px;
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0); /* Remove box shadow */
+    padding-bottom: 30px;
+    position: relative;
+}
+
+  .head-title h1{
+    color: #C06B3E !important;
+    padding-bottom: 10px;
+  }
+
+.head-title h1 u {
+    text-underline-offset: 30px; /* Adds space between the text and the underline */
+    text-decoration-thickness: 5px; /* Adjusts the thickness of the underline if needed */
+}
+  
+  /* Number Section */
+  .admin-content .number-section {
+    text-align: center; 
+  }
+  
+  .admin-content .number-section .btn {
+    background: #F8C613;
+    color: black;
+    font-size: 16px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: 400;
+    align-items: center;
+    padding: 10px 30px;
+    display: inline;
+    margin: 20px 5px;
+    transition: transform 0.3s ease;
+  }
+
+  .admin-content .number-section .btn:hover {
+    transform: scale(1.1);
+  }
+  
+  /* Button with Icon */
+  .btn i {
+    padding: 0 5px;
+  }
+  
+  /* Monitoring Table */
+  #monitoring th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #F8C613;
+    color: black;
+    font-weight: 500;
+  }
+  
+  /* Pagination */
+  .pagination .page-item.active .page-link {
+    background-color: #F8C613;
+    border-color: #F8C613;
+    color: #fff;
+  }
+  
+  .pagination .page-link:hover {
+    background-color: #E6B210;
+    border-color: #E6B210;
+    color: #fff;
+  }
+  
+  .pagination {
+    justify-content: flex-end;
+  }
+  
+  /* Center the modal vertically and horizontally */
+  .modal-dialog {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    max-width: 900px !important; /* Adjust width as needed */
+  }
+  
+  /* Make the modal wider */
+  .modal-content {
+    justify-content: center;
+    display: flex;
+    text-align: center;
+    color: black;
+    font-weight: 600;
+    width: 100% !important;/* Adjust width as needed */
+    max-width: 600px !important; /* Adjust max-width as needed */
+  }
+
+  
+    .modal-header .modal-title {
+    margin: 0; 
+    flex: 1; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    }
+    
+    .modal-header .btn-close {
+    margin-left: auto; 
+    }
+    
+  
+  .modal-content form button {
+    background-color: #F8C613;
+    border-radius: 50px;
+    border: none;
+    color: white;
+  }
+  
+  .modal-content form button:hover {
+    background-color: #E6B210;
+    border-radius: 50px;
+    border: none;
+    color: white;
+    text-decoration: underline;
+  }
+  
+  /* Style the input fields */
+  .modal-body .form-control {
+    border-radius: 20px !important;
+  }
+  
+  .table thead th {
+    background-color: #F4D03F;
+    font-weight: normal;
+    padding-top: 20px !important;
+    padding-bottom: 20px !important;
+    padding-left: 10px !important;
+    text-align: center !important;
+    vertical-align: middle !important;
+}
+
+.table tbody tr td {
+    background-color: #fff;
+    padding-top: 20px !important;
+    padding-bottom: 20px !important;
+    padding-left: 10px !important; 
+    color: #00000088;
+    text-align: center !important;
+    vertical-align: middle !important; 
+}
+
+  

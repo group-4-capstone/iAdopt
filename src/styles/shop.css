@@ -1,0 +1,140 @@
+/* Importing Google font - Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* Shop Section */
+.shop-section {
+  background-color: #58A5B7;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 75px 20px 0 20px;
+  text-align: center;
+}
+
+.shop-section .content {
+  max-width: 1250px;
+  margin: 0 auto;
+  width: 100%;
+  color: black;
+}
+
+.line {
+  height: 5px; 
+  background-color: #C0690A; 
+  width: 30%; 
+  margin: 10px auto 0; 
+}
+
+.shop-section .content h2 {
+  font-size: 16px;
+  max-width: 600px;
+  line-height: 70px;
+  margin: 0 auto;
+}
+
+.shop-section .content p {
+  font-weight: 300;
+  max-width: 600px;
+  margin: 15px auto 0 auto;
+  font-size: 16px;
+}
+
+/* Grid Section */
+.grid {
+  padding: 60px 20px 120px;
+}
+
+.grid .grid_container .merch {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 50px;
+}
+
+.section_container .grid_items {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start; 
+  text-align: left; 
+}
+
+.section_container .grid_items img {
+  width: 100%;
+  height: auto;
+  max-height: 200px;
+  object-fit: cover;
+}
+
+.section_container .grid_items h2 {
+  margin: 0;
+  font-weight: 600;
+  font-size: 20px;
+}
+
+.section_container .grid_items p {
+  font-size: 16px;
+  font-weight: 500;
+  margin: 0;
+  color: #DB4444;
+}
+
+.section_container .btn-more {
+  float: right;
+  margin-top: 28px;
+  background: #C0690A;
+  color: white;
+  padding: 12px 35px;
+  border: 2px solid #C0690A;
+  font-size: 14px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-weight: 400;
+  transition: transform 0.3s ease;
+}
+
+.section_container .btn-more:hover {
+  transform: scale(1.1);
+}
+
+/* For tablets and mobile devices */
+@media (max-width: 768px) {
+  .shop-section {
+    height: auto;
+    padding: 60px 20px;
+    text-align: center;
+  }
+
+  .shop-section .content h2 {
+    font-size: 2rem;
+    line-height: 40px;
+  }
+
+  .shop-section .content p {
+    font-size: 14px;
+  }
+
+  .grid .grid_container .merch {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+  }
+}
+
+/* For mobile devices */
+@media (max-width: 480px) {
+  .shop-section .content h2 {
+    font-size: 1.5rem;
+    line-height: 35px;
+  }
+
+  .shop-section .content p {
+    font-size: 12px;
+  }
+
+  .grid .grid_container .merch {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}

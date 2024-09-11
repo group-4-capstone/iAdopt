@@ -1,0 +1,85 @@
+/* Importing Google font - Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* faq Section */
+.faq-section {
+  background-color: #58A5B7;
+  background-image: url("assets/paws.png");
+  background-blend-mode: overlay;
+  padding: 120px 0;
+}
+
+.faq-section h2{
+  background-color: #58a6b777;
+  border-radius: 20px;
+}
+
+.faq-section p{
+  background-color: #58a6b777;;
+  border-radius: 20px;
+  padding: 20px;
+  font-weight: 600;
+}
+
+.faq-section img{
+  width: 60px;
+}
+
+.line {
+  height: 4px; 
+  background-color: #C0690A; 
+  width: 40%; 
+  margin: 10px auto 0; 
+}
+
+
+
+/* For tablets and mobile devices */
+@media (max-width: 768px) {
+  .faq-section {
+    height: auto;
+    padding: 60px 20px;
+    text-align: center;
+  }
+
+  .faq-section .content h2 {
+    font-size: 2rem;
+    line-height: 40px;
+  }
+
+  .faq-section .content p {
+    font-size: 14px;
+  }
+
+}
+
+/* For mobile devices */
+@media (max-width: 480px) {
+  .faq-section .content h2 {
+    font-size: 1.5rem;
+    line-height: 35px;
+  }
+
+  .faq-section .content p {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .faq-section .content {
+    text-align: center;
+  }
+
+  .faq-section .content :is(h2, p) {
+    max-width: 100%;
+  }
+
+  .faq-section .content h2 {
+    font-size: 2.3rem;
+    line-height: 60px;
+  }
+  
+  .faq-section .content button {
+    padding: 9px 18px;
+  }
+}

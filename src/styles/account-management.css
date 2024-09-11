@@ -1,0 +1,88 @@
+.content .profile-section,
+.admin-content .profile-section {
+  background-color: white !important;
+}
+
+.admin-content .banner-section {
+  background-color: #FFF8CC;
+  padding: 30px 30px;
+  border-radius: 30px;
+  margin-bottom: 20px;
+  background-image: url("assets/paws.png");
+  background-blend-mode: overlay;
+}
+
+  .head-title {
+    margin-top: 5px;
+    border-radius: 10px;
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0); /* Remove box shadow */
+    padding-bottom: 30px;
+    position: relative;
+}
+
+  .head-title h1{
+    color: #C06B3E !important;
+    padding-bottom: 10px;
+  }
+
+.head-title h1 u {
+    text-underline-offset: 30px; /* Adds space between the text and the underline */
+    text-decoration-thickness: 5px; /* Adjusts the thickness of the underline if needed */
+}
+
+
+thead th {
+  color: #092E5A !important;
+  background-color: transparent !important;
+  border-bottom: gray solid 2px !important;
+}
+
+tbody th, tbody td {
+  color: black !important;
+  background-color: #F7FAFC !important;
+  border-bottom: 2px !important;
+}
+
+tbody th .blank, tbody tr .blank{
+  color: black !important;
+  background-color: transparent !important;
+  border-bottom: 2px !important;
+}
+
+
+  .table .badge.bg-green {
+    background-color: #ffff; /* Red background */
+    color: #04ef56 !important; /* Dark text color */
+    border: 1px solid #04ef56; /* Red border */
+    border-radius: 50px; /* Oval shape */
+    padding: 0.45rem  0.85rem; /* Adjust padding for oval effect */
+    font-size: 0.75rem; /* Adjust text size */
+    font-weight: 500px; 
+}
+
+.table .badge.bg-red {
+  background-color: #ffff; /* Red background */
+  color: #ff0000 !important; /* Dark text color */
+  border: 1px solid #ff0000; /* Red border */
+  border-radius: 50px; /* Oval shape */
+  padding: 0.45rem  0.85rem; /* Adjust padding for oval effect */
+  font-size: 0.75rem; /* Adjust text size */
+  font-weight: 500px; 
+}
+
+
+.asterisk {
+  color: red;
+  margin-left: 1px;
+}
+
+button .btn-theme {
+  color: white !important;
+  background-color: #092E5A !important;
+}
+
+.table-section {
+  padding: 20px 20px;
+  background-color: #FFF8CC;
+  border-radius: 30px;
+}

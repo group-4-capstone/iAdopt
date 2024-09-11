@@ -1,0 +1,249 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  background: #F0F4FF;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 280px;
+  display: flex;
+  flex-direction: column;
+  background: #161a2d;
+  padding: 22px 20px;
+  transition: all 0.4s ease;
+  overflow-x: hidden;
+}
+
+.sidebar .sidebar-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  align-items: center;
+  justify-content: center; 
+}
+
+.sidebar .sidebar-header img {
+  width: 42px;
+  border-radius: 50%;
+}
+
+.sidebar .sidebar-header h2 {
+  color: #C06B3E;
+  font-size: 1.25rem;
+  font-weight: 600;
+  white-space: nowrap;
+  margin: 0; 
+}
+
+.sidebar-links {
+  list-style: none;
+  margin-top: 20px;
+  height: 80%;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.sidebar i{
+    font-size: 15.5px;
+}
+
+.sidebar-links h4 span {
+    color: #fff;
+    font-weight: 500;
+    white-space: nowrap;
+    margin: 9px 0;
+    margin-left: -20px;
+    position: relative;
+    font-size: 12px;
+  }
+
+.sidebar-links li a {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  color: #fff;
+  font-weight: 500;
+  white-space: nowrap;
+  padding: 12px 10px;
+  text-decoration: none;
+  transition: background 0.2s ease, color 0.2s ease;
+  font-size: 13px;
+}
+
+.sidebar-links li a:hover {
+  color: white;
+  text-decoration: underline;
+  border-radius: 4px;
+}
+
+.sidebar-links li a.active {
+    color: #161a2d;
+    background: #fff;
+    border-radius: 4px;
+  }
+
+.user-account {
+  margin-top: auto;
+  padding: 12px 10px;
+  transition: background 0.4s ease;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center; /* Vertically aligns all items */
+    gap: 15px;
+    justify-content: space-between;
+    color: #161a2d;
+}
+
+.user-detail {
+    display: flex;
+    flex-direction: column;
+    white-space: nowrap;
+}
+
+.logout-icon i {
+    font-size: 1.5rem; /* Adjust size of the icon */
+    color: #161a2d;
+    transition: color 0.2s ease;
+}
+
+.logout-icon i:hover {
+    color: #dc3545; /* Change icon color on hover */
+}
+
+.logout-icon {
+    display: flex;
+    align-items: center; /* Ensures the icon is centered vertically */
+}
+
+
+.user-profile h3 {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.user-profile span {
+  font-size: 0.775rem;
+  font-weight: 600;
+}
+
+.user-detail {
+  white-space: nowrap;
+}
+
+.sidebar .user-account {
+  background: #fff;
+  border-radius: 4px;
+}
+
+#close-menu-btn {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    cursor: pointer;
+    display: none;
+  }
+  
+  #hamburger-btn {
+    color: #fff;
+    cursor: pointer;
+    display: none;
+    margin-right: -100px;
+    padding: 0;
+  }
+
+@media (max-width: 768px) {
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 80px;
+        display: flex;
+        flex-direction: column;
+        background: #161a2d;
+        margin: 0;
+        padding: 25px 0px;
+        transition: all 0.4s ease;
+        overflow-x: hidden;
+      }
+
+    .sidebar .li {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 250px;
+        height: 100vh;
+        background: #fff;
+        flex-direction: column;
+        padding: 70px 40px 0;
+        transition: left 0.2s ease;
+      }
+
+      aside.show-mobile-menu::before {
+        content: "";
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        backdrop-filter: blur(5px);
+      }
+
+      #hamburger-btn, #close-menu-btn {
+        display: block;
+      }
+    
+      aside.show-mobile-menu .li {
+        left: 0;
+      }
+
+      .sidebar-header img {
+        margin: 0;
+        margin-right: -75px;
+       }
+
+    .sidebar-links h4 span {
+     opacity: 0;
+    }
+
+    .sidebar-links li {
+    margin-left: -13px;
+     padding-left: -30px;
+       }
+    
+    .sidebar-links li span {
+     opacity: 0;
+    }
+    .sidebar-header h2 {
+        opacity: 0;
+       }
+
+       .sidebar-header img {
+        opacity: 0;
+       }
+   
+
+    .sidebar-links li a:hover {
+        color: #161a2d;
+        background: #fff;
+        border-radius: 4px;
+        padding-right: 0;
+        margin-right: 0;
+      }
+       
+    
+  }

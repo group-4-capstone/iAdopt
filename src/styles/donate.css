@@ -1,0 +1,107 @@
+/* Importing Google font - Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* Donate Section */
+.donate-section {
+  background-color: #58A5B7;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 75px 20px 0 20px;
+  text-align: center;
+}
+
+.donate-section .content {
+  max-width: 1250px;
+  margin: 0 auto;
+  width: 100%;
+  color: #fff;
+}
+
+.donate-section img {
+ width: 100%;
+}
+
+.donate-section .fixed img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+ }
+
+.line {
+  height: 5px; 
+  background-color: #C0690A; 
+  width: 30%; 
+  margin: 10px auto 0; 
+}
+
+.donate-section .content h2 {
+  font-size: 3rem;
+  max-width: 600px;
+  line-height: 70px;
+  font-family: "Love Ya Like A Sister", cursive;
+  margin: 0 auto;
+}
+
+.donate-section .content p {
+  font-weight: 300;
+  max-width: 600px;
+  margin: 15px auto 0 auto;
+  font-size: 16px;
+}
+
+
+
+/* For tablets and mobile devices */
+@media (max-width: 768px) {
+  .donate-section {
+    height: auto;
+    padding: 60px 20px;
+    text-align: center;
+  }
+
+  .donate-section .content h2 {
+    font-size: 2rem;
+    line-height: 40px;
+  }
+
+  .donate-section .content p {
+    font-size: 14px;
+  }
+
+}
+
+/* For mobile devices */
+@media (max-width: 480px) {
+  .donate-section .content h2 {
+    font-size: 1.5rem;
+    line-height: 35px;
+  }
+
+  .donate-section .content p {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .donate-section .content {
+    text-align: center;
+  }
+
+  .donate-section .content :is(h2, p) {
+    max-width: 100%;
+  }
+
+  .donate-section .content h2 {
+    font-size: 2.3rem;
+    line-height: 60px;
+  }
+  
+  .donate-section .content button {
+    padding: 9px 18px;
+  }
+}
