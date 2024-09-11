@@ -21,10 +21,16 @@
     const menuLinks = document.querySelectorAll('.menu-links a');
 
     menuLinks.forEach(link => {
-        if (link.getAttribute('href') === currentPath) {
-            link.classList.add('active');
-        }
-    });
+    const href = link.getAttribute('href'); // Get the href attribute of the link
+    const currentPath = window.location.pathname.split('/').pop(); // Get the current page name
+
+    // Check if the link matches the current page or specific pages
+    if ((href === 'adopt.php' && ['adopt.php', 'adopt-know-more.php', 'adopt-now.php'].includes(currentPath)) ||
+        href === currentPath) {
+        link.classList.add('active'); // Add 'active' class if the condition is met
+    }
+});
+
 
       const header = document.querySelector("header");
       const hamburgerBtn = document.querySelector("#hamburger-btn");

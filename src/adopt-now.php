@@ -39,33 +39,35 @@
       <div class="content">
       <div class="solo-box">
           <div class="row">
-            <div class="col-lg-8 col-md-8 col-sm-12">
-              <img src="styles/assets/aspin-1.png">
+            <div class="col-lg-6 col-md-6 col-sm-12">
+             <div class="picture-frame">
+                   <img id="profile-image" src="styles/assets/aspin-1.png" alt="Profile Picture">
+              </div>
             </div>
-              <div class="col-lg-4 col-md-4 col-sm-12">
-              <h3>Andres</h3>
+            <div class="col-lg-6 col-md-6 col-sm-12 d-flex flex-column align-items-center">
+                <div class="row">
+                  <h2 class="text-center">ANDRES</h2>
                   <p class="text-center">
-                    <ul class="custom-list">
+                    <ul class="custom-list list-unstyled text-center">
                       <li><i class="bi bi-check-circle-fill"></i> Male</li>
                       <li><i class="bi bi-check-circle-fill"></i> w/Anti-rabies, 5 in 1</li>
                       <li><i class="bi bi-check-circle-fill"></i> Spayed</li>
-                      <li><i class="bi bi-x-circle-fill"></i> Food Aggression</li>
+                      <li><i class="bi bi-x-circle-fill" style="color: red;"></i> Food Aggression</li>
                       <li><i class="bi bi-check-circle-fill"></i> Cats</li>
                       <li><i class="bi bi-check-circle-fill"></i> Dogs</li>
                       <li><i class="bi bi-check-circle-fill"></i> Humans</li>
                       <li><i class="bi bi-check-circle-fill"></i> Great Companion</li>
                     </ul>
                   </p>
+                </div>
+                <div class="row">
+                  <p class="text-center">
+                    Was rescued just outside Bria Homes at Calamba Laguna. He was a stray and a resident took pity on him along with his playmate. He was being fed regularly up until some residents filed complaints. The feeder/rescuer then sought help for rescue. We named him after his rescuer, and Andres officially became part of the SECASPI family.
+                  </p>
+                </div>
               </div>
             </div>
-            <div class="row">
-              <p class="p-5 text-center">
-                Was rescued just outside Bria Homes at Calamba Laguna. He was a stray and a resident took pity on him along with his playmate.
-                He was being fed regularly up until some residents filed complain. The feeder /rescuer then sought help for rescue. 
-                We name him after his rescuer, Andres officially became part of SECASPI family.
-              </p>
-            </div>
-            </div>
+           </div>
           </div>
         </div>
       </div>

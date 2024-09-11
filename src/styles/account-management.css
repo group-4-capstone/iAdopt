@@ -12,23 +12,6 @@
   background-blend-mode: overlay;
 }
 
-/* Style tab links */
-.tablink {
-    background-color: gray;
-    color: black;
-    float: left;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    padding: 14px 16px;
-    font-size: 17px;
-    width: 25%;
-  }
-  
-  .tablink:hover {
-    background-color: #777;
-  }
-
   .head-title {
     margin-top: 5px;
     border-radius: 10px;
@@ -46,20 +29,6 @@
     text-underline-offset: 30px; /* Adds space between the text and the underline */
     text-decoration-thickness: 5px; /* Adjusts the thickness of the underline if needed */
 }
-  
-  /* Style the tab content (and add height:100% for full page content) */
-  .tabcontent {
-    color: black;
-    display: none;
-    padding: 100px 20px;
-    height: 100%;
-  }
-  
-  #Home {background-color: #FFF8CC;}
-  #News {background-color: #FFF8CC;}
-  #Contact {background-color: #FFF8CC;}
-  #About {background-color: #FFF8CC;}
-
 
 
 thead th {
@@ -83,13 +52,24 @@ tbody th .blank, tbody tr .blank{
 
   .table .badge.bg-green {
     background-color: #ffff; /* Red background */
-    color: #9AE6B4 !important; /* Dark text color */
-    border: 1px solid #9AE6B4; /* Red border */
+    color: #04ef56 !important; /* Dark text color */
+    border: 1px solid #04ef56; /* Red border */
     border-radius: 50px; /* Oval shape */
     padding: 0.45rem  0.85rem; /* Adjust padding for oval effect */
     font-size: 0.75rem; /* Adjust text size */
     font-weight: 500px; 
 }
+
+.table .badge.bg-red {
+  background-color: #ffff; /* Red background */
+  color: #ff0000 !important; /* Dark text color */
+  border: 1px solid #ff0000; /* Red border */
+  border-radius: 50px; /* Oval shape */
+  padding: 0.45rem  0.85rem; /* Adjust padding for oval effect */
+  font-size: 0.75rem; /* Adjust text size */
+  font-weight: 500px; 
+}
+
 
 .asterisk {
   color: red;
@@ -99,4 +79,10 @@ tbody th .blank, tbody tr .blank{
 button .btn-theme {
   color: white !important;
   background-color: #092E5A !important;
+}
+
+.table-section {
+  padding: 20px 20px;
+  background-color: #FFF8CC;
+  border-radius: 30px;
 }
