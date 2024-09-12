@@ -1,0 +1,188 @@
+body {
+  overflow-x: hidden; /* Hides horizontal scrollbar */
+}
+
+/* Admin content */
+.admin-content {
+  margin-left: 260px;
+  padding: 20px;
+}
+
+.welcome-section {
+  background-color: #fff6da;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: left;
+  padding-top: 60px;
+  padding-left: 90px;
+  height: 380px;
+}
+
+.welcome-title h1 {
+  color: #C06B3E;
+  font-weight: bold;
+}
+
+.welcome-title h1 img {
+  margin-left: 10px;
+  width: 40px;
+  height: auto;
+  position: relative;
+  left: 1%;
+  top: 25% !important;
+}
+
+.welcome-section p {
+  margin-top: 20px;
+  color: #666;
+}
+
+.welcome-section img {
+  max-width: 80%;
+  height: auto;
+  margin-top: 20px;
+  position: relative;
+  left: 33%;
+  top: -130px !important;
+}
+
+@media (max-width: 1024px) {
+  .welcome-section img {
+    left: 25%; 
+    top: -100px !important; 
+  }
+}
+
+@media (max-width: 768px) {
+  .welcome-title h1 img {
+    width: 35px;
+    top: 20%;
+  }
+
+  .welcome-section img {
+    left: 15%;
+    top: -80px !important;
+  }
+
+  .welcome-section p {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .welcome-title h1 {
+    font-size: 1.5rem;
+  }
+
+  .welcome-section img {
+    left: 10%;
+    top: -60px !important;
+  }
+
+  .welcome-section p {
+    font-size: 0.85rem;
+  }
+}
+
+/* Statistics section */
+.statistics {
+  margin-top: 20px;
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.statistics h5 {
+  font-weight: bold;
+  color: #333;
+}
+
+/* Infographic boxes */
+.stat-box {
+  background-color: #F8F8FF;
+  border: 1px solid #eaeaea;
+  border-radius: 10px;
+  text-align: left;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  height: 238px;
+}
+
+.stat-box h6 {
+  color: #666;
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.stat-box h3 {
+  color: #C06B3E;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.stat-box h2 {
+  color: #C06B3E;
+  font-size: 4rem;
+  font-weight: bold;
+}
+
+.stat-box img {
+  max-width: 80px;
+  height: auto;
+  align-items: right !important;
+  
+}
+
+/* Image Box Buttons */
+.img-box {
+  background-color: #fff;
+  border: 1px solid #eaeaea;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  height: 350px;
+  transition: transform 0.3s ease; /* Optional hover effect */
+}
+
+.img-box img {
+  max-width: 100px;
+  height: 100px;
+  margin-bottom: 15px;
+
+}
+
+.img-box h3 {
+  font-size: 2.25rem;
+  color: #79440E;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.img-box p {
+  color: #79440E;
+  font-size: 0.9rem;
+  margin-bottom: 0;
+}
+
+.img-box:hover {
+  transform: translateY(-5px); /* Optional hover effect */
+}
+
+
+a.text-decoration-none {
+  color: inherit; /* Inherits the color from the element */
+  text-decoration: none; /* Removes the default underline from links */
+}
+/* Button Styling */
+.months-btn {
+  background-color: #F8F8FF;
+  color: #615E83;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 16px;
+  height: 20px;
+  align-items: center;
+  padding-bottom: 30px !important;
+}
