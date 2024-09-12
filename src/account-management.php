@@ -32,7 +32,7 @@
     <section class="banner-section">
       <div class="content">
         <div class="head-title">
-          <h1><u><b>Account Management</b></u></h1>
+          <h1><u><b>ACCOUNT MANAGEMENT</b></u></h1>
         </div>
         <p>
           Manage contents seen in the user side and keep these information updated.

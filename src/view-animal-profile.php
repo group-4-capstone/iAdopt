@@ -27,7 +27,7 @@
       <section class="banner-section">
         <div class="content">
         <div class="head-title">
-          <h1><u><b>View Animal Profile</b></u></h1>
+          <h1><u><b>VIEW ANIMAL PROFILE</b></u></h1>
         </div>
           <p>
            View their profile and update information about them.

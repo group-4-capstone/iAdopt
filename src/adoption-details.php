@@ -16,10 +16,6 @@
     <!-- Bootstrap Icons-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-
-    
-    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   </head>
@@ -32,7 +28,7 @@
     <section class="banner-section">
       <div class="content">
         <div class="head-title">
-          <h1><u><b>Adoption Details</b></u></h1>
+          <h1><u><b>ADOPTION DETAILS</b></u></h1>
         </div>
         <p>
         Review the adoption application of <strong> ADOPTION #12 </strong>.
