@@ -1,29 +1,55 @@
-.head-title {
-    background-color: #FFF8CC !important;
-    margin-top: 5px;
-    border-radius: 10px;
-    box-shadow: 0 0 0 rgba(0, 0, 0, 0); /* Remove box shadow */
-    padding-top: 80px;
-    padding-left: 30px;
-    padding-right: 30px;
-    padding-bottom: 30px;
-    position: relative;
-}
+body {
+    overflow-x: hidden; /* Hides horizontal scrollbar */
+  }
+
+
 .head-title h1{
    color: #C06B3E !important;
    padding-bottom: 30px;
+    
 }
-
-.head-title h1 u {
-    text-underline-offset: 30px; /* Adds space between the text and the underline */
-    text-decoration-thickness: 5px; /* Adjusts the thickness of the underline if needed */
+.admin-content .banner-section {
+    background-color: #FFF8CC;
+    padding: 30px 30px;
+    border-radius: 30px;
+    margin-bottom: 20px;
+    background-image: url("assets/paws.png");
+    background-blend-mode: overlay;
+  }
+  
+.head-title {
+      margin-top: 5px;
+      border-radius: 10px;
+      box-shadow: 0 0 0 rgba(0, 0, 0, 0); /* Remove box shadow */
+      padding-bottom: 30px;
+      position: relative;
 }
+  
+    .head-title h1{
+      color: #C06B3E !important;
+      padding-bottom: 10px;
+    }
+  
+  .head-title h1 u {
+      text-underline-offset: 30px; /* Adds space between the text and the underline */
+      text-decoration-thickness: 5px; /* Adjusts the thickness of the underline if needed */
+  }
 .info-card {
     border-radius: 10px;
     padding: 20px;
     background-color: #f9f9f9;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     position: relative;
+    margin-bottom: none; /* Remove or reduce bottom margin */
+    
+    z-index: 1 !important; /* Ensure it's below the sidebar */
+    height: 600px !important;
+}
+
+@media (max-width: 768px) {
+    .info-card {
+        height: fit-content !important;
+    }
 }
 
 .info-card .title {
@@ -33,19 +59,26 @@
     font-size: 28px;
     text-align: left; /* Center the title on smaller screens */
     margin-top: 10px;
+    padding-left: 20px;
+    margin-bottom: 20px;
 }
-
+@media (max-width: 768px) {
+    .info-card .title {
+        justify-content: center !important;
+       align-content: center !important;
+    }
+}
 .info-card img {
     border-radius: 8px;
     width: 250px;
     height: auto; /* Maintain aspect ratio */
     max-width: 100%; /* Ensure it scales on smaller screens */
-    margin-bottom: 280px;
+    margin-bottom: 470px;
 }
 
 @media (max-width: 768px) {
     .info-card img {
-        margin-bottom: 0; /* Remove margin on smaller screens */
+        margin-bottom: 10px; /* Remove margin on smaller screens */
     }
 }
 
@@ -60,6 +93,7 @@
     border-radius: 10px;
     padding: 10px 30px;
     font-weight: bold;
+    width: 200px;
 }
 
 .btn-cancel {
@@ -80,9 +114,28 @@
     resize: none;
     height: 120px;
     padding-left: 30px !important; /* Adjust padding as needed */
+    pointer-events: auto;
 }
 
 
 .form-group {
     margin-bottom: 20px;
 }
+
+
+.paw-prints-down {
+    position: relative;
+    left: 0% !important; /* Position the image at the left end */
+    top: -40%; /* Vertically align the image */
+    margin: 0; /* Remove any margin around the div */
+    padding: 0; /* Remove any padding around the div */
+    
+  }
+.paw-prints-down img {    
+    z-index: -1; /* Layer the image behind the content */
+    width: 30%; /* Adjust width if necessary */
+    height: auto; /* Adjust height if necessary */
+    margin: 0; /* Remove any default margin around the image */
+    padding: 0; /* Remove any default padding around the image */
+    display: block; /* Ensure the image is treated as a block element */
+  }
