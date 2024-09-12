@@ -29,7 +29,7 @@
                     <!-- Notification items -->
                     <li><a class="dropdown-item" href="#">New part of the family: Andres!</a></li>
                     <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="#">Congratulations! Your adoption application has been approved!</a></li>
+                    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#adoptionModal">Congratulations! Your adoption application has been approved!</a></li>
                     <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item" href="#">New part of the family: Bella!</a></li>
 
@@ -46,6 +46,34 @@
         <span id="hamburger-btn" class="material-symbols-outlined">Menu</span>
     </nav>
 </header>
+
+<div class="modal fade" id="adoptionModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content">
+      <div class="modal-body d-flex">
+        <!-- Close button (X) -->
+        <button type="button" class="btn-close position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Close"></button>
+        <!-- Left side: GIF -->
+         <div class="row p-5">
+        <div class="col-6 col-md-12 col-sm-12 col-lg-6">
+        <img src="styles/assets/success.gif" alt="Adoption Approved GIF" style="width: 350px; transform: scaleX(-1);">
+
+        </div>
+
+        <!-- Right side: Text content -->
+        <div class="col-6 col-md-12 col-sm-12 col-lg-6">
+          <h4 class="mt-5 mb-3"><i class="bi bi-check-circle-fill pe-3" style="color: green; font-size:30px"></i>Adoption Application Approved!</h4>
+          <p>Congratulations! Your adoption application has been reviewed and you may now proceed to the next step:</p>
+          <p><strong>Online Interview</strong></p>
+          <p><strong>Date:</strong> September 20, 2024</p>
+          <p><strong>Time:</strong> 8pm</p>
+          <p><em>Note: Meeting link will be sent on the day of the interview.</em></p>
+        </div>  
+         </div> 
+      </div>
+    </div>
+  </div>
+</div>
 
 <script>
 
