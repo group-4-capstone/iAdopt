@@ -1,164 +1,264 @@
+/* General Header Styling */
 header {
-    position: relative;
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 5px;
+  background-color: #283531;
+}
+
+header .navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1250px;
+  margin: 0 auto;
+}
+
+.navbar .logo img {
+  width: 50px;
+  height: auto;
+  vertical-align: middle;
+}
+
+.navbar .logo {
+  color: #fff;
+  font-weight: 600;
+  font-size: 2.0rem;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+
+.navbar .logo span {
+  margin-left: 10px;
+}
+
+.navbar .menu-links {
+  display: flex;
+  list-style: none;
+  gap: 35px;
+  padding-top: 10px;
+}
+
+.navbar a {
+  color: #fff;
+  text-decoration: none;
+  padding: 8px 10px;
+  position: relative;
+}
+
+.navbar a.active {
+  color: #58A5B7;
+}
+
+.navbar a:hover {
+  border-bottom: none !important;
+}
+
+.navbar a::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 3px;
+  bottom: 0;
+  left: 0;
+  background-color: #58A5B7;
+  visibility: hidden;
+  transform: scaleX(0);
+  transition: transform 0.3s ease, visibility 0.3s ease;
+}
+
+.navbar a:hover::before,
+.navbar a.active::before {
+  visibility: visible;
+  transform: scaleX(1);
+}
+
+.navbar a.active:hover::before {
+  background-color: #283531;
+}
+
+/* Close and Hamburger Buttons */
+#close-menu-btn {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  cursor: pointer;
+  display: none;
+}
+
+#hamburger-btn {
+  color: #fff;
+  cursor: pointer;
+  display: none;
+}
+
+/* Dropdown Styling */
+.nav-item.dropdown .nav-link {
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  color: #fff;
+  border-bottom: none;
+}
+
+/* Remove bottom border and transition effect for nav-item dropdown */
+.nav-item.dropdown .nav-link {
+  border-bottom: none !important;
+  transition: none !important; /* Disable transition on hover */
+  position: relative; /* Isolate the nav-link from inherited styles */
+}
+
+/* Remove any pseudo-elements or background effects */
+.nav-item.dropdown .nav-link::before {
+  content: none !important; /* Remove any pseudo-element like border effects */
+}
+
+/* Dropdown item hover styling */
+.nav-item .dropdown-item {
+  border-bottom: none !important; /* Remove border */
+  transition: none !important; /* Disable any transition */
+}
+
+/* Additional rule to ensure no hover effect on nav-link inside dropdown */
+.nav-item.dropdown .nav-link:hover {
+  color: #58A5B7!important; /* Keep original text color */
+  border-bottom: none !important; /* Ensure no bottom border on hover */
+  transition: none !important; /* Disable transition on hover */
+}
+
+.nav-item .dropdown-menu {
+  background-color: white;
+  border: none;
+  margin-top: 0;
+  display: none;
+  position: absolute;
+  padding: 5px;
+}
+
+.nav-item:hover .dropdown-menu {
+  display: block;
+}
+
+.nav-item .dropdown-item {
+  color: black;
+  padding: 10px;
+  border-bottom: none !important;
+  transition: none !important; /* Ensure no transition on hover */
+  position: relative; /* Isolate from inherited styles */
+}
+
+.navbar .dropdown-item::before {
+  content: none !important; /* Prevent any pseudo-element from being rendered */
+}
+
+
+/* Hover state for dropdown items */
+.navbar .dropdown-item:hover {
+  background-color: #58A5B7 !important; /* Your desired background color */
+  color: #fff !important; /* Keep text color white */
+  border-bottom: none !important; /* Remove any border effect */
+  transition: none !important; /* Disable transitions on hover */
+}
+/* Notification Dropdown */
+.notification-item {
+  position: relative;
+}
+
+.notification-item .dropdown-menu {
+  max-height: 500px; /* Set a max-height for scrolling */
+  overflow-y: auto; /* Enable vertical scrolling */
+  width: 100%; /* Make the dropdown take full width of its parent */
+  max-width: 300px; /* Set a maximum width */
+  background-color: #fff; /* Background color */
+  border: 1px solid #ddd; /* Border color */
+  border-radius: 4px; /* Rounded corners */
+  padding: 10px 0; /* Padding inside the dropdown */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add subtle shadow for better visibility */
+}
+
+.notification-item .dropdown-item {
+  color: #333; /* Text color */
+  padding: 10px 15px; /* Padding for items */
+  text-decoration: none; /* Remove underline */
+  white-space: normal; /* Allow text to wrap and prevent overflow */
+  word-wrap: break-word; /* Wrap long words */
+}
+
+.notification-item .dropdown-item:hover {
+  background-color: #f0f0f0; /* Hover background color */
+}
+
+/* Badge Styling */
+.badge {
+  position: absolute;
+  top: -5px; /* Adjust the position to align with the icon */
+  right: -5px; /* Adjust the position to align with the icon */
+  background-color: #F8C613; /* Background color */
+  color: #fff; /* Text color */
+  border-radius: 50%; /* Circular shape */
+  padding: 2px 6px; /* Adjust the size of the badge */
+  font-size: 0.75rem; /* Text size */
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+  header {
+    padding: 10px;
+  }
+
+  header.show-mobile-menu::before {
+    content: "";
+    position: fixed;
+    left: 0;
     top: 0;
-    left: 0;
     width: 100%;
-    padding: 5px;
-    background-color: #283531;
+    height: 100%;
+    backdrop-filter: blur(5px);
   }
-  
-  header .navbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    max-width: 1250px;
-    margin: 0 auto;
-  }
-  
-  .navbar .logo img {
-    width: 50px;
-    height: auto;
-    vertical-align: middle;
-  }
-  
+
   .navbar .logo {
-    color: #fff;
-    font-weight: 600;
-    font-size: 2.0rem;
-    text-decoration: none;
-    display: flex; 
-    align-items: center; 
+    font-size: 1.7rem;
   }
-  
-  .navbar .logo span {
-    margin-left: 10px; 
+
+  #hamburger-btn, #close-menu-btn {
+    display: block;
   }
-  
+
   .navbar .menu-links {
-    display: flex;
-    list-style: none;
-    gap: 35px;
-    padding-top: 10px;
+    position: fixed;
+    top: 0;
+    left: -250px;
+    width: 250px;
+    height: 100vh;
+    background: #fff;
+    flex-direction: column;
+    padding: 70px 40px 0;
+    transition: left 0.3s ease; /* Smooth transition for mobile menu */
   }
-  
-  .navbar a {
-    color: #fff;
-    text-decoration: none;
-    transition: color 0.3s ease, border-bottom 0.3s ease;
-    padding: 8px 10px;
-    position: relative;
-  }
-  
-  .navbar a.active {
-    color: #58A5B7;
-    border-bottom: 3px solid #58A5B7; 
-  }
-  
-  .navbar a.active:hover {
-    border-bottom: 3px solid #283531; 
-  }
-  
-  .navbar a:hover {
-    color: #58A5B7;
-    border-bottom: 3px solid #58A5B7;
-  }
-  
-  .navbar a::before {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 3px;
-    bottom: 0;
+
+  header.show-mobile-menu .navbar .menu-links {
     left: 0;
-    background-color: #58A5B7;
-    visibility: hidden;
-    transform: scaleX(0);
-    transition: all 0.3s ease-in-out;
   }
-  
-  .navbar a:hover::before,
-  .navbar a.active::before {
-    visibility: visible;
-    transform: scaleX(1);
+
+  .nav-item.dropdown .nav-link {
+    padding: 12px 20px;
   }
-  
-  .navbar a.active:hover::before {
+
+  .nav-item .dropdown-menu {
+    position: static;
+    width: 100%;
     background-color: #283531;
   }
 
-  #close-menu-btn {
-    position: absolute;
-    right: 20px;
-    top: 20px;
-    cursor: pointer;
-    display: none;
+  .nav-item .dropdown-item {
+    padding: 15px 20px;
   }
-  
-  #hamburger-btn {
-    color: #fff;
-    cursor: pointer;
-    display: none;
-  }
-  
-
-  @media (max-width: 768px) {
-    header {
-      padding: 10px;
-    }
-  
-    header.show-mobile-menu::before {
-      content: "";
-      position: fixed;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      backdrop-filter: blur(5px);
-    }
-  
-    .navbar .logo {
-      font-size: 1.7rem;
-    }
-  
-      
-    #hamburger-btn, #close-menu-btn {
-      display: block;
-    }
-  
-    .navbar .menu-links {
-      position: fixed;
-      top: 0;
-      left: -250px;
-      width: 250px;
-      height: 100vh;
-      background: #fff;
-      flex-direction: column;
-      padding: 70px 40px 0;
-      transition: left 0.2s ease;
-    }
-  
-    header.show-mobile-menu .navbar .menu-links {
-      left: 0;
-    }
-  
-    .navbar a {
-      color: #000;
-    }
-  
-    .hero-section .content {
-      text-align: center;
-    }
-  
-    .hero-section .content :is(h2, p) {
-      max-width: 100%;
-    }
-  
-    .hero-section .content h2 {
-      font-size: 2.3rem;
-      line-height: 60px;
-    }
-    
-    .hero-section .content button {
-      padding: 9px 18px;
-    }
-  }
+}

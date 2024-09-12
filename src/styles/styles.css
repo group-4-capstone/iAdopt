@@ -69,4 +69,36 @@
         font-size: 14px;
     }
   }
+
+  .dog-details {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.adopter-info {
+    background-color: #ffffff;
+    padding: 20px;
+    border: 1px solid #dee2e6;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.accordion-item {
+    border: none;
+    margin-bottom: 10px;
+}
+.accordion-header {
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+}
+.accordion-button {
+    background-color: #161A2D;
+    color: white;
+    border: none;
+}
+.accordion-button:not(.collapsed) {
+    background-color: #343a40;
+}
   

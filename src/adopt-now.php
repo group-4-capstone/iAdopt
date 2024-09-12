@@ -73,9 +73,9 @@
       </div>
     </section>
 
-    <section class="form-section">
+    <section class="form-section pb-5">
       <div class="content">
-        <h4>Adoption Form</h4>
+        <h4><img src="styles/assets/secaspi-logo.png">Adoption Form</h4>
         <form id="signUpForm" action="#!">
         <!-- Step indicators -->
         <div class="form-header d-flex mb-4">

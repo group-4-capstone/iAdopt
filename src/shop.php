@@ -41,44 +41,44 @@
             <div class="grid_container"> 
               <div class="merch">
                 <div class="grid_items">
-                  <img src="styles/assets/aspin-1.png">
+                  <img src="styles/assets/merchandise/cap.png">
                   <h2>Cap</h2>
-                  <p>Buy Here</p>
+                  <p><a href="#">Buy Here</a></p>
                 </div>
                 <div class="grid_items">
-                  <img src="styles/assets/aspin-1.png">
-                  <h2>Cap</h2>
-                  <p>Buy Here</p>
+                  <img src="styles/assets/merchandise/umbrella.webp">
+                  <h2>Umbrella</h2>
+                  <p><a href="#">Buy Here</a></p>
                 </div>
                 <div class="grid_items">
-                  <img src="styles/assets/aspin-1.png">
-                  <h2>Cap</h2>
-                  <p>Buy Here</p>
+                  <img src="styles/assets/merchandise/eco_bag.png">
+                  <h2>Canvas Eco Bag</h2>
+                  <p><a href="#">Buy Here</a></p>
                 </div>
                 <div class="grid_items">
-                  <img src="styles/assets/aspin-1.png">
-                  <h2>Cap</h2>
-                  <p>Buy Here</p>
+                  <img src="styles/assets/merchandise/mouse_pad.webp">
+                  <h2>Mouse Pad</h2>
+                  <p><a href="#">Buy Here</a></p>
                 </div>
                 <div class="grid_items">
-                  <img src="styles/assets/aspin-1.png">
+                  <img src="styles/assets/merchandise/cap.png">
                   <h2>Cap</h2>
-                  <p>Buy Here</p>
+                  <p><a href="#">Buy Here</a></p>
                 </div>
                 <div class="grid_items">
-                  <img src="styles/assets/aspin-1.png">
-                  <h2>Cap</h2>
-                  <p>Buy Here</p>
+                  <img src="styles/assets/merchandise/umbrella.webp">
+                  <h2>Umbrella</h2>
+                  <p><a href="#">Buy Here</a></p>
                 </div>
                 <div class="grid_items">
-                  <img src="styles/assets/aspin-1.png">
-                  <h2>Cap</h2>
-                  <p>Buy Here</p>
+                  <img src="styles/assets/merchandise/eco_bag.png">
+                  <h2>Canvas Eco Bag</h2>
+                  <p><a href="#">Buy Here</a></p>
                 </div>
                 <div class="grid_items">
-                  <img src="styles/assets/aspin-1.png">
-                  <h2>Cap</h2>
-                  <p>Buy Here</p>
+                  <img src="styles/assets/merchandise/mouse_pad.webp">
+                  <h2>Mouse Pad</h2>
+                  <p><a href="#">Buy Here</a></p>
                 </div>
               </div>
             </div>

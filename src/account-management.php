@@ -88,6 +88,46 @@
   </div>
 </div>
 
+<!-- Confirm Disable Modal -->
+<div class="modal fade" id="confirmDisableModal" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body text-center">
+        <!-- Bootstrap icon -->
+        <i class="bi bi-question-circle-fill" style="font-size: 8rem; color: #808080;"></i>
+
+        <!-- Modal text -->
+        <p class="mt-3">Are you sure you want to disable this account: <strong>annareyes@gmail.com</strong>?</p>
+
+        <!-- Yes and No buttons -->
+        <div class="d-flex justify-content-center mb-5">
+          <button type="button" class="btn btn-danger px-5 me-2" data-bs-toggle="modal" data-bs-target="#successModal">Yes</button>
+          <button type="button" class="btn btn-secondary px-5" data-bs-dismiss="modal">No</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Success Modal Structure -->
+<div class="modal fade" id="successModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body">
+        <!-- Close button on the left -->
+        <button type="button" class="btn-close d-flex ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
+
+        <!-- Bootstrap check icon and success message -->
+        <div class="text-center">
+          <i class="bi bi-check-circle-fill" style="font-size: 8rem; color: #28a745;"></i>
+          <p class="mt-3">Account disabled successfully!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <div class="table-section">
 <div class="d-flex justify-content-end my-4">
   <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addAdminModal">
@@ -120,7 +160,7 @@
           Active
         </span>
       <ul class="dropdown-menu" aria-labelledby="statusDropdown">
-        <li><a class="dropdown-item" href="#">Inactive</a></li>
+        <li><a href="#" data-bs-toggle="modal" data-bs-target="#confirmDisableModal" class="dropdown-item">Inactive</a></li>
       </ul>
     </div>
 </td>
@@ -141,7 +181,7 @@
           Active
         </span>
       <ul class="dropdown-menu" aria-labelledby="statusDropdown">
-        <li><a class="dropdown-item" href="#">Inactive</a></li>
+        <li><a href="#" data-bs-toggle="modal" data-bs-target="#confirmDisableModal" class="dropdown-item">Inactive</a></li>
       </ul>
     </div>
     </td>
@@ -174,7 +214,7 @@
           Active
         </span>
       <ul class="dropdown-menu" aria-labelledby="statusDropdown">
-        <li><a class="dropdown-item" href="#">Inactive</a></li>
+        <li><a href="#" data-bs-toggle="modal" data-bs-target="#confirmDisableModal" class="dropdown-item">Inactive</a></li>
       </ul>
     </div>
     </td>

@@ -295,6 +295,11 @@
   margin: 0 auto;
 }
 
+.form-section img {
+  width: 70px;
+  padding-right: 2px;
+}
+
 .form-section .content h4 {
   margin: 15px 0;
   font-weight: 800;
