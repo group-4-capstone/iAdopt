@@ -81,6 +81,16 @@
   color: #DB4444;
 }
 
+.section_container .grid_items a {
+  color: #DB4444 !important;
+}
+
+.section_container .grid_items a:hover {
+  color: #DB4444 !important;
+  font-weight: 700
+}
+
+
 .section_container .btn-more {
   float: right;
   margin-top: 28px;
