@@ -24,7 +24,7 @@
       </a>
     </li>
     <li>
-      <a href="#">
+      <a href="adoption-records.php">
         <i class="bi bi-folder"></i>
         <span>Adoption Records</span>
       </a>
@@ -36,13 +36,13 @@
       </a>
     </li>
     <li>
-      <a href="#">
+      <a href="visitor-log.php">
         <i class="bi bi-person-lines-fill"></i> 
         <span>Visitor Log</span>
       </a>
     </li>
     <li>
-      <a href="#">
+      <a href="history.php">
         <i class="bi bi-clock-history"></i>
         <span>History Log</span>
       </a>
