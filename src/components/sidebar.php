@@ -98,7 +98,9 @@
         menuLinks.forEach(link => {
         const href = link.getAttribute('href').split("/").pop(); 
          // Add conditions for multiple pages
-         if ((href === 'animal-profiles.php' && (currentPath === 'animal-profiles.php' || currentPath === 'view-animal-profile.php')) ||
+         if ((href === 'animal-profiles.php' && (currentPath === 'animal-profiles.php' || currentPath === 'view-animal-profile.php')) || 
+            (href === 'rescue-records.php' && (currentPath === 'rescue-records.php' || currentPath === 'add-record.php')) ||
+            (href === 'adoption-records.php' && (currentPath === 'adoption-records.php' || currentPath === 'adoption-details.php')) ||
             href === currentPath) {
             link.classList.add('active');
         }

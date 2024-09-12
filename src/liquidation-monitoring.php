@@ -28,7 +28,7 @@
     <section class="banner-section">
       <div class="content">
         <div class="head-title">
-          <h1><u><b>Liquidation Monitoring</b></u></h1>
+          <h1><u><b>LIQUIDATION MONITORING</b></u></h1>
         </div>
         <p>
           Efficiently track and manage donations and expenditures, ensuring transparency in the liquidation process.

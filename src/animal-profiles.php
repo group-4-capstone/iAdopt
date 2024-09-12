@@ -29,7 +29,7 @@
     <section class="banner-section">
         <div class="content">
         <div class="head-title">
-          <h1><u><b>Animal Profiles</b></u></h1>
+          <h1><u><b>ANIMAL PROFILES</b></u></h1>
         </div>
           <p>
             View list of animals that are up for adoption and manage their profiles.
