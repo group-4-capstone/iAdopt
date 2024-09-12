@@ -161,6 +161,7 @@
     border-radius: 10px;
     padding: 20px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    
 }
 
 .modal-content {
@@ -174,16 +175,16 @@
     text-align: center;
     color: #333;
     margin-bottom: 20px;
+   
+}
+.modal-body{
+    padding: 10px !important;
+    width: 100%;
+    border-radius: 10px;
+    border: none !important;
+
 }
 
-/* Image styling */
-.modal-body img {
-    width: 100%;
-    height: auto;
-    border-radius: 10px;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-    
-}
 
 /* Form inputs and selects */
 .form-control, .form-select {
@@ -193,7 +194,9 @@
     box-shadow: none;
     background-color: #fff !important;
 }
-
+.mb-3 {
+    padding-right: 10px !important; /* Standard margin bottom */
+}
 /* Disabled form inputs and selects */
 .form-control:disabled, .form-select:disabled {
     background-color: #f8f9fa; /* Lighter background to indicate disabled state */
@@ -248,17 +251,22 @@
     background-color: #092E5A !important; /* Custom color */
     color: #fff !important; /* Text color */
     border: none; /* Remove border if needed */
+    width: 20%;
+    margin-right: 30px !important;
 }
 
 .btn-save:hover {
     background-color: #092E5A; /* Slightly darker color on hover */
 }
 
+
+
 /* Optional: Custom CSS for Cancel button */
 .btn-danger {
     background-color: #dc3545; /* Bootstrap default red color */
     color: #fff; /* Text color */
     border: none; /* Remove border if needed */
+    width: 20%;
 }
 
 .btn-danger:hover {
@@ -285,13 +293,31 @@
 .modal-footer{
     border: none !important;
 }
-
 .modal-header .modal-title{
     font-family: 'Poppins', bold;
     color: #002a5c;
     font-weight: bold;
     font-size: 28px;
     text-align: left; /* Center the title on smaller screens */
-    margin-top: 10px;
     margin-left: 10px;
+    margin-right: 10px;
 }
+
+
+.paw-prints-down {
+    position: relative;
+    left: 0% !important; /* Position the image at the left end */
+    top: -40%; /* Vertically align the image */
+    margin: 0 0 20px 20px; /* Remove any margin around the div */
+    padding: 0; /* Remove any padding around the div */
+    
+  }
+.paw-prints-down img {    
+    z-index: -1; /* Layer the image behind the content */
+    width: 30%; /* Adjust width if necessary */
+    height: auto; /* Adjust height if necessary */
+    margin-bottom: 10px ; /* Remove any default margin around the image */
+    padding: 0; /* Remove any default padding around the image */
+    display: block; /* Ensure the image is treated as a block element */
+    box-shadow: none;
+  }

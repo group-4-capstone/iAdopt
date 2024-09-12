@@ -27,9 +27,16 @@
 
     <div class="admin-content">
 
+    <section class="banner-section">
+      <div class="content">
         <div class="head-title">
-            <h1><u><b>RESCUE RECORDS</b> </u></h1>
+          <h1><u><b>RESCUE RECORDS</b></u></h1>
         </div>
+            <p>
+                View list of rescued animals and manage their details.
+            </p>
+        </div>
+    </section>
 
         <div class="container mt-5">
             <div class="card">

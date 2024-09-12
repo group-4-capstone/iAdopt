@@ -56,16 +56,6 @@
     
 }
 
-.table .badge.bg-red {
-    background-color: #ffff; /* Red background */
-    color: #ff0000 !important; /* Dark text color */
-    border: 1px solid #ff0000; /* Red border */
-    border-radius: 50px; /* Oval shape */
-    padding: 0.45rem  0.85rem; /* Adjust padding for oval effect */
-    font-size: 0.75rem; /* Adjust text size */
-    font-weight: normal;
-    
-}
 
 
 .pagination .page-item .page-link {
@@ -85,11 +75,11 @@
 }
 
 
-.btn-add, .btn-delete, .btn-sort {
+.btn-delete, .btn-sort {
     border: none !important;
 }
 
-.btn-add:hover, .btn-delete:hover, .btn-sort:hover {
+.btn-delete:hover, .btn-sort:hover {
     opacity: 0.9 !important;
 }
 .input-group-text {
@@ -164,7 +154,7 @@
 }
 
 .modal-content {
-    background-color: #D9D9D9 !important;
+    background-color: #FFFFFF !important;
 }
 
 /* Title styling */
@@ -178,11 +168,10 @@
 
 /* Image styling */
 .modal-body img {
-    width: 100%;
-    height: auto;
+    width: 80%;
+    height: 40%;
     border-radius: 10px;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-    
+    margin-left: 25px;
 }
 
 /* Form inputs and selects */
@@ -216,17 +205,6 @@
     background-color: #5a6268;
 }
 
-.btn-add {
-    background-color: #0d6efd;
-    color: white;
-    border-radius: 5px;
-    padding: 10px 20px;
-    font-weight: bold;
-}
-
-.btn-add:hover {
-    background-color: #0b5ed7;
-}
 
 /* Adjustments for smaller screens */
 @media (max-width: 576px) {
@@ -264,19 +242,8 @@
 .btn-danger:hover {
     background-color: #c82333; /* Slightly darker red on hover */
 }
-.btn-edit {
-    background-color: #C0690A !important; /* Custom color */
-    color: #fff !important; /* Text color */
-    border: none; /* Remove border if needed */
-    border-radius: 30px !important;
-    margin-bottom: 100px !important;
-}
 
-.btn-edit i.bi-pencil-square {
-    margin-top: 40px !important; /* Adjust as needed */
-    position: relative;
-    bottom: 3px !important; /* Adjust this value to move it */
-}
+
 
 
 .modal-header{
@@ -294,4 +261,70 @@
     text-align: left; /* Center the title on smaller screens */
     margin-top: 10px;
     margin-left: 10px;
+}
+
+.detail-name {
+    margin-top: 20px !important; /* Adds some space between the image and the name */
+    text-align: center; /* Ensures the name is centered */
+}
+
+.detail-name h6 {
+    font-size: 16px; /* Adjusts font size */
+    color: #444; /* Sets a text color */
+    display: inline-block;
+}
+
+.modal-form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    font-size: 13px;
+    color: #333;
+}
+
+.modal-input-group {
+    display: flex;
+    position: relative;
+    left: 30px !important;
+    border-radius: 5px;
+    padding: 10px 8px;
+    align-items: center !important;
+    border-style: solid;
+    border-width: 2px;       /* Adjust the thickness of the border */
+    border-color: #E3E3E3;   /* Set the border color to a custom value */
+    background-color: #f9f9f9; /* Optional: Set background color inside the border */
+    width:80%; 
+}
+
+
+.modal-input-group-text {
+    border: none !important;
+    background-color: #fff;
+    font-size: 14px;
+    padding: 6px 12px;
+    color: #666;
+}
+
+.modal-btn {
+    border: 1px solid #000 !important;
+    font-size: 14px;
+    padding: 6px 12px;
+    background-color: #F0F0F0;
+    color: #333;
+    font-weight: bold;
+    display: inline-block;
+    text-align: center;
+    margin-left: 15px;
+    
+}
+
+.btn-outline-secondary {
+    background-color: #f5f5f5;
+    color: #333;
+    border: 1px solid #ddd;
+}
+
+.btn-outline-secondary:hover {
+    background-color: #ddd;
 }

@@ -25,64 +25,75 @@
 
    <div class="admin-content">
 
-<div class="head-title">
-    <h1><u><b>ADD RESCUED PET</b> </u></h1>
-</div>
-
+    <section class="banner-section">
+      <div class="content">
+        <div class="head-title">
+          <h1><u><b>ADD RESCUE</b></u></h1>
+        </div>
+            <p>
+                Add rescued animal information.
+            </p>
+        </div>
+    </section>
 
 <div class="container mt-5">
             <div class="card info-card">
                 <div class="row">
-                <h2 class="title">INFORMATION SHEET</h2>
+                <h2 class="title">INFORMATION SHEET</h2> 
+                
                     <div class="col-md-4 col-sm-12  d-flex justify-content-center align-items-center">
                         <img src="styles/assets/aspin-2.png" alt="Rescued Pet">
                         
                     </div>
                     <div class="col-md-8 col-sm-12 ">
-                        <br>
-                        <div class="row">
-                            <div class="col-md-4 form-group">
-                                <label for="name" class="form-label">Name:</label>
-                                <input type="text" id="name" class="form-control" value="Juan">
+                     
+                        <div class="left-side">
+                            <div class="row">
+                                <div class="col-md-4 form-group">
+                                    <label for="name" class="form-label">Name:</label>
+                                    <input type="text" id="name" class="form-control" value="Juan">
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label for="gender" class="form-label">Gender:</label>
+                                    <select id="gender" class="form-select">
+                                        <option selected>Male</option>
+                                        <option>Female</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label for="type" class="form-label">Type:</label>
+                                    <select id="type" class="form-select">
+                                        <option selected>Dog</option>
+                                        <option>Cat</option>
+                                    </select>
+                                </div>
                             </div>
-                            <div class="col-md-4 form-group">
-                                <label for="gender" class="form-label">Gender:</label>
-                                <select id="gender" class="form-select">
-                                    <option selected>Male</option>
-                                    <option>Female</option>
-                                </select>
+                            <div class="row">
+                                <div class="col-md-4 form-group">
+                                    <label for="rescuedDate" class="form-label">Date Rescued:</label>
+                                    <input type="date" id="rescuedDate" class="form-control" value="2023-12-13">
+                                </div>
+                                <div class="col-md-8 form-group">
+                                    <label for="rescuedBy" class="form-label">Rescued By:</label>
+                                    <input type="text" id="rescuedBy" class="form-control" value="Pedro Balagtas">
+                                </div>
                             </div>
-                            <div class="col-md-4 form-group">
-                                <label for="type" class="form-label">Type:</label>
-                                <select id="type" class="form-select">
-                                    <option selected>Dog</option>
-                                    <option>Cat</option>
-                                </select>
+                            <div class="form-group">
+                                <label for="rescuedAt" class="form-label">Rescued At:</label>
+                                <input type="text" id="rescuedAt" class="form-control" value="City of Santa Rosa">
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-4 form-group">
-                                <label for="rescuedDate" class="form-label">Date Rescued:</label>
-                                <input type="date" id="rescuedDate" class="form-control" value="2023-12-13">
+                            <div class="form-group">
+                                <label for="remarks" class="form-label">Remarks:</label>
+                                <textarea id="remarks" class="form-control remarks">If the world was ending I'd wanna be next to you...</textarea>
                             </div>
-                            <div class="col-md-8 form-group">
-                                <label for="rescuedBy" class="form-label">Rescued By:</label>
-                                <input type="text" id="rescuedBy" class="form-control" value="Pedro Balagtas">
+                            
+                            <div class="d-flex justify-content-end mt-4">
+                                <button class="btn btn-cancel me-2" onclick="window.location.href='rescue-records.php'">Cancel</button>
+                                <button class="btn btn-add">Add</button>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="rescuedAt" class="form-label">Rescued At:</label>
-                            <input type="text" id="rescuedAt" class="form-control" value="City of Santa Rosa">
-                        </div>
-                        <div class="form-group">
-                            <label for="remarks" class="form-label">Remarks:</label>
-                            <textarea id="remarks" class="form-control remarks">If the world was ending I'd wanna be next to you...</textarea>
-                        </div>
-                        <div class="d-flex justify-content-end mt-4">
-                            <button class="btn btn-cancel me-2" onclick="window.location.href='rescue-records.php'">Cancel</button>
-                            <button class="btn btn-add">Add</button>
                         </div>
                     </div>
+                    <div class="paw-prints-down"><img src="styles/assets/paw-down.png" alt="Paws"></div>
                 </div>
               
             </div>
