@@ -78,15 +78,19 @@
   font-size: 16px;
   font-weight: 500;
   margin: 0;
-  color: #DB4444;
+  color: white;
+  background-color: #C0690A;
+  padding: 10px 20px;
+  border-radius: 20px;
 }
 
 .section_container .grid_items a {
-  color: #DB4444 !important;
+  color: white !important;
+  text-decoration: none !important;
 }
 
 .section_container .grid_items a:hover {
-  color: #DB4444 !important;
+  color: white !important;
   font-weight: 700
 }
 

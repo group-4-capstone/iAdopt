@@ -59,7 +59,6 @@
               </div>
             </div>
           </div>
-        
         </div>
        <!-- Images -->
         <div class="gallery">
@@ -79,26 +78,24 @@
 <div class="modal fade" id="readMoreModal" tabindex="-1" aria-labelledby="readMoreModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
-    <div class="modal-header">
-        <h5 class="modal-title" id="readMoreModalLabel">Call for Donations</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <div class="row">
-      <div class="col-lg-6 col-md-12">
-         <img src="styles/assets/aspin-1.png">
-        </div>
-        <div class="col-lg-6 col-md-12">
-          <p class="p-4">
-            We're down to the last half (drum) of dog food. After that, we don't know how we will provide for the food of our rescues.
-            In case there's someone who wants to donate in-kind or financially, here are our details:
-            Account Name: CHERRY LICUP
-            GCASH: 0917 772 0395
-            BDO Account (Sct. Gandia Branch): 0086-7002-3534
-            BPI (Shaw Branch): 3309370359
-            We will also post the second series of our eco bags! You can purchase them to help us fund our needs.
-          </p>
-        </div>
+      <div class="modal-body d-flex py-4">
+        <button type="button" class="btn-close position-absolute top-0 end-0 mt-3 me-3 mb-5" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div class="row d-flex align-items-center">
+          <div class="col-lg-6 col-md-12 text-center">
+            <img src="styles/assets/aspin-1.png" class="img-fluid" style="width: 90%;">
+          </div>
+          <div class="col-lg-6 col-md-12">
+            <h3 class="mt-3 text-center">Call for Donations</h3>
+            <p class="p-4 mt-2">
+              We're down to the last half (drum) of dog food. After that, we don't know how we will provide for the food of our rescues.
+              In case there's someone who wants to donate in-kind or financially, here are our details:<br><br>
+              Account Name: CHERRY LICUP <br>
+              GCASH: 0917 772 0395 <br>
+              BDO Account (Sct. Gandia Branch): 0086-7002-3534 <br>
+              BPI (Shaw Branch): 3309370359 <br><br>
+              We will also post the second series of our eco bags! You can purchase them to help us fund our needs.
+            </p>
+          </div>
         </div>
       </div>
     </div>

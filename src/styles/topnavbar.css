@@ -1,4 +1,3 @@
-/* General Header Styling */
 header {
   position: relative;
   top: 0;
@@ -50,7 +49,11 @@ header .navbar {
 }
 
 .navbar a.active {
-  color: #58A5B7;
+  color: #58A5B7 !important;
+}
+
+.navbar .nav-item.dropdown a:hover{
+  border-bottom: none !important;
 }
 
 .navbar a:hover {
@@ -70,6 +73,7 @@ header .navbar {
   transition: transform 0.3s ease, visibility 0.3s ease;
 }
 
+
 .navbar a:hover::before,
 .navbar a.active::before {
   visibility: visible;
@@ -80,128 +84,157 @@ header .navbar {
   background-color: #283531;
 }
 
-/* Close and Hamburger Buttons */
+
 #close-menu-btn {
-  position: absolute;
-  right: 20px;
-  top: 20px;
-  cursor: pointer;
-  display: none;
+  position: absolute !important;
+  right: 20px !important;
+  top: 20px !important;
+  cursor: pointer !important;
+  display: none !important;
 }
 
 #hamburger-btn {
-  color: #fff;
-  cursor: pointer;
-  display: none;
+  color: #fff !important;
+  cursor: pointer !important;
+  display: none !important;
 }
 
-/* Dropdown Styling */
+
 .nav-item.dropdown .nav-link {
   padding: 0 10px;
   display: flex;
   align-items: center;
   height: 100%;
   color: #fff;
-  border-bottom: none;
-}
-
-/* Remove bottom border and transition effect for nav-item dropdown */
-.nav-item.dropdown .nav-link {
   border-bottom: none !important;
-  transition: none !important; /* Disable transition on hover */
-  position: relative; /* Isolate the nav-link from inherited styles */
+  transition: none !important; 
+  position: relative; 
 }
 
-/* Remove any pseudo-elements or background effects */
+
 .nav-item.dropdown .nav-link::before {
-  content: none !important; /* Remove any pseudo-element like border effects */
+  content: ''; 
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background-color: transparent; 
+  visibility: hidden;
+  transform: scaleX(0);
+  transition: none !important; 
 }
 
-/* Dropdown item hover styling */
-.nav-item .dropdown-item {
-  border-bottom: none !important; /* Remove border */
-  transition: none !important; /* Disable any transition */
-}
 
-/* Additional rule to ensure no hover effect on nav-link inside dropdown */
 .nav-item.dropdown .nav-link:hover {
-  color: #58A5B7!important; /* Keep original text color */
-  border-bottom: none !important; /* Ensure no bottom border on hover */
-  transition: none !important; /* Disable transition on hover */
+  color: #58A5B7 !important; 
+  background-color: transparent !important; 
+  border-bottom: none !important;
+  transition: none !important; 
 }
+
+.nav-item.dropdown .dropdown-item:before {
+  content: ''; 
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background-color: transparent; 
+  visibility: hidden;
+  transform: scaleX(0);
+  transition: none !important; 
+}
+
+
+.nav-item.dropdown .dropdown-item:hover {
+  color: white !important; 
+  background-color: #58A5B7 !important; 
+  border-bottom: none !important;
+  transition: none !important; 
+}
+
+.nav-item .dropdown-item {
+  border-bottom: none !important; 
+  transition: none !important; 
+}
+
 
 .nav-item .dropdown-menu {
-  background-color: white;
-  border: none;
-  margin-top: 0;
-  display: none;
-  position: absolute;
-  padding: 5px;
+  background-color: #fff !important;
+  border: none !important;
+  padding: 5px !important;
 }
 
-.nav-item:hover .dropdown-menu {
-  display: block;
+.nav-item .dropdown-menu.show {
+  display: block !important; 
 }
+
 
 .nav-item .dropdown-item {
-  color: black;
-  padding: 10px;
-  border-bottom: none !important;
-  transition: none !important; /* Ensure no transition on hover */
-  position: relative; /* Isolate from inherited styles */
+  color: #000 !important; 
 }
 
-.navbar .dropdown-item::before {
-  content: none !important; /* Prevent any pseudo-element from being rendered */
+.nav-item .dropdown-item:hover {
+  background-color: #58A5B7 !important; 
+  color: #fff !important;
 }
 
-
-/* Hover state for dropdown items */
-.navbar .dropdown-item:hover {
-  background-color: #58A5B7 !important; /* Your desired background color */
-  color: #fff !important; /* Keep text color white */
-  border-bottom: none !important; /* Remove any border effect */
-  transition: none !important; /* Disable transitions on hover */
-}
-/* Notification Dropdown */
 .notification-item {
   position: relative;
 }
 
 .notification-item .dropdown-menu {
-  max-height: 500px; /* Set a max-height for scrolling */
-  overflow-y: auto; /* Enable vertical scrolling */
-  width: 100%; /* Make the dropdown take full width of its parent */
-  max-width: 300px; /* Set a maximum width */
-  background-color: #fff; /* Background color */
-  border: 1px solid #ddd; /* Border color */
-  border-radius: 4px; /* Rounded corners */
-  padding: 10px 0; /* Padding inside the dropdown */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add subtle shadow for better visibility */
+  max-height: 500px;
+  overflow-y: auto;
+  width: 100%;
+  max-width: 300px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 10px 0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.notification-item .dropdown-item:before {
+  content: ''; 
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background-color: transparent; 
+  visibility: hidden;
+  transform: scaleX(0);
+  transition: none !important; 
+  padding: 10px 15px;
+  text-decoration: none;
+  white-space: normal;
+  word-wrap: break-word;
 }
 
 .notification-item .dropdown-item {
-  color: #333; /* Text color */
-  padding: 10px 15px; /* Padding for items */
-  text-decoration: none; /* Remove underline */
-  white-space: normal; /* Allow text to wrap and prevent overflow */
-  word-wrap: break-word; /* Wrap long words */
+  color: #333;
+  padding: 10px 15px;
+  text-decoration: none;
+  white-space: normal;
+  word-wrap: break-word;
 }
 
 .notification-item .dropdown-item:hover {
-  background-color: #f0f0f0; /* Hover background color */
+  background-color: #f0f0f0;
 }
 
 /* Badge Styling */
 .badge {
   position: absolute;
-  top: -5px; /* Adjust the position to align with the icon */
-  right: -5px; /* Adjust the position to align with the icon */
-  background-color: #F8C613; /* Background color */
-  color: #fff; /* Text color */
-  border-radius: 50%; /* Circular shape */
-  padding: 2px 6px; /* Adjust the size of the badge */
-  font-size: 0.75rem; /* Text size */
+  top: -5px;
+  right: -5px;
+  background-color: #F8C613;
+  color: #fff;
+  border-radius: 50%;
+  padding: 2px 6px;
+  font-size: 0.75rem;
   font-weight: bold;
   display: flex;
   align-items: center;
@@ -209,14 +242,15 @@ header .navbar {
 }
 
 /* Mobile Styles */
-@media (max-width: 768px) {
+@media (max-width: 1100px) {
   header {
-    padding: 10px;
+    padding: 10px !important;
+    z-index: 1000 !important;
   }
 
   header.show-mobile-menu::before {
-    content: "";
-    position: fixed;
+    content: "" !important;
+    position: fixed !important;
     left: 0;
     top: 0;
     width: 100%;
@@ -225,40 +259,96 @@ header .navbar {
   }
 
   .navbar .logo {
-    font-size: 1.7rem;
+    font-size: 1.7rem !important;
   }
 
   #hamburger-btn, #close-menu-btn {
-    display: block;
+    display: block !important;
   }
 
   .navbar .menu-links {
-    position: fixed;
-    top: 0;
-    left: -250px;
-    width: 250px;
-    height: 100vh;
-    background: #fff;
-    flex-direction: column;
-    padding: 70px 40px 0;
-    transition: left 0.3s ease; /* Smooth transition for mobile menu */
+    position: fixed !important;
+    top: 0 !important;
+    left: -250px !important;
+    width: 250px !important;
+    height: 100vh !important;
+    background: #fff !important;
+    flex-direction: column !important;
+    padding: 70px 40px 0 !important;
+    transition: left 0.3s ease !important; 
+  }
+
+  .navbar .menu-links a {
+    color: #000 !important;
   }
 
   header.show-mobile-menu .navbar .menu-links {
-    left: 0;
+    left: 0 !important;
   }
 
-  .nav-item.dropdown .nav-link {
-    padding: 12px 20px;
-  }
-
-  .nav-item .dropdown-menu {
-    position: static;
-    width: 100%;
-    background-color: #283531;
+  .nav-item.dropdown .dropdown-menu {
+    position: static !important; 
+    width: 100% !important;
+    background-color: #f9f9f9 !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    border: none;
   }
 
   .nav-item .dropdown-item {
-    padding: 15px 20px;
+    padding: 15px 20px !important;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .nav-item .dropdown-item:hover {
+    background-color: #58A5B7 !important;
+    color: #fff !important;
+  }
+
+  .nav-item .dropdown-item i {
+    margin-right: 10px;
+  }
+
+  .nav-item.dropdown .nav-link {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .navbar .dropdown-item {
+    color: #000;
+  }
+
+  .nav-item.dropdown .nav-link {
+    display: none !important;
+  }
+
+  .nav-item.dropdown .dropdown-menu {
+    display: flex !important;
+    flex-direction: column;
+    position: static !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+  }
+
+  .nav-item.dropdown .dropdown-item {
+    display: block !important;
+    background-color: transparent !important;
+    color: #fff !important;
+    padding: 10px 0 !important;
+    color: #000 !important;
+  }
+
+.nav-item .dropdown-item:hover {
+  background-color: #f0f0f0 !important; /* Light gray background on hover */
+  color: #000 !important; /* Black text color on hover */
+  border-bottom: 2px solid #58A5B7 !important; /* Add bottom border on hover */
+}
+
+}
+
+@media (max-width: 425px) {
+  .navbar .logo {
+    font-size: 1.2rem !important;
   }
 }

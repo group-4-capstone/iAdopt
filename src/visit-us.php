@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="styles/footer.css">
     <link rel="stylesheet" href="styles/styles.css">
     <link rel="stylesheet" href="styles/visit.css">
+    <link rel="stylesheet" href="styles/adopt.css">
 
     <!-- Google Fonts Links For Icon -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0">
@@ -29,7 +30,7 @@
         <h2>Visit the Shelter</h2>
         <h4>Get to visit the SECASPI.</h4>
           <p>
-           Here is the exact address of the shelter for you to easily find and visit us!
+           Schedule your visit and see the exact address of the shelter for you to easily find!
           </p>
       </div>
     </section>
@@ -41,6 +42,52 @@
           <i class="bi bi-pin-map-fill"></i><h2>#428 Purok 7, Tibagan Road, Majada, Calamba, Laguna</h2>
         </div>
     </section>
+
+    <section class="form-section pb-5">
+      <div class="content">
+        <h4></h4>
+        <form id="signUpForm" action="#!">
+
+        <!-- Step one -->
+        <div class="step">
+          <h4 class="text-center"><img src="styles/assets/secaspi-logo.png">Visit Form</h4>
+            <p class="text-center mb-4">Kindly fill out this form if you will visit the shelter.</p>
+            <div class="mb-3">
+                <label>Name/s:</label>
+                  <input type="text" placeholder="e.g Juan Dela Cruz" name="address1">
+            </div>
+            <div class="mb-3">
+                <label>Group Name:</label>
+                <input type="text" name="facebook" placeholder="e.g. ABC Students">
+            </div>
+              <div class="row">
+                <div class="col-lg-2 col-12 mb-3">
+                  <label>No. of Pax:</label>
+                  <input type="number" name="facebook" placeholder="Number of Visitors">
+                </div>
+                <div class="col-lg-10 col-12 mb-3">
+                  <label>Purpose:</label>
+                  <input type="text" name="facebook" placeholder="Indicate your purpose of visit.">
+                </div>
+              </div>
+          
+          </div>
+
+        <div class="mb-3">
+            <i>Note: You must be logged into your account to schedule a visit. Kindly check your notifications if your visit is approved. Thank you.</i>
+        </div>
+
+
+        <!-- Form Footer: Previous/Next buttons -->
+        <div class="form-footer d-flex">
+            <button type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
+            <button type="button" id="nextBtn" onclick="nextPrev(1)">Next</button>
+        </div>
+    </form>
+      </div>
+    </div>
+  </section>
+
 
     <section class="grid-section">
       <div class="content">
@@ -79,7 +126,7 @@
   </section>
 
 
-
+  <script src="scripts/adoption-form.js"></script>
    
    <?php include_once 'components/footer.php'; ?>
 
