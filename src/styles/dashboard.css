@@ -43,7 +43,7 @@ body {
   margin-top: 20px;
   position: relative;
   left: 33%;
-  top: -130px !important;
+  top: -210px !important;
 }
 
 @media (max-width: 1024px) {
@@ -132,7 +132,10 @@ body {
   align-items: right !important;
   
 }
-
+.stat-content {
+  margin-left: 10px;
+  margin-bottom: 10px;
+}
 /* Image Box Buttons */
 .img-box {
   background-color: #fff;
@@ -185,4 +188,184 @@ a.text-decoration-none {
   height: 20px;
   align-items: center;
   padding-bottom: 30px !important;
+}
+
+/* Donations Overview Section */
+.donations-overview {
+  margin-top: 40px;
+  padding: 20px;
+  background-color: #fff;
+}
+
+.donations-overview h2 {
+  text-align: left;
+  font-weight: bold;
+  color: #79440E;
+  margin-bottom: 20px;
+}
+
+.donate-stat-box {
+  border: 1px solid #eaeaea;
+  border-radius: 10px;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.donate-stat-box img.donate-stat-icon {
+  width: 50px;
+  height: auto;
+  margin-bottom: 10px;
+}
+
+.donate-stat-box h3 {
+  color: #C06B3E;
+  font-size: 0.9rem;
+  font-weight: bold;
+  margin-left: 5px;
+}
+
+.donate-stat-box p {
+  color: #666;
+  font-size: 0.9rem;
+  white-space: nowrap; /* Prevents text from wrapping to the next line */
+  overflow: hidden; /* Ensures content that overflows is hidden */
+  text-overflow: ellipsis; /* Adds an ellipsis (...) if the text is too long */
+  max-width: 100%; /* Optional: Sets a maximum width for truncation */
+  margin-left: 5px;
+}
+/*------------------ donation chart line graph part --------------------------*/
+.chart-container {
+  background-color: #d9d9d992 !important; /* Example background color */
+  position: relative;
+  margin-top: 20px;
+  border-radius: 5px;
+  padding: 30px;
+}
+
+.dropdown-toggle {
+  border: 1px solid #ccc;
+  padding: 5px 10px;
+  border-radius: 4px;
+}
+
+.dropdown-menu {
+  width: 150px;
+}
+
+.donationchart {
+  
+  padding: 20px;
+  border-radius: 10px; /* Optional: add rounded corners */
+  margin-top: 40px; /* Optional: add spacing */
+  text-align: center;
+}
+.btn-liquidation-report {
+  float: right; /* Move button to the right */
+  text-align: center;
+  height: 30px;
+  width: 15%; /* Optional: Set button to full width */
+  padding-right: 0 !important;
+  padding-left: 0!important;
+  margin-top: 80px;
+  align-content: end !important;
+  background-color: #79440E; /* Example button color */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: x-small;
+  font-weight: lighter;
+}
+
+.btn-liquidation-report:hover {
+  background-color: #0056b3; /* Darker on hover */
+}
+
+/* FAQ Section */
+.faq-section {
+  padding: 40px 20px;
+  position: relative;
+  background-color: #F8C613;
+  margin-top: -5px; /* Slight overlap with the wave */
+}
+
+.faq-section .faq-dog-image {
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+  position: absolute;
+  bottom: 110px;
+  transform: translate(0, 10);
+}
+
+.faq-section .faq-content {
+  text-align: left;
+  color: white;
+  position: relative;
+}
+
+.faq-section h2 {
+  margin-right: 20%;
+  font-size: 2.7rem;
+  font-weight: semi-bold;
+}
+
+.faq-section p {
+  margin-top: 20px;
+  font-size: 0.8rem;
+  color: white;
+  margin-right: 40%;
+  font-weight: lighter;
+}
+
+.faq-section .btn {
+  background-color: transparent;
+  color: white;
+  border-radius: 50px;
+  padding: 10px 20px;
+  margin-top: 20px;
+  text-transform: uppercase;
+  border-color: #fff;
+  border: 3px solid;
+}
+
+.faq-section .btn:hover {
+  background-color: #fff;
+  border-color: #092E5A;
+  color: #092E5A;
+}
+
+@media (max-width: 768px) {
+  .faq-section .faq-content {
+    padding-left: 0;
+    text-align: center;
+  }
+}
+
+/* Wave container */
+.wave-container {
+  height: 20vh; /* Adjust height as needed */
+  background-color: transparent;
+  position: relative;
+  margin-bottom: -1px; /* To join with the FAQ section */
+  margin-top: 200px;
+}
+
+.wave-container::before {
+  content: "";
+  width: 100%;
+  height: 168px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-image: url('assets/faqbackground.png');
+}
+
+@media (max-width: 850px) {
+  .wave-container::before {
+    height: 84px;
+  }
 }
