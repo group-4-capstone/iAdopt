@@ -48,16 +48,16 @@
             <div class="mb-3">
                 <label>Current location of dog/cat:</label>
                 <div class="row">
-                    <div class="col">
+                    <div class="col-lg-3 col-12 col-sm-12">
                         <input type="text" placeholder="Blk 12 L7 San Lorenzo Ph 1C" name="address1">
                     </div>
-                    <div class="col">
+                    <div class="col-lg-3 col-12 col-sm-12">
                         <input type="text" placeholder="Brgy. Malitlit" name="address2">
                     </div>
-                    <div class="col">
+                    <div class="col-lg-3 col-12 col-sm-12">
                         <input type="text"  placeholder="Calamba" name="address3">
                     </div>
-                    <div class="col">
+                    <div class="col-lg-3 col-12 col-sm-12">
                         <input type="text"  placeholder="Laguna" name="address4">
                     </div>
                 </div>

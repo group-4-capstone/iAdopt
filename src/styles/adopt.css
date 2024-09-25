@@ -162,7 +162,7 @@
   }
 
   .custom-list {
-    list-style-type: none; /* Removes the default bullets */
+    list-style-type: none;
     padding: 0; 
     margin: 0; 
   }
@@ -268,12 +268,12 @@
 
 .solo-section  .picture-frame {
   background-image: url("assets/profile.png");
-  background-size: contain; /* Ensures the entire image is visible */
-  background-repeat: no-repeat; /* Prevents the image from repeating */
-  background-position: center; /* Centers the image */
-  width: 500px; /* Set desired width */
-  height: 500px; /* Set desired height */
-  overflow: hidden; /* Hide any overflow if needed */
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 500px;
+  height: 500px;
+  overflow: hidden;
   margin: 20px 10px;
 }
 

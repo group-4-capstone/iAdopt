@@ -57,7 +57,6 @@
     background-color: white;
   }
 
-  /* Responsive Adjustments for Tablets and Mobile Devices */
   @media (max-width: 768px) {
     .admin-content {
         margin-left: 61px !important;
@@ -67,6 +66,43 @@
   
     .admin-content .grid-s h3 {
         font-size: 14px;
+    }
+
+    .user-banner-section .content h2 {
+      font-size: 40px;
+      color: #F90B1B;
+      font-weight: 900;
+      line-height: 70px;
+      margin: 0 auto;
+    }
+    
+    .user-banner-section .content h4 {
+      font-size: 30px;
+      color: #1A1385;
+      font-weight:bold;
+      line-height: 70px;
+      margin: 0 auto;
+    }
+    
+    .user-banner-section .content p {
+      font-weight: 500;
+      max-width: 500px;
+      font-size: 20px;
+      margin: 0; 
+      padding: 0 3px;
+      text-align: left; 
+      color: black;
+    }
+  }
+
+  @media (max-width: 430px) {
+    .user-banner-section {
+      height: 70vh;
+      background-color: #C0690A;
+      background-image: url('assets/all-banner.png');
+      background-repeat: no-repeat;
+      background-size: cover;
+      padding: 60px 10px 0 10px;
     }
   }
 
