@@ -85,11 +85,11 @@
 }
 
 
-.btn-add, .btn-delete, .btn-sort {
+.btn-add, .btn-sort {
     border: none !important;
 }
 
-.btn-add:hover, .btn-delete:hover, .btn-sort:hover {
+.btn-add:hover, .btn-sort:hover {
     opacity: 0.9 !important;
 }
 .input-group-text {
@@ -295,3 +295,31 @@
     margin-top: 10px;
     margin-left: 10px;
 }
+.paw-prints-down {
+    position: relative;
+    left: 0% !important; /* Position the image at the left end */
+    top: -150px !important; /* Vertically align the image */
+    margin: 0 0 20px 20px; /* Remove any margin around the div */
+    padding: 0; /* Remove any padding around the div */
+    
+  }
+.paw-prints-down img {    
+    z-index: -1; /* Layer the image behind the content */
+    width: 30%; /* Adjust width if necessary */
+    height: auto; /* Adjust height if necessary */
+    margin-bottom: -150px ; /* Remove any default margin around the image */
+    padding: 0; /* Remove any default padding around the image */
+    display: block; /* Ensure the image is treated as a block element */
+    box-shadow: none;
+  }
+
+/*rescue request*/
+.badge-request {
+ background-color: #ffff; /* Red background */
+    color: #6E6E6E !important; /* Dark text color */
+    border: 1px solid #6E6E6E; /* Red border */
+    border-radius: 50px; /* Oval shape */
+    padding: 0.45rem 1rem; /* Adjust padding for oval effect */
+    font-size: 0.75rem; /* Adjust text size */
+    font-weight: normal; 
+} 
