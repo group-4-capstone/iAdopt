@@ -129,7 +129,6 @@ header .navbar {
   background: none;
   color: #C0690A;
   padding: 12px 30px;
-  margin-right: 20px;
   border: 2px solid #C0690A;
   font-size: 1rem;
   border-radius: 6px;
@@ -281,7 +280,7 @@ header .navbar {
   gap: 50px;
 }
 
-.grid .grid_container .updates{
+.grid .grid_container .updates {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 30px;
@@ -551,6 +550,41 @@ header .navbar {
     font-size: 14px;
   }
 
+  .intro-section .content .logo {
+    font-size: 20px;
+    line-height: 40px;
+  }
+
+  .intro-section .content p {
+    font-size: 14px;
+  }
+
+  .hero-section .content .btn1 {
+    padding: 8px 25px;
+    font-size: 14px;
+  }
+
+  .hero-section .content .btn2 {
+    padding: 8px 25px;
+    font-size: 14px;
+  }
+
+  .process-section .content .title {
+    font-size: 30px;
+  }
+
+  .process-section .content p {
+    font-size: 14px;
+  }
+
+  .about-section .content h2 {
+    font-size: 30px;
+  }
+
+  .about-section .content p {
+    font-size: 14px;
+  }
+
   .grid {
     padding: 30px 20px 60px;
   }
@@ -573,6 +607,17 @@ header .navbar {
     height: 250px;
   }
 
+  .row .card h5 {
+    font-size: 20px;
+  }
+
+  .row .card p {
+    font-size: 14px;
+  }
+    
+  .row .card a button {
+    font-size: 14px;
+  }
 }
 
 /* For mobile devices */

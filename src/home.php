@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="styles/topnavbar.css">
     <link rel="stylesheet" href="styles/footer.css">
     <link rel="stylesheet" href="styles/home.css">
+    <link rel="stylesheet" href="styles/adopt.css">
     <!-- Google Fonts Links For Icon -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Love+Ya+Like+A+Sister&display=swap">
@@ -30,7 +31,7 @@
           Explore our wide selection of lovable pets ready to find their forever home.
         </p>
          <a href="adopt.php"><button class="btn1">Adopt Now</button></a>
-        <button class="btn2">Sign Up</button>
+         <a href="signup.php"><button class="btn2">Sign Up</button></a>
       </div>
     </section>
 
@@ -321,5 +322,6 @@
   
     <?php include_once 'components/footer.php'; ?>
 
+    <script src="scripts/adoption-form.js"></script>
   </body>
 </html>
