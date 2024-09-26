@@ -1,3 +1,5 @@
+<?php include_once 'includes/db-connect.php'; ?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -20,6 +22,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   </head>
   <body>
 
@@ -43,50 +46,61 @@
         </div>
     </section>
 
+    
+  <!-- Success Modal -->
+  <div class="modal fade" id="successVisitModal" tabindex="-1" aria-labelledby="successVisitModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+      <div class="modal-body">
+        <button type="button" class="btn-close d-flex ms-auto" onclick="window.location.href='visit-us.php'"></button>
+          <div class="text-center">
+            <i class="bi bi-check-circle-fill" style="font-size: 8rem; color: #28a745;"></i>
+            <p class="mt-4 px-2">Your visit has been successfully scheduled. Please wait for approval notification.</p>
+          </div>
+        </div>     
+      </div>
+    </div>
+  </div>
+
+
     <section class="form-section pb-5">
       <div class="content">
         <h4></h4>
-        <form id="signUpForm" action="#!">
-
-        <!-- Step one -->
-        <div class="step">
-          <h4 class="text-center"><img src="styles/assets/secaspi-logo.png">Visit Form</h4>
-            <p class="text-center mb-4">Kindly fill out this form if you will visit the shelter.</p>
-            <div class="mb-3">
-                <label>Name/s:</label>
-                  <input type="text" placeholder="e.g Juan Dela Cruz" name="address1">
-            </div>
-            <div class="mb-3">
-                <label>Group Name:</label>
-                <input type="text" name="facebook" placeholder="e.g. ABC Students">
-            </div>
-              <div class="row">
-                <div class="col-lg-2 col-12 mb-3">
-                  <label>No. of Pax:</label>
-                  <input type="number" name="facebook" placeholder="Number of Visitors">
+          <form id="visitForm" method="post">
+            <div class="step">
+              <h4 class="text-center"><img src="styles/assets/secaspi-logo.png">Visit Form</h4>
+                <p class="text-center mb-4">Kindly fill out this form if you will visit the shelter.</p>
+                <div class="mb-3">
+                    <label>Name/s:</label>
+                      <input type="text" placeholder="e.g Juan Dela Cruz" name="names">
                 </div>
-                <div class="col-lg-10 col-12 mb-3">
-                  <label>Purpose:</label>
-                  <input type="text" name="facebook" placeholder="Indicate your purpose of visit.">
+                <div class="mb-3">
+                    <label>Group Name:</label>
+                    <input type="text" name="group_name" placeholder="e.g. ABC Students">
                 </div>
+                  <div class="row">
+                    <div class="col-lg-2 col-12 mb-3">
+                      <label>No. of Pax:</label>
+                      <input type="number" name="pax" placeholder="Number of Visitors">
+                    </div>
+                    <div class="col-lg-10 col-12 mb-3">
+                      <label>Purpose:</label>
+                      <input type="text" name="purpose" placeholder="Indicate your purpose of visit.">
+                    </div>
+                  </div>
               </div>
-          
+
+          <div class="mb-3">
+              <i>Note: You must be logged into your account to schedule a visit. Kindly check your notifications if your visit is approved. Thank you.</i>
           </div>
 
-        <div class="mb-3">
-            <i>Note: You must be logged into your account to schedule a visit. Kindly check your notifications if your visit is approved. Thank you.</i>
-        </div>
-
-
-        <!-- Form Footer: Previous/Next buttons -->
-        <div class="form-footer d-flex">
-            <button type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
-            <button type="button" id="nextBtn" onclick="nextPrev(1)">Next</button>
-        </div>
-    </form>
-      </div>
+          <div class="form-footer d-flex">
+          <button type="submit" id="submitVisitBtn">Submit</button>
+          </div>
+      </form>
     </div>
-  </section>
+  </div>
+</section>
 
 
     <section class="grid-section">
@@ -127,6 +141,7 @@
 
 
   <script src="scripts/adoption-form.js"></script>
+  <script src="scripts/visit-us.js"></script>
    
    <?php include_once 'components/footer.php'; ?>
 
