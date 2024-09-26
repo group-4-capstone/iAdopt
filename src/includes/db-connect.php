@@ -2,23 +2,15 @@
 class Database {
     private $host = "localhost";
     private $db_name = "iadopt";
-    private $username = "root"; 
+    private $username = "root";
     private $password = "";
     private $conn;
 
-    // Method to establish a database connection
     public function getConnection() {
-        $this->conn = null;
+        $this->conn = new mysqli($this->host, $this->username, $this->password, $this->db_name);
 
-        try {
-            $this->conn = new PDO(
-                "mysql:host=" . $this->host . ";dbname=" . $this->db_name, 
-                $this->username, 
-                $this->password
-            );
-            $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        } catch(PDOException $exception) {
-            echo "Connection error: " . $exception->getMessage();
+        if ($this->conn->connect_error) {
+            die("Connection failed: " . $this->conn->connect_error);
         }
 
         return $this->conn;
