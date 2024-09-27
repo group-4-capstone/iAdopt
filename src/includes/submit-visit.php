@@ -1,5 +1,4 @@
 <?php
-// Include your db-connect.php to establish a database connection
 include_once 'db-connect.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {

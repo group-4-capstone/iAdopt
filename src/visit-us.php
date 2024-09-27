@@ -95,7 +95,7 @@
           </div>
 
           <div class="form-footer d-flex">
-          <button type="submit" id="submitVisitBtn">Submit</button>
+            <button type="submit" id="submitVisitBtn" class="ms-auto mt-2">Submit</button>
           </div>
       </form>
     </div>

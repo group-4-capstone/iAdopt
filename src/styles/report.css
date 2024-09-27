@@ -1,0 +1,182 @@
+/* Importing Google font - Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+.form-section {
+  background-color: #58A5B7;
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding: 60px 10px 0 10px;
+  margin: 0 auto;
+}
+
+.form-section img {
+  width: 70px;
+  padding-right: 2px;
+}
+
+.form-section .content h4 {
+  margin: 15px 0;
+  font-weight: 800;
+  font-size: 30px;
+  color: black;
+  text-align: center;
+}
+
+#rescueForm {
+  max-width: 83%;
+  background-color: #ffffff;
+  margin: 0 auto;
+  padding: 40px;
+  box-shadow: 0px 6px 18px rgb(0 0 0 / 9%);
+  border-radius: 12px;
+}
+
+#rescueForm .form-header {
+  display: flex;
+  gap: 5px;
+  text-align: center;
+  font-size: 0.9em;
+}
+
+#rescueForm .form-header .stepIndicator {
+  position: relative;
+  flex: 1;
+  padding-bottom: 30px;
+}
+
+#rescueForm .form-header .stepIndicator.active {
+  font-weight: 600;
+}
+
+#rescueForm .form-header .stepIndicator.finish {
+  font-weight: 600;
+  color: #009688;
+}
+
+#rescueForm .form-header .stepIndicator::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  z-index: 9;
+  width: 20px;
+  height: 20px;
+  background-color: #d5efed;
+  border-radius: 50%;
+  border: 3px solid #ecf5f4;
+}
+
+#rescueForm .form-header .stepIndicator.active::before {
+  background-color: #a7ede8;
+  border: 3px solid #d5f9f6;
+}
+
+#rescueForm .form-header .stepIndicator.finish::before {
+  background-color: #58A5B7;
+  border: 3px solid #b7e1dd;
+}
+
+#rescueForm .form-header .stepIndicator::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 8px;
+  width: 100%;
+  height: 3px;
+  background-color: #f3f3f3;
+}
+
+#rescueForm .form-header .stepIndicator.active::after {
+  background-color: #a7ede8;
+}
+
+#rescueForm .form-header .stepIndicator.finish::after {
+  background-color: #58A5B7;
+}
+
+#rescueForm .form-header .stepIndicator:last-child::after {
+  display: none;
+}
+
+#rescueForm input,
+#rescueForm select {
+  padding: 15px 20px;
+  width: 100%;
+  font-size: 1em;
+  border: 1px solid #e3e3e3;
+  border-radius: 5px;
+  margin-top: 8px;
+}
+
+#rescueForm input:focus,
+#rescueForm select:focus {
+  border: 1px solid #58A5B7;
+  outline: none;
+}
+
+#rescueForm input.invalid {
+  border: 1px solid #ffaba5;
+}
+
+#rescueForm .step {
+  display: none;
+}
+
+#rescueForm .form-footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+#rescueForm .form-footer button {
+  background-color: #58A5B7;
+  border: 1px solid #58A5B7;
+  color: #ffffff;
+  padding: 13px 30px;
+  font-size: 1em;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+#rescueForm .form-footer button:hover {
+  opacity: 0.8;
+}
+
+#rescueForm .form-footer #prevBtn {
+  background-color: #fff;
+  color: #58A5B7;
+  border: 1px solid #58A5B7;
+}
+
+
+
+/* For tablets and mobile devices */
+@media (max-width: 768px) {
+  .shop-section {
+    height: auto;
+    padding: 60px 20px;
+    text-align: center;
+  }
+
+  .shop-section .content h2 {
+    font-size: 2rem;
+    line-height: 40px;
+  }
+
+  .shop-section .content p {
+    font-size: 14px;
+  }
+}
+
+/* For mobile devices */
+@media (max-width: 480px) {
+  .shop-section .content h2 {
+    font-size: 1.5rem;
+    line-height: 35px;
+  }
+
+  .shop-section .content p {
+    font-size: 12px;
+  }
+}

@@ -308,7 +308,7 @@
   text-align: center;
 }
 
-#signUpForm {
+#applicationForm {
   max-width: 83%;
   background-color: #ffffff;
   margin: 0 auto;
@@ -317,29 +317,29 @@
   border-radius: 12px;
 }
 
-#signUpForm .form-header {
+#applicationForm .form-header {
   display: flex;
   gap: 5px;
   text-align: center;
   font-size: 0.9em;
 }
 
-#signUpForm .form-header .stepIndicator {
+#applicationForm .form-header .stepIndicator {
   position: relative;
   flex: 1;
   padding-bottom: 30px;
 }
 
-#signUpForm .form-header .stepIndicator.active {
+#applicationForm .form-header .stepIndicator.active {
   font-weight: 600;
 }
 
-#signUpForm .form-header .stepIndicator.finish {
+#applicationForm .form-header .stepIndicator.finish {
   font-weight: 600;
   color: #009688;
 }
 
-#signUpForm .form-header .stepIndicator::before {
+#applicationForm .form-header .stepIndicator::before {
   content: "";
   position: absolute;
   left: 50%;
@@ -353,17 +353,17 @@
   border: 3px solid #ecf5f4;
 }
 
-#signUpForm .form-header .stepIndicator.active::before {
+#applicationForm .form-header .stepIndicator.active::before {
   background-color: #a7ede8;
   border: 3px solid #d5f9f6;
 }
 
-#signUpForm .form-header .stepIndicator.finish::before {
+#applicationForm .form-header .stepIndicator.finish::before {
   background-color: #58A5B7;
   border: 3px solid #b7e1dd;
 }
 
-#signUpForm .form-header .stepIndicator::after {
+#applicationForm .form-header .stepIndicator::after {
   content: "";
   position: absolute;
   left: 50%;
@@ -373,20 +373,20 @@
   background-color: #f3f3f3;
 }
 
-#signUpForm .form-header .stepIndicator.active::after {
+#applicationForm .form-header .stepIndicator.active::after {
   background-color: #a7ede8;
 }
 
-#signUpForm .form-header .stepIndicator.finish::after {
+#applicationForm .form-header .stepIndicator.finish::after {
   background-color: #58A5B7;
 }
 
-#signUpForm .form-header .stepIndicator:last-child::after {
+#applicationForm .form-header .stepIndicator:last-child::after {
   display: none;
 }
 
-#signUpForm input,
-#signUpForm select {
+#applicationForm input,
+#applicationForm select {
   padding: 15px 20px;
   width: 100%;
   font-size: 1em;
@@ -395,27 +395,27 @@
   margin-top: 8px;
 }
 
-#signUpForm input:focus,
-#signUpForm select:focus {
+#applicationForm input:focus,
+#applicationForm select:focus {
   border: 1px solid #58A5B7;
   outline: none;
 }
 
-#signUpForm input.invalid {
+#applicationForm input.invalid {
   border: 1px solid #ffaba5;
 }
 
-#signUpForm .step {
+#applicationForm .step {
   display: none;
 }
 
-#signUpForm .form-footer {
+#applicationForm .form-footer {
   display: flex;
   justify-content: space-between;
   margin-top: 20px;
 }
 
-#signUpForm .form-footer button {
+#applicationForm .form-footer button {
   background-color: #58A5B7;
   border: 1px solid #58A5B7;
   color: #ffffff;
@@ -425,11 +425,11 @@
   border-radius: 5px;
 }
 
-#signUpForm .form-footer button:hover {
+#applicationForm .form-footer button:hover {
   opacity: 0.8;
 }
 
-#signUpForm .form-footer #prevBtn {
+#applicationForm .form-footer #prevBtn {
   background-color: #fff;
   color: #58A5B7;
   border: 1px solid #58A5B7;
