@@ -149,7 +149,13 @@
   border: 1px solid #58A5B7;
 }
 
-
+.error-message {
+  font-size: 0.875rem; /* Adjust the size as needed */
+  margin-top: 0.25rem; /* Space between input and error message */
+}
+.is-invalid {
+  border-color: #dc3545 !important; /* Bootstrap danger color */
+}
 
 /* For tablets and mobile devices */
 @media (max-width: 768px) {
