@@ -6,17 +6,18 @@ document.getElementById('submitVisitBtn').addEventListener('click', function(eve
     // Validate fields
     let isValid = true;
 
-   
     const names = document.querySelector('input[name="names"]');
     const groupName = document.querySelector('input[name="group_name"]');
     const pax = document.querySelector('input[name="pax"]');
     const purpose = document.querySelector('input[name="purpose"]');
 
+    // Validate each field and accumulate the validity status
     isValid &= validateField(names, "This field is required.");
     isValid &= validateField(groupName, "This field is required.");
     isValid &= validatePaxField(pax);
     isValid &= validateField(purpose, "This field is required.");
 
+    // If the form is valid, submit via AJAX
     if (isValid) {
         var visitForm = document.getElementById('visitForm');
         var formData = $(visitForm).serialize();
@@ -26,10 +27,11 @@ document.getElementById('submitVisitBtn').addEventListener('click', function(eve
             url: 'includes/submit-visit.php',
             data: formData,
             success: function(response) {
+                console.log("Form submitted successfully:", response);
                 $('#successVisitModal').modal('show');
             },
             error: function(xhr, status, error) {
-                console.error(xhr.responseText);
+                console.error("Error occurred:", xhr.responseText);
             }
         });
     }
@@ -65,7 +67,6 @@ function showErrorMessage(inputElement, message) {
     inputElement.parentNode.appendChild(errorMessage);
 }
 
-
 function clearErrorMessages() {
     const errorMessages = document.querySelectorAll('.error-message');
     errorMessages.forEach(msg => msg.remove());
@@ -81,7 +82,6 @@ function clearSpecificErrorMessage(inputElement) {
     inputElement.classList.remove('is-invalid'); 
 }
 
-
 const paxInput = document.querySelector('input[name="pax"]');
 
 paxInput.addEventListener('input', function() {
@@ -93,7 +93,6 @@ paxInput.addEventListener('input', function() {
         showErrorMessage(this, "Please enter a valid positive number (greater than 0).");
     }
 });
-
 
 paxInput.addEventListener('keypress', function(event) {
     if (event.key === '-') {

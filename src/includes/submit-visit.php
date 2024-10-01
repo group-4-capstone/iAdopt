@@ -9,15 +9,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $purpose = $_POST['purpose'];
 
     // Prepare and bind the SQL query
-    $stmt = $db->prepare("INSERT INTO visit (name, group_name, num_pax, purpose) VALUES (?, ?, ?, ?)");
+    $stmt = $db->prepare("INSERT INTO visit (name, group_name, num_pax, purpose, status) VALUES (?, ?, ?, ?, ?)");
 
     // Check if the statement preparation is successful
     if ($stmt === false) {
         die('Error in preparing the statement: ' . $db->error);
     }
 
+    // Set the status to NULL
+    $status = null;
+
     // Bind the parameters to the statement
-    $stmt->bind_param("ssis", $names, $group_name, $pax, $purpose);
+    $stmt->bind_param("ssisi", $names, $group_name, $pax, $purpose, $status);
 
     // Execute the query
     if ($stmt->execute()) {
