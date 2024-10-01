@@ -140,7 +140,7 @@
   </section>
 
 
-  <script src="scripts/adoption-form.js"></script>
+  <script src="scripts/form.js"></script>
   <script src="scripts/visit-us.js"></script>
    
    <?php include_once 'components/footer.php'; ?>
