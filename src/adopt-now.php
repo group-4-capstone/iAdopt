@@ -1,3 +1,5 @@
+<?php include_once 'includes/db-connect.php'; ?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -76,7 +78,7 @@
     <section class="form-section pb-5">
       <div class="content">
         <h4><img src="styles/assets/secaspi-logo.png">Adoption Form</h4>
-        <form id="signUpForm" action="#!">
+        <form id="applicationForm" method="post" action="includes/submit-application.php" enctype="multipart/form-data">
         <!-- Step indicators -->
         <div class="form-header d-flex mb-4">
             <span class="stepIndicator">Personal Details</span>
@@ -105,18 +107,18 @@
                 </div>
             </div>
             <div class="mb-3">
-                <label>Are you a/an:</label>
-                <select name="occupation">
-                    <option value="" selected>-- Kindly select an option --</option>
-                    <option value="student">Student</option>
-                    <option value="employee">Employee</option>
-                    <option value="none">None of the Above</option>
-                </select>
-            </div>
-            <div class="mb-3">
-                <label>What is your profession?</label>
-                <input type="text" placeholder="Profession" name="profession">
-            </div>
+              <label>Are you a/an:</label>
+              <select name="occupation" id="occupation">
+                  <option value="" selected disabled>-- Kindly select an option --</option>
+                  <option value="student">Student</option>
+                  <option value="employee">Employee</option>
+                  <option value="none">None of the Above</option>
+              </select>
+          </div>
+        <div class="mb-3 ms-4" id="professionField" style="display: none;">
+            <label>> What is your profession?</label>
+            <input type="text" placeholder="Profession" name="profession">
+        </div>
         </div>
 
         <!-- Step two -->
@@ -124,48 +126,183 @@
             <p class="text-center mb-4">We want to know if you are fit to adopt. Kindly answer the following truthfully.</p>
             <div class="mb-3">
                 <label>Why did you decide to adopt an animal?</label>
-                <input type="text" name="facebook">
-            </div>
-            <div class="mb-3">
-                Have you adopted from us before?
-                <select name="occupation">
-                    <option value="" selected>Yes</option>
-                    <option value="student">No</option>
-                </select>
+                <input type="text" name="purpose">
             </div>
             <div class="mb-3">
                 <label>What type of residence do you live in?</label>
-                <select name="occupation">
-                    <option value="" selected>-- Kindly select an option --</option>
-                    <option value="student">Condominium</option>
-                    <option value="employee">Apartment</option>
-                    <option value="none">Detached House (with fence/gate)</option>
-                    <option value="student">Detached House (without fence/gate)</option>
-                    <option value="employee">Townhouse (with fence/gate)</option>
-                    <option value="employee">Townhouse (without fence/gate)</option>
+                <select name="residence" id="residence">
+                    <option value="" selected disabled>-- Kindly select an option --</option>
+                    <option value="Condominium">Condominium</option>
+                    <option value="Apartment">Apartment</option>
+                    <option value="Detached House (with fence/gate)">Detached House (with fence/gate)</option>
+                    <option value="Detached House (without fence/gate)">Detached House (without fence/gate)</option>
+                    <option value="Townhouse (with fence/gate)">Townhouse (with fence/gate)</option>
+                    <option value="Townhouse (without fence/gate)">Townhouse (without fence/gate)</option>
                 </select>
+            </div>
+            <div class="mb-3 ms-4" id="fencedYardField" style="display: none;">
+              <label>> Please specify the height and type of your fence.</label>
+              <input type="text" id="fence" name="fence" required>
+            </div>
+            <div class="mb-3 ms-4" id="nofencedYardField" style="display: none;">
+              <label>> How will you handle the dog's exercise and toilet duties if there is no fence?</label>
+              <input type="text" id="no_fence" name="no_fence" required>
+            </div>
+
+            <!-- If cat selected pet -->
+              <div class="mb-3">
+              If adopting a cat, where will be the litter box be kept?
+              <input type="text" id="litter_place" name="litter_place" required>
+              </div>
+
+            <div class="mb-3">
+                Is the residence for RENT?
+                <select name="rent" id="rent">
+                    <option value="" selected disabled>-- Kindly select an option --</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
+            <div class="mb-3 ms-4" id="writtenLetterField" style="display: none;">
+              <label>> Please upload a written letter from your landlord that pets are allowed.</label>
+              <input type="file" id="rent_letter" name="rent_letter" accept=".jpg,.jpeg,.png,.pdf" required>
             </div>
             <div class="mb-3">
                 <label>In which part of the house will the animal stay?</label>
-                <select name="occupation">
-                    <option value="" selected>Inside the house ONLY</option>
-                    <option value="student">Inside/Outside the house</option>
-                    <option value="employee">Outside the house ONLY</option>
+                <select name="house_part">
+                    <option value="" selected disabled>-- Kindly select an option --</option>
+                    <option value="Inside the house ONLY">Inside the house ONLY</option>
+                    <option value="Inside/Outside the house">Inside/Outside the house</option>
+                    <option value="Outside the house ONLY">Outside the house ONLY</option>
                 </select>
             </div>
             <div class="mb-3">
+                <label>Where will this animal be kept during the day and during night? Please specify.</label>
+                <input type="text" name="stay_place">
+            </div>
+            <div class="mb-3">
+                <label>Who do you live with? Please be specific.</label>
+                <input type="text" name="household_members">
+            </div>
+            <div class="mb-3">
+                <label>How long have you lived in the address registered here?</label>
+                <input type="number" name="reg_years">
+            </div>
+            <div class="mb-3">
+              Are you planning to move in the next six (6) months?
+                <select name="move" id="move">
+                    <option value="" selected disabled>-- Kindly select an option --</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
+            <div class="mb-3 ms-4" id="specificAddressField" style="display: none;">
+              <label>> Please leave a specific address.</label>
+              <input type="text" id="new_address" name="new_address" required>
+            </div>
+            <div class="mb-3">
+              Will the whole family be involved in the care of the animal?
+                <select name="involve" id="involve">
+                    <option value="" selected disabled>-- Kindly select an option --</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
+            <div class="mb-3 ms-4" id="familyInvolveField" style="display: none;">
+              <label>> Please explain why no.</label>
+              <input type="text" id="involve_reason" name="involve_reason" required>
+            </div>
+
+            <div class="mb-3">
+             Is there anyone in your household who has objection(s) to the arrangement?
+                <select name="objection" id="objection">
+                    <option value="" selected disabled>-- Kindly select an option --</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">None</option>
+                </select>
+            </div>
+            <div class="mb-3 ms-4" id="familyObjectionField" style="display: none;">
+              <label>> Please explain why yes.</label>
+              <input type="text" id="objection_reason" name="objection_reason" required>
+            </div>
+
+            <div class="mb-3">
+            Are there any children who visit your home frequently?
+                <select name="children_visit" id="children_visit">
+                    <option value="" selected disabled>-- Kindly select an option --</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+            Are there any other regular visitors on your home which your new companion (pet) must get along?
+                <select name="other_visit" id="other_visit">
+                    <option value="" selected disabled>-- Kindly select an option --</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">None</option>
+                </select>
+            </div>
+            
+            <div class="mb-3">
+            Are there any member of your household who has an allergy to cats and dogs?
+                <select name="allergy" id="allergy">
+                    <option value="" selected disabled>-- Kindly select an option --</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">None</option>
+                </select>
+            </div>
+            <div class="mb-3 ms-4" id="familyAllergyField" style="display: none;">
+              <label>> Who?</label>
+              <input type="text" id="member_allergy" name="member_allergy" required>
+            </div>
+
+            <div class="mb-3">
                 <label>What will happen to this animal if you have to move unexpectedly?</label>
-                <input type="text" name="facebook">
+                <input type="text" name="move_unexpectedly">
             </div>
             <div class="mb-3">
                 <label>What kind of behavior(s) of the dog do you feel you will be unable to accept?</label>
-                <input type="text" name="facebook">
+                <input type="text" name="unacceptable_behavior">
+            </div>
+            <div class="mb-3">
+                <label>How many hours in an average work day will your companion animal spend without a human?</label>
+                <input type="number" name="no_human_hours">
             </div>
             <div class="mb-3">
                 <label>What will happen to your companion animal when you go on vacation or in case of emergency?</label>
-                <input type="text" name="facebook">
+                <input type="text" name="emergency">
+            </div>
+            <div class="mb-3">
+            Do you have other companion animals?
+                <select name="companion" id="companion">
+                    <option value="" selected disabled>-- Kindly select an option --</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">None</option>
+                </select>
+            </div>
+            <div class="mb-3 ms-4" id="companionField" style="display: none;">
+              <label>> Please specify what type and the total number.</label>
+              <input type="text" id="other_animals" name="other_animals" required>
+              <div class="mb-3">
+                > Do you have a regular veterinarian?
+                    <select name="veterinarian" id="veterinarian">
+                        <option value="" selected disabled>-- Kindly select an option --</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">None</option>
+                    </select>
+                </div>
+            </div>
+            <div class="mb-3 ms-4" id="veterinarianField" style="display: none;">
+              <label>> Veterinarian Name</label>
+              <input type="text" id="vet_name" name="vet_name" required>
+              <label>> Veterinarian Address/Location</label>
+              <input type="text" id="vet_address" name="vet_address" required>
+              <label>> Veterinarian Contact Number</label>
+              <input type="text" id="vet_number" name="vet_number" required>
             </div>
         </div>
+
 
         <!-- Step three -->
         <div class="step">
@@ -178,7 +315,7 @@
             
             <div class="mb-3">
                 <label for="placeUploads">Upload video and pictures of the place where dogs/cats will be kept</label>
-                <input type="file" id="placeUploads" name="place_uploads[]" accept=".jpg,.jpeg,.png,.mp4,.mov" multiple required>
+                <input type="file" id="placeUploads" name="proof_place[]" accept=".jpg,.jpeg,.png,.mp4,.mov" multiple required>
             </div>
         </div>
 
@@ -191,9 +328,29 @@
       </div>
     </div>
   </section>
+
+  
+    <!-- Success Modal -->
+    <div class="modal fade" id="successApplicationModal" tabindex="-1" aria-labelledby="successRescueModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+      <div class="modal-body">
+        <button type="button" class="btn-close d-flex ms-auto" onclick="window.location.href='report-stray.php'"></button>
+          <div class="text-center">
+            <i class="bi bi-check-circle-fill" style="font-size: 8rem; color: #28a745;"></i>
+            <p class="mt-4 px-2"> Your adoption application has been submitted successfully! Kindly check your notifications for the status of your application.
+              Thank you!
+            </p>
+          </div>
+        </div>     
+      </div>
+    </div>
+  </div>
+
    
    <?php include_once 'components/footer.php'; ?>
 </body>
 
-<script src="scripts/adoption-form.js"></script>
+<script src="scripts/form.js"></script>
+<script src="scripts/adopt-now.js"></script>
 </html>

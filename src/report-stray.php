@@ -105,7 +105,7 @@
   </div>
 
 
-  <script src="scripts/adoption-form.js"></script>
+  <script src="scripts/form.js"></script>
   <script src="scripts/report-stray.js"></script>
    
    <?php include_once 'components/footer.php'; ?>
