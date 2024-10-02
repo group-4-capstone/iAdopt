@@ -122,9 +122,121 @@ document.getElementById('applicationForm').addEventListener('submit', function(e
             $('#successApplicationModal').modal('show');
         },
         error: function(xhr, status, error) {
-            // Handle errors here
             console.error(xhr.responseText);
         }
     });
 });
 
+var currentTab = 0; // Current tab is set to be the first tab (0)
+showTab(currentTab); // Display the current tab
+
+function showTab(n) {
+    var x = document.getElementsByClassName("step");
+    for (let i = 0; i < x.length; i++) {
+        x[i].style.display = "none"; // Hide all steps
+    }
+    x[n].style.display = "block"; // Show the current step
+
+    document.getElementById("prevBtn").style.display = n === 0 ? "none" : "inline";
+    document.getElementById("nextBtn").innerHTML = n === (x.length - 1) ? "Submit" : "Next";
+    
+    fixStepIndicator(n);
+}
+
+function nextPrev(n) {
+    var x = document.getElementsByClassName("step");
+
+    if (n === 1) { // Going to the next step
+        var requiredFields = x[currentTab].querySelectorAll('[required]');
+        var allFilled = true;
+
+        requiredFields.forEach(function(field) {
+            removeError(field); // Clear previous error messages
+            if (!field.value) {
+                allFilled = false;
+                showError(field, "This is required.");
+            }
+        });
+
+        const professionInput = professionField.querySelector('input[name="profession"]');
+        if (occupationSelect.value === 'Employee' && !professionInput.value) {
+            allFilled = false;
+            showError(professionInput, "This is required.");
+        }
+
+        const fenceInput = fencedYardField.querySelector('input[name="fence"]');
+        const noFenceInput = nofencedYardField.querySelector('input[name="no_fence"]');
+
+        if (residenceSelect.value === 'Detached House (with fence/gate)' || residenceSelect.value === 'Townhouse (with fence/gate)') {
+            if (fencedYardField.style.display === 'block' && !fenceInput.value) {
+                allFilled = false;
+                showError(fenceInput, "This is required.");
+            }
+        } else {
+            if (nofencedYardField.style.display === 'block' && !noFenceInput.value) {
+                allFilled = false;
+                showError(noFenceInput, "This is required.");
+            }
+        }
+
+        if (!allFilled) {
+            return; // Prevent moving to the next step
+        }
+    }
+
+    x[currentTab].style.display = "none"; // Hide the current tab
+    currentTab += n; // Increase or decrease the current tab by 1
+
+    if (currentTab >= x.length) {
+        // If you have reached the end of the form, submit via AJAX
+        var applicationForm = document.getElementById('applicationForm');
+        var formData = new FormData(applicationForm);
+
+        $.ajax({
+            type: 'POST',
+            url: 'includes/submit-application.php',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function(response) {
+                $('#successApplicationModal').modal('show');
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+            }
+        });
+        return false; // Prevent default form submission
+    }
+
+    showTab(currentTab); // Otherwise, display the correct tab
+}
+
+function fixStepIndicator(n) {
+    var i, x = document.getElementsByClassName("stepIndicator");
+    for (i = 0; i < x.length; i++) {
+        x[i].className = x[i].className.replace(" active", "");
+    }
+    x[n].className += " active";
+}
+
+function showError(field, message) {
+    field.classList.add('is-invalid');
+    var error = document.createElement("div");
+    error.className = "error-message";
+    error.innerText = message;
+    field.parentNode.insertBefore(error, field.nextSibling);
+    field.style.border = "1px solid red";
+
+    field.addEventListener('input', function() {
+        removeError(field);
+    }, { once: true });
+}
+
+function removeError(field) {
+    var errorMessage = field.parentNode.querySelector(".error-message");
+    if (errorMessage) {
+        errorMessage.remove();
+    }
+    field.classList.remove('is-invalid');
+    field.style.border = ""; // Reset the border
+}
