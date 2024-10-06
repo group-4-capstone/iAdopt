@@ -104,8 +104,25 @@
     </div>
   </div>
 
+<!-- Wrong file type Modal -->
+<div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+            <button type="button" class="btn-close d-flex ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="text-center">
+                    <i class="bi bi-exclamation-triangle-fill" style="font-size: 8rem; color: #dc3545;"></i>
+                    <p class="mt-4 px-2">Invalid file type! Please upload only .jpg, .jpeg, .png, .mp4, or .mov files.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-  <script src="scripts/adoption-form.js"></script>
+
+
+
+  <script src="scripts/form.js"></script>
   <script src="scripts/report-stray.js"></script>
    
    <?php include_once 'components/footer.php'; ?>

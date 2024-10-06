@@ -95,7 +95,7 @@
           </div>
 
           <div class="form-footer d-flex">
-            <button type="submit" id="submitVisitBtn" class="ms-auto mt-2">Submit</button>
+            <button type="button" id="submitVisitBtn" class="ms-auto mt-2">Submit</button>
           </div>
       </form>
     </div>
@@ -140,7 +140,7 @@
   </section>
 
 
-  <script src="scripts/adoption-form.js"></script>
+  <script src="scripts/form.js"></script>
   <script src="scripts/visit-us.js"></script>
    
    <?php include_once 'components/footer.php'; ?>
