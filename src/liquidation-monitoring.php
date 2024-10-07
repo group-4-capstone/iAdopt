@@ -1,3 +1,5 @@
+<?php include_once 'includes/db-connect.php'; ?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -22,8 +24,57 @@
   </head>
   <body>
 
-   <?php include_once 'components/sidebar.php'; ?>
+  <?php 
+      // Set the number of records per page
+      $limit = 10;
 
+      // Get the current page number from the URL, default to page 1 if not set
+      $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+
+      // Calculate the offset for the SQL query
+      $offset = ($page - 1) * $limit;
+
+      // Query to get the total number of records
+      $sql_total = "SELECT COUNT(*) as total FROM liquidation";
+      $result_total = $db->query($sql_total);
+      $total_rows = $result_total->fetch_assoc()['total'];
+
+      // Calculate the total number of pages
+      $total_pages = ceil($total_rows / $limit);
+
+      // Query to fetch the limited set of data
+      $sql = "SELECT * FROM liquidation ORDER BY date DESC LIMIT $limit OFFSET $offset";
+      $result = $db->query($sql);
+      
+      // Query to calculate the donation balance
+      $sql_donations = "SELECT SUM(amount) as total_donations FROM liquidation WHERE type = 'donation'";
+      $sql_expenses = "SELECT SUM(amount) as total_expenses FROM liquidation WHERE type = 'expense'";
+
+      $result_donations = $db->query($sql_donations);
+      $result_expenses = $db->query($sql_expenses);
+
+      // Initialize balance
+      $total_donations = 0;
+      $total_expenses = 0;
+
+      // Fetch donation total
+      if ($result_donations->num_rows > 0) {
+          $row = $result_donations->fetch_assoc();
+          $total_donations = $row['total_donations'] ?? 0;
+      }
+
+      // Fetch expense total
+      if ($result_expenses->num_rows > 0) {
+          $row = $result_expenses->fetch_assoc();
+          $total_expenses = $row['total_expenses'] ?? 0;
+      }
+
+      // Calculate the balance
+      $donation_balance = $total_donations - $total_expenses;
+   ?>
+
+   <?php include_once 'components/sidebar.php'; ?>
+   
    <div class="admin-content">
 
     <section class="banner-section">
@@ -39,8 +90,10 @@
 
     <section class="number-section">
       <div class="content">
-        <center><p class="pt-4">Donation Balance</p>
-        <h1 class="pb-4"> ₱ 3,021.50 </h1></center>
+       <center>
+          <p class="pt-4">Donation Balance</p>
+          <h1 class="pb-4">₱ <?php echo number_format($donation_balance, 2); ?></h1>
+      </center>
           <button class="btn" data-bs-toggle="modal" data-bs-target="#donationModal">Record Donation</button>
           <button class="btn" data-bs-toggle="modal" data-bs-target="#expenseModal">Record Expense</button>
       </div>
@@ -134,82 +187,79 @@
     </div>
   </div>
 
+  <div class="container">
+    <div class="table-responsive mt-4">
+        <table id="monitoring" class="table table-hover">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Date</th>
+                    <th>Type</th>
+                    <th>Amount</th>
+                    <th>Purpose</th>
+                    <th>Person Responsible</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                if ($result->num_rows > 0) {
+                    while($row = $result->fetch_assoc()) {
+                        echo "<tr>";
+                        echo "<td>" . $row['liquidation_id'] . "</td>";
+                        echo "<td>" . date('m/d/Y', strtotime($row['date'])) . "</td>";
+                        echo "<td><span class='badge text-bg-" . ($row['type'] == 'donation' ? 'success' : 'danger') . "'>" . ucfirst($row['type']) . "</span></td>";
+                        echo "<td>" . number_format($row['amount'], 2) . "</td>";
+                        echo "<td>" . htmlspecialchars($row['description']) . "</td>";
 
-    <div class="container">
-        <div class="table-responsive mt-4">
-            <table id="monitoring" class="table table-hover">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Date</th>
-                        <th>Type</th>
-                        <th>Amount</th>
-                        <th>Purpose</th>
-                        <th>Person Responsible</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>09/02/2024</td>
-                        <td><span class="badge text-bg-success">Donation</span></td>
-                        <td>2000.00</td>
-                        <td>For Vet Bills of Andres</td>
-                        <td>Olivia Rodrigo</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>09/02/2024</td>
-                        <td><span class="badge text-bg-danger">Expense</span></td>
-                        <td>2000.00</td>
-                        <td>For Vet Bills of Andres</td>
-                        <td>Olivia Rodrigo</td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>09/02/2024</td>
-                        <td><span class="badge text-bg-danger">Expense</span></td>
-                        <td>2000.00</td>
-                        <td>For Vet Bills of Andres</td>
-                        <td>Olivia Rodrigo</td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td>09/02/2024</td>
-                        <td><span class="badge text-bg-success">Donation</span></td>
-                        <td>2000.00</td>
-                        <td>For Vet Bills of Andres</td>
-                        <td>Olivia Rodrigo</td>
-                    </tr>
-                    <tr>
-                        <td>5</td>
-                        <td>09/02/2024</td>
-                        <td> <span class="badge text-bg-danger">Expense</span></td>
-                        <td>2000.00</td>
-                        <td>For Vet Bills of Andres</td>
-                        <td>Olivia Rodrigo</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <nav aria-label="Page navigation example">
-            <ul class="pagination">
+                        if ($row['type'] == 'expense') {
+                            echo "<td>N/A</td>";
+                        } else {
+                            echo "<td>" . htmlspecialchars($row['donator']) . "</td>";
+                        }
+
+                        echo "</tr>";
+                    }
+                } else {
+                    echo "<tr><td colspan='6'>No data available</td></tr>";
+                }
+                ?>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Pagination -->
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <?php if ($page > 1): ?>
                 <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Previous">
+                    <a class="page-link" href="?page=<?php echo $page - 1; ?>" aria-label="Previous">
                         <span aria-hidden="true">&lt;</span>
                     </a>
                 </li>
-                <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <?php endif; ?>
+
+            <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+                <li class="page-item <?php if ($i == $page) echo 'active'; ?>">
+                    <a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
+                </li>
+            <?php endfor; ?>
+
+            <?php if ($page < $total_pages): ?>
                 <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Next">
+                    <a class="page-link" href="?page=<?php echo $page + 1; ?>" aria-label="Next">
                         <span aria-hidden="true">&gt;</span>
                     </a>
                 </li>
-            </ul>
-        </nav>
-    </div>
+            <?php endif; ?>
+        </ul>
+    </nav>
+</div>
+
+<?php
+// Close connection
+$db->close();
+?>
+
  </div>
 
  <script src="scripts/liquidation.js"></script>
