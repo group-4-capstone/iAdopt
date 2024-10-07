@@ -308,6 +308,20 @@
   text-align: center;
 }
 
+.asterisk {
+  color: red;
+}
+
+.error-message {
+  font-size: 0.875rem !important; /* Adjust the size as needed */
+  margin-top: 0.25rem !important; /* Space between input and error message */
+  color: #dc3545;
+}
+
+.is-invalid {
+  border-color: #dc3545 !important; 
+}
+
 #applicationForm {
   max-width: 83%;
   background-color: #ffffff;
