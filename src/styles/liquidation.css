@@ -68,6 +68,16 @@
     color: black;
     font-weight: 500;
   }
+
+  .error-message {
+    font-size: 0.875rem; /* Adjust the size as needed */
+    margin-top: 0.25rem; /* Space between input and error message */
+    text-align: left; /* Align error message to the left */
+    padding-left: 5px;
+  }
+  .is-invalid {
+    border-color: #dc3545 !important; 
+  }
   
   /* Pagination */
   .pagination .page-item.active .page-link {

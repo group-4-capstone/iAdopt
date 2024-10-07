@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   </head>
   <body>
 
@@ -54,20 +55,21 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form>
+        <form method="post" id="donationForm" action="includes/submit-liquidation.php">
           <div class="mb-3">
             <label for="donationAmount" class="form-label">Amount</label>
-            <input type="number" class="form-control" id="donationAmount" placeholder="Enter amount">
+            <input type="number" class="form-control" id="donationAmount" name="amount" placeholder="Enter amount">
           </div>
           <div class="mb-3">
             <label for="donationPurpose" class="form-label">Purpose</label>
-            <input type="text" class="form-control" id="donationPurpose" placeholder="Enter purpose">
+            <input type="text" class="form-control" id="donationPurpose" name="description" placeholder="Enter purpose">
           </div>
           <div class="mb-3">
             <label for="donatorName" class="form-label">Donator</label>
-            <input type="text" class="form-control" id="donatorName" placeholder="Enter donator's name">
+            <input type="text" class="form-control" id="donatorName" name="donator" placeholder="Enter donator's name">
           </div>
-          <button type="submit" class="btn">Submit Donation</button>
+          <input type="hidden" name="button_id" value="submitDonation">
+          <button type="submit" id="submitDonation" class="btn">Submit Donation</button>
         </form>
       </div>
     </div>
@@ -83,25 +85,55 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form>
+        <form method="post" id="expenseForm">
           <div class="mb-3">
             <label for="expenseAmount" class="form-label">Amount</label>
-            <input type="number" class="form-control" id="expenseAmount" placeholder="Enter amount">
+            <input type="number" class="form-control" id="expenseAmount"name="amount" placeholder="Enter amount">
           </div>
           <div class="mb-3">
             <label for="expensePurpose" class="form-label">Purpose</label>
-            <input type="text" class="form-control" id="expensePurpose" placeholder="Enter purpose">
+            <input type="text" class="form-control" id="expensePurpose" name="description" placeholder="Enter purpose">
           </div>
-          <div class="mb-3">
-            <label for="responsiblePerson" class="form-label">Person Responsible</label>
-            <input type="text" class="form-control" id="responsiblePerson" placeholder="Enter responsible person's name">
-          </div>
-          <button type="submit" class="btn">Submit Expense</button>
+          <input type="hidden" name="button_id" value="submitExpense">
+          <button type="submit" id="submitExpense" class="btn">Submit Expense</button>
         </form>
       </div>
     </div>
   </div>
 </div>
+
+    <!-- Success Modal -->
+    <div class="modal fade" id="successDonationModal" tabindex="-1" aria-labelledby="successDonationModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+      <div class="modal-body">
+        <button type="button" class="btn-close d-flex ms-auto" onclick="window.location.href='liquidation-monitoring.php'"></button>
+          <div class="text-center">
+            <i class="bi bi-check-circle-fill" style="font-size: 8rem; color: #28a745;"></i>
+            <p class="mt-4 px-2"> <b> Donation </b> amount has been listed!
+            </p>
+          </div>
+        </div>     
+      </div>
+    </div>
+  </div>
+
+     <!-- Success Modal -->
+     <div class="modal fade" id="successExpenseModal" tabindex="-1" aria-labelledby="successExpenseModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+      <div class="modal-body">
+        <button type="button" class="btn-close d-flex ms-auto" onclick="window.location.href='liquidation-monitoring.php'"></button>
+          <div class="text-center">
+            <i class="bi bi-check-circle-fill" style="font-size: 8rem; color: #28a745;"></i>
+            <p class="mt-4 px-2"> <b> Expense </b> amount has been listed!
+            </p>
+          </div>
+        </div>     
+      </div>
+    </div>
+  </div>
+
 
     <div class="container">
         <div class="table-responsive mt-4">
@@ -178,8 +210,8 @@
             </ul>
         </nav>
     </div>
-
  </div>
 
+ <script src="scripts/liquidation.js"></script>
 </body>
 </html>
