@@ -105,28 +105,6 @@ veterinarianSelect.addEventListener('change', function() {
 });
 
 
-
-document.getElementById('applicationForm').addEventListener('submit', function(event) {
-    event.preventDefault(); // Prevent the default form submission
-    
-    var applicationForm = document.getElementById('applicationForm');
-    var formData = new FormData(applicationForm); 
-
-    $.ajax({
-        type: 'POST',
-        url: 'includes/submit-application.php',
-        data: formData,
-        contentType: false,
-        processData: false, 
-        success: function(response) {
-            $('#successApplicationModal').modal('show');
-        },
-        error: function(xhr, status, error) {
-            console.error(xhr.responseText);
-        }
-    });
-});
-
 var currentTab = 0; // Current tab is set to be the first tab (0)
 showTab(currentTab); // Display the current tab
 
@@ -178,6 +156,45 @@ function nextPrev(n) {
                 showError(noFenceInput, "This is required.");
             }
         }
+
+        const newAddressInput = specificAddressField.querySelector('input[name="new_address"]');
+        if (moveSelect.value === 'Yes' && !newAddressInput.value) {
+            allFilled = false;
+            showError(newAddressInput, "This is required.");
+        }
+
+        const involveReasonInput = familyInvolveField.querySelector('input[name="involve_reason"]');
+        if (involveSelect.value === 'No' && !involveReasonInput.value) {
+            allFilled = false;
+            showError(involveReasonInput, "This is required.");
+        }
+
+        const objectionReasonInput = familyObjectionField.querySelector('input[name="objection_reason"]');
+        if (objectionSelect.value === 'Yes' && !objectionReasonInput.value) {
+            allFilled = false;
+            showError(objectionReasonInput, "This is required.");
+        }
+
+        const memberAllergyInput = familyAllergyField.querySelector('input[name="member_allergy"]');
+        if (allergySelect.value === 'Yes' && !memberAllergyInput.value) {
+            allFilled = false;
+            showError(memberAllergyInput, "This is required.");
+        }
+
+        const otherAnimalsInput = companionField.querySelector('input[name="other_animals"]');
+        
+        if (companionSelect.value === 'Yes') {
+            if (!otherAnimalsInput.value) {
+                allFilled = false;
+                showError(otherAnimalsInput, "This is required.");
+            }
+        
+            if (!veterinarianSelect.value) {
+                allFilled = false;
+                showError(vetInput, "This is required.");
+            }
+        }
+        
 
         if (!allFilled) {
             return; // Prevent moving to the next step

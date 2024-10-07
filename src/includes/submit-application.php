@@ -121,22 +121,51 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     $proof_place_json = json_encode($proof_place_files); // Convert array to JSON string
 
-    // Insert into database
-    $sql = "INSERT INTO applications (animal_id, user_id, complete_address, profession, purpose, residence, 
-                household_members, reg_years, new_address, involve_reason, objection_reason, children_visit, 
-                other_visit, member_allergy, move_unexpectedly, unacceptable_behavior, no_human_hours, emergency, 
-                vet_name, vet_address, vet_number, other_animals, house_part, stay_place, fence, no_fence, 
-                litter_place, rent_letter, valid_id, proof_place) 
-            VALUES ('$animal_id', '$user_id', '$complete_address', '$profession', '$purpose', '$residence', '$household_members', 
-                '$reg_years', '$new_address', '$involve_reason', '$objection_reason', '$children_visit', '$other_visit', 
-                '$member_allergy', '$move_unexpectedly', '$unacceptable_behavior', '$no_human_hours', '$emergency', '$vet_name', 
-                '$vet_address', '$vet_number', '$other_animals', '$house_part', '$stay_place', '$fence', '$no_fence', 
-                '$litter_place', '$rent_letter_file', '$valid_id_file', '$proof_place_json')";
+   // Insert into database
+$sql = "INSERT INTO applications (animal_id, user_id, complete_address, profession, purpose, residence, 
+household_members, reg_years, new_address, involve_reason, objection_reason, children_visit, 
+other_visit, member_allergy, move_unexpectedly, unacceptable_behavior, no_human_hours, emergency, 
+vet_name, vet_address, vet_number, other_animals, house_part, stay_place, fence, no_fence, 
+litter_place, rent_letter, valid_id, proof_place) 
+VALUES (
+'$animal_id', 
+'$user_id', 
+" . ($complete_address ? "'$complete_address'" : "NULL") . ",
+" . ($profession ? "'$profession'" : "NULL") . ",
+" . ($purpose ? "'$purpose'" : "NULL") . ",
+" . ($residence ? "'$residence'" : "NULL") . ",
+" . ($household_members ? "'$household_members'" : "NULL") . ",
+" . ($reg_years ? "'$reg_years'" : "NULL") . ",
+" . ($new_address ? "'$new_address'" : "NULL") . ",
+" . ($involve_reason ? "'$involve_reason'" : "NULL") . ",
+" . ($objection_reason ? "'$objection_reason'" : "NULL") . ",
+" . ($children_visit ? "'$children_visit'" : "NULL") . ",
+" . ($other_visit ? "'$other_visit'" : "NULL") . ",
+" . ($member_allergy ? "'$member_allergy'" : "NULL") . ",
+" . ($move_unexpectedly ? "'$move_unexpectedly'" : "NULL") . ",
+" . ($unacceptable_behavior ? "'$unacceptable_behavior'" : "NULL") . ",
+" . ($no_human_hours ? "'$no_human_hours'" : "NULL") . ",
+" . ($emergency ? "'$emergency'" : "NULL") . ",
+" . ($vet_name ? "'$vet_name'" : "NULL") . ",
+" . ($vet_address ? "'$vet_address'" : "NULL") . ",
+" . ($vet_number ? "'$vet_number'" : "NULL") . ",
+" . ($other_animals ? "'$other_animals'" : "NULL") . ",
+" . ($house_part ? "'$house_part'" : "NULL") . ",
+" . ($stay_place ? "'$stay_place'" : "NULL") . ",
+" . ($fence ? "'$fence'" : "NULL") . ",
+" . ($no_fence ? "'$no_fence'" : "NULL") . ",
+" . ($litter_place ? "'$litter_place'" : "NULL") . ",
+" . ($rent_letter_file ? "'$rent_letter_file'" : "NULL") . ",
+" . ($valid_id_file ? "'$valid_id_file'" : "NULL") . ",
+'$proof_place_json'
+)";
 
-    if ($db->query($sql) === TRUE) {
-        echo "Application successfully submitted.";
-    } else {
-        echo "Error: " . $sql . "<br>" . $db->error;
-    }
+if ($db->query($sql) === TRUE) {
+echo "Application successfully submitted.";
+} else {
+echo "Error: " . $sql . "<br>" . $db->error;
+}
+
+
 }
 ?>

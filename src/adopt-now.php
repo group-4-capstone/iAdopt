@@ -298,7 +298,7 @@
             <div class="mb-3 ms-4" id="companionField" style="display: none;">
               <label>> Please specify what type and the total number.</label>
               <input type="text" id="other_animals" name="other_animals">
-              <div class="mb-3">
+              <div class="mt-4 mb-3">
                 > Do you have a regular veterinarian?
                     <select name="veterinarian" id="veterinarian">
                         <option value="" selected disabled>-- Kindly select an option --</option>
