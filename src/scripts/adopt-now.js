@@ -5,6 +5,7 @@ const professionField = document.getElementById('professionField');
 
 occupationSelect.addEventListener('change', function() {
     if (occupationSelect.value === 'Employee') {
+
         professionField.style.display = 'block';
     } else {
         professionField.style.display = 'none';
@@ -103,7 +104,6 @@ veterinarianSelect.addEventListener('change', function() {
         veterinarianField.style.display = 'none';
     }
 });
-
 
 var currentTab = 0; // Current tab is set to be the first tab (0)
 showTab(currentTab); // Display the current tab
@@ -257,3 +257,4 @@ function removeError(field) {
     field.classList.remove('is-invalid');
     field.style.border = ""; // Reset the border
 }
+

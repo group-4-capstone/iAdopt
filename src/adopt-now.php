@@ -78,9 +78,9 @@
 
     <section class="form-section pb-5">
       <div class="content">
-        <h4><img src="styles/assets/secaspi-logo.png">Adoption Form</h4>
-        
+        <h4><img src="styles/assets/secaspi-logo.png">Adoption Form</h4>        
         <form id="applicationForm" method="post">
+
         <!-- Step indicators -->
         <div class="form-header d-flex mb-4">
             <span class="stepIndicator">Personal Details</span>
@@ -179,11 +179,13 @@
             </div>
             <div class="mb-3 ms-4" id="writtenLetterField" style="display: none;">
               <label>> Please upload a written letter from your landlord that pets are allowed.</label>
+
               <input type="file" id="rent_letter" name="rent_letter" accept=".jpg,.jpeg,.png,.pdf">
             </div>
             <div class="mb-3">
                 <label>In which part of the house will the animal stay?</label>
                 <select name="house_part" required>
+           
                     <option value="" selected disabled>-- Kindly select an option --</option>
                     <option value="Inside the house ONLY">Inside the house ONLY</option>
                     <option value="Inside/Outside the house">Inside/Outside the house</option>
