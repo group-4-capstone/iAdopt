@@ -70,21 +70,42 @@
             <div class="step">
               <h4 class="text-center"><img src="styles/assets/secaspi-logo.png">Visit Form</h4>
                 <p class="text-center mb-4">Kindly fill out this form if you will visit the shelter.</p>
+                <div class="row mb-3">
+                  <div class="col-md-6">
+                    <label for="visit_date" class="mb-1">Date of Visit<span class="asterisk"> *</span></label>
+                    <input type="date" class="form-control" id="visit_date" name="visit_date">
+                  </div>
+                  <div class="col-md-6">
+                    <label for="visit_time" class="mb-1">Time of Visit<span class="asterisk"> *</span></label>
+                    <select id="visit_time" name="visit_time" class="form-control">
+                    <option value="" selected disabled>-- Kindly select visit time --</option>
+                      <option value="10:00:00">10:00 AM</option>
+                      <option value="11:00:00">11:00 AM</option>
+                      <option value="12:00:00">12:00 PM</option>
+                      <option value="13:00:00">1:00 PM</option>
+                      <option value="14:00:00">2:00 PM</option>
+                      <option value="15:00:00">3:00 PM</option>
+                      <option value="16:00:00">4:00 PM</option>
+                      <option value="17:00:00">5:00 PM</option>
+                    </select>
+                  </div>
+                </div>
+                <input type="hidden" id="visitDateTime" name="visitDateTime">
                 <div class="mb-3">
-                    <label>Name/s:</label>
+                    <label>Name/s<span class="asterisk"> *</span></label>
                       <input type="text" placeholder="e.g Juan Dela Cruz" name="names">
                 </div>
                 <div class="mb-3">
-                    <label>Group Name:</label>
+                    <label>Group Name<span class="asterisk"> *</span></label>
                     <input type="text" name="group_name" placeholder="e.g. ABC Students">
                 </div>
                   <div class="row">
                     <div class="col-lg-2 col-12 mb-3">
-                      <label>No. of Pax:</label>
+                      <label>No. of Pax<span class="asterisk"> *</span></label>
                       <input type="number" name="pax" placeholder="Number of Visitors">
                     </div>
                     <div class="col-lg-10 col-12 mb-3">
-                      <label>Purpose:</label>
+                      <label>Purpose<span class="asterisk"> *</span></label>
                       <input type="text" name="purpose" placeholder="Indicate your purpose of visit.">
                     </div>
                   </div>
