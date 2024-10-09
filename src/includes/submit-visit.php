@@ -19,7 +19,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
     // Bind the parameters to the statement, using correct parameter types
-    $stmt->bind_param("ssiss", $names, $group_name, $pax, $purpose, $visitDateTime);
+    $stmt->bind_param("ssiss
+    ", $names, $group_name, $pax, $purpose, $visitDateTime);
 
     // Execute the query
     if ($stmt->execute()) {
