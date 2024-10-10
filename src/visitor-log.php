@@ -72,7 +72,7 @@
     				<tbody id="post_data"></tbody>
     			</table>
                 <div class="d-flex justify-content-end">
-    			<div id="pagination_link"></div>
+    			    <div id="pagination_link"></div>
                 </div>
     		</div>
     	</div>
