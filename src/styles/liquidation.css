@@ -83,6 +83,22 @@
   .is-invalid {
     border-color: #dc3545 !important; 
   }
+
+  .pagination .page-item .page-link {
+    color: #333;
+    border: none;
+    background-color: #fff ;
+    padding-bottom: 2%;
+}
+
+
+.pagination .page-item.active .page-link {
+    background-color: #F8C613; /* Background color for active item */
+    color: #fff;               /* White text for better contrast */
+    border-radius: 10px;       /* Rounded corners */
+    width: 30px;
+    padding-left: 13px;
+}
   
   /* Pagination */
   .pagination .page-item.active .page-link {
@@ -95,16 +111,10 @@
     background-color: #E6B210;
     border-color: #E6B210;
     color: #fff !important;
+    border-radius: 10px;  
   }
   
-  .pagination-container .pagination .page-link {
-    color: black !important; 
   
-  }
-  .pagination {
-    justify-content: flex-end;
-    color: black;
-  }
   
   /* Center the modal vertically and horizontally */
   .modal-dialog {
