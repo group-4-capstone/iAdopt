@@ -10,12 +10,22 @@ document.getElementById('submitVisitBtn').addEventListener('click', function(eve
     const groupName = document.querySelector('input[name="group_name"]');
     const pax = document.querySelector('input[name="pax"]');
     const purpose = document.querySelector('input[name="purpose"]');
+    const visitDate = document.getElementById('visit_date');
+    const visitTime = document.getElementById('visit_time');
 
     // Validate each field and accumulate the validity status
     isValid &= validateField(names, "This field is required.");
     isValid &= validateField(groupName, "This field is required.");
     isValid &= validatePaxField(pax);
     isValid &= validateField(purpose, "This field is required.");
+      // Validate each field and accumulate the validity status
+      isValid &= validateField(names, "This field is required.");
+      isValid &= validateField(groupName, "This field is required.");
+      isValid &= validatePaxField(pax);
+      isValid &= validateField(purpose, "This field is required.");
+      isValid &= validateField(visitDate, "Please select a valid date.");
+      isValid &= validateField(visitTime, "Please select a valid time.");
+  
 
     // If the form is valid, submit via AJAX
     if (isValid) {
@@ -108,17 +118,23 @@ paxInput.addEventListener('keypress', function(event) {
     }
 });
 
-document.querySelectorAll('input').forEach(input => {
-    input.addEventListener('input', function() {
+// Apply the input behavior to both input and select elements
+document.querySelectorAll('input, select').forEach(element => {
+    element.addEventListener('input', function() {
         clearSpecificErrorMessage(this); 
     });
 
-    input.addEventListener('keypress', function(event) {
+    element.addEventListener('change', function() {
+        clearSpecificErrorMessage(this); 
+    });
+
+    element.addEventListener('keypress', function(event) {
         if (this.value === '' && event.key === ' ') {
             event.preventDefault();
         }
 
-        if (this !== paxInput && this.value.length === 0 && !/^[a-zA-Z]$/.test(event.key)) {
+        // Restrict non-letter keys for name inputs (not applicable to select)
+        if (this.tagName.toLowerCase() === 'input' && this !== paxInput && this.value.length === 0 && !/^[a-zA-Z]$/.test(event.key)) {
             event.preventDefault(); 
         }
     });
@@ -132,3 +148,32 @@ namesInput.addEventListener('keypress', function(event) {
         event.preventDefault();
     }
 });
+
+document.addEventListener('DOMContentLoaded', function () {
+    const visitDate = document.getElementById('visit_date');
+    const visitTime = document.getElementById('visit_time');
+    const hiddenVisitDateTime = document.getElementById('visitDateTime');
+
+    // Get today's date and add 1 day (tomorrow)
+    let tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+
+    // Format the date as YYYY-MM-DD
+    let tomorrowStr = tomorrow.toISOString().split('T')[0];
+
+    // Set the min attribute to tomorrow's date
+    visitDate.min = tomorrowStr;
+  
+
+    function updateVisitDateTime() {
+      if (visitDate.value && visitTime.value) {
+        let visitDateTime = `${visitDate.value} ${visitTime.value}`;
+        hiddenVisitDateTime.value = visitDateTime;
+        console.log('Concatenated visitDateTime:', visitDateTime); // For debugging
+      }
+    }
+
+    // Update the hidden input whenever the date or time changes
+    visitDate.addEventListener('change', updateVisitDateTime);
+    visitTime.addEventListener('change', updateVisitDateTime);
+  });
