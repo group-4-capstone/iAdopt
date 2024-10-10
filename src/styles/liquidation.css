@@ -68,6 +68,10 @@
     color: black;
     font-weight: 500;
   }
+  
+  #monitoring tbody td{
+    color: black !important;
+  }
 
   .error-message {
     font-size: 0.875rem; /* Adjust the size as needed */
@@ -75,6 +79,7 @@
     text-align: left; /* Align error message to the left */
     padding-left: 5px;
   }
+
   .is-invalid {
     border-color: #dc3545 !important; 
   }
@@ -83,17 +88,22 @@
   .pagination .page-item.active .page-link {
     background-color: #F8C613;
     border-color: #F8C613;
-    color: #fff;
+    color: #fff !important;
   }
   
   .pagination .page-link:hover {
     background-color: #E6B210;
     border-color: #E6B210;
-    color: #fff;
+    color: #fff !important;
   }
   
+  .pagination-container .pagination .page-link {
+    color: black !important; 
+  
+  }
   .pagination {
     justify-content: flex-end;
+    color: black;
   }
   
   /* Center the modal vertically and horizontally */
