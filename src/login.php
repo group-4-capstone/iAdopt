@@ -13,6 +13,8 @@
     <!-- Google Fonts Links For Icon -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Love+Ya+Like+A+Sister&display=swap">
+     <!-- Include jQuery -->
+     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
@@ -36,17 +38,20 @@
             <img src="styles/assets/loginbg.png" alt="Background Image">
         </div>
         <div class="login-form-section col-sm-12 col-lg-6 col-6">
-            <form>
+        <form id="loginForm">
                 <h2><strong>ACCOUNT LOGIN</strong></h2>
                 <p>SIGN IN TO YOUR ACCOUNT</p>
                 <div class="input-group col-sm-12 col-lg-6 col-6">
                     <label for="email">Email</label>
-                    <input type="email" id="email" placeholder="juanadelacruz@gmail.com">
+                    <input type="email" id="email" placeholder="juanadelacruz@gmail.com" required>
                 </div>
                 <div class="input-group col-sm-12 col-lg-6 col-6">
                     <label for="password">Password</label>
-                    <input type="password" id="password" placeholder="********">
+                    <input type="password" id="password" placeholder="********" required>
                 </div>
+                <?php if (isset($_GET['error'])): ?>
+                    <div class="alert alert-danger"><?= urldecode($_GET['error']) ?></div>
+                <?php endif; ?>
                 <div class="options col-sm-12 col-lg-6 col-6">
                     <a href="#" class="forgot-password">Forgot Password?</a>
                 </div>
@@ -61,6 +66,52 @@
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- AJAX Script for handling login -->
+        <script>
+            $(document).ready(function() {
+                $("#loginForm").submit(function(e) {
+                    e.preventDefault(); // Prevent the default form submission
+
+                    // Get form data
+                    var email = $("#email").val();
+                    var password = $("#password").val();
+
+                    // Debugging: log email and password
+                    console.log("Email:", email);
+                    console.log("Password:", password);
+
+                    $.ajax({
+                        type: "POST",
+                        url: "includes/login-process.php", // The PHP file that handles the login
+                        data: { 
+                            email: email, 
+                            password: password 
+                        },
+                        dataType: "json",
+                        success: function(response) {
+                            console.log("Response from server:", response); // Log the server response
+                            if (response.success) {
+                                // Redirect based on the user's role
+                                if (response.role === 'user') {
+                                    window.location.href = "home.php";
+                                } else if (response.role === 'admin' || response.role === 'head admin') {
+                                    window.location.href = "dashboard.php";
+                                }
+                            } else {
+                                // Show the error message if login fails
+                                $("#error-msg").removeClass('d-none').text(response.error);
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            // Handle unexpected errors
+                            $("#error-msg").removeClass('d-none').text("An error occurred. Please try again.");
+                            console.error("Error details:", status, error);
+                        }
+                    });
+                });
+            });
+        </script>
+
 </body>
 
 </html>
