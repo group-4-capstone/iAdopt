@@ -179,7 +179,6 @@
             </div>
             <div class="mb-3 ms-4" id="writtenLetterField" style="display: none;">
               <label>> Please upload a written letter from your landlord that pets are allowed.</label>
-
               <input type="file" id="rent_letter" name="rent_letter" accept=".jpg,.jpeg,.png,.pdf">
             </div>
             <div class="mb-3">

@@ -60,7 +60,10 @@
   #Contact {background-color: #FFF8CC;}
   #About {background-color: #FFF8CC;}
 
-
+  #errorModal {
+    z-index: 1060;
+  }
+  
 
 thead th {
   color: #092E5A !important;

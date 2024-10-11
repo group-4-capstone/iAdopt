@@ -22,6 +22,8 @@
     <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
   </head>
   <body>
 
@@ -47,6 +49,38 @@
         <button class="tablink" onclick="openPage('About', this, '#FFF8CC')">FAQs</button>
     </div>
 
+   <!-- Success Modal -->
+  <div class="modal fade" id="successContentModal" tabindex="-1" aria-labelledby="successContentModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+      <div class="modal-body">
+        <button type="button" class="btn-close d-flex ms-auto" data-bs-dismiss="modal"></button>
+          <div class="text-center">
+            <i class="bi bi-check-circle-fill" style="font-size: 8rem; color: #28a745;"></i>
+            <p class="mt-4 px-2"> Content has been successfully added!
+            </p>
+          </div>
+        </div>     
+      </div>
+    </div>
+  </div>
+
+  <!-- Wrong file type Modal -->
+<div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+            <button type="button" class="btn-close d-flex ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="text-center">
+                    <i class="bi bi-exclamation-triangle-fill" style="font-size: 8rem; color: #dc3545;"></i>
+                    <p class="mt-4 px-2">Invalid file type! Please upload only .jpg, .jpeg, .png files.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
     <!-- Add announcement modal -->
     <div class="modal fade" id="addAnnouncementModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="addAnnouncementModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl modal-dialog-centered">
@@ -55,42 +89,45 @@
         <div class="card p-2">
           <div class="card-body">
             <h3 class="pb-4">Add Announcement</h3>
-            <form>
+            <form method="post" id="announcementForm" action="includes/submit-announcement.php" enctype="multipart/form-data">
               <div class="row mb-3">
                 <label for="announcementTitle" class="col-3 col-form-label">Title<span class="asterisk">*</span></label>
                 <div class="col-9">
-                  <input type="text" class="form-control" id="announcementTitle" placeholder="Enter title" required>
+                  <input type="text" class="form-control" name="title" id="announcementTitle" placeholder="Enter title" required>
                 </div>
               </div>
               <div class="row mb-3">
                 <label for="announcementStatus" class="col-3 col-form-label">Status<span class="asterisk">*</span></label>
                 <div class="col-3">
-                  <select class="form-select" id="announcementStatus" required>
+                  <select class="form-select" id="announcementStatus" name="status">
+                    <option value="" selected disabled>Kindly select an option</option>
                     <option value="draft">Draft</option>
                     <option value="publish">Publish</option>
                   </select>
                 </div>
                 <label for="publishDate" class="col-3 col-form-label">Date to be Published<span class="asterisk">*</span></label>
                 <div class="col-3">
-                  <input type="date" class="form-control" id="publishDate" required>
+                  <input type="date" class="form-control" id="publishDate" name="announcement_date">
                 </div>
               </div>
               <div class="row mb-5">
                 <label for="announcementContent" class="col-3 col-form-label">Content<span class="asterisk">*</span></label>
                 <div class="col-9 mb-3">
-                  <div id="announcementContent" style="border: 2px solid #ced4da; border-radius: 5px; margin-bottom:150px"></div>
+                <div id="announcementContent" style="border: 2px solid #ced4da; border-radius: 5px; margin-bottom:150px"></div>
+                <!-- Hidden input to store the Quill content -->
+                <input type="hidden" name="description" id="announcementContentHidden">
                 </div>
               </div>
               <div class="row mb-3">
                 <label for="announcementImage" class="col-3 col-form-label">Add Image<span class="asterisk">*</span></label>
                 <div class="col-9">
-                    <input type="file" class="form-control mt-2" id="imageUpload" multiple>
+                    <input type="file" class="form-control mt-2" id="imageUpload" name="image" accept=".jpg,.jpeg,.png">
                 </div>
               </div>
               <div class="row mb-1">
                 <div class="col-9 offset-3 d-flex justify-content-end">
                   <button type="button" class="btn me-2" data-bs-dismiss="modal">Cancel</button>
-                  <button type="submit" class="btn btn-primary">Save Post</button>
+                  <button type="submit" class="btn btn-primary" id="saveAnnouncementBtn" >Save Post</button>
                 </div>
               </div>
             </form>
@@ -109,26 +146,19 @@
         <div class="card p-3">
           <div class="card-body">
             <h3 class="pb-4">Add Merchandise</h3>
-            <form>
-              <div class="row mb-3">
-                <!-- Date Label -->
-                <label for="publishDate" class="col-3 col-form-label">Date<span class="asterisk">*</span></label>
-                <div class="col-9">
-                  <input type="date" class="form-control" id="publishDate" required>
-                </div>
-              </div>
+            <form method="post" id="merchandiseForm">
               <div class="row mb-3">
                 <!-- Merchandise Item Label -->
                 <label for="merchandiseItem" class="col-3 col-form-label">Merchandise Item<span class="asterisk">*</span></label>
                 <div class="col-9">
-                  <input type="text" class="form-control" id="merchandiseItem" placeholder="Enter merchandise item" required>
+                  <input type="text" class="form-control" name="item" id="merchandiseItem" placeholder="Enter merchandise item">
                 </div>
               </div>
               <div class="row mb-3">
                 <!-- Insert Link Label -->
                 <label for="itemLink" class="col-3 col-form-label">Insert Link<span class="asterisk">*</span></label>
                 <div class="col-9">
-                  <input type="text" class="form-control" id="itemLink" placeholder="Enter item link" required>
+                  <input type="text" class="form-control" name="link" id="itemLink" placeholder="Enter item link">
                 </div>
               </div>
               <div class="row mb-3">
@@ -136,7 +166,7 @@
                 <label for="merchandiseImage" class="col-3 col-form-label">Add Image<span class="asterisk">*</span></label>
                 <div class="col-9">
                   <div class="border p-4 text-center" id="imageUploadContainer" style="border: 2px dashed #ced4da; border-radius: 5px;">
-                    <input type="file" class="form-control mt-2" id="imageUpload" multiple>
+                    <input type="file" class="form-control mt-2" name="image" id="imageUpload" accept=".jpg,.jpeg,.png">
                   </div>
                 </div>
               </div>
@@ -144,16 +174,17 @@
                 <!-- Status Label -->
                 <label for="merchandiseStatus" class="col-3 col-form-label">Status<span class="asterisk">*</span></label>
                 <div class="col-9">
-                  <select class="form-select" id="merchandiseStatus" required>
+                  <select class="form-select" id="merchandiseStatus" name="status">
+                   <option value="" selected disabled>Kindly select an option</option>
                     <option value="draft">Draft</option>
-                    <option value="publish">Publish</option>
+                    <option value="publish">Publish Now</option>
                   </select>
                 </div>
               </div>
               <div class="row mb-3">
                 <div class="col-9 offset-3 d-flex justify-content-end">
                   <button type="button" class="btn me-2" data-bs-dismiss="modal">Cancel</button>
-                  <button type="submit" class="btn btn-primary">Save Post</button>
+                  <button type="submit" id="saveMerchandiseBtn" class="btn btn-primary">Save Post</button>
                 </div>
               </div>
             </form>
