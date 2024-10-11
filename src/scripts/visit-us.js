@@ -13,12 +13,6 @@ document.getElementById('submitVisitBtn').addEventListener('click', function(eve
     const visitDate = document.getElementById('visit_date');
     const visitTime = document.getElementById('visit_time');
 
-    // Validate each field and accumulate the validity status
-    isValid &= validateField(names, "This field is required.");
-    isValid &= validateField(groupName, "This field is required.");
-    isValid &= validatePaxField(pax);
-    isValid &= validateField(purpose, "This field is required.");
-      // Validate each field and accumulate the validity status
       isValid &= validateField(names, "This field is required.");
       isValid &= validateField(groupName, "This field is required.");
       isValid &= validatePaxField(pax);
@@ -38,6 +32,7 @@ document.getElementById('submitVisitBtn').addEventListener('click', function(eve
             data: formData,
             success: function(response) {
                 console.log("Form submitted successfully:", response);
+                $('#addRecordModal').modal('hide');
                 $('#successVisitModal').modal('show');
             },
             error: function(xhr, status, error) {
