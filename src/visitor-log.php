@@ -41,7 +41,7 @@
             <div class="card">
     		    <div class="card-header">
                     <div class="d-flex align-items-center ms-auto">
-                            <button class="btn btn-add d-flex align-items-center" id="addRecordButton">
+                            <button class="btn btn-add d-flex align-items-center" id="addRecordButton" data-bs-toggle="modal" data-bs-target="#addRecordModal">
                                 <span class="badge text-bg-success"><i class="bi bi-plus me-1"></i><span>Add</span></span>
                             </button>
                             <button class="btn btn-sort d-flex align-items-center" style="white-space: nowrap;">
@@ -147,49 +147,87 @@
                     <h5 class="modal-title" id="addRecordModalLabel">ADD VISITOR</h5>
                 </div>
                 <div class="modal-body">
-                    <div class="container">
-                        <form id="addRecordForm">
-                            <div class="row">
-                            <div class="col-md-4">
-                                    
-                                    </div>
-                                <div class="col-md-8">
-                                    <div class="mb-3 mt-5">
-                                        <div class="row mb-3">
-                                            <div class="col-lg-8">
-                                                <label for="visitorNameInput" class="form-label">Name of Visitor:</label>
-                                                <div class="input-group">
-                                                    <input type="text" class="form-control text-center" id="visitorNameInput" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-4">
-                                                <label for="visitDateInput" class="form-label">Date of Visit:</label>
-                                                <input type="date" class="form-control text-center" id="visitDateInput" required>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="mb-3">
-                                                <label for="purposeInput" class="form-label">Purpose:</label>
-                                                <textarea class="form-control" id="purposeInput" rows="3" required></textarea>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                <div class="container">
+                    <form id="visitForm" method="post">
+                    <div class="row">
+                        <div class="col-md-4"></div>
+                        <div class="col-md-8">
+                        <div class="mb-3 mt-5">
+                            <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="visit_date" class="mb-1">Date of Visit<span class="asterisk"> *</span></label>
+                                <input type="date" class="form-control" id="visit_date" name="visit_date" required>
                             </div>
-                        </form>
+                            <div class="col-md-6">
+                                <label for="visit_time" class="mb-1">Time of Visit<span class="asterisk"> *</span></label>
+                                <select id="visit_time" name="visit_time" class="form-control" required>
+                                <option value="" selected disabled>-- Kindly select visit time --</option>
+                                <option value="10:00:00">10:00 AM</option>
+                                <option value="11:00:00">11:00 AM</option>
+                                <option value="12:00:00">12:00 PM</option>
+                                <option value="13:00:00">1:00 PM</option>
+                                <option value="14:00:00">2:00 PM</option>
+                                <option value="15:00:00">3:00 PM</option>
+                                <option value="16:00:00">4:00 PM</option>
+                                <option value="17:00:00">5:00 PM</option>
+                                </select>
+                            </div>
+                            </div>
+                            
+                            <input type="hidden" id="visitDateTime" name="visitDateTime">
+                            
+                            <div class="mb-3">
+                            <label>Name/s<span class="asterisk"> *</span></label>
+                            <input type="text" class="form-control" placeholder="e.g Juan Dela Cruz" name="names" required>
+                            </div>
+                            
+                            <div class="mb-3">
+                            <label>Group Name<span class="asterisk"> *</span></label>
+                            <input type="text" class="form-control" name="group_name" placeholder="e.g. ABC Students" required>
+                            </div>
+                            
+                            <div class="row">
+                            <div class="col-lg-3 col-12 mb-3">
+                                <label>No. of Pax<span class="asterisk"> *</span></label>
+                                <input type="number" class="form-control" name="pax" placeholder="Number of Visitors" required>
+                            </div>
+                            <div class="col-lg-9 col-12 mb-3">
+                                <label>Purpose<span class="asterisk"> *</span></label>
+                                <input type="text" class="form-control" name="purpose" placeholder="Indicate your purpose of visit." required>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
                     </div>
-                </div>
-                <div class="modal-footer">
+                    <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit"  class="btn btn-save">Add</button>
+                    <button type="button" id="submitVisitBtn" class="btn btn-save">Add</button>
                 </div>
+              </form>
+             </div>
+            </div>
                 <div class="paw-prints-down"><img src="styles/assets/paw-down.png" alt="Paws"></div>
             </div>
         </div>
     </div>
 
+    <!-- Success Modal -->
+  <div class="modal fade" id="successVisitModal" tabindex="-1" aria-labelledby="successVisitModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+      <div class="modal-body">
+        <button type="button" class="btn-close d-flex ms-auto" onclick="window.location.href='visitor-log.php'"></button>
+          <div class="text-center">
+            <i class="bi bi-check-circle-fill" style="font-size: 8rem; color: #28a745;"></i>
+            <p class="mt-4 px-2">Visit Details Has Been Added!</p>
+          </div>
+        </div>     
+      </div>
+    </div>
+  </div>
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="scripts/visit-us.js"></script>
     <script>
         load_data();
 
