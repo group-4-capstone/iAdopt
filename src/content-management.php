@@ -89,7 +89,7 @@
         <div class="card p-2">
           <div class="card-body">
             <h3 class="pb-4">Add Announcement</h3>
-            <form method="post" id="announcementForm" action="includes/submit-announcement.php" enctype="multipart/form-data">
+            <form method="post" id="announcementForm">
               <div class="row mb-3">
                 <label for="announcementTitle" class="col-3 col-form-label">Title<span class="asterisk">*</span></label>
                 <div class="col-9">
@@ -166,7 +166,7 @@
                 <label for="merchandiseImage" class="col-3 col-form-label">Add Image<span class="asterisk">*</span></label>
                 <div class="col-9">
                   <div class="border p-4 text-center" id="imageUploadContainer" style="border: 2px dashed #ced4da; border-radius: 5px;">
-                    <input type="file" class="form-control mt-2" name="image" id="imageUpload" accept=".jpg,.jpeg,.png">
+                    <input type="file" class="form-control mt-2" name="image" id="merchupload" accept=".jpg,.jpeg,.png">
                   </div>
                 </div>
               </div>
@@ -202,23 +202,21 @@
       <div class="modal-body p-4">
       <div class="card p-3">
         <h3 class="pb-4">Add Volunteer</h3>
-        <form>
-          <div class="row mb-3">
-            <label for="publishDate" class="col-3 col-form-label">Date<span class="asterisk">*</span></label>
-            <div class="col-9">
-              <input type="date" class="form-control" id="publishDate" required>
-            </div>
-          </div>
+        <form method="post" id="volunteerForm">
           <div class="row mb-3">
             <label for="volunteerName" class="col-3 col-form-label">Name<span class="asterisk">*</span></label>
-            <div class="col-9">
-              <input type="text" class="form-control" id="volunteerName" placeholder="Enter name" required>
+            <div class="col-5">
+              <input type="text" class="form-control" id="volunteerFName" placeholder="Enter first name" name="first_name">
+            </div>
+            <div class="col-4">
+              <input type="text" class="form-control" id="volunteerLName" placeholder="Enter last name" name="last_name">
             </div>
           </div>
           <div class="row mb-3">
             <label for="volunteerRole" class="col-3 col-form-label">Role<span class="asterisk">*</span></label>
             <div class="col-9">
-              <select class="form-select" id="volunteerRole" required>
+              <select class="form-select" id="volunteerRole" name="role">
+                <option value="" selected disabled>Kindly select an option</option>
                 <option value="caretaker">Caretaker</option>
                 <option value="assistant">Assistant</option>
               </select>
@@ -227,7 +225,8 @@
           <div class="row mb-3">
             <label for="volunteerStatus" class="col-3 col-form-label">Status<span class="asterisk">*</span></label>
             <div class="col-9">
-              <select class="form-select" id="volunteerStatus" required>
+              <select class="form-select" id="volunteerStatus" name="status">
+                <option value="" selected disabled>Kindly select an option</option>
                 <option value="active">Active</option>
                 <option value="inactive">Inactive</option>
               </select>
@@ -236,7 +235,7 @@
           <div class="row mb-3">
             <div class="col-9 offset-3 d-flex justify-content-end">
               <button type="button" class="btn me-2" data-bs-dismiss="modal">Cancel</button>
-              <button type="submit" class="btn btn-primary">Save Info</button>
+              <button type="submit"  id="saveVolunteerBtn" class="btn btn-primary">Save Info</button>
             </div>
           </div>
         </form>
@@ -254,29 +253,26 @@
       <div class="modal-body p-4">
       <div class="card p-3">
         <h3 class="pb-4">Add FAQ</h3>
-        <form>
-          <div class="row mb-3">
-            <label for="publishDate" class="col-3 col-form-label">Date<span class="asterisk">*</span></label>
-            <div class="col-9">
-              <input type="date" class="form-control" id="publishDate" required>
-            </div>
-          </div>
+        <form method="post" id="FAQForm">
           <div class="row mb-3">
             <label for="question" class="col-3 col-form-label">Question<span class="asterisk">*</span></label>
             <div class="col-9">
-              <input type="text" class="form-control" id="question" placeholder="Enter question" required>
+              <input type="text" class="form-control" id="question" name="question" placeholder="Enter question">
             </div>
           </div>
           <div class="row mb-3">
             <label for="faqContent" class="col-3 col-form-label">Answer<span class="asterisk">*</span></label>
             <div class="col-9 mb-3">
               <div id="faqContent" style="border: 2px solid #ced4da; border-radius: 5px; height: 200px; overflow: auto;"></div>
+               <!-- Hidden input to store the Quill content -->
+               <input type="hidden" name="answer" id="faqContentHidden">
             </div>
           </div>
           <div class="row mb-3">
             <label for="announcementStatus" class="col-3 col-form-label">Status<span class="asterisk">*</span></label>
             <div class="col-9">
-              <select class="form-select" id="announcementStatus" required>
+              <select class="form-select" id="faqStatus" name="status">
+                <option value="" selected disabled>Kindly select an option</option>
                 <option value="draft">Draft</option>
                 <option value="publish">Publish</option>
               </select>
@@ -285,7 +281,7 @@
           <div class="row mb-3">
             <div class="col-9 offset-3 d-flex justify-content-end">
               <button type="button" class="btn me-2" data-bs-dismiss="modal">Cancel</button>
-              <button type="submit" class="btn btn-primary">Save Post</button>
+              <button type="submit" id="saveFAQBtn" class="btn btn-primary">Save Post</button>
             </div>
           </div>
         </form>
