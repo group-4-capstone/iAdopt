@@ -1,13 +1,12 @@
 body {
     overflow-x: hidden; /* Hides horizontal scrollbar */
-  }
-
-
-.head-title h1{
-   color: #C06B3E !important;
-   padding-bottom: 30px;
-    
 }
+
+.head-title h1 {
+    color: #C06B3E !important;
+    padding-bottom: 30px;
+}
+
 .admin-content .banner-section {
     background-color: #FFF8CC;
     padding: 30px 30px;
@@ -15,36 +14,48 @@ body {
     margin-bottom: 20px;
     background-image: url("assets/paws.png");
     background-blend-mode: overlay;
-  }
-  
+}
+
 .head-title {
-      margin-top: 5px;
-      border-radius: 10px;
-      box-shadow: 0 0 0 rgba(0, 0, 0, 0); /* Remove box shadow */
-      padding-bottom: 30px;
-      position: relative;
-}
-  
-    .head-title h1{
-      color: #C06B3E !important;
-      padding-bottom: 10px;
-    }
-  
-  .head-title h1 u {
-      text-underline-offset: 30px; /* Adds space between the text and the underline */
-      text-decoration-thickness: 5px; /* Adjusts the thickness of the underline if needed */
-  }
-.info-card {
+    margin-top: 5px;
     border-radius: 10px;
-    padding: 20px;
-    background-color: #f9f9f9;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0); /* Remove box shadow */
+    padding-bottom: 30px;
     position: relative;
-    margin-bottom: none; /* Remove or reduce bottom margin */
-    
-    z-index: 1 !important; /* Ensure it's below the sidebar */
-    height: 600px !important;
 }
+
+.head-title h1 {
+    color: #C06B3E !important;
+    padding-bottom: 10px;
+}
+
+.head-title h1 u {
+    text-underline-offset: 30px; /* Adds space between the text and the underline */
+    text-decoration-thickness: 5px; /* Adjusts the thickness of the underline if needed */
+}
+
+.paw-prints-down {
+    position: absolute; /* Position relative to the card */
+    bottom: 0; /* Stick to the bottom of the card */
+    left: 0; /* Align to the left edge */
+    width: 100%; /* Full width of the card */
+    display: flex; /* Flex for alignment */
+    z-index: 0; /* Ensure it's below other elements */
+}
+
+.paw-prints-down img {
+    width: 30%; /* Adjust the size as needed */
+    height: auto;
+    margin: 0 0 30px 50px;
+    z-index: 0; /* Ensure it's below other elements */
+
+}
+
+.info-card {
+    position: relative; /* Ensure the paw prints position relative to the card */
+    z-index: 1;
+}
+
 
 @media (max-width: 768px) {
     .info-card {
@@ -62,18 +73,19 @@ body {
     padding-left: 20px;
     margin-bottom: 20px;
 }
+
 @media (max-width: 768px) {
     .info-card .title {
         justify-content: center !important;
-       align-content: center !important;
+        align-content: center !important;
     }
 }
+
 .info-card img {
     border-radius: 8px;
     width: 250px;
     height: auto; /* Maintain aspect ratio */
     max-width: 100%; /* Ensure it scales on smaller screens */
-    margin-bottom: 470px;
 }
 
 @media (max-width: 768px) {
@@ -94,6 +106,7 @@ body {
     padding: 10px 30px;
     font-weight: bold;
     width: 200px;
+    z-index: 2;
 }
 
 .btn-cancel {
@@ -110,32 +123,42 @@ body {
     font-weight: bold;
 }
 
-.remarks {
-    resize: none;
-    height: 120px;
-    padding-left: 30px !important; /* Adjust padding as needed */
-    pointer-events: auto;
-}
-
-
 .form-group {
+    position: relative; /* Ensure relative positioning for stacking context */
+    z-index: 1; /* Adjust the z-index to be above other elements */
     margin-bottom: 20px;
+
 }
 
+.upload-placeholder {
+    width: 100%;
+    max-width: 300px;
+    height: 150px;
+    border: 2px dashed #ccc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    color: #666;
+    font-size: 16px;
+    text-align: center;
+    background-color: #f9f9f9;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
 
-.paw-prints-down {
-    position: relative;
-    left: 0% !important; /* Position the image at the left end */
-    top: -40%; /* Vertically align the image */
-    margin: 0; /* Remove any margin around the div */
-    padding: 0; /* Remove any padding around the div */
-    
-  }
-.paw-prints-down img {    
-    z-index: -1; /* Layer the image behind the content */
-    width: 30%; /* Adjust width if necessary */
-    height: auto; /* Adjust height if necessary */
-    margin: 0; /* Remove any default margin around the image */
-    padding: 0; /* Remove any default padding around the image */
-    display: block; /* Ensure the image is treated as a block element */
-  }
+.upload-placeholder i {
+    margin-right: 8px;
+    font-size: 24px;
+    color: #666;
+}
+
+#placeholderText {
+    font-size: 16px;
+    color: #666;
+}
+
+.upload-placeholder:hover {
+    border-color: #aaa;
+}
