@@ -24,28 +24,7 @@
   </head>
   <body>
 
-  <?php 
-      // Set the number of records per page
-      $limit = 10;
-
-      // Get the current page number from the URL, default to page 1 if not set
-      $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-
-      // Calculate the offset for the SQL query
-      $offset = ($page - 1) * $limit;
-
-      // Query to get the total number of records
-      $sql_total = "SELECT COUNT(*) as total FROM liquidation";
-      $result_total = $db->query($sql_total);
-      $total_rows = $result_total->fetch_assoc()['total'];
-
-      // Calculate the total number of pages
-      $total_pages = ceil($total_rows / $limit);
-
-      // Query to fetch the limited set of data
-      $sql = "SELECT * FROM liquidation ORDER BY date DESC LIMIT $limit OFFSET $offset";
-      $result = $db->query($sql);
-      
+  <?php       
       // Query to calculate the donation balance
       $sql_donations = "SELECT SUM(amount) as total_donations FROM liquidation WHERE type = 'donation'";
       $sql_expenses = "SELECT SUM(amount) as total_expenses FROM liquidation WHERE type = 'expense'";
@@ -189,7 +168,7 @@
 
   <div class="container">
     <div class="table-responsive mt-4">
-        <table id="monitoring" class="table table-bordered table-hover">
+        <table id="monitoring" class="table table-hover mb-5">
             <thead>
                 <tr>
                     <th width="5%">#</th>

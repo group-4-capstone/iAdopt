@@ -57,10 +57,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Get the last inserted animal_id
             $animal_id = $stmt->insert_id;
 
-            // Insert into rescue table
-            $stmt = $db->prepare("INSERT INTO rescue (animal_id, rescued_by, rescued_at) 
-                                  VALUES (?, ?, ?)");
-            $stmt->bind_param("iss", $animal_id, $rescued_by, $rescued_at);
+            // Insert into rescue table with report_type
+            $report_type = 'rescue'; // Set report type
+            $stmt = $db->prepare("INSERT INTO rescue (animal_id, rescued_by, rescued_at, report_type) 
+                                  VALUES (?, ?, ?, ?)");
+            $stmt->bind_param("isss", $animal_id, $rescued_by, $rescued_at, $report_type);
 
             if ($stmt->execute()) {
                 echo 'Rescue record successfully submitted.';
