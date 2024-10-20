@@ -77,7 +77,7 @@
                 </div>
                 <div class="mb-3">
                     <label for="placeUploads">Upload video or pictures of the dog/cat that will be rescued:</label>
-                    <input type="file" id="placeUploads" name="animal_image[]" accept=".jpg,.jpeg,.png,.mp4,.mov" multiple required>
+                    <input type="file" id="placeUploads" name="animal_image" accept=".jpg,.jpeg,.png,.mp4,.mov" required>
                 </div>
             </div>
 

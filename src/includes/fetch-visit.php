@@ -189,7 +189,7 @@ if(isset($_POST["query"]))
 
 			$next_id = $page_array[$count] + 1;
 
-			if($next_id >= $total_links)
+			if($next_id > $total_links)
 			{
 				$next_link = '
 				<li class="page-item disabled">

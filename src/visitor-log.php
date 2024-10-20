@@ -58,7 +58,7 @@
     		    </div>
 
     		<div class="card-body">
-    			<table class="table table-bordered">
+    			<table class="table table-hover">
     				<thead>
     					<tr>
                             <th width="5%">#</th>
