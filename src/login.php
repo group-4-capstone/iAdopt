@@ -1,3 +1,9 @@
+<?php
+include_once 'includes/db-connect.php';
+include_once 'includes/session-handler.php'; 
+include_once 'includes/session-manager.php'; 
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
