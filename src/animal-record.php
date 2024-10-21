@@ -1,3 +1,33 @@
+
+<?php
+include_once 'includes/db-connect.php'; 
+
+if (isset($_GET['animal_id'])) {
+    $animal_id = $_GET['animal_id'];
+    
+    $query = "
+    SELECT a.*, r.rescued_by, r.rescued_at 
+    FROM animals a 
+    INNER JOIN rescue r ON a.animal_id = r.animal_id 
+    WHERE a.animal_id = ?
+    ";
+
+    $stmt = $db->prepare($query);
+    $stmt->bind_param("i", $animal_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    // Check if the animal was found
+    if ($result->num_rows > 0) {
+        $animal = $result->fetch_assoc();
+    } else {
+        $error_message = 'Animal not found';
+    }
+} else {
+    $error_message = 'Invalid request';
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -29,25 +59,23 @@
     <section class="banner-section">
       <div class="content">
         <div class="head-title">
-          <h1><u><b>ADD RESCUE</b></u></h1>
+          <h1><u><b>ANIMAL RECORD</b></u></h1>
         </div>
             <p>
-                Add rescued animal information.
+                View animal information.
             </p>
         </div>
     </section>
 
     <div class="container mt-5 mb-5">
         <div class="card info-card p-4">
-           <h2 class="title">INFORMATION SHEET</h2>
+            <h2 class="title">INFORMATION SHEET</h2>
 
-            <form method="post" id="addRecordForm">
+           
                 <div class="row mt-2">
                     <div class="col-md-4 col-sm-12">
-                        <div class="upload-placeholder" id="uploadPlaceholder">
-                            <i class="bi bi-cloud-upload"></i>
-                            <span id="placeholderText">Click to upload</span>
-                            <input type="file" id="imageUpload" accept="image/*" name="image" style="display: none;">
+                        <div class="ms-5">
+                             <img src="styles/assets/animals/<?php echo htmlspecialchars($animal['image']); ?>" alt="Animal Image">
                         </div>
                     </div>
 
@@ -56,49 +84,40 @@
                             <div class="row">
                                 <div class="col-md-4 form-group">
                                     <label for="name" class="form-label">Name:</label>
-                                    <input type="text" id="name" class="form-control" name="name" required>
+                                    <input type="text" id="name" class="form-control" name="name" value="<?php echo htmlspecialchars($animal['name']); ?>" readonly>
                                 </div>
                                 <div class="col-md-4 form-group">
                                     <label for="gender" class="form-label">Gender:</label>
-                                    <select id="gender" class="form-select" name="gender" required>
-                                        <option value="" selected disabled>Kindly select an option</option>
-                                        <option value="Male">Male</option>
-                                        <option value="Female">Female</option>
-                                    </select>
+                                    <input type="text" id="gender" class="form-control" name="gender" value="<?php echo htmlspecialchars($animal['gender']); ?>" readonly>
                                 </div>
                                 <div class="col-md-4 form-group">
                                     <label for="type" class="form-label">Type:</label>
-                                    <select id="type" class="form-select" name="type" required>
-                                        <option value="" selected disabled>Kindly select an option</option>
-                                        <option value="Dog">Dog</option>
-                                        <option value="Cat">Cat</option>
-                                    </select>
+                                    <input type="text" id="type" class="form-control" name="type" value="<?php echo htmlspecialchars($animal['type']); ?>" readonly>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-6 form-group">
                                     <label for="rescuedBy" class="form-label">Rescued By:</label>
-                                    <input type="text" id="rescuedBy" class="form-control" name="rescued_by" required>
+                                    <input type="text" id="rescuedBy" class="form-control" name="rescued_by" value="<?php echo htmlspecialchars($animal['rescued_by']); ?>" readonly>
                                 </div>
                                 <div class="col-md-6 form-group">
                                     <label for="rescuedAt" class="form-label">Rescued At:</label>
-                                    <input type="text" id="rescuedAt" class="form-control" name="rescued_at" required>
+                                    <input type="text" id="rescuedAt" class="form-control" name="rescued_at" value="<?php echo htmlspecialchars($animal['rescued_at']); ?>" readonly>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="form-group">
                                     <label for="remarks" class="form-label">Remarks:</label>
-                                    <textarea id="remarks" class="form-control" name="description"></textarea>
+                                    <textarea id="remarks" class="form-control" name="description" readonly><?php echo htmlspecialchars($animal['description']); ?></textarea>
                                 </div>
                             </div>
                             <div class="d-flex justify-content-end mt-5 mb-3">
-                                <button type="button" class="btn btn-cancel me-2" onclick="window.location.href='rescue-records.php'">Cancel</button>
-                                <button type="submit" class="btn btn-add" id="addRecordBtn">Add</button>
+                                <button type="button" class="btn btn-cancel" onclick="window.location.href='rescue-records.php'">Back to Records</button>
                             </div>
                         </div>
                     </div>
                 </div>
-            </form>
+          
             <div class="paw-prints-down"><img src="styles/assets/paw-down.png" alt="Paws"></div>
         </div>
     </div>

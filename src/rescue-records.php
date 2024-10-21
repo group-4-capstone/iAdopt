@@ -1,3 +1,14 @@
+
+<?php include_once 'includes/session-handler.php'; 
+include_once 'includes/db-connect.php';
+
+
+// Check session and role
+if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['role'] == 'head_admin')) {
+  
+
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -18,6 +29,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
      <!-- Bootstrap JS -->
      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
@@ -54,46 +66,24 @@
                         </div>
                     </div>
                 </div>
+                
                 <div class="card-body p-0">
-                    <table class="table table-hover mb-0" id="newRescueTable">
+                    <table class="table table-hover mb-5" id="reportTable">
                         <thead>
                             <tr>
-                                <th>Date Rescued</th>
-                                <th>Reporter</th>
-                                <th>Address</th>
-                                <th>Status</th>
+                                <th width="5%">#</th>
+                                <th width="20%">Report Date</th>
+                                <th width="5%">Type</th>
+                                <th width="35%">Location</th>
+                                <th width="20%">Reporter</th>
+                                <th width="15%">Status</th>
                             </tr>
                         </thead>
-                        <tbody>
-                        <tr data-rescue-date="2024/09/15" data-characteristics="Dotted Brown White dog"  data-reporter="Juan Bartolome"  data-status="Request"  data-address="Blk 45 Lot 23 Ph 1 Villa Ewan">
-                                <td>2024/09/15</td>
-                                <td>Juan Bartolome</td>
-                                <td>Blk 45 Lot 23 Ph 1 Villa Ewan  </td>
-                                <td><span class="badge-request">Request</span></td>
-                            </tr>
-                            <!-- Add more rows as needed -->
-                        </tbody>
+                        <tbody id="report_data"></tbody>
                     </table>
-                </div>
-                <div class="card-footer d-flex justify-content-end">
-                    <nav>
-                        <ul class="pagination pagination-sm mb-0">
-                            <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Previous">
-                                    <span aria-hidden="true">
-                                        < </span>
-                                </a>
-                            </li>
-                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Next">
-                                    <span aria-hidden="true">></span>
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
+                    <div class="d-flex justify-content-end">
+                                <div id="report_pagination_link"></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -112,84 +102,75 @@
                         </button>
 
                         <div class="input-group input-group-md">
-                            <input type="text" class="form-control" placeholder="Search">
+                            <input type="text" class="form-control" placeholder="Search" onkeyup="load_data(this.value);">
                             <span class="input-group-text search-icon"><i class="bi bi-search"></i></span>
                         </div>
                     </div>
                 </div>
 
-
-
                 <div class="card-body p-0">
-                    <table class="table table-hover mb-0 " id="rescueTable">
+                    <table id="rescueTable" class="table table-hover mb-5">
                         <thead>
                             <tr>
-                                <th>Date Rescued</th>
-                                <th>Name of Pet</th>
-                                <th>Rescued By</th>
-                                <th>Status</th>
+                                <th width="5%">#</th>
+                                <th width="20%">Date Rescued</th>
+                                <th width="20%">Name of Pet</th>
+                                <th width="5%">Type</th>
+                                <th width="30%">Rescued By</th>
+                                <th width="25%">Status</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr data-pet-name="Juan" data-rescued-by="Juan Bartolome" data-rescue-date="2023/12/13" data-status="Unadoptable" data-type="Dog" data-gender="Male" data-rescued-at="Shelter A">
-                                <td>2023/12/13</td>
-                                <td>Juan</td>
-                                <td>Juan Bartolome</td>
-                                <td><span class="badge bg-red text-dark">Unadoptable</span></td>
-                            </tr>
-                            <tr data-pet-name="Juan" data-rescued-by="Juan Bartolome" data-rescue-date="2023/12/13" data-status="Unadoptable" data-type="Dog" data-gender="Male" data-rescued-at="Shelter A">
-
-                                <td>2023/12/13</td>
-                                <td>Juan</td>
-                                <td>Juan Bartolome</td>
-                                <td><span class="badge bg-red text-dark">Unadoptable</span></td>
-                            </tr>
-                            <tr data-pet-name="Juan" data-rescued-by="Juan Bartolome" data-rescue-date="2023/12/13" data-status="Unadoptable" data-type="Dog" data-gender="Male" data-rescued-at="Shelter A">
-
-                                <td>2023/12/13</td>
-                                <td>Juan</td>
-                                <td>Juan Bartolome</td>
-                                <td><span class="badge bg-red text-dark">Unadoptable</span></td>
-                            </tr>
-                            <tr data-pet-name="Juan" data-rescued-by="Juan Bartolome" data-rescue-date="2023/12/13" data-status="Unadoptable" data-type="Dog" data-gender="Male" data-rescued-at="Shelter A">
-
-                                <td>2023/12/13</td>
-                                <td>Juan</td>
-                                <td>Juan Bartolome</td>
-                                <td><span class="badge bg-red text-dark">Unadoptable</span></td>
-                            </tr>
-                        </tbody>
+                        <tbody id="post_data"></tbody>
                     </table>
-                </div>
-                <div class="card-footer d-flex justify-content-end">
-                    <nav>
-                        <ul class="pagination pagination-sm mb-0">
-                            <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Previous">
-                                    <span aria-hidden="true">
-                                        < </span>
-                                </a>
-                            </li>
-                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Next">
-                                    <span aria-hidden="true">></span>
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
+                    <div class="d-flex justify-content-end">
+                                <div id="pagination_link"></div>
+                    </div>
                 </div>
 
             </div>
         </div>
-        <br>
-        <br>
-       
-
     </div>
    
+  <!-- Report Details Modal -->
+<div class="modal fade" id="rescueDetailModal" tabindex="-1" role="dialog" aria-labelledby="rescueDetailModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="rescueDetailModalLabel">Rescue Report Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="text-center pb-2">
+                    <p><strong>Rescue ID:</strong> <span id="modalRescueId"></span></p>
+                    <img id="modalAnimalImage" src="" alt="Animal Image" class="img-fluid" style="max-width: 70%; height: auto;">
+                </div>
+                <div class="row mt-2 px-4">
+                    <div class="col-lg-6">
+                        <p><strong>Report Date:</strong> <span id="modalReportDate"></span></p>
+                    </div>
+                    <div class="col-lg-6">
+                        <p><strong>Type:</strong> <span id="modalType"></span></p>
+                    </div>
+                    <div class="col-lg-6">
+                        <p><strong>Location:</strong> <span id="modalLocation"></span></p>
+                    </div>
+                    <div class="col-lg-6">
+                        <p><strong>Reporter:</strong> <span id="modalRescuer"></span></p>
+                    </div>
+                    <div class="col-lg-6">
+                        <p><strong>Status:</strong> <span id="modalStatus"></span></p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary me-4 mb-2" id="acceptButton">Accept</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
     <!-- Rescue Request Modal -->
     <div class="modal fade" id="rescueRequestModal" tabindex="-1" aria-labelledby="rescueRequestModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -340,3 +321,9 @@
 </body>
 
 </html>
+
+<?php
+} else {
+    header("Location: home.php");
+}
+?>

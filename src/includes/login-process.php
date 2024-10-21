@@ -30,6 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             error_log("Hashed Password from DB: $hashed_password");
 
             if (password_verify($password, $hashed_password)) {
+                $_SESSION['logged_in'] = true;
                 $_SESSION['role'] = $role;
                 $_SESSION['email'] = $email;
 

@@ -3,15 +3,6 @@
   background-color: white !important;
 }
 
-.admin-content .banner-section {
-  background-color: #FFF8CC;
-  padding: 30px 30px;
-  border-radius: 30px;
-  margin-bottom: 20px;
-  background-image: url("assets/paws.png");
-  background-blend-mode: overlay;
-}
-
 /* Style tab links */
 .tablink {
     background-color: white;

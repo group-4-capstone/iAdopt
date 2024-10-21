@@ -70,6 +70,176 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 
+// ----------------------------- DISPLAY AND PAGINATION -------------------------- //
+// ----------------------------- REPORTS TABLE ----------------------------------- //
+load_data_report();
+
+function load_data_report(query = '', page_number = 1) {
+    var form_data = new FormData();
+    form_data.append('query', query);
+    form_data.append('page', page_number);
+
+    var ajax_request = new XMLHttpRequest();
+    ajax_request.open('POST', 'includes/fetch-reports.php');
+    ajax_request.send(form_data);
+
+    ajax_request.onreadystatechange = function() {
+        if (ajax_request.readyState == 4 && ajax_request.status == 200) {
+            var response = JSON.parse(ajax_request.responseText);
+            var html = '';
+            var serial_no = 1;
+
+            if (response.data.length > 0) {
+                for (var count = 0; count < response.data.length; count++) {
+                    var type = response.data[count].type.toLowerCase().replace(/\b\w/g, function(char) {
+                        return char.toUpperCase();
+                    });
+
+                    var statusDisplay = response.data[count].animal_status.toLowerCase().replace(/\b\w/g, function(char) {
+                        return char.toUpperCase();
+                    });
+
+                    // Fix variables referencing correct response data
+                    var rescue_id = response.data[count].rescue_id;
+                    var location = response.data[count].location;
+                    var first_name = response.data[count].first_name;
+                    var last_name = response.data[count].last_name;
+                    var animal_image = response.data[count].animal_image;
+            
+                    html += '<tr data-animal-image="' + animal_image + '">';
+                    html += '<td>' + rescue_id + '</td>';
+                    html += '<td>' + response.data[count].report_date + '</td>';
+                    html += '<td>' + type + '</td>';
+                    html += '<td>' + location + '</td>';
+                    html += '<td>' + first_name + " " + last_name + '</td>';
+                    html += '<td>' + statusDisplay + '</td>';
+                    html += '</tr>';
+                    serial_no++;
+                }
+            } else {
+                // Update colspan to match the number of columns (6)
+                html += '<tr><td colspan="6" class="text-center">No Data Found</td></tr>';
+            }
+
+            document.getElementById('report_data').innerHTML = html;
+            document.getElementById('report_pagination_link').innerHTML = response.pagination;
+        }
+    };
+}
+
+
+// Assuming 'html' is appended to a table with id 'reportTable'
+$('#reportTable').on('click', 'tr', function() {
+    // Get the rescue_id from the clicked row
+    var rescue_id = $(this).find('td').eq(0).text(); // Adjust index if necessary
+    var report_date = $(this).find('td').eq(1).text();
+    var type = $(this).find('td').eq(2).text();
+    var location = $(this).find('td').eq(3).text();
+    var rescuer = $(this).find('td').eq(4).text();
+    var status = $(this).find('td').eq(5).text();
+    
+    // Get the animal image from the data attribute
+    var animal_image = $(this).data('animal-image');
+
+    // Prepend the path to the animal image
+    var imagePath = 'styles/assets/rescue-reports/' + animal_image;
+
+    // Populate the modal with the details
+    $('#modalRescueId').text(rescue_id);
+    $('#modalReportDate').text(report_date);
+    $('#modalType').text(type);
+    $('#modalLocation').text(location);
+    $('#modalRescuer').text(rescuer);
+    $('#modalStatus').text(status);
+    $('#modalAnimalImage').attr('src', imagePath); // Set the image source with path
+
+    // Show the modal
+    $('#rescueDetailModal').modal('show');
+});
+
+
+// ----------------------------- RESCUE TABLE ----------------------------------- //
+load_data();
+
+function load_data(query = '', page_number = 1)
+{
+    var form_data = new FormData();
+
+    form_data.append('query', query);
+
+    form_data.append('page', page_number);
+
+    var ajax_request = new XMLHttpRequest();
+
+    ajax_request.open('POST', 'includes/fetch-records.php');
+
+    ajax_request.send(form_data);
+
+    ajax_request.onreadystatechange = function()
+    {
+        if(ajax_request.readyState == 4 && ajax_request.status == 200)
+        {
+            var response = JSON.parse(ajax_request.responseText);
+
+            var html = '';
+
+            var serial_no = 1;
+
+            if (response.data.length > 0) {
+                for (var count = 0; count < response.data.length; count++) {
+                    // Capitalize the first letter of each word for name, type, and rescued_by
+                    var name = response.data[count].name.toLowerCase().replace(/\b\w/g, function(char) {
+                        return char.toUpperCase();
+                    });
+            
+                    var type = response.data[count].type.toLowerCase().replace(/\b\w/g, function(char) {
+                        return char.toUpperCase();
+                    });
+            
+                    var rescued_by = response.data[count].rescued_by.toLowerCase().replace(/\b\w/g, function(char) {
+                        return char.toUpperCase();
+                    });
+            
+                    // Capitalize and conditionally apply the badge class for animal_status
+                    var status = response.data[count].animal_status.toLowerCase();
+                    var statusDisplay = status.replace(/\b\w/g, function(char) {
+                        return char.toUpperCase();
+                    });
+            
+                    if (statusDisplay === "Under Review") {
+                        statusDisplay = '<span class="badge bg-red text-dark">Under Review</span>';
+                    }
+            
+                    // Construct the HTML
+                    html += '<tr onclick="window.location.href=\'animal-record.php?animal_id=' + response.data[count].animal_id + '\'">'; 
+                    html += '<td>' + response.data[count].rescue_id + '</td>';
+                    html += '<td>' + response.data[count].report_date + '</td>';
+                    html += '<td>' + name + '</td>';    
+                    html += '<td>' + type + '</td>';            
+                    html += '<td>' + rescued_by + '</td>';      
+                    html += '<td>' + statusDisplay + '</td>';  
+                    html += '</tr>';
+                    serial_no++;
+                }
+            }
+            
+            
+            else
+            {
+                html += '<tr><td colspan="3" class="text-center">No Data Found</td></tr>';
+            }
+
+            document.getElementById('post_data').innerHTML = html;
+
+
+            document.getElementById('pagination_link').innerHTML = response.pagination;
+
+        }
+
+    }
+}
+
+
 // Clicking the placeholder triggers the file input
 document.getElementById('uploadPlaceholder').addEventListener('click', function() {
     document.getElementById('imageUpload').click();
