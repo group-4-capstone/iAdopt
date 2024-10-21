@@ -75,7 +75,7 @@
             <h3>Juan Dela Cruz</h3>
             <span><a href="settings.php">Profile</a></span>
         </div>
-        <a href="#" class="logout-icon">
+        <a href="logout.php" class="logout-icon">
             <i class="bi bi-box-arrow-right"></i> <!-- Logout icon -->
         </a>
     </div>

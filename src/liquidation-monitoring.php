@@ -1,5 +1,13 @@
-<?php include_once 'includes/db-connect.php'; ?>
+<?php include_once 'includes/session-handler.php'; 
+include_once 'includes/db-connect.php';
 
+
+// Check session and role
+if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['role'] == 'head_admin')) {
+  
+
+
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -265,3 +273,8 @@ $db->close();
  <script src="scripts/liquidation.js"></script>
 </body>
 </html>
+<?php
+} else {
+    header("Location: home.php");
+}
+?>
