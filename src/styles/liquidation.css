@@ -4,15 +4,6 @@
     background-color: white !important;
   }
   
-  .admin-content .banner-section {
-    background-color: #FFF8CC;
-    padding: 30px 30px;
-    border-radius: 30px;
-    margin-bottom: 20px;
-    background-image: url("assets/paws.png");
-    background-blend-mode: overlay;
-  }
-
   .head-title {
     margin-top: 5px;
     border-radius: 10px;
@@ -108,10 +99,10 @@
   }
   
   .pagination .page-link:hover {
-    background-color: #E6B210;
-    border-color: #E6B210;
+    background-color: rgb(209, 209, 209);
+    border-color: none;
     color: #fff !important;
-    border-radius: 10px;  
+    border-radius: 10px; 
   }
   
   
