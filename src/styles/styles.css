@@ -8,6 +8,12 @@
     font-family: 'Poppins', sans-serif;
   }
 
+  .page-item.disabled .page-link {
+    color: gray !important;
+    pointer-events: none !important; 
+    cursor: default !important;     
+  }
+
   /* Banner Section */
 .user-banner-section {
   height: 50vh;
@@ -137,4 +143,12 @@
 .accordion-button:not(.collapsed) {
     background-color: #343a40;
 }
+.error-message {
+  font-size: 0.875rem; /* Adjust the size as needed */
+  margin-top: 0.25rem; /* Space between input and error message */
+}
+.is-invalid {
+  border-color: #dc3545 !important; 
+}
+
   

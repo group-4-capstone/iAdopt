@@ -32,6 +32,8 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
     <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
   </head>
   <body>
 
@@ -57,6 +59,38 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
         <button class="tablink" onclick="openPage('About', this, '#FFF8CC')">FAQs</button>
     </div>
 
+   <!-- Success Modal -->
+  <div class="modal fade" id="successContentModal" tabindex="-1" aria-labelledby="successContentModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+      <div class="modal-body">
+        <button type="button" class="btn-close d-flex ms-auto" data-bs-dismiss="modal"></button>
+          <div class="text-center">
+            <i class="bi bi-check-circle-fill" style="font-size: 8rem; color: #28a745;"></i>
+            <p class="mt-4 px-2"> Content has been successfully added!
+            </p>
+          </div>
+        </div>     
+      </div>
+    </div>
+  </div>
+
+  <!-- Wrong file type Modal -->
+<div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+            <button type="button" class="btn-close d-flex ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="text-center">
+                    <i class="bi bi-exclamation-triangle-fill" style="font-size: 8rem; color: #dc3545;"></i>
+                    <p class="mt-4 px-2">Invalid file type! Please upload only .jpg, .jpeg, .png files.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
     <!-- Add announcement modal -->
     <div class="modal fade" id="addAnnouncementModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="addAnnouncementModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl modal-dialog-centered">
@@ -65,42 +99,45 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
         <div class="card p-2">
           <div class="card-body">
             <h3 class="pb-4">Add Announcement</h3>
-            <form>
+            <form method="post" id="announcementForm">
               <div class="row mb-3">
                 <label for="announcementTitle" class="col-3 col-form-label">Title<span class="asterisk">*</span></label>
                 <div class="col-9">
-                  <input type="text" class="form-control" id="announcementTitle" placeholder="Enter title" required>
+                  <input type="text" class="form-control" name="title" id="announcementTitle" placeholder="Enter title" required>
                 </div>
               </div>
               <div class="row mb-3">
                 <label for="announcementStatus" class="col-3 col-form-label">Status<span class="asterisk">*</span></label>
                 <div class="col-3">
-                  <select class="form-select" id="announcementStatus" required>
+                  <select class="form-select" id="announcementStatus" name="status">
+                    <option value="" selected disabled>Kindly select an option</option>
                     <option value="draft">Draft</option>
                     <option value="publish">Publish</option>
                   </select>
                 </div>
                 <label for="publishDate" class="col-3 col-form-label">Date to be Published<span class="asterisk">*</span></label>
                 <div class="col-3">
-                  <input type="date" class="form-control" id="publishDate" required>
+                  <input type="date" class="form-control" id="publishDate" name="announcement_date">
                 </div>
               </div>
               <div class="row mb-5">
                 <label for="announcementContent" class="col-3 col-form-label">Content<span class="asterisk">*</span></label>
                 <div class="col-9 mb-3">
-                  <div id="announcementContent" style="border: 2px solid #ced4da; border-radius: 5px; margin-bottom:150px"></div>
+                <div id="announcementContent" style="border: 2px solid #ced4da; border-radius: 5px; margin-bottom:150px"></div>
+                <!-- Hidden input to store the Quill content -->
+                <input type="hidden" name="description" id="announcementContentHidden">
                 </div>
               </div>
               <div class="row mb-3">
                 <label for="announcementImage" class="col-3 col-form-label">Add Image<span class="asterisk">*</span></label>
                 <div class="col-9">
-                    <input type="file" class="form-control mt-2" id="imageUpload" multiple>
+                    <input type="file" class="form-control mt-2" id="imageUpload" name="image" accept=".jpg,.jpeg,.png">
                 </div>
               </div>
               <div class="row mb-1">
                 <div class="col-9 offset-3 d-flex justify-content-end">
                   <button type="button" class="btn me-2" data-bs-dismiss="modal">Cancel</button>
-                  <button type="submit" class="btn btn-primary">Save Post</button>
+                  <button type="submit" class="btn btn-primary" id="saveAnnouncementBtn" >Save Post</button>
                 </div>
               </div>
             </form>
@@ -119,26 +156,19 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
         <div class="card p-3">
           <div class="card-body">
             <h3 class="pb-4">Add Merchandise</h3>
-            <form>
-              <div class="row mb-3">
-                <!-- Date Label -->
-                <label for="publishDate" class="col-3 col-form-label">Date<span class="asterisk">*</span></label>
-                <div class="col-9">
-                  <input type="date" class="form-control" id="publishDate" required>
-                </div>
-              </div>
+            <form method="post" id="merchandiseForm">
               <div class="row mb-3">
                 <!-- Merchandise Item Label -->
                 <label for="merchandiseItem" class="col-3 col-form-label">Merchandise Item<span class="asterisk">*</span></label>
                 <div class="col-9">
-                  <input type="text" class="form-control" id="merchandiseItem" placeholder="Enter merchandise item" required>
+                  <input type="text" class="form-control" name="item" id="merchandiseItem" placeholder="Enter merchandise item">
                 </div>
               </div>
               <div class="row mb-3">
                 <!-- Insert Link Label -->
                 <label for="itemLink" class="col-3 col-form-label">Insert Link<span class="asterisk">*</span></label>
                 <div class="col-9">
-                  <input type="text" class="form-control" id="itemLink" placeholder="Enter item link" required>
+                  <input type="text" class="form-control" name="link" id="itemLink" placeholder="Enter item link">
                 </div>
               </div>
               <div class="row mb-3">
@@ -146,7 +176,7 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                 <label for="merchandiseImage" class="col-3 col-form-label">Add Image<span class="asterisk">*</span></label>
                 <div class="col-9">
                   <div class="border p-4 text-center" id="imageUploadContainer" style="border: 2px dashed #ced4da; border-radius: 5px;">
-                    <input type="file" class="form-control mt-2" id="imageUpload" multiple>
+                    <input type="file" class="form-control mt-2" name="image" id="merchupload" accept=".jpg,.jpeg,.png">
                   </div>
                 </div>
               </div>
@@ -154,16 +184,17 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                 <!-- Status Label -->
                 <label for="merchandiseStatus" class="col-3 col-form-label">Status<span class="asterisk">*</span></label>
                 <div class="col-9">
-                  <select class="form-select" id="merchandiseStatus" required>
+                  <select class="form-select" id="merchandiseStatus" name="status">
+                   <option value="" selected disabled>Kindly select an option</option>
                     <option value="draft">Draft</option>
-                    <option value="publish">Publish</option>
+                    <option value="publish">Publish Now</option>
                   </select>
                 </div>
               </div>
               <div class="row mb-3">
                 <div class="col-9 offset-3 d-flex justify-content-end">
                   <button type="button" class="btn me-2" data-bs-dismiss="modal">Cancel</button>
-                  <button type="submit" class="btn btn-primary">Save Post</button>
+                  <button type="submit" id="saveMerchandiseBtn" class="btn btn-primary">Save Post</button>
                 </div>
               </div>
             </form>
@@ -181,23 +212,21 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
       <div class="modal-body p-4">
       <div class="card p-3">
         <h3 class="pb-4">Add Volunteer</h3>
-        <form>
-          <div class="row mb-3">
-            <label for="publishDate" class="col-3 col-form-label">Date<span class="asterisk">*</span></label>
-            <div class="col-9">
-              <input type="date" class="form-control" id="publishDate" required>
-            </div>
-          </div>
+        <form method="post" id="volunteerForm">
           <div class="row mb-3">
             <label for="volunteerName" class="col-3 col-form-label">Name<span class="asterisk">*</span></label>
-            <div class="col-9">
-              <input type="text" class="form-control" id="volunteerName" placeholder="Enter name" required>
+            <div class="col-5">
+              <input type="text" class="form-control" id="volunteerFName" placeholder="Enter first name" name="first_name">
+            </div>
+            <div class="col-4">
+              <input type="text" class="form-control" id="volunteerLName" placeholder="Enter last name" name="last_name">
             </div>
           </div>
           <div class="row mb-3">
             <label for="volunteerRole" class="col-3 col-form-label">Role<span class="asterisk">*</span></label>
             <div class="col-9">
-              <select class="form-select" id="volunteerRole" required>
+              <select class="form-select" id="volunteerRole" name="role">
+                <option value="" selected disabled>Kindly select an option</option>
                 <option value="caretaker">Caretaker</option>
                 <option value="assistant">Assistant</option>
               </select>
@@ -206,7 +235,8 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
           <div class="row mb-3">
             <label for="volunteerStatus" class="col-3 col-form-label">Status<span class="asterisk">*</span></label>
             <div class="col-9">
-              <select class="form-select" id="volunteerStatus" required>
+              <select class="form-select" id="volunteerStatus" name="status">
+                <option value="" selected disabled>Kindly select an option</option>
                 <option value="active">Active</option>
                 <option value="inactive">Inactive</option>
               </select>
@@ -215,7 +245,7 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
           <div class="row mb-3">
             <div class="col-9 offset-3 d-flex justify-content-end">
               <button type="button" class="btn me-2" data-bs-dismiss="modal">Cancel</button>
-              <button type="submit" class="btn btn-primary">Save Info</button>
+              <button type="submit"  id="saveVolunteerBtn" class="btn btn-primary">Save Info</button>
             </div>
           </div>
         </form>
@@ -233,29 +263,26 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
       <div class="modal-body p-4">
       <div class="card p-3">
         <h3 class="pb-4">Add FAQ</h3>
-        <form>
-          <div class="row mb-3">
-            <label for="publishDate" class="col-3 col-form-label">Date<span class="asterisk">*</span></label>
-            <div class="col-9">
-              <input type="date" class="form-control" id="publishDate" required>
-            </div>
-          </div>
+        <form method="post" id="FAQForm">
           <div class="row mb-3">
             <label for="question" class="col-3 col-form-label">Question<span class="asterisk">*</span></label>
             <div class="col-9">
-              <input type="text" class="form-control" id="question" placeholder="Enter question" required>
+              <input type="text" class="form-control" id="question" name="question" placeholder="Enter question">
             </div>
           </div>
           <div class="row mb-3">
             <label for="faqContent" class="col-3 col-form-label">Answer<span class="asterisk">*</span></label>
             <div class="col-9 mb-3">
               <div id="faqContent" style="border: 2px solid #ced4da; border-radius: 5px; height: 200px; overflow: auto;"></div>
+               <!-- Hidden input to store the Quill content -->
+               <input type="hidden" name="answer" id="faqContentHidden">
             </div>
           </div>
           <div class="row mb-3">
             <label for="announcementStatus" class="col-3 col-form-label">Status<span class="asterisk">*</span></label>
             <div class="col-9">
-              <select class="form-select" id="announcementStatus" required>
+              <select class="form-select" id="faqStatus" name="status">
+                <option value="" selected disabled>Kindly select an option</option>
                 <option value="draft">Draft</option>
                 <option value="publish">Publish</option>
               </select>
@@ -264,7 +291,7 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
           <div class="row mb-3">
             <div class="col-9 offset-3 d-flex justify-content-end">
               <button type="button" class="btn me-2" data-bs-dismiss="modal">Cancel</button>
-              <button type="submit" class="btn btn-primary">Save Post</button>
+              <button type="submit" id="saveFAQBtn" class="btn btn-primary">Save Post</button>
             </div>
           </div>
         </form>

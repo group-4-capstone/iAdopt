@@ -48,6 +48,10 @@
   font-size: 16px;
 }
 
+.asterisk {
+  color: red;
+}
+
 /* Grid Section */
 .grid-section {
   background-color: #58A5B7;

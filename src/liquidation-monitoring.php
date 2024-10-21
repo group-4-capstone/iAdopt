@@ -32,28 +32,7 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
   </head>
   <body>
 
-  <?php 
-      // Set the number of records per page
-      $limit = 10;
-
-      // Get the current page number from the URL, default to page 1 if not set
-      $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-
-      // Calculate the offset for the SQL query
-      $offset = ($page - 1) * $limit;
-
-      // Query to get the total number of records
-      $sql_total = "SELECT COUNT(*) as total FROM liquidation";
-      $result_total = $db->query($sql_total);
-      $total_rows = $result_total->fetch_assoc()['total'];
-
-      // Calculate the total number of pages
-      $total_pages = ceil($total_rows / $limit);
-
-      // Query to fetch the limited set of data
-      $sql = "SELECT * FROM liquidation ORDER BY date DESC LIMIT $limit OFFSET $offset";
-      $result = $db->query($sql);
-      
+  <?php       
       // Query to calculate the donation balance
       $sql_donations = "SELECT SUM(amount) as total_donations FROM liquidation WHERE type = 'donation'";
       $sql_expenses = "SELECT SUM(amount) as total_expenses FROM liquidation WHERE type = 'expense'";
@@ -119,7 +98,7 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
         <form method="post" id="donationForm" action="includes/submit-liquidation.php">
           <div class="mb-3">
             <label for="donationAmount" class="form-label">Amount</label>
-            <input type="number" class="form-control" id="donationAmount" name="amount" placeholder="Enter amount">
+            <input type="number" class="form-control" id="donationAmount" name="amount" placeholder="Enter amount" step="0.10">
           </div>
           <div class="mb-3">
             <label for="donationPurpose" class="form-label">Purpose</label>
@@ -149,7 +128,7 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
         <form method="post" id="expenseForm">
           <div class="mb-3">
             <label for="expenseAmount" class="form-label">Amount</label>
-            <input type="number" class="form-control" id="expenseAmount"name="amount" placeholder="Enter amount">
+            <input type="number" class="form-control" id="expenseAmount"name="amount" placeholder="Enter amount" step="0.10">
           </div>
           <div class="mb-3">
             <label for="expensePurpose" class="form-label">Purpose</label>
@@ -197,80 +176,92 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
 
   <div class="container">
     <div class="table-responsive mt-4">
-        <table id="monitoring" class="table table-hover">
+        <table id="monitoring" class="table table-hover mb-5">
             <thead>
                 <tr>
-                    <th>#</th>
-                    <th>Date</th>
-                    <th>Type</th>
-                    <th>Amount</th>
-                    <th>Purpose</th>
-                    <th>Person Responsible</th>
+                    <th width="5%">#</th>
+                    <th width="20%">Date</th>
+                    <th width="20%">Type</th>
+                    <th width="5%">Amount</th>
+                    <th width="30%">Purpose</th>
+                    <th width="25%">Donator</th>
                 </tr>
             </thead>
             <tbody>
-                <?php
-                if ($result->num_rows > 0) {
-                    while($row = $result->fetch_assoc()) {
-                        echo "<tr>";
-                        echo "<td>" . $row['liquidation_id'] . "</td>";
-                        echo "<td>" . date('m/d/Y', strtotime($row['date'])) . "</td>";
-                        echo "<td><span class='badge text-bg-" . ($row['type'] == 'donation' ? 'success' : 'danger') . "'>" . ucfirst($row['type']) . "</span></td>";
-                        echo "<td>" . number_format($row['amount'], 2) . "</td>";
-                        echo "<td>" . htmlspecialchars($row['description']) . "</td>";
-
-                        if ($row['type'] == 'expense') {
-                            echo "<td>N/A</td>";
-                        } else {
-                            echo "<td>" . htmlspecialchars($row['donator']) . "</td>";
-                        }
-
-                        echo "</tr>";
-                    }
-                } else {
-                    echo "<tr><td colspan='6'>No data available</td></tr>";
-                }
-                ?>
+              <tbody id="post_data"></tbody>
             </tbody>
         </table>
+        <div class="d-flex justify-content-end">
+    			    <div id="pagination_link"></div>
+        </div>
     </div>
-
-    <!-- Pagination -->
-    <nav aria-label="Page navigation example">
-        <ul class="pagination">
-            <?php if ($page > 1): ?>
-                <li class="page-item">
-                    <a class="page-link" href="?page=<?php echo $page - 1; ?>" aria-label="Previous">
-                        <span aria-hidden="true">&lt;</span>
-                    </a>
-                </li>
-            <?php endif; ?>
-
-            <?php for ($i = 1; $i <= $total_pages; $i++): ?>
-                <li class="page-item <?php if ($i == $page) echo 'active'; ?>">
-                    <a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
-                </li>
-            <?php endfor; ?>
-
-            <?php if ($page < $total_pages): ?>
-                <li class="page-item">
-                    <a class="page-link" href="?page=<?php echo $page + 1; ?>" aria-label="Next">
-                        <span aria-hidden="true">&gt;</span>
-                    </a>
-                </li>
-            <?php endif; ?>
-        </ul>
-    </nav>
 </div>
-
-<?php
-// Close connection
-$db->close();
-?>
 
  </div>
 
  <script src="scripts/liquidation.js"></script>
+ <script>
+        load_data();
+
+        function load_data(query = '', page_number = 1)
+        {
+            var form_data = new FormData();
+
+            form_data.append('query', query);
+
+            form_data.append('page', page_number);
+
+            var ajax_request = new XMLHttpRequest();
+
+            ajax_request.open('POST', 'includes/fetch-liquidation.php');
+
+            ajax_request.send(form_data);
+
+            ajax_request.onreadystatechange = function()
+            {
+                if(ajax_request.readyState == 4 && ajax_request.status == 200)
+                {
+                    var response = JSON.parse(ajax_request.responseText);
+
+                    var html = '';
+
+                    var serial_no = 1;
+
+                    if(response.data.length > 0)
+                    {
+                        for(var count = 0; count < response.data.length; count++)
+                        {
+                            html += '<tr>';
+                            html += '<td>'+response.data[count].liquidation_id+'</td>';
+                            html += '<td>'+response.data[count].date+'</td>';
+                            html += '<td><span class="badge text-bg-' + (response.data[count].type === 'donation' ? 'success' : 'danger') + '">' + response.data[count].type.charAt(0).toUpperCase() + response.data[count].type.slice(1) + '</span></td>';
+                            html += '<td>'+response.data[count].amount+'</td>';
+                            html += '<td>'+response.data[count].description+'</td>';
+                            if (response.data[count].type === 'expense') {
+                              html += '<td>N/A</td>';
+                          } else {
+                              html += '<td>' + (response.data[count].donator ? response.data[count].donator : '') + '</td>';
+                          }
+                            html += '</tr>';
+                            serial_no++;
+                         
+                        }
+                    }
+                    else
+                    {
+                        html += '<tr><td colspan="3" class="text-center">No Data Found</td></tr>';
+                    }
+
+                    document.getElementById('post_data').innerHTML = html;
+
+
+                    document.getElementById('pagination_link').innerHTML = response.pagination;
+
+                }
+
+            }
+        }
+        </script>
 </body>
 </html>
 <?php

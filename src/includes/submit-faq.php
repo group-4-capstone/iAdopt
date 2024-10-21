@@ -2,28 +2,28 @@
 include_once 'db-connect.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-   
-    $names = $_POST['names'];
-    $group_name = $_POST['group_name'];
-    $pax = $_POST['pax'];
-    $purpose = $_POST['purpose'];
-    $visitDateTime = $_POST['visitDateTime'];
+    
+    $question = $_POST['question'];
+    $answer = $_POST['answer'];
+    $status = $_POST['status'];
+
+    // Temporary user_id for admin
+    $admin_id = 1;
 
     // Prepare and bind the SQL query
-    $stmt = $db->prepare("INSERT INTO visit (name, group_name, num_pax, purpose, visit_date) VALUES (?, ?, ?, ?, ?)");
+    $stmt = $db->prepare("INSERT INTO faqs (question, answer, status, admin) VALUES (?, ?, ?, ?)");
 
     // Check if the statement preparation is successful
     if ($stmt === false) {
         die('Error in preparing the statement: ' . $db->error);
     }
 
-
     // Bind the parameters to the statement, using correct parameter types
-    $stmt->bind_param("ssiss", $names, $group_name, $pax, $purpose, $visitDateTime);
+    $stmt->bind_param("sssi", $question, $answer, $status, $admin_id);
 
     // Execute the query
     if ($stmt->execute()) {
-        echo "Visit successfully recorded!";
+        echo "FAQ successfully recorded!";
     } else {
         echo "Error: " . $stmt->error;
     }
