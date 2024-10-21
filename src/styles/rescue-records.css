@@ -128,16 +128,8 @@
 .head-title h1{
     color: #C06B3E !important;
     padding-bottom: 30px;
-     
  }
- .admin-content .banner-section {
-     background-color: #FFF8CC;
-     padding: 30px 30px;
-     border-radius: 30px;
-     margin-bottom: 20px;
-     background-image: url("assets/paws.png");
-     background-blend-mode: overlay;
-   }
+
    
  .head-title {
        margin-top: 5px;
