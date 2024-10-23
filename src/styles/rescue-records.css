@@ -1,7 +1,8 @@
 .card {
     background-color: #fff !important;
     border-radius: 10px;
-    box-shadow: 0 0 0 rgba(0, 0, 0, 0); /* Remove box shadow */
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+    /* Remove box shadow */
     padding-top: 30px;
     padding-left: 30px;
     padding-right: 30px;
@@ -21,12 +22,14 @@
 .card-body {
     overflow-x: auto;
 }
+
 .card-footer {
     background-color: #fff !important;
     color: #fff;
     padding-top: 80px !important;
     padding-bottom: 10px;
 }
+
 .table {
     margin-bottom: 0;
 }
@@ -37,82 +40,104 @@
     padding-top: 20px !important;
     padding-bottom: 20px !important;
     padding-left: 10px !important;
-    text-align: center !important; /* Centers text and inline content horizontally */
-    vertical-align: middle !important; /* Centers content vertically within the cell */
+    text-align: center !important;
+    /* Centers text and inline content horizontally */
+    vertical-align: middle !important;
+    /* Centers content vertically within the cell */
 }
 
 .table tbody tr td {
     background-color: #fff;
     padding-top: 20px !important;
     padding-bottom: 20px !important;
-    padding-left: 10px !important; 
+    padding-left: 10px !important;
     color: #00000088;
-    text-align: center !important; /* Centers text and inline content horizontally */
-    vertical-align: middle !important; /* Centers content vertically within the cell */
+    text-align: center !important;
+    /* Centers text and inline content horizontally */
+    vertical-align: middle !important;
+    /* Centers content vertically within the cell */
 }
 
 .table tbody tr:hover {
     background-color: #fff;
-    
+
 }
 
 .table .badge.bg-red {
-    background-color: #ffff; /* Red background */
-    color: #ff0000 !important; /* Dark text color */
-    border: 1px solid #ff0000; /* Red border */
-    border-radius: 50px; /* Oval shape */
-    padding: 0.45rem  0.85rem; /* Adjust padding for oval effect */
-    font-size: 0.75rem; /* Adjust text size */
+    background-color: #ffff;
+    /* Red background */
+    color: #ff0000 !important;
+    /* Dark text color */
+    border: 1px solid #ff0000;
+    /* Red border */
+    border-radius: 50px;
+    /* Oval shape */
+    padding: 0.45rem 0.85rem;
+    /* Adjust padding for oval effect */
+    font-size: 0.75rem;
+    /* Adjust text size */
     font-weight: normal;
-    
+
 }
 
 
 .pagination .page-item .page-link {
     color: #333;
     border: none;
-    background-color: #fff ;
+    background-color: #fff;
     padding-bottom: 0%;
 }
 
 
 .pagination .page-item.active .page-link {
-    background-color: #c06c3e7e; /* Background color for active item */
-    color: #fff;               /* White text for better contrast */
-    border-radius: 10px;       /* Rounded corners */
+    background-color: #c06c3e7e;
+    /* Background color for active item */
+    color: #fff;
+    /* White text for better contrast */
+    border-radius: 10px;
+    /* Rounded corners */
     width: 30px;
     padding-left: 13px;
 }
 
 
-.btn-add, .btn-sort {
+.btn-add,
+.btn-sort {
     border: none !important;
 }
 
-.btn-add:hover, .btn-sort:hover {
+.btn-add:hover,
+.btn-sort:hover {
     opacity: 0.9 !important;
 }
+
 .input-group-text {
-    border: none !important; /* Removes all borders */
-    background-color: transparent !important; /* Makes the background transparent */
+    border: none !important;
+    /* Removes all borders */
+    background-color: transparent !important;
+    /* Makes the background transparent */
     padding-left: 0 !important;
     padding-right: 0 !important;
 }
 
 .search-icon i {
-    color: #000; /* Sets the icon color to black */
+    color: #000;
+    /* Sets the icon color to black */
     padding-bottom: 4px;
 }
 
 .form-control {
-    border-radius: 100px !important; /* Gives the search input rounded corners */
-    border-color: #ccc; /* Light grey border color */
-    padding-right: 2rem; /* Adds space for the search icon */
+    border-radius: 100px !important;
+    /* Gives the search input rounded corners */
+    border-color: #ccc;
+    /* Light grey border color */
+    padding-right: 2rem;
+    /* Adds space for the search icon */
 }
 
 .input-group {
     position: absolute;
-   
+
 }
 
 .input-group-text.search-icon {
@@ -120,34 +145,41 @@
     right: 10px;
     top: 50%;
     transform: translateY(-50%);
-    pointer-events: none; /* Prevents the icon from being clickable */
+    pointer-events: none;
+    /* Prevents the icon from being clickable */
 }
+
 .input-group.input-group-sm.w-25 {
     position: relative;
 }
-.head-title h1{
+
+.head-title h1 {
     color: #C06B3E !important;
     padding-bottom: 30px;
- }
+}
 
-   
- .head-title {
-       margin-top: 5px;
-       border-radius: 10px;
-       box-shadow: 0 0 0 rgba(0, 0, 0, 0); /* Remove box shadow */
-       padding-bottom: 30px;
-       position: relative;
- }
-   
-     .head-title h1{
-       color: #C06B3E !important;
-       padding-bottom: 10px;
-     }
-   
-   .head-title h1 u {
-       text-underline-offset: 30px; /* Adds space between the text and the underline */
-       text-decoration-thickness: 5px; /* Adjusts the thickness of the underline if needed */
-   }
+
+.head-title {
+    margin-top: 5px;
+    border-radius: 10px;
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+    /* Remove box shadow */
+    padding-bottom: 30px;
+    position: relative;
+}
+
+.head-title h1 {
+    color: #C06B3E !important;
+    padding-bottom: 10px;
+}
+
+.head-title h1 u {
+    text-underline-offset: 30px;
+    /* Adds space between the text and the underline */
+    text-decoration-thickness: 5px;
+    /* Adjusts the thickness of the underline if needed */
+}
+
 /* Modal container styling */
 .modal-content.info-card {
     border-radius: 10px;
@@ -174,11 +206,12 @@
     height: auto;
     border-radius: 10px;
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-    
+
 }
 
 /* Form inputs and selects */
-.form-control, .form-select {
+.form-control,
+.form-select {
     border-radius: 30px !important;
     border: 1px solid #ced4da;
     padding: 10px;
@@ -187,11 +220,16 @@
 }
 
 /* Disabled form inputs and selects */
-.form-control:disabled, .form-select:disabled {
-    background-color: #f8f9fa; /* Lighter background to indicate disabled state */
-    color: #6c757d; /* Grey text color for disabled form controls */
-    border-color: #ced4da; /* Maintain the same border */
-    opacity: 1; /* Prevents the form control from appearing too faded */
+.form-control:disabled,
+.form-select:disabled {
+    background-color: #f8f9fa;
+    /* Lighter background to indicate disabled state */
+    color: #6c757d;
+    /* Grey text color for disabled form controls */
+    border-color: #ced4da;
+    /* Maintain the same border */
+    opacity: 1;
+    /* Prevents the form control from appearing too faded */
 }
 
 
@@ -235,83 +273,135 @@
         width: 100%;
     }
 }
+
 /* Custom CSS for the Save button */
 .btn-save {
-    background-color: #092E5A !important; /* Custom color */
-    color: #fff !important; /* Text color */
-    border: none; /* Remove border if needed */
+    background-color: #092E5A !important;
+    /* Custom color */
+    color: #fff !important;
+    /* Text color */
+    border: none;
+    /* Remove border if needed */
 }
 
 .btn-save:hover {
-    background-color: #092E5A; /* Slightly darker color on hover */
+    background-color: #092E5A;
+    /* Slightly darker color on hover */
 }
 
 /* Optional: Custom CSS for Cancel button */
 .btn-danger {
-    background-color: #dc3545; /* Bootstrap default red color */
-    color: #fff; /* Text color */
-    border: none; /* Remove border if needed */
+    background-color: #dc3545;
+    /* Bootstrap default red color */
+    color: #fff;
+    /* Text color */
+    border: none;
+    /* Remove border if needed */
 }
 
 .btn-danger:hover {
-    background-color: #c82333; /* Slightly darker red on hover */
+    background-color: #c82333;
+    /* Slightly darker red on hover */
 }
+
 .btn-edit {
-    background-color: #C0690A !important; /* Custom color */
-    color: #fff !important; /* Text color */
-    border: none; /* Remove border if needed */
+    background-color: #C0690A !important;
+    /* Custom color */
+    color: #fff !important;
+    /* Text color */
+    border: none;
+    /* Remove border if needed */
     border-radius: 30px !important;
     margin-bottom: 100px !important;
 }
 
 .btn-edit i.bi-pencil-square {
-    margin-top: 40px !important; /* Adjust as needed */
+    margin-top: 40px !important;
+    /* Adjust as needed */
     position: relative;
-    bottom: 3px !important; /* Adjust this value to move it */
+    bottom: 3px !important;
+    /* Adjust this value to move it */
 }
 
 
-.modal-header{
+.modal-header {
     border: none !important;
 }
-.modal-footer{
+
+.modal-footer {
     border: none !important;
 }
 
-.modal-header .modal-title{
+.modal-header .modal-title {
     font-family: 'Poppins', bold;
     color: #002a5c;
     font-weight: bold;
     font-size: 28px;
-    text-align: left; /* Center the title on smaller screens */
+    text-align: left;
+    /* Center the title on smaller screens */
     margin-top: 10px;
     margin-left: 10px;
 }
+
 .paw-prints-down {
     position: relative;
-    left: 0% !important; /* Position the image at the left end */
-    top: -150px !important; /* Vertically align the image */
-    margin: 0 0 20px 20px; /* Remove any margin around the div */
-    padding: 0; /* Remove any padding around the div */
-    
-  }
-.paw-prints-down img {    
-    z-index: -1; /* Layer the image behind the content */
-    width: 30%; /* Adjust width if necessary */
-    height: auto; /* Adjust height if necessary */
-    margin-bottom: -150px ; /* Remove any default margin around the image */
-    padding: 0; /* Remove any default padding around the image */
-    display: block; /* Ensure the image is treated as a block element */
+    left: 0% !important;
+    /* Position the image at the left end */
+    top: -150px !important;
+    /* Vertically align the image */
+    margin: 0 0 20px 20px;
+    /* Remove any margin around the div */
+    padding: 0;
+    /* Remove any padding around the div */
+
+}
+
+.paw-prints-down img {
+    z-index: -2;
+    /* Layer the image behind the content */
+    width: 30%;
+    /* Adjust width if necessary */
+    height: auto;
+    /* Adjust height if necessary */
+    margin-bottom: -150px;
+    /* Remove any default margin around the image */
+    padding: 0;
+    /* Remove any default padding around the image */
+    display: block;
+    /* Ensure the image is treated as a block element */
     box-shadow: none;
-  }
+}
 
 /*rescue request*/
 .badge-request {
- background-color: #ffff; /* Red background */
-    color: #6E6E6E !important; /* Dark text color */
-    border: 1px solid #6E6E6E; /* Red border */
-    border-radius: 50px; /* Oval shape */
-    padding: 0.45rem 1rem; /* Adjust padding for oval effect */
-    font-size: 0.75rem; /* Adjust text size */
-    font-weight: normal; 
-} 
+    background-color: #ffff;
+    /* Red background */
+    color: #6E6E6E !important;
+    /* Dark text color */
+    border: 1px solid #6E6E6E;
+    /* Red border */
+    border-radius: 50px;
+    /* Oval shape */
+    padding: 0.45rem 1rem;
+    /* Adjust padding for oval effect */
+    font-size: 0.75rem;
+    /* Adjust text size */
+    font-weight: normal;
+}
+
+
+.btn-tags {
+    background-color: white !important;
+    color: #161A2D !important;
+    border: 2px solid #161A2D !important;
+}
+
+.btn-tags:hover {
+    background-color: #0049e86b !important;
+    color: #fff !important;
+}
+
+.btn-selected {
+    background-color: #0048E8 !important;
+    color: #fff !important;
+}

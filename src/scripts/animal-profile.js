@@ -90,6 +90,52 @@ function downloadMergedImage() {
     };
 }
 
+document.getElementById('editBtn').addEventListener('click', function() {
+    // Enable all form inputs
+    let inputs = document.querySelectorAll('#animalInfoForm input, #animalInfoForm textarea');
+    inputs.forEach(input => {
+        input.removeAttribute('readonly');
+    });
+
+    let buttons = document.querySelectorAll('#animalInfoForm .btn-tags');
+    buttons.forEach(button => {
+        button.removeAttribute('disabled');
+    });
+
+    // Show "Editing Mode" toast
+    let toast = new bootstrap.Toast(document.getElementById('editToast'));
+    toast.show();
+
+    // Hide "Edit Information" and "Back to Records" buttons
+    document.getElementById('editBtn').style.display = 'none';
+    document.getElementById('backBtn').style.display = 'none';
+
+    // Show "Apply Changes" button
+    document.getElementById('applyBtn').style.display = 'inline-block';
+    document.getElementById('cancelBtn').style.display = 'inline-block';
+});
+
+// Handle form submission
+document.getElementById('animalInfoForm').addEventListener('submit', function(e) {
+    e.preventDefault(); 
+    
+    let inputs = document.querySelectorAll('#animalInfoForm input, #animalInfoForm textarea');
+    inputs.forEach(input => {
+        input.setAttribute('readonly', true);
+    });
+
+    let buttons = document.querySelectorAll('#animalInfoForm .btn-tags');
+    buttons.forEach(button => {
+        button.setAttribute('disabled', false);
+    });
+
+
+    document.getElementById('editBtn').style.display = 'inline-block';
+    document.getElementById('backBtn').style.display = 'inline-block';
+    document.getElementById('applyBtn').style.display = 'none';
+    document.getElementById('cancelBtn').style.display = 'none';
+});
+
 document.querySelectorAll('.btn-tags').forEach(button => {
     button.addEventListener('click', () => {
         button.classList.toggle('btn-selected');
