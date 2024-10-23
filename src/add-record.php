@@ -119,6 +119,7 @@
             </div>
         </div>
 
+        <script src="scripts/animal-profile.js"></script>
         <script src="scripts/rescue-records.js"></script>
 </body>
 </html>
