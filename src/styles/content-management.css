@@ -5,86 +5,153 @@
 
 /* Style tab links */
 .tablink {
-    background-color: white;
-    color: black;
-    float: left;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    padding: 14px 16px;
-    font-size: 17px;
-    width: 25%;
-  }
-  
-  .tablink:hover {
-    background-color: #c8c8c8;
-  }
-
-  .head-title {
-    margin-top: 5px;
-    border-radius: 10px;
-    box-shadow: 0 0 0 rgba(0, 0, 0, 0); /* Remove box shadow */
-    padding-bottom: 30px;
-    position: relative;
+  background-color: white;
+  color: black;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  font-size: 17px;
+  width: 25%;
 }
 
-  .head-title h1{
-    color: #C06B3E !important;
-    padding-bottom: 10px;
-  }
+ #defaultOpen{
+ border-top-left-radius: 20px !important;
+}
+
+#faqtab{
+  border-top-right-radius: 20px !important;
+ }
+ 
+
+.tablink:hover {
+  background-color: #c8c8c8;
+}
+
+.head-title {
+  margin-top: 5px;
+  border-radius: 10px;
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+  /* Remove box shadow */
+  padding-bottom: 30px;
+  position: relative;
+}
+
+.head-title h1 {
+  color: #C06B3E !important;
+  padding-bottom: 10px;
+}
 
 .head-title h1 u {
-    text-underline-offset: 30px; /* Adds space between the text and the underline */
-    text-decoration-thickness: 5px; /* Adjusts the thickness of the underline if needed */
+  text-underline-offset: 30px;
+  /* Adds space between the text and the underline */
+  text-decoration-thickness: 5px;
+  /* Adjusts the thickness of the underline if needed */
 }
-  
-  /* Style the tab content (and add height:100% for full page content) */
-  .tabcontent {
-    color: black;
-    display: none;
-    padding: 100px 20px;
-    height: 100%;
-  }
-  
-  #Home {background-color: #FFF8CC;}
-  #News {background-color: #FFF8CC;}
-  #Contact {background-color: #FFF8CC;}
-  #About {background-color: #FFF8CC;}
 
-  #errorModal {
-    z-index: 1060;
-  }
-  
+.custom-badge {
+  display: inline-block;
+  padding: 0.3em 1.2em;
+  font-size: 12px;
+  font-weight: bold;
+  border-radius: 50px; /* Creates the oval shape */
+  background-color: white; /* White background */
+  border: 2px solid transparent; /* Default transparent border */
+}
+
+.badge-draft {
+  border-color: gray; /* Gray border for Draft */
+  color: gray; /* Text color */
+}
+
+.badge-published {
+  border-color: green; /* Green border for Published */
+  color: green; /* Text color */
+}
+
+.badge-unpublished {
+  border-color: red; /* Red border for Unpublished */
+  color: red; /* Text color */
+}
+
+.badge-scheduled {
+  border-color: orange; /* Orange border for Scheduled Post */
+  color: orange; /* Text color */
+}
+
+
+/* Style the tab content (and add height:100% for full page content) */
+.tabcontent {
+  color: black;
+  display: none;
+  padding: 100px 20px;
+  height: 100%;
+}
+
+#Home {
+  background-color: #ffdb5a;
+  border-radius: 20px;
+}
+
+#News {
+  background-color: #ffdb5a;
+  border-radius: 20px;
+}
+
+#Contact {
+  background-color: #ffdb5a;
+  border-radius: 20px;
+}
+
+#About {
+  background-color: #ffdb5a;
+  border-radius: 20px;
+}
+
+#errorModal {
+  z-index: 1060;
+}
+
 table {
   background-color: white !important;
 }
+
 thead th {
   color: #092E5A !important;
   background-color: transparent !important;
   border-bottom: gray solid 2px !important;
 }
 
-tbody th, tbody td {
+tbody th,
+tbody td {
   color: black !important;
   background-color: #F7FAFC !important;
   border-bottom: 2px !important;
 }
 
-tbody th .blank, tbody tr .blank{
+tbody th .blank,
+tbody tr .blank {
   color: black !important;
   background-color: transparent !important;
   border-bottom: 2px !important;
 }
 
 
-  .table .badge.bg-green {
-    background-color: #ffff; /* Red background */
-    color: #9AE6B4 !important; /* Dark text color */
-    border: 1px solid #9AE6B4; /* Red border */
-    border-radius: 50px; /* Oval shape */
-    padding: 0.45rem  0.85rem; /* Adjust padding for oval effect */
-    font-size: 0.75rem; /* Adjust text size */
-    font-weight: 500px; 
+.table .badge.bg-green {
+  background-color: #ffff;
+  /* Red background */
+  color: #9AE6B4 !important;
+  /* Dark text color */
+  border: 1px solid #9AE6B4;
+  /* Red border */
+  border-radius: 50px;
+  /* Oval shape */
+  padding: 0.45rem 0.85rem;
+  /* Adjust padding for oval effect */
+  font-size: 0.75rem;
+  /* Adjust text size */
+  font-weight: 500px;
 }
 
 .asterisk {

@@ -175,93 +175,34 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
   </div>
 
   <div class="container">
-    <div class="table-responsive mt-4">
-        <table id="monitoring" class="table table-hover mb-5">
-            <thead>
-                <tr>
-                    <th width="5%">#</th>
-                    <th width="20%">Date</th>
-                    <th width="20%">Type</th>
-                    <th width="5%">Amount</th>
-                    <th width="30%">Purpose</th>
-                    <th width="25%">Donator</th>
-                </tr>
-            </thead>
-            <tbody>
-              <tbody id="post_data"></tbody>
-            </tbody>
-        </table>
-        <div class="d-flex justify-content-end">
-    			    <div id="pagination_link"></div>
-        </div>
+    <div class="card p-4">
+      <div class="table-responsive mt-4">
+          <table id="monitoring" class="table table-hover mb-5">
+              <thead>
+                  <tr>
+                      <th width="5%">#</th>
+                      <th width="20%">Date</th>
+                      <th width="20%">Type</th>
+                      <th width="5%">Amount</th>
+                      <th width="30%">Purpose</th>
+                      <th width="25%">Donator</th>
+                  </tr>
+              </thead>
+              <tbody>
+                <tbody id="post_data"></tbody>
+              </tbody>
+          </table>
+          <div class="d-flex justify-content-end">
+                <div id="pagination_link"></div>
+          </div>
+      </div>
     </div>
 </div>
 
  </div>
 
  <script src="scripts/liquidation.js"></script>
- <script>
-        load_data();
 
-        function load_data(query = '', page_number = 1)
-        {
-            var form_data = new FormData();
-
-            form_data.append('query', query);
-
-            form_data.append('page', page_number);
-
-            var ajax_request = new XMLHttpRequest();
-
-            ajax_request.open('POST', 'includes/fetch-liquidation.php');
-
-            ajax_request.send(form_data);
-
-            ajax_request.onreadystatechange = function()
-            {
-                if(ajax_request.readyState == 4 && ajax_request.status == 200)
-                {
-                    var response = JSON.parse(ajax_request.responseText);
-
-                    var html = '';
-
-                    var serial_no = 1;
-
-                    if(response.data.length > 0)
-                    {
-                        for(var count = 0; count < response.data.length; count++)
-                        {
-                            html += '<tr>';
-                            html += '<td>'+response.data[count].liquidation_id+'</td>';
-                            html += '<td>'+response.data[count].date+'</td>';
-                            html += '<td><span class="badge text-bg-' + (response.data[count].type === 'donation' ? 'success' : 'danger') + '">' + response.data[count].type.charAt(0).toUpperCase() + response.data[count].type.slice(1) + '</span></td>';
-                            html += '<td>'+response.data[count].amount+'</td>';
-                            html += '<td>'+response.data[count].description+'</td>';
-                            if (response.data[count].type === 'expense') {
-                              html += '<td>N/A</td>';
-                          } else {
-                              html += '<td>' + (response.data[count].donator ? response.data[count].donator : '') + '</td>';
-                          }
-                            html += '</tr>';
-                            serial_no++;
-                         
-                        }
-                    }
-                    else
-                    {
-                        html += '<tr><td colspan="3" class="text-center">No Data Found</td></tr>';
-                    }
-
-                    document.getElementById('post_data').innerHTML = html;
-
-
-                    document.getElementById('pagination_link').innerHTML = response.pagination;
-
-                }
-
-            }
-        }
-        </script>
 </body>
 </html>
 <?php

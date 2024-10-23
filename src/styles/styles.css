@@ -122,6 +122,14 @@
     }
   }
 
+  th {
+    font-weight: bold !important;
+ }
+
+ td {
+  color: black !important;
+}
+
   .dog-details {
     background-color: #f8f9fa;
     padding: 20px;
