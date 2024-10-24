@@ -1,4 +1,5 @@
 <?php
+include_once 'session-handler.php';
 include_once 'db-connect.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -7,8 +8,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $link = $_POST['link'];
     $status = $_POST['status'];
     
-    // Temporary user_id
-    $user_id = 1;
+    $user_id = $_SESSION['user_id'];
 
     // Check if a file is uploaded
     if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
@@ -41,8 +41,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Free the memory
         imagedestroy($imageResource);
+        
+        // Extract just the filename for database storage
+        $imageFileName = $imageWebpFileName; // This is just the filename
     } else {
-        $uploadWebpPath = null; // No image uploaded
+        $imageFileName = null; // No image uploaded
     }
 
     // Prepare and bind the SQL query
@@ -54,7 +57,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Bind the parameters to the statement, using correct parameter types
-    $stmt->bind_param("ssssi", $item, $link, $status, $uploadWebpPath, $user_id);
+    $stmt->bind_param("ssssi", $item, $link, $status, $imageFileName, $user_id); // Use the filename here
 
     // Execute the query
     if ($stmt->execute()) {

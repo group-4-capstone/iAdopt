@@ -1,4 +1,5 @@
 <?php
+include_once 'session-handler.php';
 include_once 'db-connect.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -64,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $animal_id = $stmt->insert_id; // Get the last inserted ID from animals table
 
             // Insert into rescue table using prepared statements
-            $user_id = 1; // Static value for user_id
+            $user_id = $_SESSION['user_id']; // Updated
             $report_type = 'report'; // Static value for report_type
             $stmt = $db->prepare("INSERT INTO rescue (animal_id, location, animal_image, rescue_description, user_id, report_type) 
                                   VALUES (?, ?, ?, ?, ?, ?)");
