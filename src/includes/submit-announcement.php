@@ -1,4 +1,5 @@
 <?php
+include_once 'session-handler.php';
 include_once 'db-connect.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -7,26 +8,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $status = $_POST['status'];
     $announcementDate = isset($_POST['announcement_date']) && !empty($_POST['announcement_date']) ? $_POST['announcement_date'] : null;
     $description = $_POST['description'];
+    $user_id = $_SESSION['user_id'];
     
-    // Temporary user_id
-    $user_id = 1;
-
-    // Check if a file is uploaded
     if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
         $image = $_FILES['image'];
 
-        // Define the upload directory
+ 
         $uploadDir = '../styles/assets/announcement/';
+        $imageWebpFileName = uniqid() . '.webp'; 
+        $uploadWebpPath = $uploadDir . $imageWebpFileName;
 
-        // Get the file extension and validate it
+  
         $fileType = mime_content_type($image['tmp_name']);
         if (!in_array($fileType, ['image/jpeg', 'image/png'])) {
             die('Invalid file type. Only JPEG and PNG formats are allowed.');
         }
-
-        // Generate a unique file name for the webp file
-        $imageWebpFileName = uniqid() . '.webp';
-        $uploadWebpPath = $uploadDir . $imageWebpFileName;
 
         // Convert image to webp
         if ($fileType === 'image/jpeg') {
@@ -43,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Free the memory
         imagedestroy($imageResource);
     } else {
-        $uploadWebpPath = null; // No image uploaded
+        $imageWebpFileName = null; // No image uploaded
     }
 
     // Prepare and bind the SQL query
@@ -55,7 +51,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Bind the parameters to the statement, using correct parameter types
-    $stmt->bind_param("sssssi", $title, $status, $announcementDate, $description, $uploadWebpPath, $user_id);
+    $stmt->bind_param("sssssi", $title, $status, $announcementDate, $description, $imageWebpFileName, $user_id); // Use $imageWebpFileName here
 
     // Execute the query
     if ($stmt->execute()) {

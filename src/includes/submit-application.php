@@ -1,4 +1,5 @@
 <?php
+include_once 'session-handler.php';
 require 'db-connect.php'; 
 
 // Function to convert images to WebP
@@ -21,7 +22,7 @@ function convertToWebP($source, $destination) {
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $animal_id = 1; //temp only
-    $user_id = 1; //temp only
+    $user_id = $_SESSION['user_id'];
 
     // Use null coalescing operator to set to NULL if not set
     $address1 = $_POST['address1'] ?? NULL;

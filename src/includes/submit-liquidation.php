@@ -1,4 +1,5 @@
 <?php
+include_once 'session-handler.php';
 include_once 'db-connect.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -13,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Get the shared form data
     $amount = $_POST['amount'];
     $description = $_POST['description'];
-    $user_id = 1;  // Set the user_id to 1
+    $user_id = $_SESSION['user_id'];
 
     // Handle donation submission
     if ($buttonId === 'submitDonation') {

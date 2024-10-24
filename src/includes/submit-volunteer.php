@@ -1,4 +1,5 @@
 <?php
+include_once 'session-handler.php';
 include_once 'db-connect.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -9,7 +10,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $status = $_POST['status'];
     
     // Temporary user_id
-    $user_id = 1;
+    $user_id = $_SESSION['user_id'];
 
     // Prepare and bind the SQL query
     $stmt = $db->prepare("INSERT INTO volunteers (first_name, last_name, role, status, admin) VALUES (?, ?, ?, ?, ?)");

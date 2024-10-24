@@ -1,4 +1,5 @@
 <?php
+include_once 'session-handler.php';
 include_once 'db-connect.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -8,7 +9,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $status = $_POST['status'];
 
     // Temporary user_id for admin
-    $admin_id = 1;
+    $admin_id = $_SESSION['user_id'];
 
     // Prepare and bind the SQL query
     $stmt = $db->prepare("INSERT INTO faqs (question, answer, status, admin) VALUES (?, ?, ?, ?)");
