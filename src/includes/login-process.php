@@ -14,14 +14,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $db = new Database();
         $conn = $db->getConnection();
 
-        $sql = "SELECT role, password FROM users WHERE email = ?";
+        $sql = "SELECT role, password, user_id FROM users WHERE email = ?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("s", $email);
         $stmt->execute();
         $stmt->store_result();
 
         if ($stmt->num_rows > 0) {
-            $stmt->bind_result($role, $hashed_password);
+            $stmt->bind_result($role, $hashed_password, $user_id); 
             $stmt->fetch();
 
             // Debugging: Log the email and password
@@ -33,9 +33,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION['logged_in'] = true;
                 $_SESSION['role'] = $role;
                 $_SESSION['email'] = $email;
+                $_SESSION['user_id'] = $user_id; // Set user_id in session
 
                 // Return success response with the user's role
-                echo json_encode(['success' => true, 'role' => $role]);
+                echo json_encode(['success' => true, 'role' => $role, 'user_id' => $user_id]);
             } else {
                 // Return error for incorrect password
                 echo json_encode(['success' => false, 'error' => 'Invalid password. Please try again.']);

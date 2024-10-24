@@ -47,7 +47,9 @@ function load_data_announcements(query = '', page_number = 1) {
                     html += '<td><span class="custom-badge ' + badgeClass + '">' + status + '</span></td>';
                     
                     html += '<td>' + first_name + ' ' + last_name + '</td>';
-                    html += '<td class="text-center align-middle"><button class="btn">...</button></td>';
+                    html += '<td class="text-center align-middle">';
+                    html += '<button class="btn" data-bs-toggle="modal" data-bs-target="#announcementModal_' + announcement_id + '">...</button>';
+                    html += '</td>';
                     html += '</tr>';
                     serial_no++;
                     html += '<tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>';
@@ -93,7 +95,7 @@ function load_data_merch(query = '', page_number = 1) {
             
                     html += '<tr data-merch-image="' + image + '">';
                     html += '<td>' + merch_id + '</td>';
-                    html += '<td>' + item + '</td>';
+                    html += '<td><b>' + item + '</b></td>';
                     html += '<td>' + date + '</td>';
                     var badgeClass = '';
                     if (status === 'Draft') {
@@ -106,8 +108,9 @@ function load_data_merch(query = '', page_number = 1) {
 
                     html += '<td><span class="custom-badge ' + badgeClass + '">' + status + '</span></td>';
                     html += '<td>' + link + '</td>';
-                   
-                    html += '<td class="text-center align-middle"><button class="btn">...</button></td>';
+                    html += '<td class="text-center align-middle">';
+                    html += '<button class="btn" data-bs-toggle="modal" data-bs-target="#merchModal_' + merch_id + '">...</button>';
+                    html += '</td>';
                     html += '</tr>';
                     serial_no++;
                     html += '<tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>';
@@ -165,8 +168,9 @@ function load_data_volunteers(query = '', page_number = 1) {
 
                     html += '<td><span class="custom-badge ' + badgeClass + '">' + status + '</span></td>';
                     html += '<td>' + role + '</td>';
-                   
-                    html += '<td class="text-center align-middle"><button class="btn">...</button></td>';
+                    html += '<td class="text-center align-middle">';
+                    html += '<button class="btn" data-bs-toggle="modal" data-bs-target="#volunteerModal_' + volunteer_id + '">...</button>';
+                    html += '</td>';
                     html += '</tr>';
                     serial_no++;
                     html += '<tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>';
@@ -223,10 +227,12 @@ function load_data_faq(query = '', page_number = 1) {
                   }
                     html += '<td><span class="custom-badge ' + badgeClass + '">' + status + '</span></td>';
                     html += '<td>' + first_name + ' ' + last_name + '</td>';
-                    html += '<td class="text-center align-middle"><button class="btn">...</button></td>';
+                    html += '<td class="text-center align-middle">';
+                    html += '<button class="btn" data-bs-toggle="modal" data-bs-target="#FAQModal_' + faq_id + '">...</button>';
+                    html += '</td>';
                     html += '</tr>';
                     serial_no++;
-                    html += '<tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>';
+                    html += '<tr><td></td><td></td><td></td><td></td><td></td></tr>';
                 }
             } else {
                 // Update colspan to match the number of columns (6)
@@ -335,7 +341,7 @@ document.getElementById('saveAnnouncementBtn').addEventListener('click', functio
           success: function(response) {
               console.log("Form submitted successfully:", response);
               $('#addAnnouncementModal').modal('hide');
-              $('#successContentModal').modal('show');
+              $('#successAnnouncementModal').modal('show');
           },
           error: function(xhr, status, error) {
               console.error("Error occurred:", xhr.responseText);
@@ -495,7 +501,7 @@ document.getElementById('saveMerchandiseBtn').addEventListener('click', function
         console.log("Form submitted successfully:", response);
         // You can hide the modal and show a success message here
         $('#addMerchandiseModal').modal('hide');
-        $('#successContentModal').modal('show');
+        $('#successMerchModal').modal('show');
       },
       error: function(xhr, status, error) {
         console.error("Error occurred:", xhr.responseText);
@@ -601,7 +607,7 @@ document.getElementById('saveVolunteerBtn').addEventListener('click', function(e
         console.log("Form submitted successfully:", response);
         // You can hide the modal and show a success message here
         $('#addVolunteerModal').modal('hide');
-        $('#successContentModal').modal('show');
+        $('#successVolunteerModal').modal('show');
       },
       error: function(xhr, status, error) {
         console.error("Error occurred:", xhr.responseText);
@@ -704,7 +710,7 @@ document.getElementById('saveFAQBtn').addEventListener('click', function(event) 
           success: function(response) {
               console.log("Form submitted successfully:", response);
               $('#addFAQModal').modal('hide');
-              $('#successContentModal').modal('show');
+              $('#successFAQModal').modal('show');
           },
           error: function(xhr, status, error) {
               console.error("Error occurred:", xhr.responseText);
