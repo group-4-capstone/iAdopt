@@ -100,7 +100,7 @@ function load_data_merch(query = '', page_number = 1) {
                     var badgeClass = '';
                     if (status === 'Draft') {
                         badgeClass = 'badge-draft'; // Gray color
-                    } else if (status === 'Publish') {
+                    } else if (status === 'Published') {
                         badgeClass = 'badge-published'; // Green color
                     } else if (status === 'Unpublished') {
                         badgeClass = 'badge-unpublished'; // Red color
@@ -336,8 +336,8 @@ document.getElementById('saveAnnouncementBtn').addEventListener('click', functio
           type: 'POST',
           url: 'includes/submit-announcement.php',
           data: formData,
-          processData: false, // Important for FormData
-          contentType: false, // Important for FormData
+          processData: false, 
+          contentType: false, 
           success: function(response) {
               console.log("Form submitted successfully:", response);
               $('#addAnnouncementModal').modal('hide');
@@ -495,8 +495,8 @@ document.getElementById('saveMerchandiseBtn').addEventListener('click', function
       type: 'POST',
       url: 'includes/submit-merch.php', // Replace with the actual PHP file handling the form
       data: formData,
-      processData: false, // Important for FormData
-      contentType: false, // Important for FormData
+      processData: false, 
+      contentType: false, 
       success: function(response) {
         console.log("Form submitted successfully:", response);
         // You can hide the modal and show a success message here
@@ -601,8 +601,8 @@ document.getElementById('saveVolunteerBtn').addEventListener('click', function(e
       type: 'POST',
       url: 'includes/submit-volunteer.php', 
       data: formData,
-      processData: false, // Important for FormData
-      contentType: false, // Important for FormData
+      processData: false, 
+      contentType: false, 
       success: function(response) {
         console.log("Form submitted successfully:", response);
         // You can hide the modal and show a success message here
@@ -705,8 +705,8 @@ document.getElementById('saveFAQBtn').addEventListener('click', function(event) 
           type: 'POST',
           url: 'includes/submit-faq.php',
           data: formData,
-          processData: false, // Important for FormData
-          contentType: false, // Important for FormData
+          processData: false, 
+          contentType: false, 
           success: function(response) {
               console.log("Form submitted successfully:", response);
               $('#addFAQModal').modal('hide');
@@ -783,3 +783,311 @@ document.querySelectorAll('input, select, #faqContent').forEach(element => {
       clearSpecificErrorMessage(this); 
   });
 });
+
+
+// Function to enable 'Save Changes' button if any value has changed
+function checkForChangesA(announcementId) {
+  const saveButton = document.getElementById(`saveAnnouncementBtn_${announcementId}`);
+  saveButton.disabled = false;
+}
+
+function clearErrorMessagesA(announcementId) {
+  const form = document.getElementById(`announcementForm_${announcementId}`);
+  form.querySelectorAll('.text-danger').forEach(errorElement => errorElement.remove());
+}
+
+
+function toggleEditAnnouncement(announcementId) {
+  const titleInput = document.getElementById(`announcementTitle_${announcementId}`);
+  const statusSelect = document.getElementById(`announcementStatus_${announcementId}`);
+  const newImageInput = document.getElementById(`annImageInput_${announcementId}`);
+  const editBtn = document.getElementById(`editAnnouncementBtn_${announcementId}`);
+  const saveBtn = document.getElementById(`saveAnnouncementBtn_${announcementId}`);
+
+  // Show "Editing Mode" toast
+   let toast = new bootstrap.Toast(document.getElementById('editToast'));
+   toast.show();
+
+  // Toggle read-only and disabled states
+  titleInput.readOnly = !titleInput.readOnly;
+  statusSelect.disabled = !statusSelect.disabled;
+  newImageInput.style.display = newImageInput.style.display === 'none' ? 'block' : 'none';
+
+  // Add onchange event listeners to enable 'Save Changes' button
+  titleInput.onchange = () => checkForChangesA(announcementId);
+  statusSelect.onchange = () => checkForChangesA(announcementId);
+
+
+  // Toggle button visibility
+  editBtn.style.display = editBtn.style.display === 'none' ? 'inline-block' : 'none';
+  saveBtn.style.display = saveBtn.style.display === 'none' ? 'inline-block' : 'none';
+
+  saveBtn.addEventListener('click', function(event) {
+    event.preventDefault();
+
+    clearErrorMessagesA(announcementId); // Clear any existing error messages
+
+    // Validate fields
+    let isValid = true;
+    isValid &= validateField(titleInput, "Title is required.");
+    isValid &= validateField(statusSelect, "Please select a status.");
+
+    // If the form is valid, submit via AJAX
+    if (isValid) {
+      const announcementForm = document.getElementById(`announcementForm_${announcementId}`);
+      const formData = new FormData(announcementForm);
+
+      $.ajax({
+        type: 'POST',
+        url: 'includes/edit-announcement.php',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(response) {
+          console.log("Form submitted successfully:", response);
+          $(`#announcementModal_${announcementId}`).modal('hide');
+          $('#successEditAnnouncementModal').modal('show');
+        },
+        error: function(xhr, status, error) {
+          console.error("Error occurred:", xhr.responseText);
+        }
+      });
+    }
+  });
+}
+
+// Function to enable 'Save Changes' button if any value has changed
+function checkForChanges(merchId) {
+  const saveButton = document.getElementById(`saveMerchandiseBtn_${merchId}`);
+  saveButton.disabled = false;
+}
+
+
+function toggleEditMode(merchId) {
+  const itemInput = document.getElementById(`merchItem_${merchId}`);
+  const linkInput = document.getElementById(`itemLink_${merchId}`);
+  const statusSelect = document.getElementById(`merchStatus_${merchId}`);
+  const newImageInput = document.getElementById(`newImageInput_${merchId}`);
+  const editBtn = document.getElementById(`editMerchandiseBtn_${merchId}`);
+  const saveBtn = document.getElementById(`saveMerchandiseBtn_${merchId}`);
+
+   // Show "Editing Mode" toast
+   let toast = new bootstrap.Toast(document.getElementById('editToast'));
+   toast.show();
+
+  // Toggle readonly and disabled attributes
+  itemInput.readOnly = !itemInput.readOnly;
+  linkInput.readOnly = !linkInput.readOnly;
+  statusSelect.disabled = !statusSelect.disabled;
+  newImageInput.style.display = newImageInput.style.display === 'none' ? 'block' : 'none';
+
+  // Toggle button visibility
+  editBtn.style.display = editBtn.style.display === 'none' ? 'inline-block' : 'none';
+  saveBtn.style.display = saveBtn.style.display === 'none' ? 'inline-block' : 'none';
+
+  // Add onchange event listeners to enable 'Save Changes' button
+  itemInput.onchange = () => checkForChanges(merchId);
+  linkInput.onchange = () => checkForChanges(merchId);
+  statusSelect.onchange = () => checkForChanges(merchId);
+  newImageInput.onchange = () => checkForChanges(merchId);
+
+  // Save button click event with validation and AJAX submission
+  saveBtn.addEventListener('click', function(event) {
+    event.preventDefault(); // Prevent default form submission
+
+    clearErrorMessages(merchId); // Clear existing error messages
+
+    // Validate fields
+    let isValid = true;
+    isValid &= validateField(itemInput, "This field is required.");
+    isValid &= validateField(linkInput, "This field is required.");
+    isValid &= validateField(statusSelect, "Please select a status.");
+   
+
+    // If the form is valid, submit via AJAX
+    if (isValid) {
+      const merchandiseForm = document.getElementById(`merchForm_${merchId}`);
+      const formData = new FormData(merchandiseForm); 
+
+      $.ajax({
+        type: 'POST',
+        url: 'includes/edit-merchandise.php', 
+        data: formData,
+        processData: false, 
+        contentType: false, 
+        success: function(response) {
+          console.log("Form submitted successfully:", response);
+          $(`#merchModal_${merchId}`).modal('hide');
+          $('#successEditMerchModal').modal('show');
+        },
+        error: function(xhr, status, error) {
+          console.error("Error occurred:", xhr.responseText);
+        }
+      });
+    }
+  });
+}
+
+// Validation Helper Functions
+function validateField(field, errorMessage) {
+  if (!field.value.trim()) {
+    displayError(field, errorMessage);
+    return false;
+  }
+  return true;
+}
+
+function validateImageField(field, errorMessage) {
+  if (!field.files.length) {
+    displayError(field, errorMessage);
+    return false;
+  }
+  return true;
+}
+
+function displayError(field, message) {
+  const errorElement = document.createElement('div');
+  errorElement.classList.add('text-danger', 'mt-2');
+  errorElement.textContent = message;
+  field.parentElement.appendChild(errorElement);
+}
+
+function clearErrorMessages(merchId) {
+  const form = document.getElementById(`merchForm_${merchId}`);
+  form.querySelectorAll('.text-danger').forEach(errorElement => errorElement.remove());
+}
+
+// Function to enable 'Save Changes' button if any value has changed
+function checkForChangesV(volunteerId) {
+  const saveButton = document.getElementById(`saveVolunteerBtn_${volunteerId}`);
+  saveButton.disabled = false;
+}
+
+function toggleEditVolunteer(volunteerId) {
+  const firstNameInput = document.getElementById(`volunteerFName_${volunteerId}`);
+  const lastNameInput = document.getElementById(`volunteerLName_${volunteerId}`);
+  const roleSelect = document.getElementById(`volunteerRole_${volunteerId}`);
+  const statusSelect = document.getElementById(`volunteerStatus_${volunteerId}`);
+  const editBtn = document.getElementById(`editVolunteerBtn_${volunteerId}`);
+  const saveBtn = document.getElementById(`saveVolunteerBtn_${volunteerId}`);
+
+  // Show "Editing Mode" toast
+  let toast = new bootstrap.Toast(document.getElementById('editToast'));
+  toast.show();
+
+  // Toggle readonly and disabled attributes
+  firstNameInput.readOnly = !firstNameInput.readOnly;
+  lastNameInput.readOnly = !lastNameInput.readOnly;
+  roleSelect.disabled = !roleSelect.disabled;
+  statusSelect.disabled = !statusSelect.disabled;
+
+  // Toggle button visibility
+  editBtn.style.display = editBtn.style.display === 'none' ? 'inline-block' : 'none';
+  saveBtn.style.display = saveBtn.style.display === 'none' ? 'inline-block' : 'none';
+
+  // Add onchange event listeners to enable 'Save Changes' button
+  firstNameInput.onchange = () => checkForChangesV(volunteerId);
+  lastNameInput.onchange = () => checkForChangesV(volunteerId);
+  roleSelect.onchange = () => checkForChangesV(volunteerId);
+  statusSelect.onchange = () => checkForChangesV(volunteerId);
+
+  // Save button click event with validation and AJAX submission
+  saveBtn.addEventListener('click', function(event) {
+    event.preventDefault(); // Prevent default form submission
+
+    clearErrorMessages(volunteerId); // Clear existing error messages
+
+    // Validate fields
+    let isValid = true;
+    isValid &= validateField(firstNameInput, "This field is required.");
+    isValid &= validateField(lastNameInput, "This field is required.");
+    isValid &= validateField(roleSelect, "Please select a role.");
+    isValid &= validateField(statusSelect, "Please select a status.");
+
+    // If the form is valid, submit via AJAX
+    if (isValid) {
+      const volunteerForm = document.getElementById(`volunteerForm_${volunteerId}`);
+      const formData = new FormData(volunteerForm); // Use FormData for file uploads (if any)
+
+      $.ajax({
+        type: 'POST',
+        url: 'includes/edit-volunteer.php', // Replace with actual PHP file handling the form
+        data: formData,
+        processData: false, 
+        contentType: false,
+        success: function(response) {
+          console.log("Form submitted successfully:", response);
+          $(`#volunteerModal_${volunteerId}`).modal('hide');
+          $('#successEditVolunteerModal').modal('show');
+        },
+        error: function(xhr, status, error) {
+          console.error("Error occurred:", xhr.responseText);
+        }
+      });
+    }
+  });
+}
+
+// Function to enable 'Save Changes' button if any value has changed
+function checkForChangesF(faqId) {
+  const saveButton = document.getElementById(`saveFAQBtn_${faqId}`);
+  saveButton.disabled = false;
+}
+
+
+function toggleEditFAQ(faqId) {
+  const questionInput = document.getElementById(`question_${faqId}`);
+  const answerTextarea = document.getElementById(`faqContent_${faqId}`);
+  const statusSelect = document.getElementById(`faqStatus_${faqId}`);
+  const editBtn = document.getElementById(`editFAQBtn_${faqId}`);
+  const saveBtn = document.getElementById(`saveFAQBtn_${faqId}`);
+
+  // Toggle read-only and disabled states
+  questionInput.readOnly = !questionInput.readOnly;
+  answerTextarea.readOnly = !answerTextarea.readOnly;
+  statusSelect.disabled = !statusSelect.disabled;
+
+   // Add onchange event listeners to enable 'Save Changes' button
+   questionInput.onchange = () => checkForChangesF(faqId);
+   answerTextarea.onchange = () => checkForChangesF(faqId);
+   statusSelect.onchange = () => checkForChangesF(faqId);
+
+  // Toggle button visibility
+  editBtn.style.display = editBtn.style.display === 'none' ? 'inline-block' : 'none';
+  saveBtn.style.display = saveBtn.style.display === 'none' ? 'inline-block' : 'none';
+
+  saveBtn.addEventListener('click', function(event) {
+    event.preventDefault(); 
+
+    clearErrorMessages(faqId); // Clear any existing error messages
+
+    // Validate fields
+    let isValid = true;
+    isValid &= validateField(questionInput, "Question is required.");
+    isValid &= validateField(answerTextarea, "Answer is required.");
+    isValid &= validateField(statusSelect, "Please select a status.");
+
+    // If the form is valid, submit via AJAX
+    if (isValid) {
+      const faqForm = document.getElementById(`FAQForm_${faqId}`);
+      const formData = new FormData(faqForm);
+
+      $.ajax({
+        type: 'POST',
+        url: 'includes/edit-faq.php',
+        data: formData,
+        processData: false,
+        contentType: false, 
+        success: function(response) {
+          console.log("Form submitted successfully:", response);
+          $(`#FAQModal_${faqId}`).modal('hide');
+          $('#successEditFAQModal').modal('show');
+        },
+        error: function(xhr, status, error) {
+          console.error("Error occurred:", xhr.responseText);
+        }
+      });
+    }
+  });
+}
+

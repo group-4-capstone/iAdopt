@@ -1,7 +1,6 @@
 <?php include_once 'includes/session-handler.php';
 include_once 'includes/db-connect.php';
 
-// Check session and role
 if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['role'] == 'head_admin')) {
 
 ?>
@@ -28,7 +27,7 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
     <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>  
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
   </head>
@@ -51,7 +50,6 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
       </section>
 
       <?php
-
       $announcement_query = "SELECT * FROM announcements";
       $announcement_result = $db->query($announcement_query);
       if ($announcement_result->num_rows > 0) {
@@ -72,6 +70,7 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                             <input type="text" class="form-control" name="title" id="announcementTitle_<?php echo $row['announcement_id']; ?>" value="<?php echo $row['title']; ?>" readonly>
                           </div>
                         </div>
+                        <input type="hidden" name="announcement_id" value="<?php echo $row['announcement_id']; ?>" readonly>
                         <div class="row mb-3">
                           <label for="announcementStatus" class="col-3 col-form-label">Status<span class="asterisk">*</span></label>
                           <div class="col-3">
@@ -100,12 +99,14 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                           <label for="announcementImage" class="col-3 col-form-label">Current Image<span class="asterisk">*</span></label>
                           <div class="col-9">
                             <img src="styles/assets/announcement/<?php echo htmlspecialchars($row['image']); ?>" alt="Announcement Image" class="img-fluid mb-3" id="announcementImageDisplay_<?php echo $row['announcement_id']; ?>" style="max-height: 250px; object-fit: cover;">
+                            <input type="file" class="form-control" name="new_image" id="annImageInput_<?php echo $row['announcement_id']; ?>" accept="image/*" style="display: none;">
                           </div>
                         </div>
                         <div class="row mb-1">
                           <div class="col-9 offset-3 d-flex justify-content-end">
                             <button type="button" class="btn me-2" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary" id="editAnnouncementBtn">Edit Post</button>
+                            <button type="button" class="btn btn-primary" id="editAnnouncementBtn_<?php echo $row['announcement_id']; ?>" onclick="toggleEditAnnouncement(<?php echo $row['announcement_id']; ?>)">Edit Post</button>
+                            <button type="submit" class="btn btn-success" id="saveAnnouncementBtn_<?php echo $row['announcement_id']; ?>" disabled style="display:none;">Save Changes</button>
                           </div>
                         </div>
                       </form>
@@ -117,176 +118,267 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
           </div><?php }
             } ?>
 
-      <?php
-      $merch_query = "SELECT * FROM merchandise";
-      $merch_result = $db->query($merch_query);
-      if ($merch_result->num_rows > 0) {
-        while ($row = $merch_result->fetch_assoc()) { ?>
-          <!-- View merchandise details modal -->
-          <div class="modal fade" id="merchModal_<?php echo $row['merch_id']; ?>" data-bs-backdrop="static" tabindex="-1" aria-labelledby="merchModalLabel_<?php echo $row['merch_id']; ?>" aria-hidden="true">
-            <div class="modal-dialog modal-xl modal-dialog-centered">
-              <div class="modal-content">
-                <div class="modal-body">
-                  <div class="card p-3">
-                    <div class="card-body">
-                      <h4 class="pb-4"> <?php echo "MERCHANDISE ID #" . $row['merch_id']; ?></h4>
-                      <form method="post" id="merchForm_<?php echo $row['merch_id']; ?>">
-                        <div class="row mb-3">
-                          <!-- Merchandise Item Label -->
-                          <label for="merchItem_<?php echo $row['merch_id']; ?>" class="col-3 col-form-label">Merchandise Item<span class="asterisk">*</span></label>
-                          <div class="col-9">
-                            <input type="text" class="form-control" name="item" id="merchItem_<?php echo $row['merch_id']; ?>" value="<?php echo $row['item']; ?>" readonly>
-                          </div>
-                        </div>
-                        <div class="row mb-3">
-                          <!-- Link Label -->
-                          <label for="itemLink_<?php echo $row['merch_id']; ?>" class="col-3 col-form-label">Link<span class="asterisk">*</span></label>
-                          <div class="col-9">
-                            <input type="text" class="form-control" name="link" id="itemLink_<?php echo $row['merch_id']; ?>" value="<?php echo $row['link']; ?>" readonly>
-                          </div>
-                        </div>
-                        <div class="row mb-3">
-                          <!-- Image Label -->
-                          <label for="merchImage_<?php echo $row['merch_id']; ?>" class="col-3 col-form-label">Image<span class="asterisk">*</span></label>
-                          <div class="col-9">
-                            <img src="styles/assets/merchandise/<?php echo $row['image']; ?>" alt="Merchandise Image" class="img-fluid mb-3" style="max-height: 250px; object-fit: cover;">
-                          </div>
-                        </div>
-                        <div class="row mb-3">
-                          <!-- Status Label -->
-                          <label for="merchStatus_<?php echo $row['merch_id']; ?>" class="col-3 col-form-label">Status<span class="asterisk">*</span></label>
-                          <div class="col-9">
-                            <select class="form-select" id="merchStatus_<?php echo $row['merch_id']; ?>" name="status" disabled>
-                              <option value="Draft" <?php echo ($row['status'] == 'Draft') ? 'selected' : ''; ?>>Draft</option>
-                              <option value="Publish" <?php echo ($row['status'] == 'Publish') ? 'selected' : ''; ?>>Publish Now</option>
-                            </select>
-                          </div>
-                        </div>
-                        <div class="row mb-3">
-                          <div class="col-9 offset-3 d-flex justify-content-end">
-                            <button type="button" class="btn me-2" data-bs-dismiss="modal">Close</button>
-                          </div>
-                        </div>
-                      </form>
+<?php
+$merch_query = "SELECT * FROM merchandise";
+$merch_result = $db->query($merch_query);
+if ($merch_result->num_rows > 0) {
+  while ($row = $merch_result->fetch_assoc()) { ?>
+    <!-- View merchandise details modal -->
+    <div class="modal fade" id="merchModal_<?php echo $row['merch_id']; ?>" data-bs-backdrop="static" tabindex="-1" aria-labelledby="merchModalLabel_<?php echo $row['merch_id']; ?>" aria-hidden="true">
+      <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-body">
+            <div class="card p-3">
+              <div class="card-body">
+                <h4 class="pb-4"> <?php echo "MERCHANDISE ID #" . $row['merch_id']; ?></h4>
+                <form method="post" id="merchForm_<?php echo $row['merch_id']; ?>" action="includes/edit-merchandise.php" enctype="multipart/form-data">
+                  <div class="row mb-3">
+                    <!-- Merchandise Item Label -->
+                    <label for="merchItem_<?php echo $row['merch_id']; ?>" class="col-3 col-form-label">Merchandise Item<span class="asterisk">*</span></label>
+                    <div class="col-9">
+                      <input type="text" class="form-control" name="item" id="merchItem_<?php echo $row['merch_id']; ?>" value="<?php echo $row['item']; ?>" readonly>
                     </div>
                   </div>
-                </div>
+                  <input type="hidden" name="merch_id" value="<?php echo $row['merch_id']; ?>" readonly>
+                  <div class="row mb-3">
+                    <!-- Link Label -->
+                    <label for="itemLink_<?php echo $row['merch_id']; ?>" class="col-3 col-form-label">Link<span class="asterisk">*</span></label>
+                    <div class="col-9">
+                      <input type="text" class="form-control" name="link" id="itemLink_<?php echo $row['merch_id']; ?>" value="<?php echo $row['link']; ?>" readonly>
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <!-- Image Label -->
+                    <label for="merchImage_<?php echo $row['merch_id']; ?>" class="col-3 col-form-label">Image<span class="asterisk">*</span></label>
+                    <div class="col-9">
+                      <img src="styles/assets/merchandise/<?php echo $row['image']; ?>" alt="Merchandise Image" class="img-fluid mb-3" style="max-height: 250px; object-fit: cover;">
+                      <input type="file" class="form-control" name="new_image" id="newImageInput_<?php echo $row['merch_id']; ?>" accept="image/*" style="display: none;">
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <!-- Status Label -->
+                    <label for="merchStatus_<?php echo $row['merch_id']; ?>" class="col-3 col-form-label">Status<span class="asterisk">*</span></label>
+                    <div class="col-9">
+                      <select class="form-select" id="merchStatus_<?php echo $row['merch_id']; ?>" name="status" disabled>
+                        <option value="Draft" <?php echo ($row['status'] == 'Draft') ? 'selected' : ''; ?> disabled>Draft</option>
+                        <option value="Published" <?php echo ($row['status'] == 'Published') ? 'selected' : ''; ?>>Publish Now</option>
+                        <option value="Unpublished" <?php echo ($row['status'] == 'Unpublished') ? 'selected' : ''; ?>>Unpublish </option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <div class="col-9 offset-3 d-flex justify-content-end">
+                      <button type="button" class="btn me-2" data-bs-dismiss="modal">Close</button>
+                      <button type="button" class="btn btn-primary" id="editMerchandiseBtn_<?php echo $row['merch_id']; ?>" onclick="toggleEditMode(<?php echo $row['merch_id']; ?>)">Edit Post</button>
+                      <button type="submit" class="btn btn-success" id="saveMerchandiseBtn_<?php echo $row['merch_id']; ?>" disabled style="display:none;">Save Changes</button>
+                    </div>
+                  </div>
+                </form>
               </div>
             </div>
           </div>
-      <?php }
-      }
-      ?>
-
-      <?php
-      $volunteer_query = "SELECT * FROM volunteers";
-      $volunteer_result = $db->query($volunteer_query);
-      if ($volunteer_result->num_rows > 0) {
-        while ($row = $volunteer_result->fetch_assoc()) { ?>
-          <!-- View volunteer details modal -->
-          <div class="modal fade" id="volunteerModal_<?php echo $row['volunteer_id']; ?>" data-bs-backdrop="static" tabindex="-1" aria-labelledby="volunteerModalLabel_<?php echo $row['volunteer_id']; ?>" aria-hidden="true">
-            <div class="modal-dialog modal-xl modal-dialog-centered">
-              <div class="modal-content">
-                <div class="modal-body p-4">
-                  <div class="card p-3">
-                    <h3 class="pb-4">Volunteer ID #<?php echo $row['volunteer_id']; ?></h3>
-                    <form method="post" id="volunteerForm_<?php echo $row['volunteer_id']; ?>">
-                      <div class="row mb-3">
-                        <label for="volunteerName_<?php echo $row['volunteer_id']; ?>" class="col-3 col-form-label">Name<span class="asterisk">*</span></label>
-                        <div class="col-5">
-                          <input type="text" class="form-control" id="volunteerFName_<?php echo $row['volunteer_id']; ?>" name="first_name" value="<?php echo $row['first_name']; ?>" readonly>
-                        </div>
-                        <div class="col-4">
-                          <input type="text" class="form-control" id="volunteerLName_<?php echo $row['volunteer_id']; ?>" name="last_name" value="<?php echo $row['last_name']; ?>" readonly>
-                        </div>
-                      </div>
-                      <div class="row mb-3">
-                        <label for="volunteerRole_<?php echo $row['volunteer_id']; ?>" class="col-3 col-form-label">Role<span class="asterisk">*</span></label>
-                        <div class="col-9">
-                          <select class="form-select" id="volunteerRole_<?php echo $row['volunteer_id']; ?>" name="role" disabled>
-                            <option value="Caretaker" <?php echo ($row['role'] == 'Caretaker') ? 'selected' : ''; ?>>Caretaker</option>
-                            <option value="Assistant" <?php echo ($row['role'] == 'Assistant') ? 'selected' : ''; ?>>Assistant</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="row mb-3">
-                        <label for="volunteerStatus_<?php echo $row['volunteer_id']; ?>" class="col-3 col-form-label">Status<span class="asterisk">*</span></label>
-                        <div class="col-9">
-                          <select class="form-select" id="volunteerStatus_<?php echo $row['volunteer_id']; ?>" name="status" disabled>
-                            <option value="active" <?php echo ($row['status'] == 'active') ? 'selected' : ''; ?>>Active</option>
-                            <option value="inactive" <?php echo ($row['status'] == 'inactive') ? 'selected' : ''; ?>>Inactive</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="row mb-3">
-                        <div class="col-9 offset-3 d-flex justify-content-end">
-                          <button type="button" class="btn me-2" data-bs-dismiss="modal">Close</button>
-                        </div>
-                      </div>
-                    </form>
+        </div>
+      </div>
+    </div>
+<?php }
+}
+?>
+     <?php
+$volunteer_query = "SELECT * FROM volunteers";
+$volunteer_result = $db->query($volunteer_query);
+if ($volunteer_result->num_rows > 0) {
+  while ($row = $volunteer_result->fetch_assoc()) { ?>
+    <!-- View volunteer details modal -->
+    <div class="modal fade" id="volunteerModal_<?php echo $row['volunteer_id']; ?>" data-bs-backdrop="static" tabindex="-1" aria-labelledby="volunteerModalLabel_<?php echo $row['volunteer_id']; ?>" aria-hidden="true">
+      <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-body p-4">
+            <div class="card p-3">
+              <h3 class="pb-4">Volunteer ID #<?php echo $row['volunteer_id']; ?></h3>
+              <form method="post" id="volunteerForm_<?php echo $row['volunteer_id']; ?>" action="includes/edit-volunteer.php">
+                <div class="row mb-3">
+                  <label for="volunteerName_<?php echo $row['volunteer_id']; ?>" class="col-3 col-form-label">Name<span class="asterisk">*</span></label>
+                  <div class="col-5">
+                    <input type="text" class="form-control" id="volunteerFName_<?php echo $row['volunteer_id']; ?>" name="first_name" value="<?php echo $row['first_name']; ?>" readonly>
+                  </div>
+                  <div class="col-4">
+                    <input type="text" class="form-control" id="volunteerLName_<?php echo $row['volunteer_id']; ?>" name="last_name" value="<?php echo $row['last_name']; ?>" readonly>
                   </div>
                 </div>
-              </div>
-            </div>
-          </div>
-      <?php }
-      }
-      ?>
-
-      <?php
-      $faq_query = "SELECT * FROM faqs";
-      $faq_result = $db->query($faq_query);
-      if ($faq_result->num_rows > 0) {
-        while ($row = $faq_result->fetch_assoc()) { ?>
-          <!-- View FAQ details modal -->
-          <div class="modal fade" id="FAQModal_<?php echo $row['faq_id']; ?>" data-bs-backdrop="static" tabindex="-1" aria-labelledby="faqModalLabel_<?php echo $row['faq_id']; ?>" aria-hidden="true">
-            <div class="modal-dialog modal-xl modal-dialog-centered">
-              <div class="modal-content">
-                <div class="modal-body p-4">
-                  <div class="card p-3">
-                    <h3 class="pb-4">FAQ ID #<?php echo $row['faq_id']; ?></h3>
-                    <form method="post" id="FAQForm_<?php echo $row['faq_id']; ?>">
-                      <div class="row mb-3">
-                        <label for="question_<?php echo $row['faq_id']; ?>" class="col-3 col-form-label">Question<span class="asterisk">*</span></label>
-                        <div class="col-9">
-                          <input type="text" class="form-control" id="question_<?php echo $row['faq_id']; ?>" name="question" value="<?php echo $row['question']; ?>" readonly>
-                        </div>
-                      </div>
-                      <div class="row mb-3">
-                        <label for="faqContent_<?php echo $row['faq_id']; ?>" class="col-3 col-form-label">Answer<span class="asterisk">*</span></label>
-                        <div class="col-9 mb-3">
-                          <div id="faqContent_<?php echo $row['faq_id']; ?>" style="border: 2px solid #ced4da; border-radius: 5px; height: 200px; overflow: auto;"><?php echo $row['answer']; ?></div>
-                        </div>
-                      </div>
-                      <div class="row mb-3">
-                        <label for="faqStatus_<?php echo $row['faq_id']; ?>" class="col-3 col-form-label">Status<span class="asterisk">*</span></label>
-                        <div class="col-9">
-                          <select class="form-select" id="faqStatus_<?php echo $row['faq_id']; ?>" name="status" disabled>
-                            <option value="draft" <?php echo ($row['status'] == 'draft') ? 'selected' : ''; ?>>Draft</option>
-                            <option value="publish" <?php echo ($row['status'] == 'publish') ? 'selected' : ''; ?>>Publish</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="row mb-3">
-                        <div class="col-9 offset-3 d-flex justify-content-end">
-                          <button type="button" class="btn me-2" data-bs-dismiss="modal">Close</button>
-                        </div>
-                      </div>
-                    </form>
+                <input type="hidden" name="volunteer_id" value="<?php echo $row['volunteer_id']; ?>" readonly>
+                <div class="row mb-3">
+                  <label for="volunteerRole_<?php echo $row['volunteer_id']; ?>" class="col-3 col-form-label">Role<span class="asterisk">*</span></label>
+                  <div class="col-9">
+                    <select class="form-select" id="volunteerRole_<?php echo $row['volunteer_id']; ?>" name="role" disabled>
+                      <option value="Caretaker" <?php echo ($row['role'] == 'Caretaker') ? 'selected' : ''; ?>>Caretaker</option>
+                      <option value="Assistant" <?php echo ($row['role'] == 'Assistant') ? 'selected' : ''; ?>>Assistant</option>
+                    </select>
                   </div>
                 </div>
-              </div>
+                <div class="row mb-3">
+                  <label for="volunteerStatus_<?php echo $row['volunteer_id']; ?>" class="col-3 col-form-label">Status<span class="asterisk">*</span></label>
+                  <div class="col-9">
+                    <select class="form-select" id="volunteerStatus_<?php echo $row['volunteer_id']; ?>" name="status" disabled>
+                      <option value="active" <?php echo ($row['status'] == 'active') ? 'selected' : ''; ?>>Active</option>
+                      <option value="inactive" <?php echo ($row['status'] == 'inactive') ? 'selected' : ''; ?>>Inactive</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <div class="col-9 offset-3 d-flex justify-content-end">
+                      <button type="button" class="btn me-2" data-bs-dismiss="modal">Close</button>
+                      <button type="button" class="btn btn-primary" id="editVolunteerBtn_<?php echo $row['volunteer_id']; ?>" onclick="toggleEditVolunteer(<?php echo $row['volunteer_id']; ?>)">Edit Post</button>
+                      <button type="submit" class="btn btn-success" id="saveVolunteerBtn_<?php echo $row['volunteer_id']; ?>" disabled style="display:none;">Save Changes</button>
+                  </div>
+                </div>
+              </form>
             </div>
           </div>
-      <?php }
-      }
-      ?>
+        </div>
+      </div>
+    </div>
+<?php }
+}
+?>
+
+
+<?php
+$faq_query = "SELECT * FROM faqs";
+$faq_result = $db->query($faq_query);
+if ($faq_result->num_rows > 0) {
+  while ($row = $faq_result->fetch_assoc()) { ?>
+    <!-- View FAQ details modal -->
+    <div class="modal fade" id="FAQModal_<?php echo $row['faq_id']; ?>" data-bs-backdrop="static" tabindex="-1" aria-labelledby="faqModalLabel_<?php echo $row['faq_id']; ?>" aria-hidden="true">
+      <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-body p-4">
+            <div class="card p-3">
+              <h3 class="pb-4">FAQ ID #<?php echo $row['faq_id']; ?></h3>
+              <form method="post" id="FAQForm_<?php echo $row['faq_id']; ?>">
+                <div class="row mb-3">
+                  <label for="question_<?php echo $row['faq_id']; ?>" class="col-3 col-form-label">Question<span class="asterisk">*</span></label>
+                  <div class="col-9">
+                    <input type="text" class="form-control" id="question_<?php echo $row['faq_id']; ?>" name="question" value="<?php echo $row['question']; ?>" readonly>
+                  </div>
+                </div>
+                <input type="hidden" name="faq_id" value="<?php echo $row['faq_id']; ?>" readonly>
+                <div class="row mb-3">
+                  <label for="faqContent_<?php echo $row['faq_id']; ?>" class="col-3 col-form-label">Answer<span class="asterisk">*</span></label>
+                  <div class="col-9 mb-3">
+                    <textarea class="form-control" id="faqContent_<?php echo $row['faq_id']; ?>" name="answer" rows="5" readonly><?php echo $row['answer']; ?></textarea>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <label for="faqStatus_<?php echo $row['faq_id']; ?>" class="col-3 col-form-label">Status<span class="asterisk">*</span></label>
+                  <div class="col-9">
+                    <select class="form-select" id="faqStatus_<?php echo $row['faq_id']; ?>" name="status" disabled>
+                      <option value="Draft" <?php echo ($row['status'] == 'Draft') ? 'selected' : ''; ?> disabled>Draft</option>
+                      <option value="Published" <?php echo ($row['status'] == 'Published') ? 'selected' : ''; ?>>Publish</option>
+                      <option value="Unpublished" <?php echo ($row['status'] == 'Unpublished') ? 'selected' : ''; ?>>Unpublish</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <div class="col-9 offset-3 d-flex justify-content-end">
+                  <button type="button" class="btn me-2" data-bs-dismiss="modal">Close</button>
+                    <button type="button" id="editFAQBtn_<?php echo $row['faq_id']; ?>" class="btn btn-primary me-2" onclick="toggleEditFAQ(<?php echo $row['faq_id']; ?>)">Edit Post</button>
+                    <button type="button" id="saveFAQBtn_<?php echo $row['faq_id']; ?>" class="btn btn-success me-2" style="display: none;" disabled>Save Changes</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+<?php }
+}
+?>
+
+        <!-- Toast Container -->
+        <div class="toast-container position-fixed bottom-0 end-0 p-3">
+            <div id="editToast" class="toast align-items-center text-bg-primary" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        Editing Mode
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
 
       <div class="mt-4">
         <button class="tablink" onclick="openPage('Home', this, '#ffdb5a')" id="defaultOpen">Announcement</button>
         <button class="tablink" onclick="openPage('News', this, '#ffdb5a')" id="merchtab">Merchandise</button>
         <button class="tablink" onclick="openPage('Contact', this, '#ffdb5a')" id="volunteertab">Volunteers</button>
         <button class="tablink" onclick="openPage('About', this, '#ffdb5a')" id="faqtab">FAQs</button>
+      </div>
+
+
+      
+       <!-- Success Edit Modal -->
+       <div class="modal fade" id="successEditAnnouncementModal" tabindex="-1" aria-labelledby="successContentModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-body">
+              <button type="button" class="btn-close d-flex ms-auto" data-bs-dismiss="modal"></button>
+              <div class="text-center">
+                <i class="bi bi-check-circle-fill" style="font-size: 8rem; color: #28a745;"></i>
+                <p class="mt-4 px-2"> Content has been successfully updated!
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+       <!-- Success Edit Modal -->
+       <div class="modal fade" id="successEditMerchModal" tabindex="-1" aria-labelledby="successContentModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-body">
+              <button type="button" class="btn-close d-flex ms-auto" data-bs-dismiss="modal"></button>
+              <div class="text-center">
+                <i class="bi bi-check-circle-fill" style="font-size: 8rem; color: #28a745;"></i>
+                <p class="mt-4 px-2"> Content has been successfully updated!
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+       <!-- Success Edit Modal -->
+       <div class="modal fade" id="successEditVolunteerModal" tabindex="-1" aria-labelledby="successContentModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-body">
+              <button type="button" class="btn-close d-flex ms-auto" data-bs-dismiss="modal"></button>
+              <div class="text-center">
+                <i class="bi bi-check-circle-fill" style="font-size: 8rem; color: #28a745;"></i>
+                <p class="mt-4 px-2"> Content has been successfully updated!
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+         <!-- Success Edit Modal -->
+         <div class="modal fade" id="successEditFAQModal" tabindex="-1" aria-labelledby="successContentModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-body">
+              <button type="button" class="btn-close d-flex ms-auto" data-bs-dismiss="modal"></button>
+              <div class="text-center">
+                <i class="bi bi-check-circle-fill" style="font-size: 8rem; color: #28a745;"></i>
+                <p class="mt-4 px-2"> Content has been successfully updated!
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
 
@@ -678,7 +770,7 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                 <th width="5%">#</th>
                 <th width="45%">Question</th>
                 <th width="15%">Status</th>
-                <th width="15%">Author</th>
+                <th width="20%">Author</th>
                 <th scope="col" class="text-center">
                   <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addFAQModal">
                     <i class="bi bi-file-earmark-plus-fill pe-2"></i>Add New
