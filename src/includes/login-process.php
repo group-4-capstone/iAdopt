@@ -25,9 +25,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt->fetch();
 
             // Debugging: Log the email and password
-            error_log("Email: $email");
+            /*error_log("Email: $email");
             error_log("Input Password: $password");
             error_log("Hashed Password from DB: $hashed_password");
+            */
 
             if (password_verify($password, $hashed_password)) {
                 $_SESSION['logged_in'] = true;
@@ -35,6 +36,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION['email'] = $email;
                 $_SESSION['user_id'] = $user_id; // Set user_id in session
 
+
+                    // Retrieve and store first and last names in session
+                    $nameSql = "SELECT first_name, last_name FROM users WHERE user_id = ?";
+                    $nameStmt = $conn->prepare($nameSql);
+                    $nameStmt->bind_param("i", $user_id);
+                    $nameStmt->execute();
+                    $nameStmt->bind_result($first_name, $last_name);
+                    if ($nameStmt->fetch()) {
+                        $_SESSION['first_name'] = $first_name;
+                        $_SESSION['last_name'] = $last_name;
+                    }
+                    $nameStmt->close();
+                    
                 // Return success response with the user's role
                 echo json_encode(['success' => true, 'role' => $role, 'user_id' => $user_id]);
             } else {
