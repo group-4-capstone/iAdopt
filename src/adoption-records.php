@@ -1,11 +1,8 @@
 <?php include_once 'includes/session-handler.php'; 
 include_once 'includes/db-connect.php';
 
-
 // Check session and role
 if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['role'] == 'head_admin')) {
-  
-
 
 ?>
 <!DOCTYPE html>
@@ -69,59 +66,25 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
 
 
 
-                <div class="card-body p-0">
+                <div class="card-body mt-2 p-0">
                     <table class="table table-hover mb-0 " id="rescueTable">
                         <thead>
                             <tr>
-                                <th>Date of Adoption</th>
+                                <th>#</th>
+                                <th width="15%">Date of Adoption</th>
                                 <th>Name of Adoptor</th>
-                                <th>Email</th>
-                                <th>Address</th>
+                                <th width="25%">Address</th>
+                                <th>To Adopt</th>
+                                <th>Status</th>
                             </tr>
                         </thead>
-                        <tbody>
-    <tr data-href="adoption-details.php">
-        <td>2023/12/13</td>
-        <td>Juan Bartolome</td>
-        <td>juanbartolome@gmail.com</td>
-        <td>Blk 45 Lot 23 Ph 1 Villa Ewan</td>
-    </tr>
-    <tr data-href="adoption-details.php">
-        <td>2023/12/13</td>
-        <td>Juan Bartolome</td>
-        <td>juanbartolome@gmail.com</td>
-        <td>Blk 45 Lot 23 Ph 1 Villa Ewan</td>
-    </tr>
-    <tr data-href="adoption-details.php">
-        <td>2023/12/13</td>
-        <td>Juan Bartolome</td>
-        <td>juanbartolome@gmail.com</td>
-        <td>Blk 45 Lot 23 Ph 1 Villa Ewan</td>
-    </tr>
-</tbody>
+                        <tbody id="post_data"></tbody>
+    			    </table>
+                <div class="d-flex justify-content-end mt-4">
+    			    <div id="pagination_link"></div>
+                </div>
                     </table>
                 </div>
-                <div class="card-footer d-flex justify-content-end">
-                    <nav>
-                        <ul class="pagination pagination-sm mb-0">
-                            <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Previous">
-                                    <span aria-hidden="true">
-                                        < </span>
-                                </a>
-                            </li>
-                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Next">
-                                    <span aria-hidden="true">></span>
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
-
             </div>
         </div>
         <br>
