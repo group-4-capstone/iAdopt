@@ -6,7 +6,7 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true && isset($_
     if ($_SESSION['role'] === 'user') {
         header("Location: home.php");
         exit;
-    } elseif ($_SESSION['role'] === 'admin' || $_SESSION['role'] === 'head admin') {
+    } elseif ($_SESSION['role'] === 'admin' || $_SESSION['role'] === 'head_admin') {
         header("Location: dashboard.php");
         exit;
     }

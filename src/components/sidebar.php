@@ -72,7 +72,13 @@
   <div class="user-account">
     <div class="user-profile d-flex align-items-center justify-content-between">
         <div class="user-detail">
-            <h3>Juan Dela Cruz</h3>
+            <h3><?php    
+                 // Display the user's full name if available, otherwise show 'Guest' etp din 
+                    echo isset($_SESSION['first_name']) && isset($_SESSION['last_name'])
+                    ? ucwords(htmlspecialchars($_SESSION['first_name'] . ' ' . $_SESSION['last_name']))
+                    : 'Guest';
+                ?>
+            </h3>
             <span><a href="settings.php">Profile</a></span>
         </div>
         <a href="logout.php" class="logout-icon">
