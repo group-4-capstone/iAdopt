@@ -37,7 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION['user_id'] = $user_id; // Set user_id in session
 
 
-                    // Retrieve and store first and last names in session
+                    // Retrieve and store first and last names in session bago to
                     $nameSql = "SELECT first_name, last_name FROM users WHERE user_id = ?";
                     $nameStmt = $conn->prepare($nameSql);
                     $nameStmt->bind_param("i", $user_id);
