@@ -1,3 +1,31 @@
+// Updating status of accepted report
+$('#updateStatusForm').submit(function(e) {
+    e.preventDefault(); 
+});
+
+$('#acceptButton').click(function() {
+    $('#confirmationModal').modal('show');
+});
+
+$('#confirmAcceptButton').click(function() {
+    $('#confirmationModal').modal('hide');
+
+    var formData = new FormData($('#updateStatusForm')[0]);
+
+    $.ajax({
+        type: 'POST',
+        url: 'includes/update-status.php',
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function(response) {
+            $('#successModal').modal('show');
+        },
+        error: function(xhr, status, error) {
+            console.error(xhr.responseText);
+        }
+    });
+});
 
 // ----------------------------- DISPLAY AND PAGINATION -------------------------- //
 // ----------------------------- REPORTS TABLE ----------------------------------- //
@@ -24,24 +52,18 @@ function load_data_report(query = '', page_number = 1) {
                         return char.toUpperCase();
                     });
 
-                    var statusDisplay = response.data[count].animal_status.toLowerCase().replace(/\b\w/g, function(char) {
-                        return char.toUpperCase();
-                    });
-
                     // Fix variables referencing correct response data
                     var rescue_id = response.data[count].rescue_id;
                     var location = response.data[count].location;
                     var first_name = response.data[count].first_name;
                     var last_name = response.data[count].last_name;
-                    var animal_image = response.data[count].animal_image;
             
-                    html += '<tr data-animal-image="' + animal_image + '">';
+                    html += '<tr data-bs-toggle="modal" data-bs-target="#reportModal_' + rescue_id + '">';
                     html += '<td>' + rescue_id + '</td>';
                     html += '<td>' + response.data[count].report_date + '</td>';
                     html += '<td>' + type + '</td>';
                     html += '<td>' + location + '</td>';
                     html += '<td>' + first_name + " " + last_name + '</td>';
-                    html += '<td>' + statusDisplay + '</td>';
                     html += '</tr>';
                     serial_no++;
                 }
@@ -56,35 +78,6 @@ function load_data_report(query = '', page_number = 1) {
     };
 }
 
-
-// Assuming 'html' is appended to a table with id 'reportTable'
-$('#reportTable').on('click', 'tr', function() {
-    // Get the rescue_id from the clicked row
-    var rescue_id = $(this).find('td').eq(0).text(); // Adjust index if necessary
-    var report_date = $(this).find('td').eq(1).text();
-    var type = $(this).find('td').eq(2).text();
-    var location = $(this).find('td').eq(3).text();
-    var rescuer = $(this).find('td').eq(4).text();
-    var status = $(this).find('td').eq(5).text();
-    
-    // Get the animal image from the data attribute
-    var animal_image = $(this).data('animal-image');
-
-    // Prepend the path to the animal image
-    var imagePath = 'styles/assets/rescue-reports/' + animal_image;
-
-    // Populate the modal with the details
-    $('#modalRescueId').text(rescue_id);
-    $('#modalReportDate').text(report_date);
-    $('#modalType').text(type);
-    $('#modalLocation').text(location);
-    $('#modalRescuer').text(rescuer);
-    $('#modalStatus').text(status);
-    $('#modalAnimalImage').attr('src', imagePath); // Set the image source with path
-
-    // Show the modal
-    $('#rescueDetailModal').modal('show');
-});
 
 
 // ----------------------------- RESCUE TABLE ----------------------------------- //
