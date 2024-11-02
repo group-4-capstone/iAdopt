@@ -14,7 +14,7 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>iADOPT | SECASPI</title>
+        <title>iADOPT | Rescue Records</title>
         <link rel="icon" type="image/x-icon" href="styles/assets/secaspi-logo.png">
         <link rel="stylesheet" href="styles/footer.css">
         <link rel="stylesheet" href="styles/styles.css">
@@ -269,91 +269,6 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                 </div>
             </div>
         </div>
-
-
-        <!-- Rescue Records Modal -->
-        <div class="modal fade" id="informationModal" tabindex="-1" aria-labelledby="informationModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="informationModalLabel">INFORMATION SHEET</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="container">
-                            <form>
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <img src="styles/assets/aspin-2.png" class="img-fluid rounded" alt="Pet Image">
-                                        <button type="button" class="btn btn-edit mt-3 d-block mx-auto" id="updateButton"><i class="bi bi-pencil-square"></i> Update Information</button>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <!-- Stacked form fields -->
-                                        <div class="mb-3">
-                                            <label for="petName" class="form-label">Name:</label>
-                                            <input type="text" class="form-control text-center" id="petName" disabled>
-                                        </div>
-                                        <div class="row">
-                                            <div class="mb-3 col-lg-4">
-                                                <label for="rescueDate" class="form-label">Date Rescued:</label>
-                                                <input type="date" class="form-control text-center" id="rescueDate" disabled>
-                                            </div>
-                                            <div class="mb-3 col-lg-8">
-                                                <label for="rescuer" class="form-label">Rescued By:</label>
-                                                <input type="text" class="form-control" id="rescuer" disabled>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="mb-3 col-lg-12">
-                                                <label for="rescued-at" class="form-label">Rescued At:</label>
-                                                <input type="text" class="form-control" id="rescued-at" disabled>
-                                            </div>
-                                        </div>
-                                        <div class="row text-center">
-                                            <div class="mb-3 col-lg-4 text-center">
-                                                <label for="type" class="form-label">Type:</label>
-                                                <select class="form-select text-center" id="type" disabled>
-                                                    <option>Dog</option>
-                                                    <option>Cat</option>
-                                                </select>
-                                            </div>
-                                            <div class="mb-3 col-lg-4 text-center">
-                                                <label for="gender" class="form-label">Gender:</label>
-                                                <select class="form-select text-center" id="gender" disabled>
-                                                    <option>Male</option>
-                                                    <option>Female</option>
-                                                </select>
-                                            </div>
-                                            <div class="mb-3 col-lg-4 text-center">
-                                                <label for="status" class="form-label">Status:</label>
-                                                <select class="form-select text-center" id="status" disabled>
-                                                    <option>Rescued</option>
-                                                    <option>Adopted</option>
-                                                    <option>Fostered</option>
-                                                    <option>Unadoptable</option>
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <div class="mb-3">
-                                            <label for="remarks" class="form-label">Remarks:</label>
-                                            <textarea class="form-control" id="remarks" rows="3" disabled></textarea>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-save">Save</button>
-                    </div>
-                    <div class="paw-prints-down"><img src="styles/assets/paw-down.png" alt="Paws"></div>
-                </div>
-            </div>
-        </div>
-
 
 
 
