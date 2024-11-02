@@ -52,7 +52,6 @@ function load_data_report(query = '', page_number = 1) {
                         return char.toUpperCase();
                     });
 
-                    // Fix variables referencing correct response data
                     var rescue_id = response.data[count].rescue_id;
                     var location = response.data[count].location;
                     var first_name = response.data[count].first_name;
@@ -68,8 +67,7 @@ function load_data_report(query = '', page_number = 1) {
                     serial_no++;
                 }
             } else {
-                // Update colspan to match the number of columns (6)
-                html += '<tr><td colspan="6" class="text-center">No Data Found</td></tr>';
+                html += '<tr><td colspan="5" class="text-center">No Data Found</td></tr>';
             }
 
             document.getElementById('report_data').innerHTML = html;
@@ -325,42 +323,3 @@ function clearErrorMessages() {
     });
 }
 
-document.getElementById('editBtn').addEventListener('click', function() {
-    // Enable all form inputs
-    let inputs = document.querySelectorAll('#animalInfoForm input, #animalInfoForm textarea');
-    inputs.forEach(input => {
-        input.removeAttribute('readonly');
-    });
-
-    // Show "Editing Mode" toast
-    let toast = new bootstrap.Toast(document.getElementById('editToast'));
-    toast.show();
-
-    // Hide "Edit Information" and "Back to Records" buttons
-    document.getElementById('editBtn').style.display = 'none';
-    document.getElementById('backBtn').style.display = 'none';
-
-    // Show "Apply Changes" button
-    document.getElementById('applyBtn').style.display = 'inline-block';
-});
-
-// Optionally, handle form submission with JavaScript
-document.getElementById('animalInfoForm').addEventListener('submit', function(e) {
-    e.preventDefault(); // Prevent form from submitting normally
-    
-    // Do form validation and AJAX submission here if needed
-
-    // For now, just simulate form submission
-    alert('Changes applied successfully!');
-    
-    // After submission, disable form inputs again
-    let inputs = document.querySelectorAll('#animalInfoForm input, #animalInfoForm textarea');
-    inputs.forEach(input => {
-        input.setAttribute('readonly', true);
-    });
-
-    // Reset buttons
-    document.getElementById('editBtn').style.display = 'inline-block';
-    document.getElementById('backBtn').style.display = 'inline-block';
-    document.getElementById('applyBtn').style.display = 'none';
-});

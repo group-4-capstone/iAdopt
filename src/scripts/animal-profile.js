@@ -90,11 +90,13 @@ function downloadMergedImage() {
     };
 }
 
+// Enable editing when "Edit" button is clicked
 document.getElementById('editBtn').addEventListener('click', function() {
-    // Enable all form inputs
-    let inputs = document.querySelectorAll('#animalInfoForm input, #animalInfoForm textarea');
+    // Enable all form inputs, textareas, and select elements
+    let inputs = document.querySelectorAll('#animalInfoForm input, #animalInfoForm textarea, #animalInfoForm select');
     inputs.forEach(input => {
         input.removeAttribute('readonly');
+        input.removeAttribute('disabled'); 
     });
 
     let buttons = document.querySelectorAll('#animalInfoForm .btn-tags');
@@ -106,38 +108,89 @@ document.getElementById('editBtn').addEventListener('click', function() {
     let toast = new bootstrap.Toast(document.getElementById('editToast'));
     toast.show();
 
+    // Show the file upload input
+    document.getElementById('fileUploadContainer').style.display = 'block';
+
     // Hide "Edit Information" and "Back to Records" buttons
     document.getElementById('editBtn').style.display = 'none';
     document.getElementById('backBtn').style.display = 'none';
 
-    // Show "Apply Changes" button
+    // Show "Apply Changes" and "Cancel" buttons
     document.getElementById('applyBtn').style.display = 'inline-block';
     document.getElementById('cancelBtn').style.display = 'inline-block';
 });
 
-// Handle form submission
-document.getElementById('animalInfoForm').addEventListener('submit', function(e) {
-    e.preventDefault(); 
-    
+// Submit the form when "Apply Changes" button is clicked
+document.getElementById('applyBtn').addEventListener('click', function() {
+    var animalInfoForm = document.getElementById('animalInfoForm');
+    var formData = new FormData(animalInfoForm); // Use FormData for file uploads
+
+    $.ajax({
+        type: 'POST',
+        url: 'includes/edit-record.php', 
+        data: formData,
+        processData: false, 
+        contentType: false, 
+        success: function(response) {
+            console.log("Form submitted successfully:", response);
+
+            let inputs = document.querySelectorAll('#animalInfoForm input, #animalInfoForm textarea');
+            inputs.forEach(input => {
+                input.setAttribute('readonly', true);
+            });
+
+            let buttons = document.querySelectorAll('#animalInfoForm .btn-tags');
+            buttons.forEach(button => {
+                button.setAttribute('disabled', true);
+            });
+
+            // Show "Edit" and "Back" buttons again
+            document.getElementById('editBtn').style.display = 'inline-block';
+            document.getElementById('backBtn').style.display = 'inline-block';
+
+            // Hide "Apply Changes" and "Cancel" buttons
+            document.getElementById('applyBtn').style.display = 'none';
+            document.getElementById('cancelBtn').style.display = 'none';
+
+            document.getElementById('fileUploadContainer').style.display = 'none';
+            
+            $('#successEditModal').modal('show');
+         
+        },
+        error: function(xhr, status, error) {
+            console.error("Error occurred:", xhr.responseText);
+            // Optionally, show an error message or handle the error
+            let errorToast = new bootstrap.Toast(document.getElementById('errorToast'));
+            errorToast.show();
+        }
+    });
+});
+
+
+document.getElementById('cancelBtn').addEventListener('click', function() {
+  
     let inputs = document.querySelectorAll('#animalInfoForm input, #animalInfoForm textarea');
     inputs.forEach(input => {
         input.setAttribute('readonly', true);
+        input.setAttribute('disabled', true);
     });
 
     let buttons = document.querySelectorAll('#animalInfoForm .btn-tags');
     buttons.forEach(button => {
-        button.setAttribute('disabled', false);
+        button.setAttribute('disabled', true);
     });
 
-
+    document.getElementById('fileUploadContainer').style.display = 'none';
     document.getElementById('editBtn').style.display = 'inline-block';
     document.getElementById('backBtn').style.display = 'inline-block';
     document.getElementById('applyBtn').style.display = 'none';
     document.getElementById('cancelBtn').style.display = 'none';
 });
 
-document.querySelectorAll('.btn-tags').forEach(button => {
-    button.addEventListener('click', () => {
-        button.classList.toggle('btn-selected');
-    });
-});
+
+
+function toggleButton(button) {
+    button.classList.toggle('btn-selected');
+    let checkbox = document.getElementById(`checkbox${button.id.replace('tag', '')}`);
+    checkbox.checked = button.classList.contains('btn-selected');
+}
