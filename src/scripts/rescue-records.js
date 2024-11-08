@@ -14,7 +14,7 @@ $('#confirmAcceptButton').click(function() {
 
     $.ajax({
         type: 'POST',
-        url: 'includes/update-status.php',
+        url: 'includes/update-rescue-status.php',
         data: formData,
         contentType: false,
         processData: false,

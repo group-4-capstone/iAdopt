@@ -87,7 +87,7 @@ switch ($status) {
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Love+Ya+Like+A+Sister&display=swap">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <!-- Bootstrap Icons-->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -123,6 +123,31 @@ switch ($status) {
             </div>
         </div>
 
+       <!-- QR Code Modal -->
+        <div class="modal fade" id="qrModal" tabindex="-1" aria-labelledby="qrModalLabel" aria-hidden="true"  data-bs-backdrop="static" data-bs-keyboard="false">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="qrModalLabel">Animal QR Code</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <!-- QR Code Image -->
+                        <img id="qrCodeImage" src="styles/assets/qr_images/animal_<?php echo $animal_id ?>.png" alt="QR Code" class="img-fluid">
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                        <button type="button" class="btn btn-success me-2" onclick="downloadQRCode()">
+                            <i class="bi bi-download pe-2"></i>Download PNG
+                        </button>
+                        <button type="button" class="btn btn-primary" onclick="printQRCode()">
+                            <i class="bi bi-printer pe-2"></i>Print QR Code
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
         <div class="container mt-5 mb-5">
             <form method="post" id="animalInfoForm">
                 <div class="card info-card p-4">
@@ -138,20 +163,29 @@ switch ($status) {
                     </p>
 
                     <div class="row mt-2">
-                        <div class="col-md-4 col-sm-12">
-                            <div class="ms-4">
+                        <div class="col-md-4 col-sm-12 d-flex justify-content-center">
+                            <div class="text-center">
                                 <?php if (!empty($animal['image'])) { ?>
-                                  <img src="styles/assets/animals/<?php echo htmlspecialchars($animal['image']); ?>" alt="Animal Image">
+                                    <img src="styles/assets/animals/<?php echo htmlspecialchars($animal['image']); ?>" alt="Animal Image" class="img-fluid">
                                 <?php } else { ?>
-                                    <img src="styles/assets/secaspi-logo.png" alt="Animal Image">
+                                    <img src="styles/assets/secaspi-logo.png" alt="Animal Image" class="img-fluid">
                                 <?php } ?>
+                                
                                 <!-- File upload placeholder -->
                                 <div id="fileUploadContainer" style="display: none;">
                                     <label for="animalImageUpload" class="form-label mt-2">Upload New Image:</label>
                                     <input type="file" id="animalImageUpload" name="image" class="form-control">
                                 </div>
+                                
+                                <!-- QR Code Button -->
+                                <div id="qrContainer" class="text-center mt-2">
+                                    <button type="button" class="btn btn-primary" id="qrBtn" data-animal-id="<?php echo $animal_id ?>">
+                                        <i class="bi bi-qr-code-scan pe-2"></i>Generate QR Code
+                                    </button>
+                                </div>
                             </div>
                         </div>
+
                         <div class="col-md-8 col-sm-12">
                             <div class="left-side pe-4">
                                 <div class="row">
@@ -238,8 +272,8 @@ switch ($status) {
 
                                 <div class="d-flex justify-content-end mt-5 mb-3">
                                     <button type="button" class="btn btn-primary me-4" id="editBtn"><i class="bi bi-pencil-square pe-2"></i>Edit Information</button>
-                                    <button type="button" class="btn btn-cancel" id="backBtn" onclick="window.location.href='rescue-records.php'">Back to Records</button>
-                                    <button type="submit" class="btn btn-cancel me-4" id="cancelBtn" style="display: none;" onclick="window.location.href='animal-record.php?animal_id=<?php echo $animal_id ?>#animalInfoForm'">Cancel</button>
+                                    <button type="button" class="btn btn-danger" id="backBtn" onclick="window.location.href='rescue-records.php'">Back to Records</button>
+                                    <button type="submit" class="btn btn-danger me-4" id="cancelBtn" style="display: none;" onclick="window.location.href='animal-record.php?animal_id=<?php echo $animal_id ?>#animalInfoForm'">Cancel</button>
                                     <button type="button" class="btn btn-success" id="applyBtn" style="display: none;">Apply Changes</button>
                                 </div>
                             </div>
@@ -323,7 +357,7 @@ switch ($status) {
 
         </div>
 
-          <!-- Success Modal -->
+          <!-- Success Edit Modal -->
           <div class="modal fade" id="successEditModal" tabindex="-1" aria-labelledby="successContentModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
@@ -339,7 +373,7 @@ switch ($status) {
             </div>
         </div>
 
-        <!-- Success Modal -->
+        <!-- Success Record Modal -->
         <div class="modal fade" id="successRecordModal" tabindex="-1" aria-labelledby="successContentModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
