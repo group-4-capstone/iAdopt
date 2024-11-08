@@ -115,6 +115,8 @@ document.getElementById('editBtn').addEventListener('click', function() {
     document.getElementById('editBtn').style.display = 'none';
     document.getElementById('backBtn').style.display = 'none';
 
+    document.getElementById('qrBtn').style.display = 'none';
+
     // Show "Apply Changes" and "Cancel" buttons
     document.getElementById('applyBtn').style.display = 'inline-block';
     document.getElementById('cancelBtn').style.display = 'inline-block';
@@ -147,6 +149,7 @@ document.getElementById('applyBtn').addEventListener('click', function() {
             // Show "Edit" and "Back" buttons again
             document.getElementById('editBtn').style.display = 'inline-block';
             document.getElementById('backBtn').style.display = 'inline-block';
+            document.getElementById('qrBtn').style.display = 'inline-block';
 
             // Hide "Apply Changes" and "Cancel" buttons
             document.getElementById('applyBtn').style.display = 'none';
