@@ -185,17 +185,20 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
     </div>
 
     <!-- Approve and Reject Buttons -->
-    <div class="d-flex justify-content-end mt-4">
-        <button class="btn btn-success me-2">Approve</button>
-        <button class="btn btn-danger">Reject</button>
-    </div>
+    <form id="updateAdoptionStatus" method="post" action="includes/update-adoption-status.php" >
+        <input type="hidden" name="application_id" id="application_id" value="<?php echo $application['application_id']; ?>" readonly>
+        <div class="d-flex justify-content-end mt-4">
+            <button type="submit" class="btn btn-success me-2" value="Approved" name="application_status">Approve</button>
+            <button type="submit" class="btn btn-danger" value="Rejected" name="application_status">Reject</button>
+        </div>
+    </form>
 </div>
 
 
 
 
  </div>
-
+<script src="scripts/adoption-details.js"></script>
 </body>
 
 </html>

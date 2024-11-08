@@ -194,3 +194,75 @@ function toggleButton(button) {
     let checkbox = document.getElementById(`checkbox${button.id.replace('tag', '')}`);
     checkbox.checked = button.classList.contains('btn-selected');
 }
+
+$('#qrBtn').on('click', function () {
+    const animalId = $(this).data('animal-id');
+
+    $.ajax({
+        url: 'includes/generate-qr.php',
+        type: 'POST',
+        data: { animal_id: animalId },
+        success: function (response) {
+            $('#qrCodeContainer').html(response);
+            $('#qrModal').modal('show');
+        },
+        error: function () {
+            alert('Failed to generate QR code.');
+        }
+    });
+});
+
+// Function to download the QR code as PNG
+function downloadQRCode() {
+    const qrImage = document.getElementById('qrCodeImage');
+    const qrSrc = qrImage.src;
+
+    // Get the animal_id from the data attribute
+    const animalId = qrImage.src.match(/animal_(\d+)\.png/)[1];
+
+    // Create a temporary link element
+    const downloadLink = document.createElement('a');
+    downloadLink.href = qrSrc;
+    downloadLink.download = `animal_id#${animalId}_qrcode.png`; 
+    downloadLink.click();
+}
+
+
+// Function to print the QR code
+function printQRCode() {
+    const printWindow = window.open('', '_blank');
+    const qrImageSrc = document.getElementById('qrCodeImage').src;
+
+    // Create a simple HTML for printing
+    printWindow.document.write(`
+        <html>
+            <head>
+                <title>Print QR Code</title>
+                <style>
+                    body {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        height: 100vh;
+                        margin: 0;
+                    }
+                    img {
+                        max-width: 100%;
+                        max-height: 100%;
+                    }
+                </style>
+            </head>
+            <body>
+                <img src="${qrImageSrc}" alt="QR Code">
+            </body>
+        </html>
+    `);
+
+    // Print and close
+    printWindow.document.close();
+    printWindow.focus();
+    printWindow.print();
+    printWindow.onafterprint = () => {
+        printWindow.close();
+    };
+}
