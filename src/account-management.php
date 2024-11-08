@@ -58,29 +58,29 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
       <div class="modal-body p-4">
       <div class="card p-3">
         <h3 class="pb-4">Create New Admin Account</h3>
-        <form>
+        <form action="includes/add-acc.php" method="POST">
           <div class="row mb-3">
-            <label for="publishDate" class="col-3 col-form-label">Date</label>
+            <label for="creationDate" class="col-3 col-form-label">Date</label>
             <div class="col-9">
-              <input type="date" class="form-control" id="publishDate" required>
+              <input type="date" class="form-control" id="creationDate" name="creationDate"  required>
             </div>
           </div>
           <div class="row mb-3">
-            <label for="question" class="col-3 col-form-label">Volunteer Name<span class="asterisk">*</span></label>
+            <label for="volunteerName" class="col-3 col-form-label">Volunteer Name<span class="asterisk">*</span></label>
             <div class="col-9">
-              <input type="text" class="form-control" id="question" placeholder="Enter the volunteer's name" required>
+              <input type="text" class="form-control" id="volunteerName" name="volunteerName" placeholder="Enter the volunteer's name" required>
             </div>
           </div>
           <div class="row mb-3">
-            <label for="question" class="col-3 col-form-label">Email<span class="asterisk">*</span></label>
+            <label for="email" class="col-3 col-form-label">Email<span class="asterisk">*</span></label>
             <div class="col-9">
-              <input type="text" class="form-control" id="question" placeholder="Enter their email" required>
+              <input type="text" class="form-control" id="email" name="email" placeholder="Enter their email" required>
             </div>
           </div>
           <div class="row mb-3">
-            <label for="question" class="col-3 col-form-label">Status</label>
+            <label for="status" class="col-3 col-form-label">Status</label>
             <div class="col-9">
-              <input type="text" class="form-control" id="question" value="Active" readonly>
+              <input type="text" class="form-control" id="status" name="status" value="Active" readonly>
             </div>
           </div>
           <div class="row pt-4 me-5 pe-5"><i>Note: For the admin to login to his/her account, the initial password is sent to the email provided and once logged in, 
@@ -98,26 +98,28 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
   </div>
 </div>
 
+
 <!-- Confirm Disable Modal -->
-<div class="modal fade" id="confirmDisableModal" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-lg modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-body text-center">
-        <!-- Bootstrap icon -->
-        <i class="bi bi-question-circle-fill" style="font-size: 8rem; color: #808080;"></i>
+<div class="modal fade" id="statusConfirmModal" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body text-center">
+                <i class="bi bi-question-circle-fill" style="font-size: 8rem; color: #808080;"></i>
+                <!-- Modal text -->
+                <p class="mt-3">Are you sure you want to disable this account: <strong id="userNameDisplay"></strong>?</p>
 
-        <!-- Modal text -->
-        <p class="mt-3">Are you sure you want to disable this account: <strong>annareyes@gmail.com</strong>?</p>
-
-        <!-- Yes and No buttons -->
-        <div class="d-flex justify-content-center mb-5">
-          <button type="button" class="btn btn-danger px-5 me-2" data-bs-toggle="modal" data-bs-target="#successModal">Yes</button>
-          <button type="button" class="btn btn-secondary px-5" data-bs-dismiss="modal">No</button>
+                <div class="d-flex justify-content-center mb-5">
+                    <button type="button" class="btn btn-danger px-5 me-2" id="confirmButton">Yes</button>
+                    <button type="button" class="btn btn-secondary px-5" data-bs-dismiss="modal">No</button>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 </div>
+
+
+
+
 
 <!-- Success Modal Structure -->
 <div class="modal fade" id="successModal" tabindex="-1" aria-hidden="true">
@@ -125,7 +127,7 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
     <div class="modal-content">
       <div class="modal-body">
         <!-- Close button on the left -->
-        <button type="button" class="btn-close d-flex ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button type="button"   class="btn-close d-flex ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
 
         <!-- Bootstrap check icon and success message -->
         <div class="text-center">
@@ -136,16 +138,32 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
     </div>
   </div>
 </div>
+<!-- Success Modal Structure -->
+<div class="modal fade" id="successAddModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body">
+        <!-- Close button on the left -->
+        <button type="button"   class="btn-close d-flex ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
 
-
-<div class="table-section">
+        <!-- Bootstrap check icon and success message -->
+        <div class="text-center">
+          <i class="bi bi-check-circle-fill" style="font-size: 8rem; color: #28a745;"></i>
+          <p class="mt-3">Successfully Added!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 <div class="d-flex justify-content-end my-4">
   <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addAdminModal">
     <i class="bi bi-file-earmark-plus-fill pe-2"></i>Add Admin Account
   </button>
 </div>
+<div class="table-section">
+
   <!-- Content -->
-    <table class="table mt-2">
+    <table class="table mt-4">
      <thead>
         <tr>
           <th scope="col" class="text-center">Email</th>
@@ -154,118 +172,15 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
           <th scope="col" class="text-center">Name</th>
         </tr>
       </thead>
-      <tbody>
-  <tr>
-    <th class="blank text-center align-middle"> </th>
-    <td class="blank text-center align-middle"> </td>
-    <td class="blank text-center align-middle"> </td>
-    <td class="blank text-center align-middle"> </td>
-  </tr>
-  <tr>
-    <th scope="row" class="text-center align-middle">annareyes@gmail.com</th>
-    <td class="text-center align-middle">August 21, 2024</td>
-    <td class="text-center align-middle">
-      <div class="dropdown">
-        <span class="badge bg-green text-dark dropdown-toggle" id="statusDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-          Active
-        </span>
-      <ul class="dropdown-menu" aria-labelledby="statusDropdown">
-        <li><a href="#" data-bs-toggle="modal" data-bs-target="#confirmDisableModal" class="dropdown-item">Inactive</a></li>
-      </ul>
-    </div>
-</td>
-    <td class="text-center align-middle">Anna Reyes</td>
-  </tr>
-  <tr>
-    <th class="blank text-center align-middle"> </th>
-    <td class="blank text-center align-middle"> </td>
-    <td class="blank text-center align-middle"> </td>
-    <td class="blank text-center align-middle"> </td>
-  </tr>
-  <tr>
-    <th scope="row" class="text-center align-middle">johncruz123@gmail.com</th>
-    <td class="text-center align-middle">August 21, 2024</td>
-    <td class="text-center align-middle">
-    <div class="dropdown">
-        <span class="badge bg-green text-dark dropdown-toggle" id="statusDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-          Active
-        </span>
-      <ul class="dropdown-menu" aria-labelledby="statusDropdown">
-        <li><a href="#" data-bs-toggle="modal" data-bs-target="#confirmDisableModal" class="dropdown-item">Inactive</a></li>
-      </ul>
-    </div>
-    </td>
-    <td class="text-center align-middle">John Cruz</td>
-  </tr>
-  <tr>
-    <th class="blank text-center align-middle"> </th>
-    <td class="blank text-center align-middle"> </td>
-    <td class="blank text-center align-middle"> </td>
-    <td class="blank text-center align-middle"> </td>
-  </tr>
-  <tr>
-    <th scope="row" class="text-center align-middle">jane_saniel@gmail.com</th>
-    <td class="text-center align-middle">August 21, 2024</td>
-    <td class="text-center align-middle"><span class="badge bg-red text-dark">Inactive</span></td>
-    <td class="text-center align-middle">Janelle Jane Saniel</td>
-  </tr>
-  <tr>
-    <th class="blank text-center align-middle"> </th>
-    <td class="blank text-center align-middle"> </td>
-    <td class="blank text-center align-middle"> </td>
-    <td class="blank text-center align-middle"> </td>
-  </tr>
-  <tr>
-    <th scope="row" class="text-center align-middle">alyssavillanueva@gmail.com</th>
-    <td class="text-center align-middle">August 21, 2024</td>
-    <td class="text-center align-middle">
-    <div class="dropdown">
-        <span class="badge bg-green text-dark dropdown-toggle" id="statusDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-          Active
-        </span>
-      <ul class="dropdown-menu" aria-labelledby="statusDropdown">
-        <li><a href="#" data-bs-toggle="modal" data-bs-target="#confirmDisableModal" class="dropdown-item">Inactive</a></li>
-      </ul>
-    </div>
-    </td>
-    <td class="text-center align-middle">Alyssa Villanueva</td>
-  </tr>
-  <tr>
-    <th class="blank text-center align-middle"> </th>
-    <td class="blank text-center align-middle"> </td>
-    <td class="blank text-center align-middle"> </td>
-    <td class="blank text-center align-middle"> </td>
-  </tr>
-  <tr>
-    <th scope="row" class="text-center align-middle">oliviarodrigo@gmail.com</th>
-    <td class="text-center align-middle">August 21, 2024</td>
-    <td class="text-center align-middle"><span class="badge bg-red text-dark">Inactive</span></td>
-    <td class="text-center align-middle">Olivia Rodrigo</td>
-  </tr>
-  <tr>
-    <th class="blank text-center align-middle"> </th>
-    <td class="blank text-center align-middle"> </td>
-    <td class="blank text-center align-middle"> </td>
-    <td class="blank text-center align-middle"> </td>
-  </tr>
-</tbody>
+      <tbody id="post_data"></tbody>
 
     </table>
-
-    <!-- Pagination Component -->
-    <nav aria-label="Page navigation example">
-      <ul class="pagination justify-content-end">
-        <li class="page-item disabled">
-          <a class="page-link" href="#" tabindex="-1">Previous</a>
-        </li>
-        <li class="page-item"><a class="page-link" href="#">1</a></li>
-        <li class="page-item"><a class="page-link" href="#">2</a></li>
-        <li class="page-item"><a class="page-link" href="#">3</a></li>
-        <li class="page-item">
-          <a class="page-link" href="#">Next</a>
-        </li>
-      </ul>
-    </nav>
+       <!-- Pagination Component -->
+         <div class="d-flex justify-content-end">
+    			    <div id="pagination_link"></div>
+          </div>
+ 
+   
 
    <!-- End Content -->
 
@@ -276,7 +191,7 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
 
 </body>
 
-  <script src="scripts/content-management.js"></script>
+  <script src="scripts/account-management.js"></script>
 </html>
 <?php
 } else {
