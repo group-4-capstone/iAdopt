@@ -87,7 +87,7 @@ switch ($status) {
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Love+Ya+Like+A+Sister&display=swap">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <!-- Bootstrap Icons-->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -123,98 +123,165 @@ switch ($status) {
             </div>
         </div>
 
-        <div class="container mt-5 mb-5">
-        <form id="animalInfoForm">
-            <div class="card info-card p-4">
-                <h2 class="title">> INFORMATION SHEET</h2> 
-                <p class="d-flex justify-content-end mt-1 mb-2 me-4">
-                    Status: <span class="ms-2 badge <?php echo $badgeClass; ?>"><?php echo $status; ?></span>
-                </p>
-
-                <div class="row mt-2">
-                    <div class="col-md-4 col-sm-12">
-                        <div class="ms-4">
-                        <?php if (!empty($animal['image'])) { ?>
-                            <div class="image-container">
-                                <img src="styles/assets/animals/<?php echo htmlspecialchars($animal['image']); ?>" alt="Animal Image" class="animal-image">
-                            </div>
-                            <?php } else { ?>
-                                <img src="styles/assets/secaspi-logo.png" alt="Animal Image">
-                            <?php } ?>
-                        </div>
+       <!-- QR Code Modal -->
+        <div class="modal fade" id="qrModal" tabindex="-1" aria-labelledby="qrModalLabel" aria-hidden="true"  data-bs-backdrop="static" data-bs-keyboard="false">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="qrModalLabel">Animal QR Code</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="col-md-8 col-sm-12">
-                        <div class="left-side pe-4">
-                            <div class="row">
-                                <div class="col-md-4 form-group">
-                                    <label for="name" class="form-label">Name:</label>
-                                    <input type="text" id="name" class="form-control" name="name" value="<?php echo htmlspecialchars($animal['report_type'] == 'rescue' ? $animal['name'] : '---- No name yet ----'); ?>" readonly>
-                                </div>
-                                <div class="col-md-4 form-group">
-                                    <label for="gender" class="form-label">Gender:</label>
-                                    <input type="text" id="gender" class="form-control" name="gender" value="<?php echo htmlspecialchars($animal['gender']); ?>" readonly>
-                                </div>
-                                <div class="col-md-4 form-group">
-                                    <label for="type" class="form-label">Type:</label>
-                                    <input type="text" id="type" class="form-control" name="type" value="<?php echo htmlspecialchars($animal['type']); ?>" readonly>
-                                </div>
-                            </div>
-                            
-                            <div class="row">
-                                <div class="col-md-6 form-group">
-                                    <label for="rescuedBy" class="form-label"><?php echo $animal['report_type'] == 'rescue' ? 'Rescued By:' : 'Reported By:'; ?></label>
-                                    <input type="text" id="rescuedBy" class="form-control" name="rescued_by" value="<?php echo htmlspecialchars($animal['report_type'] == 'rescue' ? $animal['rescued_by'] : $animal['first_name'] . ' ' . $animal['last_name']); ?>" readonly>
-                                </div>
-                                <div class="col-md-6 form-group">
-                                    <label for="rescuedAt" class="form-label"><?php echo $animal['report_type'] == 'rescue' ? 'Rescued At:' : 'Report Location:'; ?></label>
-                                    <input type="text" id="rescuedAt" class="form-control" name="rescued_at" value="<?php echo htmlspecialchars($animal['report_type'] == 'rescue' ? $animal['rescued_at'] : $animal['location']); ?>" readonly>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="form-group">
-                                    <label for="remarks" class="form-label"><?php echo $animal['report_type'] == 'rescue' ? 'Remarks:' : 'Description:'; ?></label>
-                                    <textarea id="remarks" class="form-control" name="description" readonly><?php echo htmlspecialchars($animal['report_type'] == 'rescue' ? $animal['description'] : '---- To be filled out ----'); ?></textarea>
-                                </div>
-                            </div>
-                                
-                            <label for="tags" class="form-label">Tags:</label>
-                             <div class="mt-2 row text-center form-group">    
-                                <div class="col-md-4 mb-2">
-                                    <button type="button" id="tag1" class="btn btn-tags" disabled data-value="Great Companion">Great Companion</button>
-                                </div>
-                                <div class="col-md-4 mb-2">
-                                    <button type="button" id="tag2" class="btn btn-tags" disabled data-value="<?php echo ($animal['gender'] == 'Male') ? 'Neutered' : 'Spayed'; ?>">
-                                        <?php echo ($animal['gender'] == 'Male') ? 'Neutered' : 'Spayed'; ?>
-                                    </button>
-                                </div>
-                                <div class="col-md-4 mb-2">
-                                    <button type="button" id="tag3" class="btn btn-tags" disabled data-value="Friendly to Humans">Friendly to Humans</button>
-                                </div>
-                                <div class="col-md-4 mb-2">
-                                    <button type="button" id="tag4" class="btn btn-tags py-1 px-4" disabled data-value="Friendly to Cats">Friendly to Cats</button>
-                                </div>
-                                <div class="col-md-4 mb-2">
-                                    <button type="button" id="tag5" class="btn btn-tags" disabled data-value="Friendly to Dogs">Friendly to Dogs</button>
-                                </div>
-                                <div class="col-md-4 mb-2">
-                                    <button type="button" id="tag6" class="btn btn-tags" disabled data-value="No food aggression">No food aggression</button>
-                                </div>
-                            </div>
-
-                         
-                            <div class="d-flex justify-content-end mt-5 mb-3">
-                                <button type="button" class="btn btn-primary me-4" id="editBtn"><i class="bi bi-pencil-square pe-2"></i>Edit Information</button>
-                                <button type="button" class="btn btn-cancel" id="backBtn" onclick="window.location.href='rescue-records.php'">Back to Records</button>
-                                <button type="submit" class="btn btn-cancel me-4" id="cancelBtn" style="display: none;" onclick="window.location.href='animal-record.php?animal_id=<?php echo $animal_id?>#animalInfoForm'">Cancel</button>
-                                <button type="submit" class="btn btn-success" id="applyBtn" style="display: none;">Apply Changes</button>
-                            </div>
-                        </div>
+                    <div class="modal-body text-center">
+                        <!-- QR Code Image -->
+                        <img id="qrCodeImage" src="styles/assets/qr_images/animal_<?php echo $animal_id ?>.png" alt="QR Code" class="img-fluid">
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                        <button type="button" class="btn btn-success me-2" onclick="downloadQRCode()">
+                            <i class="bi bi-download pe-2"></i>Download PNG
+                        </button>
+                        <button type="button" class="btn btn-primary" onclick="printQRCode()">
+                            <i class="bi bi-printer pe-2"></i>Print QR Code
+                        </button>
                     </div>
                 </div>
-                <div class="paw-prints-down"><img src="styles/assets/paw-down.png" alt="Paws"></div>
             </div>
-        </form>
+        </div>
+
+
+        <div class="container mt-5 mb-5">
+            <form method="post" id="animalInfoForm">
+                <div class="card info-card p-4">
+                    <h2 class="title">> INFORMATION SHEET</h2>
+                    <p class="d-flex justify-content-end align-items-center mt-1 mb-2 me-4">
+                        <label for="status" class="me-2">Status:</label>
+                        <select id="status" class="form-select badge <?php echo $badgeClass; ?> w-25" name="animal_status" disabled>
+                            <option value="Unadoptable" <?php echo $status === 'Unadoptable' ? 'selected' : ''; ?>>Unadoptable</option>
+                            <option value="Adoptable" <?php echo $status === 'Adoptable' ? 'selected' : ''; ?>>Adoptable</option>
+                            <option value="Rest" <?php echo $status === 'Rest' ? 'selected' : ''; ?>>Rest</option>
+                            <option value="Under Review" <?php echo $status === 'Under Review' ? 'selected' : ''; ?>>Under Review</option>
+                        </select>
+                    </p>
+
+                    <div class="row mt-2">
+                        <div class="col-md-4 col-sm-12 d-flex justify-content-center">
+                            <div class="text-center">
+                                <?php if (!empty($animal['image'])) { ?>
+                                    <img src="styles/assets/animals/<?php echo htmlspecialchars($animal['image']); ?>" alt="Animal Image" class="img-fluid">
+                                <?php } else { ?>
+                                    <img src="styles/assets/secaspi-logo.png" alt="Animal Image" class="img-fluid">
+                                <?php } ?>
+                                
+                                <!-- File upload placeholder -->
+                                <div id="fileUploadContainer" style="display: none;">
+                                    <label for="animalImageUpload" class="form-label mt-2">Upload New Image:</label>
+                                    <input type="file" id="animalImageUpload" name="image" class="form-control">
+                                </div>
+                                
+                                <!-- QR Code Button -->
+                                <div id="qrContainer" class="text-center mt-2">
+                                    <button type="button" class="btn btn-primary" id="qrBtn" data-animal-id="<?php echo $animal_id ?>">
+                                        <i class="bi bi-qr-code-scan pe-2"></i>Generate QR Code
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-8 col-sm-12">
+                            <div class="left-side pe-4">
+                                <div class="row">
+                                    <div class="col-md-4 form-group">
+                                        <label for="name" class="form-label">Name:</label>
+                                        <input type="text" id="name" class="form-control" name="name" 
+                                            value="<?php echo !empty($animal['name']) ? htmlspecialchars($animal['name']) : ''; ?>" 
+                                            placeholder="---- No name yet ----" 
+                                            readonly>
+                                    </div>
+                                    <div class="col-md-4 form-group">
+                                        <label for="gender" class="form-label">Gender:</label>
+                                        <select id="gender" class="form-select" name="gender" disabled>
+                                            <option value="Male" <?php echo $animal['gender'] === 'Male' ? 'selected' : ''; ?>>Male</option>
+                                            <option value="Female" <?php echo $animal['gender'] === 'Female' ? 'selected' : ''; ?>>Female</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4 form-group">
+                                        <label for="type" class="form-label">Type:</label>
+                                        <select id="type" class="form-select" name="type" disabled>
+                                            <option value="Dog" <?php echo $animal['type'] === 'Dog' ? 'selected' : ''; ?>>Dog</option>
+                                            <option value="Cat" <?php echo $animal['type'] === 'Cat' ? 'selected' : ''; ?>>Cat</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6 form-group">
+                                        <label for="rescuedBy" class="form-label"><?php echo $animal['report_type'] == 'rescue' ? 'Rescued By:' : 'Reported By:'; ?></label>
+                                        <input type="text" id="rescuedBy" class="form-control" name="rescued_by" value="<?php echo htmlspecialchars($animal['report_type'] == 'rescue' ? $animal['rescued_by'] : $animal['first_name'] . ' ' . $animal['last_name']); ?>" readonly>
+                                    </div>
+                                    <div class="col-md-6 form-group">
+                                        <label for="rescuedAt" class="form-label"><?php echo $animal['report_type'] == 'rescue' ? 'Rescued At:' : 'Report Location:'; ?></label>
+                                        <input type="text" id="rescuedAt" class="form-control" name="rescued_at" value="<?php echo htmlspecialchars($animal['report_type'] == 'rescue' ? $animal['rescued_at'] : $animal['location']); ?>" readonly>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label for="remarks" class="form-label">
+                                           Description:
+                                        </label>
+                                        <textarea id="remarks" class="form-control" name="description" readonly
+                                                placeholder="---- To be filled out ----"><?php echo htmlspecialchars($animal['description']); ?></textarea>
+                                    </div>
+                                </div>
+                                <?php
+                                // Convert the tags string into an array
+                                $animalTags = explode(',', $animal['tags']);
+                                ?>
+
+                                <label for="tags" class="form-label">Tags:</label>
+                                <div class="mt-2 row text-center form-group">
+                                    <div class="col-md-4 mb-2">
+                                        <button type="button" id="tag1" class="btn btn-tags <?php echo in_array('Great Companion', $animalTags) ? 'btn-selected' : ''; ?>" data-value="Great Companion" onclick="toggleButton(this)" disabled>Great Companion</button>
+                                        <input type="checkbox" id="checkbox1" name="tags[]" value="Great Companion" style="display: none;" <?php echo in_array('Great Companion', $animalTags) ? 'checked' : ''; ?>>
+                                    </div>
+                                    <div class="col-md-4 mb-2">
+                                        <button type="button" id="tag2" class="btn btn-tags <?php echo in_array($animal['gender'] == 'Male' ? 'Neutered' : 'Spayed', $animalTags) ? 'btn-selected' : ''; ?>" data-value="<?php echo ($animal['gender'] == 'Male') ? 'Neutered' : 'Spayed'; ?>" onclick="toggleButton(this)" disabled>
+                                            <?php echo ($animal['gender'] == 'Male') ? 'Neutered' : 'Spayed'; ?>
+                                        </button>
+                                        <input type="checkbox" id="checkbox2" name="tags[]" value="<?php echo ($animal['gender'] == 'Male') ? 'Neutered' : 'Spayed'; ?>" style="display: none;" <?php echo in_array($animal['gender'] == 'Male' ? 'Neutered' : 'Spayed', $animalTags) ? 'checked' : ''; ?>>
+                                    </div>
+                                    <div class="col-md-4 mb-2">
+                                        <button type="button" id="tag3" class="btn btn-tags <?php echo in_array('Friendly to Humans', $animalTags) ? 'btn-selected' : ''; ?>" data-value="Friendly to Humans" onclick="toggleButton(this)" disabled>Friendly to Humans</button>
+                                        <input type="checkbox" id="checkbox3" name="tags[]" value="Friendly to Humans" style="display: none;" <?php echo in_array('Friendly to Humans', $animalTags) ? 'checked' : ''; ?>>
+                                    </div>
+                                    <div class="col-md-4 mb-2">
+                                        <button type="button" id="tag4" class="btn btn-tags <?php echo in_array('Friendly to Cats', $animalTags) ? 'btn-selected' : ''; ?>" data-value="Friendly to Cats" onclick="toggleButton(this)" disabled>Friendly to Cats</button>
+                                        <input type="checkbox" id="checkbox4" name="tags[]" value="Friendly to Cats" style="display: none;" <?php echo in_array('Friendly to Cats', $animalTags) ? 'checked' : ''; ?>>
+                                    </div>
+                                    <div class="col-md-4 mb-2">
+                                        <button type="button" id="tag5" class="btn btn-tags <?php echo in_array('Friendly to Dogs', $animalTags) ? 'btn-selected' : ''; ?>" data-value="Friendly to Dogs" onclick="toggleButton(this)" disabled>Friendly to Dogs</button>
+                                        <input type="checkbox" id="checkbox5" name="tags[]" value="Friendly to Dogs" style="display: none;" <?php echo in_array('Friendly to Dogs', $animalTags) ? 'checked' : ''; ?>>
+                                    </div>
+                                    <div class="col-md-4 mb-2">
+                                        <button type="button" id="tag6" class="btn btn-tags <?php echo in_array('No food aggression', $animalTags) ? 'btn-selected' : ''; ?>" data-value="No food aggression" onclick="toggleButton(this)" disabled>No food aggression</button>
+                                        <input type="checkbox" id="checkbox6" name="tags[]" value="No food aggression" style="display: none;" <?php echo in_array('No food aggression', $animalTags) ? 'checked' : ''; ?>>
+                                    </div>
+                                </div>
+
+
+                                <input type="hidden" name="animal_id" value="<?php echo $animal_id ?>" readonly>
+
+
+                                <div class="d-flex justify-content-end mt-5 mb-3">
+                                    <button type="button" class="btn btn-primary me-4" id="editBtn"><i class="bi bi-pencil-square pe-2"></i>Edit Information</button>
+                                    <button type="button" class="btn btn-danger" id="backBtn" onclick="window.location.href='rescue-records.php'">Back to Records</button>
+                                    <button type="submit" class="btn btn-danger me-4" id="cancelBtn" style="display: none;" onclick="window.location.href='animal-record.php?animal_id=<?php echo $animal_id ?>#animalInfoForm'">Cancel</button>
+                                    <button type="button" class="btn btn-success" id="applyBtn" style="display: none;">Apply Changes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="paw-prints-down"><img src="styles/assets/paw-down.png" alt="Paws"></div>
+                </div>
+            </form>
 
             <!-- Card -->
             <div class="card mt-4 p-4">
@@ -230,14 +297,22 @@ switch ($status) {
                             <div id="collapseQuestionnaire" class="accordion-collapse collapse show" aria-labelledby="headingQuestionnaire" data-bs-parent="#adoptionDetailsAccordion">
                                 <div class="accordion-body">
                                     <div class="row">
-                                        <div class="col-lg-7">
-                                            <p class="mt-2"><b>Report Image</b></p>
-                                            <img src="styles/assets/rescue-reports/<?php echo htmlspecialchars($animal['animal_image']); ?>" alt="Animal Image" class="img-fluid mb-3" style="max-width: 100%;">
-                                        </div>
-
-                                        <div class="col-lg-5">
-                                            <p class="mt-2"><b>Date of Report:</b> <?php echo htmlspecialchars($animal['report_date']); ?></p>
-                                            <p class="mt-2"><b>Description:</b> <?php echo htmlspecialchars($animal['rescue_description']); ?></p>
+                                        <div class="row mt-2 px-4">
+                                            <div class="col-lg-6">
+                                                <p class="text-center"><strong>Rescue ID:</strong> <?php echo $animal['rescue_id'] ?></p>
+                                                <img id="animalImage" src="styles/assets/rescue-reports/<?php echo $animal['animal_image'] ?>" alt="Animal Image" class="img-fluid" style="max-width: 100%; height: auto;">
+                                            </div>
+                                            <div class="col-lg-6 d-flex flex-column justify-content-center">
+                                                <?php
+                                                $date = new DateTime($animal['report_date']);
+                                                $formattedDate = $date->format('F j, Y g:i A');
+                                                ?>
+                                                <p><strong>Report Date:</strong> <?php echo $formattedDate; ?> </p>
+                                                <p><strong>Type:</strong> <?php echo $animal['type'] ?></p>
+                                                <p><strong>Location:</strong> <?php echo $animal['location'] ?> </p>
+                                                <p><strong>Reporter:</strong> <?php echo $animal['first_name'] . ' ' . $animal['last_name'] ?> </p>
+                                                <p><strong>Report Description:</strong> <?php echo $animal['rescue_description'] ?></p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -282,7 +357,23 @@ switch ($status) {
 
         </div>
 
-        <!-- Success Modal -->
+          <!-- Success Edit Modal -->
+          <div class="modal fade" id="successEditModal" tabindex="-1" aria-labelledby="successContentModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body">
+                    <button type="button" class="btn-close d-flex ms-auto" onclick="location.reload();"></button>
+                        <div class="text-center">
+                            <i class="bi bi-check-circle-fill" style="font-size: 8rem; color: #28a745;"></i>
+                            <p class="mt-4 px-2"> Record has been successfully edited!
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Success Record Modal -->
         <div class="modal fade" id="successRecordModal" tabindex="-1" aria-labelledby="successContentModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
@@ -297,7 +388,7 @@ switch ($status) {
                 </div>
             </div>
         </div>
-        
+
 
         <script src="scripts/rescue-records.js"></script>
         <script src="scripts/animal-profile.js"></script>

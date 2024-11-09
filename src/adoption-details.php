@@ -1,3 +1,35 @@
+<?php include_once 'includes/session-handler.php'; 
+include_once 'includes/db-connect.php';
+
+
+if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['role'] == 'head_admin')) {
+
+    
+    if (isset($_GET['id'])) {
+        $application_id = $_GET['id'];
+    
+        $query = "
+        SELECT *
+        FROM applications 
+        INNER JOIN users ON applications.user_id = users.user_id
+        INNER JOIN animals ON applications.animal_id = animals.animal_id
+        WHERE applications.application_id = ? 
+        ";
+    
+        $stmt = $db->prepare($query);
+        $stmt->bind_param("i", $application_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+    
+        if ($result->num_rows > 0) {
+            $application = $result->fetch_assoc();
+        } else {
+            $error_message = 'Application not found';
+        }
+    } else {
+        $error_message = 'Invalid request';
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -31,7 +63,7 @@
           <h1><u><b>ADOPTION DETAILS</b></u></h1>
         </div>
         <p>
-        Review the adoption application of <strong> ADOPTION #12 </strong>.
+          Review the adoption application of <strong> ADOPTION #<?php echo $application['application_id'] ?> </strong>.
         </p>
       </div>
     </section>
@@ -40,13 +72,16 @@
     <!-- Selected Dog Details -->
     <div class="row dog-details mb-4">
         <div class="col-lg-4 text-center">
-            <img src="styles/assets/aspin-1.png" class="img-fluid rounded-circle" alt="Selected Dog" style="width: 200px; height: 200px; object-fit: cover;">
+            <img src="styles/assets/animals/<?php echo $application['image'] ?>" class="img-fluid rounded-circle" alt="Selected Dog" style="width: 200px; height: 200px; object-fit: cover;">
         </div>
         <div class="col-lg-8">
-            <h2 class="mb-3">Dog Name: <strong>Andres</strong></h2>
-            <p><strong>Date Rescued:</strong> August 21, 2024</p>
-            <p><strong>Description:</strong> Was rescued just outside Bria Homes at Calamba Laguna. He was a stray and a resident took pity on him along with his playmate. He was being fed regularly up until some residents filed complaints. 
-            The feeder/rescuer then sought help for rescue. We named him after his rescuer, and Andres officially became part of the SECASPI family.</p>
+            <h2 class="mb-3"><?php echo $application['type'] ?> Name: <strong><?php echo $application['name'] ?></strong></h2>
+            <p><strong>Date Rescued:</strong>
+            <?php 
+            $originalDate = $application['addition_date'];
+            echo date("F j, Y", strtotime($originalDate)); 
+            ?></p>
+            <p><strong>Description:</strong> <?php echo $application['description'] ?></p>
         </div>
     </div>
 
@@ -54,11 +89,11 @@
     <div class="adopter-info">
         <h4 class="mt-2">Adopter Information</h4>
         <div class="ps-3">
-        <p class="mt-3"><strong>Name:</strong> John Doe</p>
-        <p><strong>Email:</strong> john.doe@example.com</p>
-        <p><strong>Phone:</strong> +123 456 7890</p>
-        <p><strong>Address:</strong> 123 Main St, Springfield</p>
-        <p><strong>Work:</strong> Web Developer</p>
+        <p class="mt-3"><strong>Name:</strong> <?php echo $application['first_name'] . ' ' . $application['last_name']; ?></p>
+        <p><strong>Email:</strong> <?php echo $application['email'] ?>  </p>
+        <p><strong>Phone:</strong> <?php echo $application['contact_num'] ?></p>
+        <p><strong>Address:</strong> <?php echo $application['complete_address'] ?></p>
+        <p><strong>Work:</strong> <?php echo $application['profession'] ?> </p>
         </div>
     </div>
 
@@ -73,10 +108,47 @@
             </h2>
             <div id="collapseQuestionnaire" class="accordion-collapse collapse show" aria-labelledby="headingQuestionnaire" data-bs-parent="#adoptionDetailsAccordion">
                 <div class="accordion-body">
-                    <p><strong>Why do you want to adopt?</strong></p>
-                    <p>We love dogs and want to provide a loving home for Buddy.</p>
-                    <p><strong>Do you have prior experience with pets?</strong></p>
-                    <p>Yes, we have had pets in the past.</p>
+                    <p><strong>Why did you decide to adopt an animal?</strong></p>
+                    <p class="ps-2">> <?php echo $application['purpose'] ?></p>
+                    <p><strong>What type of residence do you live in?</strong></p>
+                    <p class="ps-2">> <?php echo $application['residence'] ?></p>
+                    <p><strong>Please specify the height and type of your fence.</strong></p>
+                    <p><strong>How will you handle the dog's exercise and toilet duties if there is no fence?</strong></p>
+                    <!---
+                    <p><strong>If adopting a cat, where will be the litter box be kept?</strong></p> -->
+                    <p><strong>Is the residence for RENT?</strong></p>
+                    <p><strong>Please upload a written letter from your landlord that pets are allowed.</strong></p>
+                    <p><strong>In which part of the house will the animal stay?</strong></p>
+                    <p class="ps-2">> <?php echo $application['house_part'] ?></p>
+                    <p><strong>Where will this animal be kept during the day and during night? Please specify.</strong></p>
+                    <p><strong>Who do you live with? Please be specific.</strong></p>
+                    <p class="ps-2">> <?php echo $application['household_members'] ?></p>
+                    <p><strong>How long have you lived in the address registered here?</strong></p>
+                    <p class="ps-2">> <?php echo $application['reg_years'] ?> years</p>
+                    <p><strong>Are you planning to move in the next six (6) months?</strong></p>
+                    <p><strong>Please leave a specific address.</strong></p>
+                    <p><strong>Will the whole family be involved in the care of the animal?</strong></p>
+                    <p><strong>Please explain why no.</strong></p>
+                    <p><strong>Is there anyone in your household who has objection(s) to the arrangement?</strong></p>
+                    <p><strong>Please explain why yes.</strong></p>
+                    <p><strong>Are there any children who visit your home frequently?</strong></p>
+                    <p><strong>Are there any other regular visitors on your home which your new companion (pet) must get along?</strong></p>
+                    <p><strong>Are there any member of your household who has an allergy to cats and dogs?</strong></p>
+                    <p><strong>Who?</strong></p>
+                    <p><strong>What will happen to this animal if you have to move unexpectedly?</strong></p>
+                    <p class="ps-2">> <?php echo $application['move_unexpectedly'] ?></p>
+                    <p><strong>What kind of behavior(s) of the dog do you feel you will be unable to accept?</strong></p>
+                    <p class="ps-2">> <?php echo $application['unacceptable_behavior'] ?></p>
+                    <p><strong>How many hours in an average work day will your companion animal spend without a human?</strong></p>
+                    <p class="ps-2">> <?php echo $application['no_human_hours'] ?> hours</p>
+                    <p><strong>What will happen to your companion animal when you go on vacation or in case of emergency?</strong></p>
+                    <p class="ps-2">> <?php echo $application['emergency'] ?></p>
+                    <p><strong>Do you have other companion animals?</strong></p>
+                    <p><strong>Please specify what type and the total number.</strong></p>
+                    <p><strong>Do you have a regular veterinarian?</strong></p>
+                    <p><strong>Veterinarian Name</strong></p>
+                    <p><strong>Veterinarian Address/Location</strong></p>
+                    <p><strong>Veterinarian Contact Number</strong></p>
                 </div>
             </div>
         </div>
@@ -96,7 +168,7 @@
                     <!-- Sample ID Image -->
                     <div class="col-md-6">
                         <h5>Valid ID:</h5>
-                        <img src="styles/assets/id.png" alt="Sample ID" class="img-fluid mb-3" style="max-width: 100%;">
+                        <img src="styles/assets/applications/ids/<?php echo $application['valid_id'] ?>" alt="Sample ID" class="img-fluid mb-3" style="max-width: 100%;">
                     </div>
 
                     <!-- Picture of the Place where Pet will be Staying -->
@@ -113,18 +185,26 @@
     </div>
 
     <!-- Approve and Reject Buttons -->
-    <div class="d-flex justify-content-end mt-4">
-        <button class="btn btn-success me-2">Approve</button>
-        <button class="btn btn-danger">Reject</button>
-    </div>
+    <form id="updateAdoptionStatus" method="post" action="includes/update-adoption-status.php" >
+        <input type="hidden" name="application_id" id="application_id" value="<?php echo $application['application_id']; ?>" readonly>
+        <div class="d-flex justify-content-end mt-4">
+            <button type="submit" class="btn btn-success me-2" value="Approved" name="application_status">Approve</button>
+            <button type="submit" class="btn btn-danger" value="Rejected" name="application_status">Reject</button>
+        </div>
+    </form>
 </div>
 
 
 
 
  </div>
-
+<script src="scripts/adoption-details.js"></script>
 </body>
 
-  <script src="scripts/content-management.js"></script>
 </html>
+
+<?php
+} else {
+    header("Location: home.php");
+}
+?>
