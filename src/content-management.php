@@ -265,7 +265,10 @@ if ($faq_result->num_rows > 0) {
                 <div class="row mb-3">
                   <label for="faqContent_<?php echo $row['faq_id']; ?>" class="col-3 col-form-label">Answer<span class="asterisk">*</span></label>
                   <div class="col-9 mb-3">
-                    <textarea class="form-control" id="faqContent_<?php echo $row['faq_id']; ?>" name="answer" rows="5" readonly><?php echo $row['answer']; ?></textarea>
+                    <div id="faqContent_<?php echo $row['faq_id']; ?>" style="border: 2px solid #ced4da; border-radius: 5px; padding: 10px; background-color: #f8f9fa;">
+                          <?php echo ($row['answer']); ?>
+                    </div>
+                    <input type="hidden" name="answer" id="faqContentHidden_<?php echo $row['faq_id']; ?>" value="<?php echo htmlspecialchars($row['answer']); ?>">
                   </div>
                 </div>
                 <div class="row mb-3">
@@ -456,7 +459,7 @@ if ($faq_result->num_rows > 0) {
               <button type="button" class="btn-close d-flex ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
               <div class="text-center">
                 <i class="bi bi-exclamation-triangle-fill" style="font-size: 8rem; color: #dc3545;"></i>
-                <p class="mt-4 px-2">Invalid file type! Please upload only .jpg, .jpeg, .png files.</p>
+                <p class="mt-4 px-2">Invalid file type! Please upload only .jpg, .jpeg, .png, & .webp files.</p>
               </div>
             </div>
           </div>
@@ -792,6 +795,10 @@ if ($faq_result->num_rows > 0) {
     </div>
 
     <script src="scripts/content-management.js"></script>
+    <script src="scripts/announcement-management.js"></script>
+    <script src="scripts/merch-management.js"></script>
+    <script src="scripts/faq-management.js"></script>
+    <script src="scripts/volunteer-management.js"></script>
     <script src="scripts/modal-tab.js"></script>
 
   </html>
