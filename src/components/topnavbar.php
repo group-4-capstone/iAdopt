@@ -1,33 +1,37 @@
 <header>
-    <nav class="navbar">
-      <div class="logo"><img src="styles/assets/secaspi-logo.png"><span>iAdopt-SECASPI</span></div>
-        <ul class="menu-links">
-            <span id="close-menu-btn" class="material-symbols-outlined">Close</span>
-            <li><a href="home.php">Home</a></li>
-            <li><a href="adopt.php">Adopt</a></li>
-            <li><a href="report-stray.php">Report</a></li>
-            <li><a href="donate.php">Donate</a></li>
-            <li><a href="shop.php">Shop</a></li>
-            <li class="nav-item dropdown">
-                <a class="nav-link d-flex align-items-center" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="bi bi-person-circle pe-2"></i>Hi, Juan
-                    <i class="bi bi-chevron-down ps-2"></i>
-                </a>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" href="profile.php"><i class="bi bi-person-circle pe-2"></i>Profile</a></li>
-                    <li><a class="dropdown-item" href="#"><i class="bi bi-box-arrow-left pe-2"></i>Logout</a></li>
-                </ul>
-             </li>
-              <!-- Notification Icon -->
-            <div class="notification-item" id="notification">
-                <a href="#" role="button" data-bs-toggle="modal" data-bs-target="#notificationModal">
-                    <i class="bi bi-bell-fill notification-icon"></i>
-                    <span class="badge">2</span>
-                </a>
-            </div>
-           </ul>
-        <span id="hamburger-btn" class="material-symbols-outlined">Menu</span>
-    </nav>
+  <nav class="navbar">
+    <div class="logo"><img src="styles/assets/secaspi-logo.png"><span>iAdopt-SECASPI</span></div>
+    <ul class="menu-links">
+      <span id="close-menu-btn" class="material-symbols-outlined">Close</span>
+      <li><a href="home.php">Home</a></li>
+      <li><a href="adopt.php">Adopt</a></li>
+      <li><a href="report-stray.php">Report</a></li>
+      <li><a href="donate.php">Donate</a></li>
+      <li><a href="shop.php">Shop</a></li>
+      <?php if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) { ?>
+        <li class="nav-item dropdown">
+          <a class="nav-link d-flex align-items-center" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-person-circle pe-2"></i>Hi, <?php echo $_SESSION['first_name'] ?>
+            <i class="bi bi-chevron-down ps-2"></i>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="profile.php"><i class="bi bi-person-circle pe-2"></i>Profile</a></li>
+            <li><a class="dropdown-item" href="logout.php"><i class="bi bi-box-arrow-left pe-2"></i>Logout</a></li>
+          </ul>
+        </li>
+        <!-- Notification Icon -->
+      <div class="notification-item" id="notification">
+        <a href="#" role="button" data-bs-toggle="modal" data-bs-target="#notificationModal">
+          <i class="bi bi-bell-fill notification-icon"></i>
+          <span class="badge">2</span>
+        </a>
+      </div>
+      <?php } else { ?>
+        <li><a href="login.php">Login</a></li>
+      <?php  } ?>
+    </ul>
+    <span id="hamburger-btn" class="material-symbols-outlined">Menu</span>
+  </nav>
 </header>
 
 <!-- Modal Structure for Notifications -->
@@ -41,9 +45,9 @@
       <div class="modal-body">
         <ul class="list-unstyled">
           <li class="notification-item pt-3">
-          <a href="#" data-bs-toggle="modal" data-bs-target="#postAdoptionModal">
-            <p>Post-Adoption Form</p>
-          </a>
+            <a href="#" data-bs-toggle="modal" data-bs-target="#postAdoptionModal">
+              <p>Post-Adoption Form</p>
+            </a>
           </li>
           <li class="notification-item pt-3">
             <a href="#" data-bs-toggle="modal" data-bs-target="#adoptionModal">
@@ -55,9 +59,9 @@
           </li>
         </ul>
       </div>
-     <div class="pb-3 text-center">
+      <div class="pb-3 text-center">
         <a href="#" class="text-danger">Clear Notifications</a>
-     </div>
+      </div>
     </div>
   </div>
 </div>
@@ -114,36 +118,34 @@
             <p><strong>Date:</strong> September 20, 2024</p>
             <p><strong>Time:</strong> 8pm</p>
             <p><em>Note: Meeting link will be sent on the day of the interview.</em></p>
-          </div>  
-       </div> 
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
 <script>
+  const currentPath = window.location.pathname.split("/").pop();
 
-    const currentPath = window.location.pathname.split("/").pop();
+  const menuLinks = document.querySelectorAll('.menu-links a');
 
-    const menuLinks = document.querySelectorAll('.menu-links a');
-
-    menuLinks.forEach(link => {
+  menuLinks.forEach(link => {
     const href = link.getAttribute('href');
-    const currentPath = window.location.pathname.split('/').pop(); 
+    const currentPath = window.location.pathname.split('/').pop();
 
     if ((href === 'adopt.php' && ['adopt.php', 'adopt-know-more.php', 'adopt-now.php'].includes(currentPath)) ||
-        href === currentPath) {
-        link.classList.add('active'); 
+      href === currentPath) {
+      link.classList.add('active');
     }
-});
+  });
 
-      const header = document.querySelector("header");
-      const hamburgerBtn = document.querySelector("#hamburger-btn");
-      const closeMenuBtn = document.querySelector("#close-menu-btn");
-      const notifBtn = document.querySelector("#notification");
+  const header = document.querySelector("header");
+  const hamburgerBtn = document.querySelector("#hamburger-btn");
+  const closeMenuBtn = document.querySelector("#close-menu-btn");
+  const notifBtn = document.querySelector("#notification");
 
-      hamburgerBtn.addEventListener("click", () => header.classList.toggle("show-mobile-menu"));
-      closeMenuBtn.addEventListener("click", () => hamburgerBtn.click());
-      notifBtn.addEventListener("click", () => hamburgerBtn.click());
-
+  hamburgerBtn.addEventListener("click", () => header.classList.toggle("show-mobile-menu"));
+  closeMenuBtn.addEventListener("click", () => hamburgerBtn.click());
+  notifBtn.addEventListener("click", () => hamburgerBtn.click());
 </script>
