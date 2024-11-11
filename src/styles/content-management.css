@@ -3,6 +3,43 @@
   background-color: white !important;
 }
 
+
+.pagination-container {
+  text-align: center; 
+  margin: 20px 0;
+  float: right;
+}
+
+.pagination {
+  display: inline-flex;
+  list-style-type: none; 
+  padding: 0;
+  margin: 0; 
+}
+
+.pagination li {
+  margin: 0 5px;
+}
+
+.pagination a {
+  display: block;
+  padding: 8px 12px; 
+  color: black; 
+  text-decoration: none; 
+  border-radius: 4px; 
+}
+
+.pagination a.active {
+  background-color: #C0690A;
+  color: white; 
+  border-color: #C0690A; 
+}
+
+.pagination a:hover {
+  background-color: #6d3d09; 
+  color: white;
+}
+
 /* Style tab links */
 .tablink {
   font-weight: bold;
