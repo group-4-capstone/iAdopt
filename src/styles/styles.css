@@ -169,4 +169,11 @@
   border-color: #dc3545 !important; 
 }
 
+button:disabled {
+  opacity: 0.65; /* Slightly transparent to indicate it's inactive */
+  border: none; /* No border or use a lighter border */
+}
+
+
+
   
