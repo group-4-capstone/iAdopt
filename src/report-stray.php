@@ -1,4 +1,7 @@
-<?php include_once 'includes/db-connect.php'; ?>
+<?php include_once 'includes/session-handler.php';
+include_once 'includes/db-connect.php';
+?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -40,54 +43,66 @@
     </section>
 
     <section class="form-section pb-5">
-      <div class="content">
-        <h4><img src="styles/assets/secaspi-logo.png">Report Stray Form</h4>
-        <form id="rescueForm" method="post">
-            <div class="step">
-             <h5 class="text-center">Report Details</h5>
-                <p class="text-center mb-4">Kindly supply the following details of the dog/cat you wanted to be rescued.</p>
-                <div class="mb-3">
-                    <label for="animalType">Type of Animal:</label>
-                    <select id="animalType" name="type" class="form-select">
-                        <option value="" disabled selected>Select the type of animal</option>
-                        <option value="Dog">Dog</option>
-                        <option value="Cat">Cat</option>
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label>Current location of the animal:</label>
-                    <div class="row">
-                        <div class="col-lg-3 col-12 col-sm-12">
-                            <input type="text" placeholder="Gumamela Village" name="specific">
-                        </div>
-                        <div class="col-lg-3 col-12 col-sm-12">
-                            <input type="text" placeholder="Brgy. Malitlit" name="barangay">
-                        </div>
-                        <div class="col-lg-3 col-12 col-sm-12">
-                            <input type="text"  placeholder="Calamba" name="municipality">
-                        </div>
-                        <div class="col-lg-3 col-12 col-sm-12">
-                            <input type="text"  placeholder="Laguna" name="province">
-                        </div>
-                    </div>
-                </div>
-                <div class="mb-3">
-                    <label>Rescue Report Details:</label>
-                    <input type="text" name="rescue_description" placeholder="Input details regarding for the rescue of the animal">
-                </div>
-                <div class="mb-3">
-                    <label for="placeUploads">Upload video or pictures of the dog/cat that will be rescued:</label>
-                    <input type="file" id="placeUploads" name="animal_image" accept=".jpg,.jpeg,.png,.mp4,.mov" required>
-                </div>
-            </div>
+  <div class="content">
+    <h4><img src="styles/assets/secaspi-logo.png">Report Stray Form</h4>
+    <?php 
+      $isDisabled = !isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true ? 'disabled' : '';
+    ?>
+    <form id="rescueForm" method="post">
+      <div class="step">
+        <h5 class="text-center">Report Details</h5>
+        <p class="text-center mb-4">Kindly supply the following details of the dog/cat you want to be rescued.</p>
 
-            <div class="form-footer d-flex">
-            <button type="submit" id="submitVisitBtn" class="ms-auto mt-2">Submit</button>
+        <div class="mb-3">
+          <label for="animalType">Type of Animal:</label>
+          <select id="animalType" name="type" class="form-select" <?php echo $isDisabled; ?>>
+            <option value="" disabled selected>Select the type of animal</option>
+            <option value="Dog">Dog</option>
+            <option value="Cat">Cat</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label>Current location of the animal:</label>
+          <div class="row">
+            <div class="col-lg-3 col-12 col-sm-12">
+              <input type="text" placeholder="Gumamela Village" name="specific" <?php echo $isDisabled; ?>>
+            </div>
+            <div class="col-lg-3 col-12 col-sm-12">
+              <input type="text" placeholder="Brgy. Malitlit" name="barangay" <?php echo $isDisabled; ?>>
+            </div>
+            <div class="col-lg-3 col-12 col-sm-12">
+              <input type="text" placeholder="Calamba" name="municipality" <?php echo $isDisabled; ?>>
+            </div>
+            <div class="col-lg-3 col-12 col-sm-12">
+              <input type="text" placeholder="Laguna" name="province" <?php echo $isDisabled; ?>>
+            </div>
           </div>
-    </form>
+        </div>
+
+        <div class="mb-3">
+          <label>Rescue Report Details:</label>
+          <input type="text" name="rescue_description" placeholder="Input details regarding the rescue of the animal" <?php echo $isDisabled; ?>>
+        </div>
+
+        <div class="mb-4">
+          <label for="placeUploads">Upload video or pictures of the dog/cat that will be rescued:</label>
+          <input type="file" id="placeUploads" name="animal_image" accept=".jpg,.jpeg,.png,.mp4,.mov" <?php echo $isDisabled; ?>>
+        </div>
       </div>
-    </div>
-  </section>
+
+      <?php if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) { ?>
+        <div class="mb-3">
+          <i>Note: You must be <a href="login.php"> logged into your account </a> submit a rescue report. Please log in to continue.</i>
+        </div>
+      <?php } ?>
+
+      <div class="form-footer d-flex">
+        <button type="submit" id="submitVisitBtn" class="ms-auto mt-2" <?php echo $isDisabled; ?>>Submit</button>
+      </div>
+    </form>
+  </div>
+</section>
 
     <!-- Success Modal -->
     <div class="modal fade" id="successRescueModal" tabindex="-1" aria-labelledby="successRescueModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">

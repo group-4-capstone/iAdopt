@@ -1,4 +1,6 @@
-<?php include_once 'includes/db-connect.php'; ?>
+<?php include_once 'includes/session-handler.php';
+include_once 'includes/db-connect.php';
+?>
 
 <!DOCTYPE html>
 <html lang="en">
