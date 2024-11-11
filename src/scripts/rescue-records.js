@@ -127,9 +127,9 @@ function load_data(query = '', page_number = 1) {
                     if (statusDisplay === "Adoptable") {
                         statusDisplay = '<span class="badge bg-success text-light">Adoptable</span>';
                     } else if (statusDisplay === "Under Review") {
-                        statusDisplay = '<span class="badge bg-danger text-light">Under Review</span>'; // Red badge
+                        statusDisplay = '<span class="badge bg-danger text-light">Under Review</span>';
                     } else if (statusDisplay === "Unadoptable") {
-                        statusDisplay = '<span class="badge bg-secondary text-light">Unadoptable</span>'; // Gray badge
+                        statusDisplay = '<span class="badge bg-secondary text-light">Unadoptable</span>';
                     }
                     
                     // Construct the HTML for each row in the table
