@@ -310,7 +310,8 @@ if ($faq_result->num_rows > 0) {
             </div>
         </div>
 
-      <div class="mt-4">
+        <div class="card">
+      <div class="text-bold mt-4">
         <button class="tablink" onclick="openPage('Home', this, '#ffdb5a')" id="defaultOpen">Announcement</button>
         <button class="tablink" onclick="openPage('News', this, '#ffdb5a')" id="merchtab">Merchandise</button>
         <button class="tablink" onclick="openPage('Contact', this, '#ffdb5a')" id="volunteertab">Volunteers</button>
@@ -679,6 +680,7 @@ if ($faq_result->num_rows > 0) {
 
       <div id="Home" class="tabcontent">
         <!-- Content -->
+         
         <div class="mx-4">
           <table id="announcementTable" class="table table-striped mb-5">
             <thead>
@@ -788,6 +790,7 @@ if ($faq_result->num_rows > 0) {
           <div class="d-flex justify-content-end">
             <div id="faq_pagination_link"></div>
           </div>
+        </div>
         </div>
 
         <!-- End Content -->

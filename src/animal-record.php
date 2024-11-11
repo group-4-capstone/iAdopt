@@ -1,4 +1,5 @@
 <?php
+include_once 'includes/session-handler.php';
 include_once 'includes/db-connect.php';
 
 if (isset($_GET['animal_id'])) {

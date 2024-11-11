@@ -1,5 +1,24 @@
 <?php include_once 'includes/session-handler.php';
 include_once 'includes/db-connect.php';
+
+if (isset($_GET['animal_id'])) {
+  $animal_id = $_GET['animal_id'];
+
+  $query = "SELECT animal_id, type, name, gender, image, tags, description, animal_status 
+            FROM animals 
+            WHERE animal_id = ? ";
+
+  $stmt = $db->prepare($query);
+  $stmt->bind_param("i", $animal_id);
+  $stmt->execute();
+  $result = $stmt->get_result();
+
+  if ($result->num_rows > 0) {
+    $animal = $result->fetch_assoc();
+  }
+}
+$tags = htmlspecialchars($animal['tags']);
+$tagsArray = explode(",", $tags);
 ?>
 
 <!DOCTYPE html>
@@ -47,33 +66,39 @@ include_once 'includes/db-connect.php';
         <div class="row">
           <div class="col-lg-6 col-md-6 col-sm-12">
             <div class="picture-frame">
-              <img id="profile-image" src="styles/assets/aspin-1.png" alt="Profile Picture">
+              <img id="profile-image" src="styles/assets/animals/<?php echo htmlspecialchars($animal['image']); ?>" alt="Profile Picture">
             </div>
           </div>
+          
           <div class="col-lg-6 col-md-6 col-sm-12 d-flex flex-column align-items-center">
-            <div class="row">
-              <h2 class="text-center">ANDRES</h2>
-              <p class="text-center">
-              <ul class="custom-list list-unstyled text-center">
-                <li><i class="bi bi-check-circle-fill"></i> Male</li>
-                <li><i class="bi bi-check-circle-fill"></i> w/Anti-rabies, 5 in 1</li>
-                <li><i class="bi bi-check-circle-fill"></i> Spayed</li>
-                <li><i class="bi bi-x-circle-fill" style="color: red;"></i> Food Aggression</li>
-                <li><i class="bi bi-check-circle-fill"></i> Cats</li>
-                <li><i class="bi bi-check-circle-fill"></i> Dogs</li>
-                <li><i class="bi bi-check-circle-fill"></i> Humans</li>
-                <li><i class="bi bi-check-circle-fill"></i> Great Companion</li>
+            <div class="text-center">
+              <h2 class="text-center"><?php echo strtoupper(htmlspecialchars($animal['name'])); ?></h2>
+              <ul class="custom-list my-4">
+                <li class="d-flex align-items-center mb-2">
+                  <i class="bi bi-check-circle-fill me-5 text-success"></i>
+                  <?php echo htmlspecialchars($animal['gender']); ?>
+                </li>
+                <li class="d-flex align-items-center mb-2">
+                  <i class="bi bi-check-circle-fill me-5 text-success"></i>
+                  <?php echo htmlspecialchars($animal['type']); ?>
+                </li>
+                <?php foreach ($tagsArray as $tag): ?>
+                  <li class="d-flex align-items-center mb-2">
+                    <i class="<?php echo (strtolower(trim($tag)) == 'food aggression') ? 'bi bi-x-circle-fill me-5 text-danger' : 'bi bi-check-circle-fill me-5 text-success'; ?>"></i>
+                    <?php echo ucfirst(trim($tag)); ?>
+                  </li>
+                <?php endforeach; ?>
               </ul>
-              </p>
             </div>
+
             <div class="row">
               <p class="text-center">
-                Was rescued just outside Bria Homes at Calamba Laguna. He was a stray and a resident took pity on him along with his playmate. He was being fed regularly up until some residents filed complaints. The feeder/rescuer then sought help for rescue. We named him after his rescuer, and Andres officially became part of the SECASPI family.
+                <?php echo htmlspecialchars($animal['description']); ?>
               </p>
             </div>
             <div class="text-center mt-1">
               <?php if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) { ?>
-                <a href="adopt-now.php"><button class="btn">ADOPT NOW</button> </a>
+                <a href="adopt-now.php?animal_id=<?php echo $animal_id ?>"><button class="btn">ADOPT NOW</button> </a>
               <?php } else {  ?>
                 <a href="login.php"><i> Kindly sign in first.</a> <br>You need to be logged in to your account to adopt. </i>
               <?php } ?>
