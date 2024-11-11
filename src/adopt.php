@@ -1,5 +1,73 @@
 <?php include_once 'includes/session-handler.php';
 include_once 'includes/db-connect.php';
+
+// Define the number of items per page
+  $itemsPerPage = 9;
+
+  // Get the current page from the URL, default is 1
+  $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+  $offset = ($currentPage - 1) * $itemsPerPage;
+
+  // Get the total count of adoptable animals
+  $countQuery = "SELECT COUNT(*) AS total FROM animals WHERE animal_status = 'adoptable'";
+  $countStmt = $db->prepare($countQuery);
+  $countStmt->execute();
+  $countResult = $countStmt->get_result();
+  $totalItems = $countResult->fetch_assoc()['total'];
+  $totalPages = ceil($totalItems / $itemsPerPage);
+
+  // Prepare and execute the SQL query with pagination
+  $query = "SELECT animal_id, type, name, gender, image, tags, description, animal_status 
+            FROM animals 
+            WHERE animal_status = 'adoptable'
+            LIMIT ? OFFSET ?";
+  $stmt = $db->prepare($query);
+  $stmt->bind_param("ii", $itemsPerPage, $offset);
+  $stmt->execute();
+  $result = $stmt->get_result();
+
+  // Check if it's an AJAX request for pagination
+  if (isset($_GET['page']) && !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+    while ($row = $result->fetch_assoc()) {
+      $animalId = htmlspecialchars($row['animal_id']);
+      $type = htmlspecialchars($row['type']);
+      $name = htmlspecialchars($row['name']);
+      $gender = htmlspecialchars($row['gender']);
+      $image = htmlspecialchars($row['image']);
+      $tags = htmlspecialchars($row['tags']);
+      $tagsArray = explode(",", $tags);
+?>
+
+<div class="grid_items">
+  <img src="styles/assets/animals/<?php echo $image; ?>" alt="Image of <?php echo $name; ?>" />
+  <div class="grid_text">
+      <h3><?php echo $name; ?></h3>
+      <ul class="custom-list">
+          <li class="d-flex align-items-center mb-2">
+              <i class="bi bi-check-circle-fill me-5 text-success"></i>
+              <?php echo ucfirst($gender); ?>
+          </li>
+          <li class="d-flex align-items-center mb-2">
+              <i class="bi bi-check-circle-fill me-5 text-success"></i>
+              <?php echo ucfirst($type); ?>
+          </li>
+          <?php foreach ($tagsArray as $tag): ?>
+              <li class="d-flex align-items-center mb-2">
+                  <i class="<?php echo (strtolower(trim($tag)) == 'food aggression') ? 'bi bi-x-circle-fill me-5 text-danger' : 'bi bi-check-circle-fill me-5 text-success'; ?>"></i>
+                  <?php echo ucfirst(trim($tag)); ?>
+              </li>
+          <?php endforeach; ?>
+      </ul>
+      <a href="adopt-know-more.php?animal_id=<?php echo $animalId; ?>">
+          <button class="btn btn-primary mt-3">MORE</button>
+      </a>
+  </div>
+</div>
+
+<?php
+    }
+    exit; // End script for AJAX response
+  }
 ?>
 
 
@@ -14,6 +82,7 @@ include_once 'includes/db-connect.php';
     <link rel="stylesheet" href="styles/footer.css">
     <link rel="stylesheet" href="styles/styles.css">
     <link rel="stylesheet" href="styles/adopt.css">
+
 
     <!-- Google Fonts Links For Icon -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0">
@@ -53,189 +122,76 @@ include_once 'includes/db-connect.php';
         <div class="grid">
         <div class="section_container">
           <div class="grid_container">
-            <div class="updates">
-            <div class="grid_items">
-              <img src="styles/assets/aspin-1.png"/>
+            <div class="updates" id="animal-cards">
+              <?php 
+              // Initial load of the animal profiles
+              if ($result && $result->num_rows > 0) {
+                  while ($row = $result->fetch_assoc()): 
+                    $animalId = htmlspecialchars($row['animal_id']);
+                    $type = htmlspecialchars($row['type']);
+                    $name = htmlspecialchars($row['name']);
+                    $gender = htmlspecialchars($row['gender']);
+                    $image = htmlspecialchars($row['image']);
+                    $tags = htmlspecialchars($row['tags']);
+                    $tagsArray = explode(",", $tags);
+              ?>
+              
+              <div class="grid_items">
+                <img src="styles/assets/animals/<?php echo $image; ?>" alt="Image of <?php echo $name; ?>" />
                 <div class="grid_text">
-                  <h3>Andres</h3>
-                  <p class="text-center">
+                    <h3><?php echo $name; ?></h3>
                     <ul class="custom-list">
-                      <li><i class="bi bi-check-circle-fill"></i> Male</li>
-                      <li><i class="bi bi-check-circle-fill"></i> w/Anti-rabies, 5 in 1</li>
-                      <li><i class="bi bi-check-circle-fill"></i> Spayed</li>
-                      <li><i class="bi bi-x-circle-fill"></i> Food Aggression</li>
-                      <li><i class="bi bi-check-circle-fill"></i> Cats</li>
-                      <li><i class="bi bi-check-circle-fill"></i> Dogs</li>
-                      <li><i class="bi bi-check-circle-fill"></i> Humans</li>
-                      <li><i class="bi bi-check-circle-fill"></i> Great Companion</li>
+                        <li class="d-flex align-items-center mb-2">
+                            <i class="bi bi-check-circle-fill me-5 text-success"></i>
+                            <?php echo ucfirst($gender); ?>
+                        </li>
+                        <li class="d-flex align-items-center mb-2">
+                            <i class="bi bi-check-circle-fill me-5 text-success"></i>
+                            <?php echo ucfirst($type); ?>
+                        </li>
+                        <?php foreach ($tagsArray as $tag): ?>
+                            <li class="d-flex align-items-center mb-2">
+                                <i class="<?php echo (strtolower(trim($tag)) == 'food aggression') ? 'bi bi-x-circle-fill me-5 text-danger' : 'bi bi-check-circle-fill me-5 text-success'; ?>"></i>
+                                <?php echo ucfirst(trim($tag)); ?>
+                            </li>
+                        <?php endforeach; ?>
                     </ul>
-                  </p>
-                  <a href="adopt-know-more.php"> <button class="btn">KNOW MORE</button></a>
+                    <a href="adopt-know-more.php?animal_id=<?php echo $animalId; ?>">
+                        <button class="btn btn-primary mt-3">MORE</button>
+                    </a>
+                </div>
               </div>
-            </div>
-            <div class="grid_items">
-            <img src="styles/assets/puspin.jpg"/>
-              <div class="grid_text">
-                <h3>Kitty</h3>
-                <p class="text-center">
-                    <ul class="custom-list">
-                      <li><i class="bi bi-check-circle-fill"></i> Male</li>
-                      <li><i class="bi bi-check-circle-fill"></i> w/Anti-rabies, 5 in 1</li>
-                      <li><i class="bi bi-check-circle-fill"></i> Spayed</li>
-                      <li><i class="bi bi-x-circle-fill"></i> Food Aggression</li>
-                      <li><i class="bi bi-check-circle-fill"></i> Cats</li>
-                      <li><i class="bi bi-check-circle-fill"></i> Dogs</li>
-                      <li><i class="bi bi-check-circle-fill"></i> Humans</li>
-                      <li><i class="bi bi-check-circle-fill"></i> Great Companion</li>
-                    </ul>
-                  </p>
-                  <a href="adopt-know-more.php"> <button class="btn">KNOW MORE</button></a>
-              </div>
-            </div>
-            <div class="grid_items">
-              <img src="styles/assets/aspin-2.png"/>
-              <div class="grid_text">
-                <h3>Pepper</h3>
-                <p class="text-center">
-                    <ul class="custom-list">
-                      <li><i class="bi bi-check-circle-fill"></i> Male</li>
-                      <li><i class="bi bi-check-circle-fill"></i> w/Anti-rabies, 5 in 1</li>
-                      <li><i class="bi bi-check-circle-fill"></i> Spayed</li>
-                      <li><i class="bi bi-x-circle-fill"></i> Food Aggression</li>
-                      <li><i class="bi bi-check-circle-fill"></i> Cats</li>
-                      <li><i class="bi bi-check-circle-fill"></i> Dogs</li>
-                      <li><i class="bi bi-check-circle-fill"></i> Humans</li>
-                      <li><i class="bi bi-check-circle-fill"></i> Great Companion</li>
-                    </ul>
-                  </p>
-                  <a href="adopt-know-more.php"> <button class="btn">KNOW MORE</button></a>
-              </div>
-            </div>
-            <div class="grid_items">
-              <img src="styles/assets/aspin-1.png"/>
-                <div class="grid_text">
-                  <h3>Andres</h3>
-                  <p class="text-center">
-                    <ul class="custom-list">
-                      <li><i class="bi bi-check-circle-fill"></i> Male</li>
-                      <li><i class="bi bi-check-circle-fill"></i> w/Anti-rabies, 5 in 1</li>
-                      <li><i class="bi bi-check-circle-fill"></i> Spayed</li>
-                      <li><i class="bi bi-x-circle-fill"></i> Food Aggression</li>
-                      <li><i class="bi bi-check-circle-fill"></i> Cats</li>
-                      <li><i class="bi bi-check-circle-fill"></i> Dogs</li>
-                      <li><i class="bi bi-check-circle-fill"></i> Humans</li>
-                      <li><i class="bi bi-check-circle-fill"></i> Great Companion</li>
-                    </ul>
-                  </p>
-                  <a href="adopt-know-more.php"> <button class="btn">KNOW MORE</button></a>
-              </div>
-            </div>
-            <div class="grid_items">
-            <img src="styles/assets/puspin.jpg"/>
-              <div class="grid_text">
-                <h3>Kitty</h3>
-                <p class="text-center">
-                    <ul class="custom-list">
-                      <li><i class="bi bi-check-circle-fill"></i> Male</li>
-                      <li><i class="bi bi-check-circle-fill"></i> w/Anti-rabies, 5 in 1</li>
-                      <li><i class="bi bi-check-circle-fill"></i> Spayed</li>
-                      <li><i class="bi bi-x-circle-fill"></i> Food Aggression</li>
-                      <li><i class="bi bi-check-circle-fill"></i> Cats</li>
-                      <li><i class="bi bi-check-circle-fill"></i> Dogs</li>
-                      <li><i class="bi bi-check-circle-fill"></i> Humans</li>
-                      <li><i class="bi bi-check-circle-fill"></i> Great Companion</li>
-                    </ul>
-                  </p>
-                <a href="adopt-know-more.php"> <button class="btn">KNOW MORE</button></a>
-              </div>
-            </div>
-            <div class="grid_items">
-              <img src="styles/assets/aspin-2.png"/>
-              <div class="grid_text">
-                <h3>Pepper</h3>
-                <p class="text-center">
-                    <ul class="custom-list">
-                      <li><i class="bi bi-check-circle-fill"></i> Male</li>
-                      <li><i class="bi bi-check-circle-fill"></i> w/Anti-rabies, 5 in 1</li>
-                      <li><i class="bi bi-check-circle-fill"></i> Spayed</li>
-                      <li><i class="bi bi-x-circle-fill"></i> Food Aggression</li>
-                      <li><i class="bi bi-check-circle-fill"></i> Cats</li>
-                      <li><i class="bi bi-check-circle-fill"></i> Dogs</li>
-                      <li><i class="bi bi-check-circle-fill"></i> Humans</li>
-                      <li><i class="bi bi-check-circle-fill"></i> Great Companion</li>
-                    </ul>
-                  </p>
-                  <a href="adopt-know-more.php"> <button class="btn">KNOW MORE</button></a>
-              </div>
-            </div>
-            <div class="grid_items">
-              <img src="styles/assets/aspin-1.png"/>
-                <div class="grid_text">
-                  <h3>Andres</h3>
-                  <p class="text-center">
-                    <ul class="custom-list">
-                      <li><i class="bi bi-check-circle-fill"></i> Male</li>
-                      <li><i class="bi bi-check-circle-fill"></i> w/Anti-rabies, 5 in 1</li>
-                      <li><i class="bi bi-check-circle-fill"></i> Spayed</li>
-                      <li><i class="bi bi-x-circle-fill"></i> Food Aggression</li>
-                      <li><i class="bi bi-check-circle-fill"></i> Cats</li>
-                      <li><i class="bi bi-check-circle-fill"></i> Dogs</li>
-                      <li><i class="bi bi-check-circle-fill"></i> Humans</li>
-                      <li><i class="bi bi-check-circle-fill"></i> Great Companion</li>
-                    </ul>
-                  </p>
-                  <a href="adopt-know-more.php"> <button class="btn">KNOW MORE</button></a>
-              </div>
-            </div>
-            <div class="grid_items">
-            <img src="styles/assets/puspin.jpg"/>
-              <div class="grid_text">
-                <h3>Kitty</h3>
-                <p class="text-center">
-                    <ul class="custom-list">
-                      <li><i class="bi bi-check-circle-fill"></i> Male</li>
-                      <li><i class="bi bi-check-circle-fill"></i> w/Anti-rabies, 5 in 1</li>
-                      <li><i class="bi bi-check-circle-fill"></i> Spayed</li>
-                      <li><i class="bi bi-x-circle-fill"></i> Food Aggression</li>
-                      <li><i class="bi bi-check-circle-fill"></i> Cats</li>
-                      <li><i class="bi bi-check-circle-fill"></i> Dogs</li>
-                      <li><i class="bi bi-check-circle-fill"></i> Humans</li>
-                      <li><i class="bi bi-check-circle-fill"></i> Great Companion</li>
-                    </ul>
-                  </p>
-                  <a href="adopt-know-more.php"> <button class="btn">KNOW MORE</button></a>
-              </div>
-            </div>
-            <div class="grid_items">
-              <img src="styles/assets/aspin-1.png"/>
-              <div class="grid_text">
-                <h3>Pepper</h3>
-                <p class="text-center">
-                    <ul class="custom-list">
-                      <li><i class="bi bi-check-circle-fill"></i> Male</li>
-                      <li><i class="bi bi-check-circle-fill"></i> w/Anti-rabies, 5 in 1</li>
-                      <li><i class="bi bi-check-circle-fill"></i> Spayed</li>
-                      <li><i class="bi bi-x-circle-fill"></i> Food Aggression</li>
-                      <li><i class="bi bi-check-circle-fill"></i> Cats</li>
-                      <li><i class="bi bi-check-circle-fill"></i> Dogs</li>
-                      <li><i class="bi bi-check-circle-fill"></i> Humans</li>
-                      <li><i class="bi bi-check-circle-fill"></i> Great Companion</li>
-                    </ul>
-                  </p>
-                  <a href="adopt-know-more.php"> <button class="btn">KNOW MORE</button></a>
-              </div>
+
+              <?php 
+                  endwhile; // End of while loop 
+              } else {
+                  echo "<p>No animals available for adoption at the moment.</p>";
+              }
+              ?>
             </div>
           </div>
           </div>
-            <nav class="pagination-container">
-                <ul class="pagination">
-                  <li><a href="#">&lt;</a></li>
-                  <li><a href="#" class="active">1</a></li>
-                  <li><a href="#">2</a></li>
-                  <li><a href="#">3</a></li>
-                  <li><a href="#">&gt;</a></li>
-                </ul>
-              </nav>
+          <nav class="pagination-container mt-4">
+            <ul class="pagination justify-content-center">
+              <?php if ($currentPage > 1): ?>
+                  <li class="page-item">
+                      <a class="page-link" data-page="<?php echo $currentPage - 1; ?>">&lt;</a>
+                  </li>
+              <?php endif; ?>
+
+              <?php for ($page = 1; $page <= $totalPages; $page++): ?>
+                  <li class="page-item <?php echo ($page == $currentPage) ? 'active' : ''; ?>">
+                      <a class="page-link" data-page="<?php echo $page; ?>"><?php echo $page; ?></a>
+                  </li>
+              <?php endfor; ?>
+
+              <?php if ($currentPage < $totalPages): ?>
+                  <li class="page-item">
+                      <a class="page-link" data-page="<?php echo $currentPage + 1; ?>">&gt;</a>
+                  </li>
+              <?php endif; ?>
+            </ul>
+          </nav>
         </div>
       </div>
       </div>

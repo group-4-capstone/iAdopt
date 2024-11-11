@@ -130,7 +130,12 @@
   
   .grid_items .grid_text {
     margin-top: auto;
-  }
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center horizontally */
+    text-align: center; /* Center text */
+}
+
   
   .grid_items .grid_text .btn {
     background: #C0690A;
@@ -164,7 +169,6 @@
   .custom-list {
     list-style-type: none;
     padding: 0; 
-    margin: 0; 
   }
   
   .custom-list li {
@@ -176,6 +180,9 @@
     color: #2CD748;
     margin-bottom: 10px; 
   }
+
+
+
 
   /* Pagination */
 
