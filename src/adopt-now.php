@@ -1,6 +1,8 @@
 <?php include_once 'includes/session-handler.php';
 include_once 'includes/db-connect.php';
 
+if (isset($_SESSION['email']) && $_SESSION['role'] == 'user')  {
+
 if (isset($_GET['animal_id'])) {
   $animal_id = $_GET['animal_id'];
 
@@ -398,3 +400,9 @@ $tagsArray = explode(",", $tags);
 <script src="scripts/adopt-now.js"></script>
 
 </html>
+
+<?php
+} else {
+    header("Location: login.php");
+}
+?>

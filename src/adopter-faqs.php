@@ -1,3 +1,8 @@
+<?php include_once 'includes/session-handler.php';
+include_once 'includes/db-connect.php';
+
+if ($_SESSION['role'] !== 'admin' && $_SESSION['role'] !== 'head_admin') { ?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -119,3 +124,8 @@
 
 </body>
 </html>
+<?php
+} else {
+    header("Location: home.php");
+}
+?>

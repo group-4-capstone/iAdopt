@@ -62,12 +62,14 @@
         <span>Content Management</span>
       </a>
     </li>
+    <?php if (isset($_SESSION['email']) && $_SESSION['role'] == 'head_admin') { ?>
     <li>
       <a href="account-management.php">
        <i class="bi bi-people-fill"></i>
         <span>Account Management</span>
       </a>
     </li>
+   <?php } ?>
   </ul>
   <div class="user-account">
     <div class="user-profile d-flex align-items-center justify-content-between">

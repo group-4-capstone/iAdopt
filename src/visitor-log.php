@@ -302,6 +302,6 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
 </html>
 <?php
 } else {
-    header("Location: home.php");
+    header("Location: login.php");
 }
 ?>

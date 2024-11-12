@@ -3,7 +3,7 @@ include_once 'includes/db-connect.php';
 
 
 // Check session and role
-if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['role'] == 'head_admin')) {
+if (isset($_SESSION['email']) && $_SESSION['role'] == 'head_admin') {
   
 
 
@@ -195,6 +195,6 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
 </html>
 <?php
 } else {
-    header("Location: home.php");
+  header("Location: dashboard.php");
 }
 ?>
