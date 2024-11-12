@@ -807,6 +807,6 @@ if ($faq_result->num_rows > 0) {
   </html>
 <?php
 } else {
-  header("Location: home.php");
+  header("Location: login.php");
 }
 ?>

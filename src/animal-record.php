@@ -2,6 +2,9 @@
 include_once 'includes/session-handler.php';
 include_once 'includes/db-connect.php';
 
+// Check session and role
+if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['role'] == 'head_admin')) {
+
 if (isset($_GET['animal_id'])) {
     $animal_id = $_GET['animal_id'];
 
@@ -124,8 +127,8 @@ switch ($status) {
             </div>
         </div>
 
-       <!-- QR Code Modal -->
-        <div class="modal fade" id="qrModal" tabindex="-1" aria-labelledby="qrModalLabel" aria-hidden="true"  data-bs-backdrop="static" data-bs-keyboard="false">
+        <!-- QR Code Modal -->
+        <div class="modal fade" id="qrModal" tabindex="-1" aria-labelledby="qrModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -171,13 +174,13 @@ switch ($status) {
                                 <?php } else { ?>
                                     <img src="styles/assets/secaspi-logo.png" alt="Animal Image" class="img-fluid">
                                 <?php } ?>
-                                
+
                                 <!-- File upload placeholder -->
                                 <div id="fileUploadContainer" style="display: none;">
                                     <label for="animalImageUpload" class="form-label mt-2">Upload New Image:</label>
                                     <input type="file" id="animalImageUpload" name="image" class="form-control">
                                 </div>
-                                
+
                                 <!-- QR Code Button -->
                                 <div id="qrContainer" class="text-center mt-2">
                                     <button type="button" class="btn btn-primary" id="qrBtn" data-animal-id="<?php echo $animal_id ?>">
@@ -192,9 +195,9 @@ switch ($status) {
                                 <div class="row">
                                     <div class="col-md-4 form-group">
                                         <label for="name" class="form-label">Name:</label>
-                                        <input type="text" id="name" class="form-control" name="name" 
-                                            value="<?php echo !empty($animal['name']) ? htmlspecialchars($animal['name']) : ''; ?>" 
-                                            placeholder="---- No name yet ----" 
+                                        <input type="text" id="name" class="form-control" name="name"
+                                            value="<?php echo !empty($animal['name']) ? htmlspecialchars($animal['name']) : ''; ?>"
+                                            placeholder="---- No name yet ----"
                                             readonly>
                                     </div>
                                     <div class="col-md-4 form-group">
@@ -226,10 +229,10 @@ switch ($status) {
                                 <div class="row">
                                     <div class="form-group">
                                         <label for="remarks" class="form-label">
-                                           Description:
+                                            Description:
                                         </label>
                                         <textarea id="remarks" class="form-control" name="description" readonly
-                                                placeholder="---- To be filled out ----"><?php echo htmlspecialchars($animal['description']); ?></textarea>
+                                            placeholder="---- To be filled out ----"><?php echo htmlspecialchars($animal['description']); ?></textarea>
                                     </div>
                                 </div>
                                 <?php
@@ -337,7 +340,7 @@ switch ($status) {
                                         <hr class="my-4">
                                         <h5 class="pt-3">Vaccinations:</h5>
                                         <i class="ps-5">No records yet.</i>
-                                        <u><i class="text-end d-block mt-2" style="font-size: 0.9em;">> Update Vaccination</i></u>
+                                        <a href="" data-bs-toggle="modal" data-bs-target="#addVaccineModal"><i class="text-end d-block mt-2" style="font-size: 0.9em;">> Update Vaccination</i></a>
                                     </div>
                                     <div class="col-md-6">
                                         <h5>Medical Treatments/Procedures</h5>
@@ -352,18 +355,64 @@ switch ($status) {
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
+        </div>
+        <!-- Vaccine Information Modal -->
+        <div class="modal fade" id="addVaccineModal" tabindex="-1" aria-labelledby="addVaccineModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addVaccineModalLabel">Add Vaccine Information</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="vaccineForm" method="POST" action="submit-vaccine.php">
+                            <div class="mb-3">
+                                <label for="vaccine_name" class="form-label">Vaccine Name</label>
+                                <input type="text" class="form-control" id="vaccine_name" name="vaccine_name" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="vaccination_date" class="form-label">Vaccination Date</label>
+                                <input type="date" class="form-control" id="vaccination_date" name="vaccination_date" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="next_due_date" class="form-label">Vaccine Expiration</label>
+                                <input type="date" class="form-control" id="next_due_date" name="next_due_date">
+                            </div>
 
+                            <!-- Vet Name and Vet Contact on the same line -->
+                            <div class="row mb-3">
+                                <div class="col-6">
+                                    <label for="vet_name" class="form-label">Vet Name</label>
+                                    <input type="text" class="form-control" id="vet_name" name="vet_name">
+                                </div>
+                                <div class="col-6">
+                                    <label for="vet_contact" class="form-label">Vet Contact</label>
+                                    <input type="text" class="form-control" id="vet_contact" name="vet_contact">
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="remarks" class="form-label">Remarks</label>
+                                <textarea class="form-control" id="remarks" name="remarks"></textarea>
+                            </div>
+                            <div class="d-flex justify-content-end">
+                            <button type="submit" class="btn btn-primary ">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
 
-          <!-- Success Edit Modal -->
-          <div class="modal fade" id="successEditModal" tabindex="-1" aria-labelledby="successContentModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+
+        <!-- Success Edit Modal -->
+        <div class="modal fade" id="successEditModal" tabindex="-1" aria-labelledby="successContentModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-body">
-                    <button type="button" class="btn-close d-flex ms-auto" onclick="location.reload();"></button>
+                        <button type="button" class="btn-close d-flex ms-auto" onclick="location.reload();"></button>
                         <div class="text-center">
                             <i class="bi bi-check-circle-fill" style="font-size: 8rem; color: #28a745;"></i>
                             <p class="mt-4 px-2"> Record has been successfully edited!
@@ -396,3 +445,8 @@ switch ($status) {
 </body>
 
 </html>
+<?php 
+} else {
+    header("Location: login.php");
+}
+?>
