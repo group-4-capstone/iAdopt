@@ -1,7 +1,7 @@
 <?php include_once 'includes/session-handler.php';
 include_once 'includes/db-connect.php';
 
-if ($_SESSION['role'] !== 'admin' && $_SESSION['role'] !== 'head_admin') { 
+if (!isset($_SESSION['role']) || ($_SESSION['role'] !== 'admin' && $_SESSION['role'] !== 'head_admin')) {
   
 ?>
 

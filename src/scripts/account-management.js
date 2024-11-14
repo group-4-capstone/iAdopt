@@ -35,8 +35,7 @@
                         // Construct the full name before generating HTML
                         var fullName = ucwords(response.data[count].first_name + ' ' + response.data[count].last_name);
                         
-                        html +='<th class="blank text-center align-middle"> </th>';
-                        html +='<td class="blank text-center align-middle"> </td>';
+                       
                         html += '<tr>';
                         
                         html += '<td class="text-center align-middle">' + response.data[count].email + '</td>';
@@ -62,8 +61,7 @@
                         var fullName = ucwords(response.data[count].first_name + ' ' + response.data[count].last_name);
                         html += '<td class="text-center align-middle">' + fullName + '</td>';
                         html += '</tr>';
-                        html +='<th class="blank text-center align-middle"> </th>';
-                        html +='<td class="blank text-center align-middle"> </td>';
+                      
                         serial_no++;
                     }
                 } else {
