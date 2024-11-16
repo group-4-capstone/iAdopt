@@ -302,6 +302,7 @@ if (!isset($_SESSION['role']) || ($_SESSION['role'] !== 'admin' && $_SESSION['ro
     </div>
   </section>
 
+
   <section class="about-section" id="about-us">
     <div class="content">
       <h2>Second Chance Aspin Shelter Philippines, Inc.</h2>
