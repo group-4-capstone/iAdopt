@@ -23,12 +23,12 @@ function load_data_announcements(query = '', page_number = 1) {
                     var image = response.data[count].image;
                     var title = response.data[count].title;
                     var description = response.data[count].description;
-                    var status = response.data[count].status;
+                    var announcement_status = response.data[count].announcement_status;
 
                     var shortContent = description.length > 100 ? description.substring(0, 100) + '...' : description;
             
                     // Only display announcements with status "Published"
-                    if (status === 'Published') {
+                    if (announcement_status === 'Published') {
                       // Shorten content for preview
         
                     // Add each announcement item as a grid item

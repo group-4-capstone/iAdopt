@@ -63,7 +63,7 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                   <div class="card p-2">
                     <div class="card-body">
                       <h4 class="pb-4"> <?php echo "ANNOUNCEMENT ID #" . $row['announcement_id']; ?></h4>
-                      <form method="post" id="announcementForm_<?php echo $row['announcement_id']; ?>" enctype="multipart/form-data">
+                      <form method="post" id="announcementForm_<?php echo $row['announcement_id']; ?>">
                         <div class="row mb-3">
                           <label for="announcementTitle" class="col-3 col-form-label">Title<span class="asterisk">*</span></label>
                           <div class="col-9">
@@ -74,7 +74,7 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                         <div class="row mb-3">
                           <label for="announcementStatus" class="col-3 col-form-label">Status<span class="asterisk">*</span></label>
                           <div class="col-3">
-                            <select class="form-select" id="announcementStatus_<?php echo $row['announcement_id']; ?>" name="status" disabled>
+                            <select class="form-select" id="announcementStatus_<?php echo $row['announcement_id']; ?>" name="announcement_status" disabled>
                               <option value="" disabled>Kindly select an option</option>
                               <option value="Draft" <?php echo ($row['status'] == 'Draft') ? 'selected' : ''; ?>>Draft</option>
                               <option value="Scheduled Post" <?php echo ($row['status'] == 'Scheduled Post') ? 'selected' : ''; ?>>Scheduled Post</option>
@@ -274,10 +274,10 @@ if ($faq_result->num_rows > 0) {
                 <div class="row mb-3">
                   <label for="faqStatus_<?php echo $row['faq_id']; ?>" class="col-3 col-form-label">Status<span class="asterisk">*</span></label>
                   <div class="col-9">
-                    <select class="form-select" id="faqStatus_<?php echo $row['faq_id']; ?>" name="status" disabled>
-                      <option value="Draft" <?php echo ($row['status'] == 'Draft') ? 'selected' : ''; ?> disabled>Draft</option>
-                      <option value="Published" <?php echo ($row['status'] == 'Published') ? 'selected' : ''; ?>>Publish</option>
-                      <option value="Unpublished" <?php echo ($row['status'] == 'Unpublished') ? 'selected' : ''; ?>>Unpublish</option>
+                    <select class="form-select" id="faqStatus_<?php echo $row['faq_id']; ?>" name="faq_status" disabled>
+                      <option value="Draft" <?php echo ($row['faq_status'] == 'Draft') ? 'selected' : ''; ?> disabled>Draft</option>
+                      <option value="Published" <?php echo ($row['faq_status'] == 'Published') ? 'selected' : ''; ?>>Publish</option>
+                      <option value="Unpublished" <?php echo ($row['faq_status'] == 'Unpublished') ? 'selected' : ''; ?>>Unpublish</option>
                     </select>
                   </div>
                 </div>
@@ -486,7 +486,7 @@ if ($faq_result->num_rows > 0) {
                     <div class="row mb-3">
                       <label for="announcementStatus" class="col-3 col-form-label">Status<span class="asterisk">*</span></label>
                       <div class="col-3">
-                        <select class="form-select" id="announcementStatus" name="status">
+                        <select class="form-select" id="announcementStatus" name="announcement_status">
                           <option value="" selected disabled>Kindly select an option</option>
                           <option value="Draft">Draft</option>
                           <option value="Scheduled Post">Scheduled Post</option>
@@ -658,10 +658,10 @@ if ($faq_result->num_rows > 0) {
                   <div class="row mb-3">
                     <label for="announcementStatus" class="col-3 col-form-label">Status<span class="asterisk">*</span></label>
                     <div class="col-9">
-                      <select class="form-select" id="faqStatus" name="status">
+                      <select class="form-select" id="faqStatus" name="faq_status">
                         <option value="" selected disabled>Kindly select an option</option>
-                        <option value="draft">Draft</option>
-                        <option value="publish">Publish</option>
+                        <option value="Draft">Draft</option>
+                        <option value="Published">Publish</option>
                       </select>
                     </div>
                   </div>

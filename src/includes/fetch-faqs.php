@@ -65,7 +65,7 @@ if(isset($_POST["query"]))
 			$data[] = array(
 				'faq_id'     => $row["faq_id"],
 				'question'         => str_ireplace($replace_array_1, $replace_array_2, $row["question"]),
-				'status'   => str_ireplace($replace_array_1, $replace_array_2, $row["status"]),
+				'faq_status'   => str_ireplace($replace_array_1, $replace_array_2, $row["faq_status"]),
 				'last_name'      => $row['last_name'],
 				'first_name'      => $row['first_name'],
 				'answer'      => $row['answer']
@@ -102,7 +102,7 @@ if(isset($_POST["query"]))
 				'answer'   => $row["answer"],
 				'last_name'      => $row['last_name'],
 				'first_name'      => $row['first_name'],
-				'status'      => $row['status']
+				'faq_status'      => $row['faq_status']
 			);
 		}
 
