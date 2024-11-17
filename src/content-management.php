@@ -76,9 +76,9 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                           <div class="col-3">
                             <select class="form-select" id="announcementStatus_<?php echo $row['announcement_id']; ?>" name="announcement_status" disabled>
                               <option value="" disabled>Kindly select an option</option>
-                              <option value="Draft" <?php echo ($row['status'] == 'Draft') ? 'selected' : ''; ?>>Draft</option>
-                              <option value="Scheduled Post" <?php echo ($row['status'] == 'Scheduled Post') ? 'selected' : ''; ?>>Scheduled Post</option>
-                              <option value="Published" <?php echo ($row['status'] == 'Published') ? 'selected' : ''; ?>>Publish Now</option>
+                              <option value="Draft" <?php echo ($row['announcement_status'] == 'Draft') ? 'selected' : ''; ?>>Draft</option>
+                              <option value="Scheduled Post" <?php echo ($row['announcement_status'] == 'Scheduled Post') ? 'selected' : ''; ?>>Scheduled Post</option>
+                              <option value="Published" <?php echo ($row['announcement_status'] == 'Published') ? 'selected' : ''; ?>>Publish Now</option>
                             </select>
                           </div>
                           <label for="publishDate" class="col-3 col-form-label">Date to be Published<span class="asterisk">*</span></label>
@@ -682,7 +682,7 @@ if ($faq_result->num_rows > 0) {
         <!-- Content -->
          
         <div class="mx-4">
-          <table id="announcementTable" class="table table-striped mb-5">
+          <table id="announcementTable" class="table table-striped mb-4">
             <thead>
               <tr>
                 <th width="5%">#</th>
@@ -711,7 +711,7 @@ if ($faq_result->num_rows > 0) {
       <div id="News" class="tabcontent">
         <!-- Content -->
         <div class="mx-4">
-          <table id="merchTable" class="table table-striped mb-5">
+          <table id="merchTable" class="table table-striped mb-4">
             <thead>
               <tr>
                 <th width="5%">#</th>
@@ -740,7 +740,7 @@ if ($faq_result->num_rows > 0) {
       <div id="Contact" class="tabcontent">
         <!-- Content -->
         <div class="mx-4">
-          <table id="volunteerTable" class="table table-striped mb-5">
+          <table id="volunteerTable" class="table table-striped mb-4">
             <thead>
               <tr>
                 <th width="5%">#</th>
@@ -769,7 +769,7 @@ if ($faq_result->num_rows > 0) {
       <div id="About" class="tabcontent">
         <!-- Content -->
         <div class="mx-4">
-          <table id="faqTable" class="table table-striped mb-5">
+          <table id="faqTable" class="table table-striped mb-4">
             <thead>
               <tr>
                 <th width="5%">#</th>
