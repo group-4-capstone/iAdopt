@@ -6,13 +6,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     $question = $_POST['question'];
     $answer = $_POST['answer'];
-    $status = $_POST['status'];
+    $faq_status = $_POST['faq_status'];
 
     // Temporary user_id for admin
     $admin_id = $_SESSION['user_id'];
 
     // Prepare and bind the SQL query
-    $stmt = $db->prepare("INSERT INTO faqs (question, answer, status, admin) VALUES (?, ?, ?, ?)");
+    $stmt = $db->prepare("INSERT INTO faqs (question, answer, faq_status, admin) VALUES (?, ?, ?, ?)");
 
     // Check if the statement preparation is successful
     if ($stmt === false) {
@@ -20,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Bind the parameters to the statement, using correct parameter types
-    $stmt->bind_param("sssi", $question, $answer, $status, $admin_id);
+    $stmt->bind_param("sssi", $question, $answer, $faq_status, $admin_id);
 
     // Execute the query
     if ($stmt->execute()) {
