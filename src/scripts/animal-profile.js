@@ -203,3 +203,100 @@ function printQRCode() {
         printWindow.close();
     };
 }
+function toggleOtherInput() {
+    var vaccineSelect = document.getElementById('vaccine_name');
+    var otherVaccineInput = document.getElementById('other_vaccine_input');
+
+    // If "Other" is selected, show the text input, else hide it
+    if (vaccineSelect.value === 'Other') {
+        otherVaccineInput.style.display = 'block';
+    } else {
+        otherVaccineInput.style.display = 'none';
+    }
+}
+
+const fields = document.querySelectorAll('input, textarea');
+
+fields.forEach(field => {
+    field.addEventListener('keypress', function(event) {
+        if (event.key === ' ' && field.selectionStart === 0) {
+            event.preventDefault();
+        }
+    });
+});
+
+
+$('#submitVaccineBtn').click(function(event) {
+    event.preventDefault();
+
+    var form = $('#vaccineForm')[0];
+    var formData = new FormData(form);
+
+    $.ajax({
+        url: 'includes/submit-vaccine.php',
+        type: 'POST',
+        data: formData,
+        processData: false, 
+        contentType: false, 
+        dataType: 'json',
+        success: function (response) {
+            if (response.status === 'success') {
+                $('#addVaccineModal').modal('hide');
+                $('#successVaccineModal').modal('show');
+            }
+        },
+        error: function () {
+            alert('An unexpected error occurred.');
+        }
+    });
+});
+
+document.querySelectorAll('a[data-bs-toggle="modal"]').forEach(function (element) {
+    element.addEventListener('click', function () {
+        // Get vaccine details from the data attributes
+        const vaccineName = this.getAttribute('data-vaccine-name');
+        const vaccinationDate = this.getAttribute('data-vaccination-date');
+        const nextDueDate = this.getAttribute('data-next-due-date');
+        const vetName = this.getAttribute('data-vet-name');
+        const vetContact = this.getAttribute('data-vet-contact');
+        const remarks = this.getAttribute('data-remarks');
+        
+        // Set the values inside the modal
+        document.getElementById('modalVaccineName').textContent = vaccineName;
+        document.getElementById('modalVaccinationDate').textContent = vaccinationDate;
+        document.getElementById('modalNextDueDate').textContent = nextDueDate;
+        document.getElementById('modalVetName').textContent = vetName;
+        document.getElementById('modalVetContact').textContent = vetContact;
+        document.getElementById('modalRemarks').textContent = remarks;
+    });
+});
+
+$('#submitHealthInfoBtn').click(function(event) {
+    event.preventDefault();
+
+    var form = $('#healthInfoForm')[0];
+    var formData = new FormData(form);
+
+    $.ajax({
+        url: 'includes/submit-health-info.php',
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        dataType: 'json',
+        success: function (response) {
+            if (response.status === 'success') {
+                $('#updateHealthInfoModal').modal('hide');
+                $('#healthStatusMessage').text(response.message);
+                $('#successHealthModal').modal('show');
+            } else {
+                alert(response.message || "Failed to update health information. Please try again.");
+            }
+        },
+        error: function () {
+            alert('An unexpected error occurred.');
+        }
+    });
+});
+
+
