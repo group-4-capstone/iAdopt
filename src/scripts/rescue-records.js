@@ -1,13 +1,13 @@
 // Updating status of accepted report
-$('#updateStatusForm').submit(function(e) {
-    e.preventDefault(); 
+$('#updateStatusForm').submit(function (e) {
+    e.preventDefault();
 });
 
-$('#acceptButton').click(function() {
+$('#acceptButton').click(function () {
     $('#confirmationModal').modal('show');
 });
 
-$('#confirmAcceptButton').click(function() {
+$('#confirmAcceptButton').click(function () {
     $('#confirmationModal').modal('hide');
 
     var formData = new FormData($('#updateStatusForm')[0]);
@@ -18,10 +18,10 @@ $('#confirmAcceptButton').click(function() {
         data: formData,
         contentType: false,
         processData: false,
-        success: function(response) {
+        success: function (response) {
             $('#successModal').modal('show');
         },
-        error: function(xhr, status, error) {
+        error: function (xhr, status, error) {
             console.error(xhr.responseText);
         }
     });
@@ -40,7 +40,7 @@ function load_data_report(query = '', page_number = 1) {
     ajax_request.open('POST', 'includes/fetch-reports.php');
     ajax_request.send(form_data);
 
-    ajax_request.onreadystatechange = function() {
+    ajax_request.onreadystatechange = function () {
         if (ajax_request.readyState == 4 && ajax_request.status == 200) {
             var response = JSON.parse(ajax_request.responseText);
             var html = '';
@@ -48,7 +48,7 @@ function load_data_report(query = '', page_number = 1) {
 
             if (response.data.length > 0) {
                 for (var count = 0; count < response.data.length; count++) {
-                    var type = response.data[count].type.toLowerCase().replace(/\b\w/g, function(char) {
+                    var type = response.data[count].type.toLowerCase().replace(/\b\w/g, function (char) {
                         return char.toUpperCase();
                     });
 
@@ -56,7 +56,7 @@ function load_data_report(query = '', page_number = 1) {
                     var location = response.data[count].location;
                     var first_name = response.data[count].first_name;
                     var last_name = response.data[count].last_name;
-            
+
                     html += '<tr data-bs-toggle="modal" data-bs-target="#reportModal_' + rescue_id + '">';
                     html += '<td>' + rescue_id + '</td>';
                     html += '<td>' + response.data[count].report_date + '</td>';
@@ -81,8 +81,7 @@ function load_data_report(query = '', page_number = 1) {
 // ----------------------------- RESCUE TABLE ----------------------------------- //
 load_data();
 
-function load_data(query = '', page_number = 1)
-{
+function load_data(query = '', page_number = 1) {
     var form_data = new FormData();
 
     form_data.append('query', query);
@@ -95,10 +94,8 @@ function load_data(query = '', page_number = 1)
 
     ajax_request.send(form_data);
 
-    ajax_request.onreadystatechange = function()
-    {
-        if(ajax_request.readyState == 4 && ajax_request.status == 200)
-        {
+    ajax_request.onreadystatechange = function () {
+        if (ajax_request.readyState == 4 && ajax_request.status == 200) {
             var response = JSON.parse(ajax_request.responseText);
 
             var html = '';
@@ -108,44 +105,49 @@ function load_data(query = '', page_number = 1)
             if (response.data.length > 0) {
                 for (var count = 0; count < response.data.length; count++) {
                     // Capitalize the first letter of each word for name, type, and rescued_by
-                    var name = response.data[count].name.toLowerCase().replace(/\b\w/g, function(char) {
+                    var name = response.data[count].name.toLowerCase().replace(/\b\w/g, function (char) {
                         return char.toUpperCase();
                     });
-            
-                    var type = response.data[count].type.toLowerCase().replace(/\b\w/g, function(char) {
+
+                    var type = response.data[count].type.toLowerCase().replace(/\b\w/g, function (char) {
                         return char.toUpperCase();
                     });
-            
-                    var rescued_by = response.data[count].rescued_by.toLowerCase().replace(/\b\w/g, function(char) {
+
+                    var rescued_by = response.data[count].rescued_by.toLowerCase().replace(/\b\w/g, function (char) {
                         return char.toUpperCase();
                     });
-            
+
                     // Capitalize and conditionally apply the badge class for animal_status
                     var status = response.data[count].animal_status.toLowerCase();
-                    var statusDisplay = status.replace(/\b\w/g, function(char) {
+                    var statusDisplay = status.replace(/\b\w/g, function (char) {
                         return char.toUpperCase();
                     });
-            
-                    if (statusDisplay === "Under Review") {
-                        statusDisplay = '<span class="badge bg-red text-dark">Under Review</span>';
+
+                
+                    if (statusDisplay === "Adoptable") {
+                        statusDisplay = '<span class="badge bg-success text-light">Adoptable</span>';
+                    } else if (statusDisplay === "Under Review") {
+                        statusDisplay = '<span class="badge bg-danger text-light">Under Review</span>';
+                    } else if (statusDisplay === "Unadoptable") {
+                        statusDisplay = '<span class="badge bg-secondary text-light">Unadoptable</span>';
                     }
-            
-                    // Construct the HTML
-                    html += '<tr onclick="window.location.href=\'animal-record.php?animal_id=' + response.data[count].animal_id + '\'">'; 
+                    
+                    // Construct the HTML for each row in the table
+                    html += '<tr onclick="window.location.href=\'animal-record.php?animal_id=' + response.data[count].animal_id + '\'">';
                     html += '<td>' + response.data[count].rescue_id + '</td>';
                     html += '<td>' + response.data[count].report_date + '</td>';
-                    html += '<td>' + name + '</td>';    
-                    html += '<td>' + type + '</td>';            
-                    html += '<td>' + rescued_by + '</td>';      
-                    html += '<td>' + statusDisplay + '</td>';  
+                    html += '<td>' + name + '</td>';
+                    html += '<td>' + type + '</td>';
+                    html += '<td>' + rescued_by + '</td>';
+                    html += '<td>' + statusDisplay + '</td>';
                     html += '</tr>';
                     serial_no++;
+
                 }
             }
-            
-            
-            else
-            {
+
+
+            else {
                 html += '<tr><td colspan="3" class="text-center">No Data Found</td></tr>';
             }
 
@@ -160,12 +162,12 @@ function load_data(query = '', page_number = 1)
 }
 
 // Clicking the placeholder triggers the file input
-document.getElementById('uploadPlaceholder').addEventListener('click', function() {
+document.getElementById('uploadPlaceholder').addEventListener('click', function () {
     document.getElementById('imageUpload').click();
 });
 
 // Handle file input change and update placeholder with image preview
-document.getElementById('imageUpload').addEventListener('change', function(event) {
+document.getElementById('imageUpload').addEventListener('change', function (event) {
     const files = event.target.files;
     const validExtensions = ['jpg', 'jpeg', 'png'];
     let invalidFiles = [];
@@ -181,14 +183,14 @@ document.getElementById('imageUpload').addEventListener('change', function(event
             invalidFiles.push(fileName);
         } else {
             const reader = new FileReader();
-            reader.onload = function(e) {
+            reader.onload = function (e) {
                 const uploadPlaceholder = document.getElementById('uploadPlaceholder');
                 uploadPlaceholder.style.backgroundImage = `url(${e.target.result})`;
                 uploadPlaceholder.style.backgroundSize = 'cover';
                 uploadPlaceholder.style.backgroundPosition = 'center';
                 document.getElementById('placeholderText').style.display = 'none';
                 uploadPlaceholder.querySelector('i').style.display = 'none';
-                
+
                 // Remove the error message if a valid image is uploaded
                 removeError(document.getElementById('imageUpload'));
             };
@@ -210,7 +212,7 @@ document.getElementById('imageUpload').addEventListener('change', function(event
 // Prevent leading space in text inputs
 var textInputs = document.querySelectorAll('input[type="text"], textarea[name="description"]');
 textInputs.forEach(input => {
-    input.addEventListener('keypress', function(event) {
+    input.addEventListener('keypress', function (event) {
         if (input.value.length === 0 && event.key === ' ') {
             event.preventDefault(); // Prevent leading space
         }
@@ -218,7 +220,7 @@ textInputs.forEach(input => {
 });
 
 // Handle form submission
-document.getElementById('addRecordBtn').addEventListener('click', function(event) {
+document.getElementById('addRecordBtn').addEventListener('click', function (event) {
     event.preventDefault(); // Prevent the default form submission
 
     var addRecordForm = document.getElementById('addRecordForm');
@@ -238,10 +240,10 @@ document.getElementById('addRecordBtn').addEventListener('click', function(event
             data: formData,
             contentType: false,
             processData: false,
-            success: function(response) {
+            success: function (response) {
                 $('#successRecordModal').modal('show');
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 console.error(xhr.responseText);
             }
         });
@@ -299,7 +301,7 @@ function showError(input, message) {
     }
 
     // Add input event listener to remove the error message
-    input.addEventListener('input', function() {
+    input.addEventListener('input', function () {
         if (input.value.trim() !== "") {
             input.classList.remove('is-invalid');
             removeError(input);
@@ -310,7 +312,7 @@ function showError(input, message) {
 // Function to remove error messages
 function removeError(input) {
     var errorMessages = input.parentNode.querySelectorAll('.error-message');
-    errorMessages.forEach(function(msg) {
+    errorMessages.forEach(function (msg) {
         msg.remove();
     });
 }
@@ -318,7 +320,7 @@ function removeError(input) {
 // Clear all error messages on the form
 function clearErrorMessages() {
     var errorMessages = document.querySelectorAll('.error-message');
-    errorMessages.forEach(function(msg) {
+    errorMessages.forEach(function (msg) {
         msg.remove();
     });
 }

@@ -3,8 +3,46 @@
   background-color: white !important;
 }
 
+
+.pagination-container {
+  text-align: center; 
+  margin: 20px 0;
+  float: right;
+}
+
+.pagination {
+  display: inline-flex;
+  list-style-type: none; 
+  padding: 0;
+  margin: 0; 
+}
+
+.pagination li {
+  margin: 0 5px;
+}
+
+.pagination a {
+  display: block;
+  padding: 8px 12px; 
+  color: black; 
+  text-decoration: none; 
+  border-radius: 4px; 
+}
+
+.pagination a.active {
+  background-color: #C0690A;
+  color: white; 
+  border-color: #C0690A; 
+}
+
+.pagination a:hover {
+  background-color: #6d3d09; 
+  color: white;
+}
+
 /* Style tab links */
 .tablink {
+  font-weight: bold;
   background-color: white;
   color: black;
   float: left;
@@ -14,20 +52,27 @@
   padding: 14px 16px;
   font-size: 17px;
   width: 25%;
+  text-align: center; /* Center text horizontally */
+  position: relative; /* For positioning the underline */
+  transition: background-color 0.3s ease, text-decoration-color 0.3s ease; /* Smooth transitions */
 }
 
- #defaultOpen{
- border-top-left-radius: 20px !important;
-}
-
-#faqtab{
-  border-top-right-radius: 20px !important;
- }
- 
-
+/* Hover effect on tabs */
 .tablink:hover {
-  background-color: #c8c8c8;
+  text-decoration: underline;
+  text-decoration-color: #ffdb5a; /* Yellow underline on hover */
+  text-decoration-thickness: 4px; /* Make the underline thicker */
+  text-underline-offset: 6px; /* Adds space between text and underline */
 }
+
+/* Active tab underline */
+.tablink.active {
+  text-decoration: underline;
+  text-decoration-color: #ffdb5a; /* Color for the active tab's underline */
+  text-decoration-thickness: 10px !important; /* Make the underline thicker */
+  font-weight: bold; /* Optional: Add bold style to active tab */
+}
+
 
 .head-title {
   margin-top: 5px;
@@ -85,58 +130,48 @@
 .tabcontent {
   color: black;
   display: none;
-  padding: 100px 20px;
+  padding: 50px 20px;
   height: 100%;
 }
 
-#Home {
-  background-color: #ffdb5a;
-  border-radius: 20px;
-}
 
-#News {
-  background-color: #ffdb5a;
-  border-radius: 20px;
-}
-
-#Contact {
-  background-color: #ffdb5a;
-  border-radius: 20px;
-}
-
-#About {
-  background-color: #ffdb5a;
-  border-radius: 20px;
-}
 
 #errorModal {
   z-index: 1060;
 }
 
-table {
-  background-color: white !important;
+.table {
+  margin-bottom: 0;
 }
 
-thead th {
-  color: #092E5A !important;
-  background-color: transparent !important;
-  border-bottom: gray solid 2px !important;
+.table thead th {
+  background-color: #F4D03F;
+  font-weight: normal;
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
+  padding-left: 10px !important;
+  text-align: center !important;
+  /* Centers text and inline content horizontally */
+  vertical-align: middle !important;
+  /* Centers content vertically within the cell */
 }
 
-tbody th,
-tbody td {
-  color: black !important;
-  background-color: #F7FAFC !important;
-  border-bottom: 2px !important;
+.table tbody tr td {
+  background-color: #fff;
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
+  padding-left: 10px !important;
+  color: #00000088;
+  text-align: center !important;
+  /* Centers text and inline content horizontally */
+  vertical-align: middle !important;
+  /* Centers content vertically within the cell */
 }
 
-tbody th .blank,
-tbody tr .blank {
-  color: black !important;
-  background-color: transparent !important;
-  border-bottom: 2px !important;
-}
+.table tbody tr:hover {
+  background-color: #fff;
 
+}
 
 .table .badge.bg-green {
   background-color: #ffff;

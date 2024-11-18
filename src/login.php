@@ -101,7 +101,7 @@ include_once 'includes/session-manager.php';
                                 // Redirect based on the user's role
                                 if (response.role === 'user') {
                                     window.location.href = "home.php";
-                                } else if (response.role === 'admin' || response.role === 'head admin') {
+                                } else if (response.role === 'admin' || response.role === 'head_admin') {
                                     window.location.href = "dashboard.php";
                                 }
                             } else {

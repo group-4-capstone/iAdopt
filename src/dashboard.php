@@ -15,7 +15,7 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>iADOPT | SECASPI</title>
+  <title>iADOPT | Dashboard</title>
   <link rel="icon" type="image/x-icon" href="styles/assets/secaspi-logo.png">
   <link rel="stylesheet" href="styles/sidebar.css">
   <link rel="stylesheet" href="styles/styles.css">
@@ -222,6 +222,6 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
 
 <?php
 } else {
-    header("Location: home.php");
+    header("Location: login.php");
 }
 ?>

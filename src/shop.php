@@ -1,3 +1,9 @@
+<?php include_once 'includes/session-handler.php';
+include_once 'includes/db-connect.php';
+
+if (!isset($_SESSION['role']) || ($_SESSION['role'] !== 'admin' && $_SESSION['role'] !== 'head_admin')) { 
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -40,46 +46,7 @@
           <div class="section_container">
             <div class="grid_container"> 
               <div class="merch">
-                <div class="grid_items">
-                  <img src="styles/assets/merchandise/cap.png">
-                  <h2>Cap</h2>
-                  <p><a href="#">Buy Here</a></p>
-                </div>
-                <div class="grid_items">
-                  <img src="styles/assets/merchandise/umbrella.webp">
-                  <h2>Umbrella</h2>
-                  <p><a href="#">Buy Here</a></p>
-                </div>
-                <div class="grid_items">
-                  <img src="styles/assets/merchandise/eco_bag.png">
-                  <h2>Canvas Eco Bag</h2>
-                  <p><a href="#">Buy Here</a></p>
-                </div>
-                <div class="grid_items">
-                  <img src="styles/assets/merchandise/mouse_pad.webp">
-                  <h2>Mouse Pad</h2>
-                  <p><a href="#">Buy Here</a></p>
-                </div>
-                <div class="grid_items">
-                  <img src="styles/assets/merchandise/cap.png">
-                  <h2>Cap</h2>
-                  <p><a href="#">Buy Here</a></p>
-                </div>
-                <div class="grid_items">
-                  <img src="styles/assets/merchandise/umbrella.webp">
-                  <h2>Umbrella</h2>
-                  <p><a href="#">Buy Here</a></p>
-                </div>
-                <div class="grid_items">
-                  <img src="styles/assets/merchandise/eco_bag.png">
-                  <h2>Canvas Eco Bag</h2>
-                  <p><a href="#">Buy Here</a></p>
-                </div>
-                <div class="grid_items">
-                  <img src="styles/assets/merchandise/mouse_pad.webp">
-                  <h2>Mouse Pad</h2>
-                  <p><a href="#">Buy Here</a></p>
-                </div>
+                
               </div>
             </div>
           </div>
@@ -92,6 +59,12 @@
 
    
    <?php include_once 'components/footer.php'; ?>
-
+   <script src="scripts/shop.js"></script>
 </body>
 </html>
+
+<?php
+} else {
+    header("Location: home.php");
+}
+?>

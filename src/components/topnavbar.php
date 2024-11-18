@@ -20,12 +20,12 @@
           </ul>
         </li>
         <!-- Notification Icon -->
-      <div class="notification-item" id="notification">
-        <a href="#" role="button" data-bs-toggle="modal" data-bs-target="#notificationModal">
-          <i class="bi bi-bell-fill notification-icon"></i>
-          <span class="badge">2</span>
-        </a>
-      </div>
+        <div class="notification-item" id="notification">
+          <a href="#" role="button" data-bs-toggle="modal" data-bs-target="#notificationModal">
+            <i class="bi bi-bell-fill notification-icon"></i>
+            <span class="badge"></span>
+          </a>
+        </div>
       <?php } else { ?>
         <li><a href="login.php">Login</a></li>
       <?php  } ?>
@@ -35,7 +35,7 @@
 </header>
 
 <!-- Modal Structure for Notifications -->
-<div class="modal fade" id="notificationModal" tabindex="-1" aria-labelledby="notificationModalLabel" aria-hidden="true">
+<div class="modal fade" id="notificationModal" tabindex="-1" aria-labelledby="notificationModalLabel" data-bs-backdrop="static" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -43,28 +43,45 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <ul class="list-unstyled">
-          <li class="notification-item pt-3">
-            <a href="#" data-bs-toggle="modal" data-bs-target="#postAdoptionModal">
-              <p>Post-Adoption Form</p>
-            </a>
-          </li>
-          <li class="notification-item pt-3">
-            <a href="#" data-bs-toggle="modal" data-bs-target="#adoptionModal">
-              <p> Congratulations! Your adoption application has been approved!</p>
-            </a>
-          </li>
-          <li class="notification-item pt-3">
-            <p>New part of the family: Bella!</p>
-          </li>
+        <ul class="list-unstyled" id="post_data">
+          <!-- Notifications will be populated here -->
         </ul>
       </div>
       <div class="pb-3 text-center">
-        <a href="#" class="text-danger">Clear Notifications</a>
+        <a href="#" class="text-danger" id="clearNotifications">Clear Notifications</a>
       </div>
     </div>
   </div>
 </div>
+
+<!-- Modal Structure for Notification Details -->
+<div class="modal fade" id="notificationDetailModal" tabindex="-1" aria-labelledby="notificationDetailModalLabel" data-bs-backdrop="static" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title fw-bold" id="notificationDetailModalLabel">
+          <i class="bi bi-bell-fill me-2"></i>Notification Details
+        </h5>
+        <button type="button" class="btn-close" onclick="window.location.reload();" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <h6 id="notificationType" class="text-primary fw-bold mb-3"></h6>
+        <div class="mb-2">
+          <p id="notificationMessage" class="mb-1 fs-5"></p>
+        </div>
+        <div>
+          <p id="notificationDate" class="text-muted small fst-italic"></p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="window.location.reload();">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
 
 <!-- Modal Structure for Post-Adoption
 <div class="modal fade" id="postAdoptionModal" tabindex="-1" aria-labelledby="postAdoptionModalLabel" aria-hidden="true">
@@ -103,7 +120,6 @@
   <div class="modal-dialog modal-dialog-centered modal-xl">
     <div class="modal-content">
       <div class="modal-body d-flex">
-        <!-- Close button (X) -->
         <button type="button" class="btn-close position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Close"></button>
         <!-- Left side: GIF -->
         <div class="row p-5">
@@ -148,4 +164,112 @@
   hamburgerBtn.addEventListener("click", () => header.classList.toggle("show-mobile-menu"));
   closeMenuBtn.addEventListener("click", () => hamburgerBtn.click());
   notifBtn.addEventListener("click", () => hamburgerBtn.click());
+
+  load_data();
+
+  function load_data(query = '') {
+    var form_data = new FormData();
+    form_data.append('query', query);
+
+    var ajax_request = new XMLHttpRequest();
+
+    ajax_request.open('POST', 'includes/fetch-notifications.php');
+    ajax_request.send(form_data);
+
+    ajax_request.onreadystatechange = function() {
+      if (ajax_request.readyState == 4 && ajax_request.status == 200) {
+        var response = JSON.parse(ajax_request.responseText);
+
+        var html = '';
+
+        if (response.data.length > 0) {
+            for (var count = 0; count < response.data.length; count++) {
+              var isReadClass = response.data[count].is_read === '1' ? 'read' : 'unread';
+              html += '<li class="notification-item pt-3 ' + isReadClass + '" data-id="' + response.data[count].notification_id + '">';
+              html += '<a href="#">';
+              html += '<p>' + response.data[count].message + '</p>';
+              html += '</a>';
+              html += '</li>';
+          }
+        } else {
+          html += '<tr><td colspan="6" class="text-center">No Data Found</td></tr>';
+        }
+
+        document.getElementById('post_data').innerHTML = html;
+
+         // **Update the unread notification count badge**
+         const unreadBadge = document.querySelector('.notification-item .badge');
+            if (unreadBadge) {
+                unreadBadge.innerText = response.unread_count;
+                // Hide badge if unread count is 0
+                unreadBadge.style.display = response.unread_count > 0 ? 'inline-block' : 'none';
+            }
+
+        // Add event listeners to open the detail modal on click
+        var notificationItems = document.querySelectorAll('.notification-item');
+        notificationItems.forEach(function(item) {
+          item.addEventListener('click', function() {
+            var notificationId = this.getAttribute('data-id');
+            $('#notificationModal').modal('hide');
+            markAsRead(notificationId);
+            showNotificationDetails(notificationId);
+          });
+        });
+      }
+    }
+  }
+
+  // Function to show notification details in a new modal
+  function showNotificationDetails(notificationId) {
+    var form_data = new FormData();
+    form_data.append('notification_id', notificationId);
+
+    var ajax_request = new XMLHttpRequest();
+
+    ajax_request.open('POST', 'includes/fetch-notification-details.php');
+    ajax_request.send(form_data);
+
+    ajax_request.onreadystatechange = function() {
+      if (ajax_request.readyState == 4 && ajax_request.status == 200) {
+        var response = JSON.parse(ajax_request.responseText);
+
+        if (response.success) {
+          // Populate the modal with the notification details
+          document.getElementById('notificationMessage').innerText = response.data.message;
+          document.getElementById('notificationDate').innerText = response.data.created_at;
+          document.getElementById('notificationType').innerText = response.data.notification_type;
+
+          // Open the modal
+          var myModal = new bootstrap.Modal(document.getElementById('notificationDetailModal'));
+          myModal.show();
+        }
+      }
+    }
+  }
+
+  // Function to mark a notification as read
+  function markAsRead(notificationId) {
+    var form_data = new FormData();
+    form_data.append('notification_id', notificationId);
+
+    var ajax_request = new XMLHttpRequest();
+
+    ajax_request.open('POST', 'includes/mark-as-read.php');
+    ajax_request.send(form_data);
+
+    ajax_request.onreadystatechange = function() {
+      if (ajax_request.readyState == 4 && ajax_request.status == 200) {
+        var response = JSON.parse(ajax_request.responseText);
+        if (response.success) {
+          var notificationItem = document.querySelector('.notification-item[data-id="' + notificationId + '"]');
+          if (notificationItem && notificationItem.classList.contains('unread')) {
+          notificationItem.classList.add('read');
+          notificationItem.classList.remove('unread');
+        }
+        } else {
+          alert('Failed to mark as read');
+        }
+      }
+    }
+  }
 </script>

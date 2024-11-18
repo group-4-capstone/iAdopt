@@ -68,7 +68,7 @@ if(isset($_POST["query"]))
 				'title'         => str_ireplace($replace_array_1, $replace_array_2, $row["title"]),
 				'description'   => str_ireplace($replace_array_1, $replace_array_2, $row["description"]),
 				'image'      => $row['image'],
-				'status'      => $row['status'],
+				'announcement_status'      => $row['announcement_status'],
 				'publish_date'   => $row['publish_date'],
 				'first_name'         => $row["first_name"],
 				'last_name'         => $row["last_name"],
@@ -104,7 +104,7 @@ if(isset($_POST["query"]))
 				'title'         => $row["title"],
 				'description'   => $row["description"],
 				'image'      => $row['image'],
-				'status'      => $row['status'],
+				'announcement_status'      => $row['announcement_status'],
 				'publish_date'   => $row['publish_date'],
 				'first_name'         => $row["first_name"],
 				'last_name'         => $row["last_name"],
@@ -115,139 +115,112 @@ if(isset($_POST["query"]))
 	}
 
 	$pagination_html = '
-	<div align="center">
+	<div class="pagination-container">
   		<ul class="pagination">
 	';
 
-	$total_links = ceil($total_data/$limit);
+$total_links = ceil($total_data/$limit);
 
-	$previous_link = '';
-	$next_link = '';
-	$page_link = '';
+$previous_link = '';
+$next_link = '';
+$page_link = '';
 
-	if($total_links > 4)
-	{
-		if($page < 5)
-		{
-			for($count = 1; $count <= 5; $count++)
-			{
-				$page_array[] = $count;
-			}
-			$page_array[] = '...';
-			$page_array[] = $total_links;
-		}
-		else
-		{
-			$end_limit = $total_links - 5;
+if ($total_links > 4) {
+    if ($page < 5) {
+        for ($count = 1; $count <= 5; $count++) {
+            $page_array[] = $count;
+        }
+        $page_array[] = '...';
+        $page_array[] = $total_links;
+    } else {
+        $end_limit = $total_links - 5;
 
-			if($page > $end_limit)
-			{
-				$page_array[] = 1;
-				$page_array[] = '...';
-				for($count = $end_limit; $count <= $total_links; $count++)
-				{
-					$page_array[] = $count;
-				}
-			}
-			else
-			{
-				$page_array[] = 1;
-				$page_array[] = '...';
-				for($count = $page - 1; $count <= $page + 1; $count++)
-				{
-					$page_array[] = $count;
-				}
-				$page_array[] = '...';
-				$page_array[] = $total_links;
-			}
-		}
-	}
-	else
-	{
-		for($count = 1; $count <= $total_links; $count++)
-		{
-			$page_array[] = $count;
-		}
-	}
+        if ($page > $end_limit) {
+            $page_array[] = 1;
+            $page_array[] = '...';
+            for ($count = $end_limit; $count <= $total_links; $count++) {
+                $page_array[] = $count;
+            }
+        } else {
+            $page_array[] = 1;
+            $page_array[] = '...';
+            for ($count = $page - 1; $count <= $page + 1; $count++) {
+                $page_array[] = $count;
+            }
+            $page_array[] = '...';
+            $page_array[] = $total_links;
+        }
+    }
+} else {
+    for ($count = 1; $count <= $total_links; $count++) {
+        $page_array[] = $count;
+    }
+}
 
-	for($count = 0; $count < count($page_array); $count++)
-	{
-		if($page == $page_array[$count])
-		{
-			$page_link .= '
-			<li class="page-item active">
-	      		<a class="page-link" href="#">'.$page_array[$count].' <span class="sr-only"></span></a>
-	    	</li>
-			';
+for ($count = 0; $count < count($page_array); $count++) {
+    if ($page == $page_array[$count]) {
+        $page_link .= '
+			<li><a href="#" class="active">'.$page_array[$count].'</a></li>
+		';
 
-			$previous_id = $page_array[$count] - 1;
+        $previous_id = $page_array[$count] - 1;
 
-			if($previous_id > 0)
-			{
-				$previous_link = '<li class="page-item"><a class="page-link" href="javascript:load_data_announcements(`'.$_POST["query"].'`, '.$previous_id.')"><</a></li>';
-			}
-			else
-			{
-				$previous_link = '
-				<li class="page-item disabled">
-			        <a class="page-link" href="#"><</a>
+        if ($previous_id > 0) {
+            $previous_link = '<li><a href="javascript:load_data_announcements(`'.$_POST["query"].'`, '.$previous_id.')">&lt;</a></li>';
+        } else {
+            $previous_link = '
+				<li class="disabled">
+			        <a href="#">&lt;</a>
 			    </li>
-				';
-			}
+			';
+        }
 
-			$next_id = $page_array[$count] + 1;
+        $next_id = $page_array[$count] + 1;
 
-			if($next_id > $total_links)
-			{
-				$next_link = '
-				<li class="page-item disabled">
-	        		<a class="page-link" href="#">></a>
+        if ($next_id > $total_links) {
+            $next_link = '
+				<li class="disabled">
+	        		<a href="#">&gt;</a>
 	      		</li>
-				';
-			}
-			else
-			{
-				$next_link = '
-				<li class="page-item"><a class="page-link" href="javascript:load_data_announcements(`'.$_POST["query"].'`, '.$next_id.')">></a></li>
-				';
-			}
+			';
+        } else {
+            $next_link = '
+				<li><a href="javascript:load_data_announcements(`'.$_POST["query"].'`, '.$next_id.')">&gt;</a></li>
+			';
+        }
 
-		}
-		else
-		{
-			if($page_array[$count] == '...')
-			{
-				$page_link .= '
-				<li class="page-item disabled">
-	          		<a class="page-link" href="#">...</a>
+    } else {
+        if ($page_array[$count] == '...') {
+            $page_link .= '
+				<li class="disabled">
+	          		<a href="#">...</a>
 	      		</li>
-				';
-			}
-			else
-			{
-				$page_link .= '
-				<li class="page-item">
-					<a class="page-link" href="javascript:load_data_announcements(`'.$_POST["query"].'`, '.$page_array[$count].')">'.$page_array[$count].'</a>
+			';
+        } else {
+            $page_link .= '
+				<li>
+					<a href="javascript:load_data_announcements(`'.$_POST["query"].'`, '.$page_array[$count].')">'.$page_array[$count].'</a>
 				</li>
-				';
-			}
-		}
-	}
+			';
+        }
+    }
+}
 
-	$pagination_html .= $previous_link . $page_link . $next_link;
+$pagination_html .= $previous_link . $page_link . $next_link;
 
-	$pagination_html .= '
+$pagination_html .= '
 		</ul>
 	</div>
-	';
+';
 
-	$output = array(
-		'data'          => $data,
-		'pagination'    => $pagination_html,
-		'total_data'    => $total_data
-	);
+$output = array(
+    'data' => $data,
+    'pagination' => $pagination_html,
+    'total_data' => $total_data
+);
 
-	echo json_encode($output);
+echo json_encode($output);
+
 
 }
 

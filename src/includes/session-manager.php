@@ -1,13 +1,23 @@
 <?php
+// Start the session if it hasn't been started
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
-// Check if the user is logged in by checking email and logged_in status
-if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true && isset($_SESSION['email'])) {
+// Check if the user is logged in by checking 'logged_in' and 'email' session variables
+if (!empty($_SESSION['logged_in']) && !empty($_SESSION['email'])) {
     // Redirect based on the user's role
-    if ($_SESSION['role'] === 'user') {
-        header("Location: home.php");
-        exit;
-    } elseif ($_SESSION['role'] === 'admin' || $_SESSION['role'] === 'head_admin') {
-        header("Location: dashboard.php");
-        exit;
+    switch ($_SESSION['role']) {
+        case 'user':
+            header("Location: home.php");
+            break;
+        case 'admin':
+        case 'head_admin':
+            header("Location: dashboard.php");
+            break;
+        default:
+            header("Location: home.php"); // Optional fallback
+            break;
     }
+    exit; // Ensure no further code is executed
 }
