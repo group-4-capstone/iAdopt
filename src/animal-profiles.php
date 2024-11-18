@@ -80,7 +80,7 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>iADOPT | SECASPI</title>
+    <title>iADOPT | Animal Profiles</title>
     <link rel="icon" type="image/x-icon" href="styles/assets/secaspi-logo.png">
     <link rel="stylesheet" href="styles/sidebar.css">
     <link rel="stylesheet" href="styles/adopt.css">
@@ -166,28 +166,28 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
               </div>
             </div>
             <nav class="pagination-container mt-4">
-    <ul class="pagination">
-        <!-- "<" Previous Page Link -->
-        <li class="page-item">
-            <a class="page-link <?php echo ($currentPage == 1) ? 'disabled' : ''; ?>" 
-               data-page="<?php echo $currentPage - 1; ?>">&lt;</a>
-        </li>
+              <ul class="pagination">
+                <!-- "<" Previous Page Link -->
+                <li class="page-item">
+                  <a class="page-link <?php echo ($currentPage == 1) ? 'disabled' : ''; ?>"
+                    data-page="<?php echo $currentPage - 1; ?>">&lt;</a>
+                </li>
 
-        <!-- Page Number Links -->
-        <?php for ($page = 1; $page <= $totalPages; $page++): ?>
-            <li class="page-item">
-                <a class="page-link <?php echo ($page == $currentPage) ? 'active' : ''; ?>" 
-                   data-page="<?php echo $page; ?>"><?php echo $page; ?></a>
-            </li>
-        <?php endfor; ?>
+                <!-- Page Number Links -->
+                <?php for ($page = 1; $page <= $totalPages; $page++): ?>
+                  <li class="page-item">
+                    <a class="page-link <?php echo ($page == $currentPage) ? 'active' : ''; ?>"
+                      data-page="<?php echo $page; ?>"><?php echo $page; ?></a>
+                  </li>
+                <?php endfor; ?>
 
-        <!-- ">" Next Page Link -->
-        <li class="page-item">
-            <a class="page-link <?php echo ($currentPage == $totalPages) ? 'disabled' : ''; ?>" 
-               data-page="<?php echo $currentPage + 1; ?>">&gt;</a>
-        </li>
-    </ul>
-</nav>
+                <!-- ">" Next Page Link -->
+                <li class="page-item">
+                  <a class="page-link <?php echo ($currentPage == $totalPages) ? 'disabled' : ''; ?>"
+                    data-page="<?php echo $currentPage + 1; ?>">&gt;</a>
+                </li>
+              </ul>
+            </nav>
 
 
 
