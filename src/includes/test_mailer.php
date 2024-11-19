@@ -1,12 +1,15 @@
 <?php
-require '../../vendor/autoload.php'; // Autoload PHPMailer using Composer
+// Include the PHPMailer files
+require '../phpmailer/PHPMailer.php';
+require '../phpmailer/SMTP.php';
+require '../phpmailer/Exception.php';
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-$mail = new PHPMailer(true); // Enable exceptions
-
+// Initialize PHPMailer
+$mail = new PHPMailer(true);
 try {
-    // SMTP configuration
     $mail->isSMTP();
     $mail->Host       = 'smtp.gmail.com'; // Use your SMTP server
     $mail->SMTPAuth   = true;
@@ -14,24 +17,20 @@ try {
     $mail->Password   = 'hznpjsvzbuzssdun'; // Your email password or app password
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; // Encryption (TLS)
     $mail->Port       = 587; // TCP port to connect to
+    
 
-    // Sender and recipient settings
-    $mail->setFrom('secaspiiadopt@gmail.com', 'iADOPT'); // Sender's email and name
-    $mail->addAddress('andreasofiavillalobos529@gmail.com'); // Add recipient email
+      // Sender and recipient settings
+      $mail->setFrom('helloimandreaaa@gmail.com', 'iADOPT'); // Sender's email and name
+      $mail->addAddress('andreasofiavillalobos529@gmail.com'); // Add recipient email
 
-    // Email content
     $mail->isHTML(true);
-    $mail->Subject = 'PHPMailer Test';
-    $mail->Body    = '<h1>Hello</h1><p>This is a test email sent using PHPMailer.</p>';
-    $mail->AltBody = 'This is a test email sent using PHPMailer.';
-
-    // Send email
-    if ($mail->send()) {
-        echo 'Message has been sent successfully';
-    } else {
-        echo 'Message could not be sent. Mailer Error: ' . $mail->ErrorInfo;
-    }
+    $mail->Subject = 'Test Email';
+    $mail->Body = 'This is a test email using PHPMailer without Composer.';
+    
+    $mail->send();
+    echo 'Email has been sent successfully';
 } catch (Exception $e) {
-    echo "Message could not be sent. PHPMailer Error: {$mail->ErrorInfo}";
+    echo "Email could not be sent. Error: {$mail->ErrorInfo}";
 }
 ?>
+
