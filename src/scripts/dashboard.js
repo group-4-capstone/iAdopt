@@ -1,187 +1,220 @@
-// Custom Bar Chart
-document.addEventListener("DOMContentLoaded", function() {
-  const canvas = document.getElementById('barChart');
-  const ctx = canvas.getContext('2d');
+document.addEventListener("DOMContentLoaded", async function () {
+  const canvas = document.getElementById("barChart");
+  const ctx = canvas.getContext("2d");
+  const dropdownItems = document.querySelectorAll(".dropdown-item");
+  const toggleButton = document.querySelector(".months-btn");
 
-  // Data for the chart
-  const data = [100000, 400000, 350000, 500000, 600000, 450000]; // Rescued numbers in 1000s
-  const labels = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN'];
+  let chart; // Reference to the Chart.js instance
 
-  // Chart settings
-  const canvasWidth = canvas.width;
-  const canvasHeight = canvas.height;
-  const chartPadding = 50;
-  const barWidth = 60;
-  const maxDataValue = 1000000; // Maximum value (1M)
-  const yAxisValues = 5; // Number of vertical axis lines
+  // Labels for each time period
+  const labelsMonthly = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+  const labelsQuarterly = ['Q1', 'Q2', 'Q3', 'Q4'];
+  let labelsYearly = [];
 
-  // Colors
-  const barColor = '#FFC107';
-  const gridColor = '#eaeaea';
-  const textColor = '#666';
+  // Fetch data based on the selected period
+  async function fetchData(period) {
+    const response = await fetch(`includes/fetch-adoption-data.php?period=${period}`);
+    const data = await response.json();
+    return data;
+  }
 
-  // Draw grid lines
-  function drawGrid() {
-    const stepSize = (canvasHeight - chartPadding * 2) / yAxisValues;
-    ctx.strokeStyle = gridColor;
-    ctx.lineWidth = 1;
-    ctx.font = "12px Arial";
-    ctx.fillStyle = textColor;
+  // Function to update the chart
+  async function updateChart(period) {
+    let data = await fetchData(period);
+    let labels = [];
 
-    for (let i = 0; i <= yAxisValues; i++) {
-      const y = chartPadding + i * stepSize;
-      ctx.beginPath();
-      ctx.moveTo(chartPadding, y);
-      ctx.lineTo(canvasWidth - chartPadding, y);
-      ctx.stroke();
-
-      // Add Y-axis labels
-      const value = maxDataValue - (i * (maxDataValue / yAxisValues));
-      ctx.fillText(`${value / 1000}`, chartPadding - 30, y + 5);
+    if (period === "monthly") {
+      labels = labelsMonthly;
+    } else if (period === "quarterly") {
+      labels = labelsQuarterly;
+    } else if (period === "yearly") {
+      labels = data.map(item => item.year); // Extract year labels
+      data = data.map(item => item.count); // Extract counts
     }
-  }
 
-  // Function to draw rounded bars with left and bottom axis lines (borders)
-  function drawBars() {
-    const stepX = (canvasWidth - chartPadding * 2) / labels.length;
-    ctx.font = "14px Arial";
-    ctx.fillStyle = textColor;
-    const radius = 10;  // Set the radius for rounded corners
-    const borderColor = '#666'; // Color of the axis lines
-    const borderWidth = 0.5;  // Thickness of the axis lines
+    // Destroy existing chart if it exists
+    if (chart) {
+      chart.destroy();
+    }
 
-    // Draw the left Y-axis border
-    ctx.strokeStyle = borderColor;
-    ctx.lineWidth = borderWidth;
-    ctx.beginPath();
-    ctx.moveTo(chartPadding, chartPadding);   // Top of Y-axis
-    ctx.lineTo(chartPadding, canvasHeight - chartPadding);  // Bottom of Y-axis
-    ctx.stroke();
-
-    // Draw the bottom X-axis border
-    ctx.beginPath();
-    ctx.moveTo(chartPadding, canvasHeight - chartPadding);   // Start of X-axis
-    ctx.lineTo(canvasWidth - chartPadding, canvasHeight - chartPadding);  // End of X-axis
-    ctx.stroke();
-
-    // Now draw the bars
-    data.forEach((value, index) => {
-      const barHeight = (value / maxDataValue) * (canvasHeight - chartPadding * 2);
-      const x = chartPadding + index * stepX + (stepX - barWidth) / 2;
-      const y = canvasHeight - chartPadding - barHeight;
-
-      // Draw the bar with rounded corners at the top
-      ctx.fillStyle = barColor;
-      
-      // Begin the path for rounded corners
-      ctx.beginPath();
-      ctx.moveTo(x, y + radius);                  // Move to the starting point
-      ctx.arcTo(x, y, x + radius, y, radius);     // Top-left corner
-      ctx.arcTo(x + barWidth, y, x + barWidth, y + radius, radius);  // Top-right corner
-      ctx.lineTo(x + barWidth, canvasHeight - chartPadding);    // Down the right side
-      ctx.lineTo(x, canvasHeight - chartPadding);               // Close the rectangle on the bottom
-      ctx.closePath();
-
-      // Fill the bar
-      ctx.fill();
-
-      // Add X-axis labels
-      ctx.fillStyle = textColor;
-      ctx.fillText(labels[index], x + barWidth / 2 - 10, canvasHeight - chartPadding + 20);
-    });
-  }
-
-  // Function to render the chart
-  function renderChart() {
-    drawGrid();  // Draw grid lines and Y-axis
-    drawBars();  // Draw the bars
-  }
-
-  renderChart();  // Call the function to draw the chart
-});
-
-
-
-//line chart
-
-document.addEventListener('DOMContentLoaded', function() {
-  const ctx = document.getElementById('donationChart').getContext('2d');
-
-  const donationChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-      datasets: [{
-        label: 'Donations (₱)',
-        data: [12000, 15000, 18000, 24000, 21000, 32000, 40000, 41000, 38000, 35000, 36000, 42000],
-        borderColor: '#092E5A',
-        backgroundColor: 'transparent',
-        borderWidth: 2,
-        tension: 0.4,
-        fill: true,
+    // Create new chart instance
+    chart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: `${period.charAt(0).toUpperCase() + period.slice(1)} Adoption Count`,
+          data: data,
+          backgroundColor: '#FFC107',
+          borderColor: '#FFC107',
+          borderWidth: 1
+        }]
       },
-      {
-        label: 'Expenses (₱)',
-        data: [10000, 13000, 17000, 22000, 19000, 30000, 39000, 38000, 36000, 33000, 34000, 41000],
-        borderColor: '#f8c613',
-        backgroundColor: 'transparent',
-        borderWidth: 2,
-        tension: 0.4,
-        fill: true,
-      }]
-    },
-    options: { 
-      responsive: true,
-      maintainAspectRatio: false,
-      scales: {
-        x: {
-          grid: {
-            display: false
-          },
-          title: {
-            display: false
-          }
-        },
-        y: {
-          grid: {
-            display: true,
-            borderDash: [5, 5], // Make horizontal grid lines dashed
-            lineWidth: 1,
-          },
-          ticks: {
-            callback: function(value, index, values) {
-              return index % 2 === 0 ? value : ''; // Show every other tick label
-            },
-            stepSize: 5000,
-          },
-          title: {
-            display: false
-          },
-          beginAtZero: true
-        }
-      },
-      plugins: {
-        legend: {
-          display: true,
-          position: 'top', // Positions the legend above the chart
-          align: 'end',
-          labels: {
-            fontColor: '#333', // Legend label color
-            usePointStyle: true, // Use a point instead of a rectangle
-            pointStyle: 'circle',
-            pointStyleWidth: 15,
-            padding: 10, 
-            
-          }
-        },
-        tooltip: {
-          callbacks: {
-            label: function(tooltipItem) {
-              return tooltipItem.dataset.label + ': ₱' + tooltipItem.raw; // Custom label with currency symbol
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: {
+              stepSize: 5,
             }
           }
         }
       }
-    }
+    });
+  }
+
+  // Event listener for dropdown items
+  dropdownItems.forEach((item) => {
+    item.addEventListener("click", function (e) {
+      e.preventDefault();
+      const selectedPeriod = item.getAttribute("data-period");
+      toggleButton.textContent = item.textContent;
+      updateChart(selectedPeriod);
+    });
   });
+
+  // Initial load with monthly data
+  updateChart("monthly");
+});
+
+
+document.addEventListener("DOMContentLoaded", async function () {
+  const canvas = document.getElementById("lineChart");
+  const ctx = canvas.getContext("2d");
+  const dropdownItems = document.querySelectorAll(".dropdown-item");
+  const toggleButton = document.querySelector(".months-btn");
+
+  let chart; // Reference to the Chart.js instance
+
+  // Labels for each time period
+  const labelsMonthly = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+  const labelsQuarterly = ['Q1', 'Q2', 'Q3', 'Q4'];
+  let labelsYearly = [];
+
+  // Fetch data based on the selected period
+  async function fetchData(period) {
+    const response = await fetch(`includes/fetch-liquidation-data.php?period=${period}`);
+    const data = await response.json();
+    return data;
+  }
+
+  // Function to update the chart
+  async function updateChart(period) {
+    let data = await fetchData(period);
+    let labels = [];
+    let donationData = [];
+    let expenseData = [];
+
+    if (period === "monthly") {
+      labels = labelsMonthly;
+      donationData = data.donations;
+      expenseData = data.expenses;
+    } else if (period === "quarterly") {
+      labels = labelsQuarterly;
+      donationData = data.donations;
+      expenseData = data.expenses;
+    } else if (period === "yearly") {
+      labels = data.map(item => item.year); // Extract year labels
+      donationData = data.map(item => item.donations); // Extract donations counts
+      expenseData = data.map(item => item.expenses); // Extract expenses counts
+    }
+
+    // Destroy existing chart if it exists
+    if (chart) {
+      chart.destroy();
+    }
+
+    // Create new chart instance with the updated style
+    chart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            label: 'Donations (₱)',
+            data: donationData,
+            backgroundColor: 'rgba(76, 175, 80, 0.2)',  // Light green for donations
+            borderColor: '#092E5A',  // Dark blue for donations, matching the first chart
+            borderWidth: 2,
+            fill: false,
+            tension: 0.4
+          },
+          {
+            label: 'Expenses (₱)',
+            data: expenseData,
+            backgroundColor: 'rgba(255, 87, 34, 0.2)',  // Light red for expenses
+            borderColor: '#f8c613',  // Yellow-orange for expenses, matching the first chart
+            borderWidth: 2,
+            fill: false,
+            tension: 0.4
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          x: {
+            grid: {
+              display: false
+            },
+            title: {
+              display: false
+            }
+          },
+          y: {
+            grid: {
+              display: true,
+              borderDash: [5, 5], // Make horizontal grid lines dashed, matching the first chart
+              lineWidth: 1,
+            },
+            ticks: {
+              callback: function(value, index, values) {
+                return index % 2 === 0 ? value : ''; // Show every other tick label
+              },
+              stepSize: 5000,
+            },
+            beginAtZero: true,
+            title: {
+              display: false
+            }
+          }
+        },
+        plugins: {
+          legend: {
+            display: true,
+            position: 'top', // Positions the legend above the chart, same as the first chart
+            align: 'end',
+            labels: {
+              fontColor: '#333',
+              usePointStyle: true,
+              pointStyle: 'circle',
+              pointStyleWidth: 15,
+              padding: 10
+            }
+          },
+          tooltip: {
+            callbacks: {
+              label: function(tooltipItem) {
+                return tooltipItem.dataset.label + ': ₱' + tooltipItem.raw; // Custom label with currency symbol
+              }
+            }
+          }
+        }
+      }
+    });
+  }
+
+  // Event listener for dropdown items
+  dropdownItems.forEach((item) => {
+    item.addEventListener("click", function (e) {
+      e.preventDefault();
+      const selectedPeriod = item.getAttribute("data-period");
+      toggleButton.textContent = item.textContent;
+      updateChart(selectedPeriod);
+    });
+  });
+
+  // Initial load with monthly data
+  updateChart("monthly");
 });

@@ -77,3 +77,47 @@ $(document).ready(function() {
         });
     });
 });
+
+$(document).ready(function () {
+    const $statusDropdown = $('#status');
+    const $confirmationModal = $('#confirmationModal');
+    const $newStatusSpan = $('#newStatus');
+    const $confirmBtn = $('#confirmBtn');
+    const animalId = $('#animalId').val();
+    let selectedStatus = '';
+
+    // Listen for changes in the dropdown
+    $statusDropdown.on('change', function () {
+        selectedStatus = $(this).val();
+        $newStatusSpan.text(selectedStatus); // Update modal with selected status
+        $confirmationModal.modal('show'); // Show modal
+    });
+
+    // Handle confirmation
+    $confirmBtn.on('click', function () {
+        $confirmationModal.modal('hide');
+
+        // Send AJAX request to update status
+        $.ajax({
+            url: 'includes/update-animal-status.php',
+            method: 'POST',
+            data: {
+                animal_id: animalId,
+                animal_status: selectedStatus
+            },
+            success: function (response) {
+                if (response.success) {
+                    $('#confirmationModal').modal('hide');
+                    $('#successModal').modal('show');
+                } else {
+                    alert('Error updating status: ' + response.error);
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error('Error:', error);
+                alert('An unexpected error occurred.');
+            }
+        });
+    });
+});
+
