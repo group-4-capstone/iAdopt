@@ -59,6 +59,7 @@ if(isset($_POST["query"])) {
         foreach($result as $row) {
             $data[] = array(
                 'application_id'     => $row["application_id"],
+				'animal_id'     => $row["animal_id"],
                 'application_date'   => $row["application_date"],
                 'last_name'          => $row["last_name"],
                 'first_name'         => $row["first_name"],
@@ -100,6 +101,7 @@ if(isset($_POST["query"])) {
         foreach($result as $row) {
             $data[] = array(
                 'application_id'     => $row["application_id"],
+				'animal_id'     => $row["animal_id"],
                 'application_date'   => $row["application_date"],
                 'last_name'          => $row["last_name"],
                 'first_name'         => $row["first_name"],

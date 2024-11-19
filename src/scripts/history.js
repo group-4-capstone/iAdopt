@@ -33,14 +33,7 @@ function load_data_adopted(query = '', page_number = 1) {
                         user_image = 'styles/assets/person-circle.png'; // Default user image
                     }
 
-                    // Add data attributes to store information for the modal
-                    html += '<tr data-bs-toggle="modal" data-bs-target="#informationModal" ' +
-                            'data-pet-name="' + name + '" ' +
-                            'data-adopted-by="' + first_name + ' ' + last_name + '" ' +
-                            'data-adoption_date="' + adoption_date + '" ' +
-                            'data-image="' + image + '" ' + 
-                            'data-user-image="' + user_image + '" ' +
-                            'data-rescued-at="Shelter A">';
+                 html += '<tr onclick="window.location.href=\'animal-record.php?animal_id=' + response.data[count].animal_id + '\'">';
 
                     html += '<td>' + first_name + " " + last_name + '</td>';
                     html += '<td>' + adoption_date + '</td>';

@@ -4,31 +4,62 @@ include_once 'includes/db-connect.php';
 
 if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['role'] == 'head_admin')) {
 
-
     if (isset($_GET['id'])) {
         $application_id = $_GET['id'];
-
+    
         $query = "
-        SELECT *
-        FROM applications 
-        INNER JOIN users ON applications.user_id = users.user_id
-        INNER JOIN animals ON applications.animal_id = animals.animal_id
-        WHERE applications.application_id = ? 
+            SELECT *
+            FROM applications 
+            INNER JOIN users ON applications.user_id = users.user_id
+            INNER JOIN animals ON applications.animal_id = animals.animal_id
+            WHERE applications.application_id = ? 
         ";
-
+    
         $stmt = $db->prepare($query);
         $stmt->bind_param("i", $application_id);
         $stmt->execute();
         $result = $stmt->get_result();
-
+    
         if ($result->num_rows > 0) {
             $application = $result->fetch_assoc();
         } else {
-            $error_message = 'Application not found';
+            // Redirect to not-found.php if the application is not found
+            header("Location: not-found.php");
+            exit(); // Ensure no further code is executed
         }
     } else {
-        $error_message = 'Invalid request';
+        // Redirect to not-found.php if the request is invalid
+        header("Location: not-found.php");
+        exit();
     }
+
+    $status = $application['animal_status'];
+    $badgeClass = '';
+    
+    switch ($status) {
+        case 'Waitlist':
+            $badgeClass = 'bg-warning';
+            break;
+        case 'Unadoptable':
+            $badgeClass = 'bg-dark';
+            break;
+        case 'Adoptable':
+            $badgeClass = 'bg-success';
+            break;
+        case 'Rest':
+            $badgeClass = 'bg-primary';
+            break;
+        case 'Under Review':
+            $badgeClass = 'bg-danger';
+            break;
+        case 'Adopted': // New case for Adopted status
+            $badgeClass = 'bg-info'; // Assign a badge class, e.g., bg-info
+            break;
+        default:
+            $badgeClass = 'bg-secondary'; // Fallback color for unknown statuses
+            break;
+    }
+    
 ?>
     <!DOCTYPE html>
     <html lang="en">
@@ -70,10 +101,58 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                     </p>
                 </div>
             </section>
+            
 
             <div class="container my-5">
                 <!-- Selected Dog Details -->
                 <div class="row dog-details mb-4">
+                  <form id="statusForm" method="post" class="d-flex justify-content-end align-items-center mt-1 mb-2 me-4">
+                        <label for="status" class="me-2">Status:</label>
+                        <select 
+                            id="status" class="form-select badge <?php echo $badgeClass; ?> w-25" name="animal_status" 
+                            <?php echo $status === 'Adopted' ? 'disabled' : ''; ?>>
+                            <option value="Adopted" <?php echo $status === 'Adopted' ? 'selected' : ''; ?>>Adopted</option>
+                            <option value="Adoptable" <?php echo $status === 'Adoptable' ? 'selected' : ''; ?>>Adoptable</option>
+                        </select>
+                        <input type="hidden" id="animalId" value="<?php echo $application['animal_id'] ?>" readonly>
+                    </form>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="confirmationModalLabel">Confirm Status Change</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure you want to change the status to <span id="newStatus"></span>?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    <button type="button" id="confirmBtn" class="btn btn-primary">Confirm</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                     <!-- Success Modal -->
+                    <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successContentModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+                        <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                            <button type="button" class="btn-close d-flex ms-auto" onclick="window.location.reload();" ></button>
+                            <div class="text-center">
+                                <i class="bi bi-check-circle-fill" style="font-size: 8rem; color: #28a745;"></i>
+                                <p class="mt-4 px-2"> Status has been updated successfully to <b>ADOPTED</b> !
+                                </p>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+
+
                     <div class="col-lg-4 text-center">
                         <img src="styles/assets/animals/<?php echo $application['image'] ?>" class="img-fluid rounded-circle" alt="Selected Dog" style="width: 200px; height: 200px; object-fit: cover;">
                     </div>

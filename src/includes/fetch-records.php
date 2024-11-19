@@ -34,7 +34,7 @@ if (isset($_POST["query"])) {
         SELECT rescue.rescue_id, rescue.report_date, animals.animal_id, animals.name, animals.type, rescue.rescued_by, animals.animal_status
         FROM rescue
         INNER JOIN animals ON rescue.animal_id = animals.animal_id
-        WHERE animals.animal_status NOT IN ('Waitlist','Rest')
+        WHERE animals.animal_status NOT IN ('Waitlist','Rest','Adopted')
         AND (
             rescue.report_date LIKE :report_date 
             OR animals.animal_id LIKE :animal_id 
@@ -77,7 +77,7 @@ if (isset($_POST["query"])) {
         FROM rescue
         INNER JOIN animals
         ON rescue.animal_id = animals.animal_id
-        WHERE animals.animal_status NOT IN ('Waitlist','Rest')
+        WHERE animals.animal_status NOT IN ('Waitlist','Rest','Adopted')
         ORDER BY rescue.rescue_id DESC
         ";
 
