@@ -4,53 +4,55 @@ include_once 'includes/db-connect.php';
 
 // Check session and role
 if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['role'] == 'head_admin')) {
-
+    
     if (isset($_GET['animal_id'])) {
         $animal_id = $_GET['animal_id'];
-
+    
         $report_query = "
-    SELECT rescue.*, animals.*, users.first_name, users.last_name
-    FROM rescue
-    INNER JOIN animals ON rescue.animal_id = animals.animal_id
-    INNER JOIN users ON rescue.user_id = users.user_id
-    WHERE animals.animal_id = ?  AND rescue.report_type = 'report'
-    ";
-
+            SELECT rescue.*, animals.*, users.first_name, users.last_name
+            FROM rescue
+            INNER JOIN animals ON rescue.animal_id = animals.animal_id
+            INNER JOIN users ON rescue.user_id = users.user_id
+            WHERE animals.animal_id = ? AND rescue.report_type = 'report'
+        ";
+    
         $report_stmt = $db->prepare($report_query);
         $report_stmt->bind_param("i", $animal_id);
         $report_stmt->execute();
         $report_result = $report_stmt->get_result();
-
-        // Check if the animal was found
+    
         if ($report_result->num_rows > 0) {
             $animal = $report_result->fetch_assoc();
         } else {
             $query = "
-            SELECT rescue.*, animals.*
-            FROM rescue
-            INNER JOIN animals ON rescue.animal_id = animals.animal_id
-            WHERE animals.animal_id = ? AND rescue.report_type = 'rescue'
-        ";
-
+                SELECT rescue.*, animals.*
+                FROM rescue
+                INNER JOIN animals ON rescue.animal_id = animals.animal_id
+                WHERE animals.animal_id = ? AND rescue.report_type = 'rescue'
+            ";
+    
             $stmt = $db->prepare($query);
             $stmt->bind_param("i", $animal_id);
             $stmt->execute();
             $result = $stmt->get_result();
-
-            // Check if the animal was found
+    
             if ($result->num_rows > 0) {
                 $animal = $result->fetch_assoc();
             } else {
-                $error_message = 'Animal not found';
+                // Redirect to not-found.php if the animal is not found
+                header("Location: not-found.php");
+                exit(); // Ensure no further code is executed
             }
         }
     } else {
-        $error_message = 'Invalid request';
+        // Redirect to not-found.php if the request is invalid
+        header("Location: not-found.php");
+        exit();
     }
-
+    
     $status = htmlspecialchars($animal['animal_status']);
     $badgeClass = '';
-
+    
     switch ($status) {
         case 'Waitlist':
             $badgeClass = 'bg-warning';
@@ -67,12 +69,16 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
         case 'Under Review':
             $badgeClass = 'bg-danger';
             break;
+        case 'Adopted': // New case for Adopted status
+            $badgeClass = 'bg-info'; // Assign a badge class, e.g., bg-info
+            break;
         default:
             $badgeClass = 'bg-secondary'; // Fallback color for unknown statuses
             break;
     }
-?>
-
+    
+    ?>
+    
 
     <!DOCTYPE html>
     <html lang="en">
@@ -163,14 +169,15 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                                 <option value="Adoptable" <?php echo $status === 'Adoptable' ? 'selected' : ''; ?>>Adoptable</option>
                                 <option value="Rest" <?php echo $status === 'Rest' ? 'selected' : ''; ?>>Rest</option>
                                 <option value="Under Review" <?php echo $status === 'Under Review' ? 'selected' : ''; ?>>Under Review</option>
+                                <option value="Adopted" <?php echo $status === 'Adopted' ? 'selected' : ''; ?>>Adopted</option>
                             </select>
                         </p>
 
                         <div class="row mt-2">
                             <div class="col-md-4 col-sm-12 d-flex justify-content-center">
-                                <div class="text-center">
+                                <div class="text-center" id="animal_image">
                                     <?php if (!empty($animal['image'])) { ?>
-                                        <img src="styles/assets/animals/<?php echo htmlspecialchars($animal['image']); ?>" alt="Animal Image" class="img-fluid">
+                                        <img src="styles/assets/animals/<?php echo htmlspecialchars($animal['image']); ?>" alt="Animal Image" class="img-fluid animal-image">
                                     <?php } else { ?>
                                         <img src="styles/assets/secaspi-logo.png" alt="Animal Image" class="img-fluid">
                                     <?php } ?>
