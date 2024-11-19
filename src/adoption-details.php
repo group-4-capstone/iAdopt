@@ -230,29 +230,116 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                                 <p class="ps-2">> <?php echo $application['purpose'] ?></p>
                                 <p><strong>What type of residence do you live in?</strong></p>
                                 <p class="ps-2">> <?php echo $application['residence'] ?></p>
-                                <p><strong>Please specify the height and type of your fence.</strong></p>
-                                <p><strong>How will you handle the dog's exercise and toilet duties if there is no fence?</strong></p>
-                                <!---
-                    <p><strong>If adopting a cat, where will be the litter box be kept?</strong></p> -->
-                                <p><strong>Is the residence for RENT?</strong></p>
+
+                                <?php if (
+                                    $application['residence'] === 'Detached House (with fence/gate)' || 
+                                    $application['residence'] === 'Townhouse (with fence/gate)'
+                                ): ?>
+                                    <p><strong>Please specify the height and type of your fence.</strong></p>
+                                    <p class="ps-2">> <?php echo $application['fence']; ?></p>
+                                <?php else: ?>
+                                    <p><strong>How will you handle the dog's exercise and toilet duties if there is no fence?</strong></p>
+                                    <p class="ps-2">> <?php echo $application['no_fence']; ?></p>
+                                <?php endif; ?>
+
+                                <?php if ($application['type'] === 'Cat'): ?>
+                                <p><strong>If adopting a cat, where will the litter box be kept?</strong></p>
+                                <p class="ps-2">> <?php echo $application['litter_place']; ?></p>
+                            <?php endif; ?>
+
+                            <p><strong>Is the residence for RENT?</strong></p>
+                            <?php if (!empty($application['rent_letter'])): ?>
+                                <p class="ps-2">> Yes.
+                              
                                 <p><strong>Please upload a written letter from your landlord that pets are allowed.</strong></p>
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#rentLetterModal" class="text-primary">View File</a></p>
+
+                                <!-- Modal for viewing rent letter -->
+                                <div class="modal fade" id="rentLetterModal" tabindex="-1" aria-labelledby="rentLetterModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="rentLetterModalLabel">Rent Letter</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <?php
+                                                $fileExtension = strtolower(pathinfo($application['rent_letter'], PATHINFO_EXTENSION)); // Ensure case insensitivity
+                                                $rentLetterPath = 'styles/assets/applications/letter/' . htmlspecialchars($application['rent_letter'], ENT_QUOTES, 'UTF-8'); // Construct safe file path
+                                                
+                                                if (in_array($fileExtension, ['jpg', 'jpeg', 'png', 'webp'])) {
+                                                    // Display image
+                                                    echo '<img src="' . $rentLetterPath . '" alt="Rent Letter" class="img-fluid">';
+                                                } elseif ($fileExtension === 'pdf') {
+                                                    // Embed PDF
+                                                    echo '<embed src="' . $rentLetterPath . '" type="application/pdf" width="100%" height="600px">';
+                                                } else {
+                                                    echo '<p>Unable to preview this file type.</p>';
+                                                }
+                                                ?>
+                                                
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php else: ?>
+                                <p class="ps-2">> No</p>
+                            <?php endif; ?>
+
                                 <p><strong>In which part of the house will the animal stay?</strong></p>
                                 <p class="ps-2">> <?php echo $application['house_part'] ?></p>
                                 <p><strong>Where will this animal be kept during the day and during night? Please specify.</strong></p>
+                                <p class="ps-2">> <?php echo $application['stay_place'] ?></p>
                                 <p><strong>Who do you live with? Please be specific.</strong></p>
                                 <p class="ps-2">> <?php echo $application['household_members'] ?></p>
                                 <p><strong>How long have you lived in the address registered here?</strong></p>
                                 <p class="ps-2">> <?php echo $application['reg_years'] ?> years</p>
                                 <p><strong>Are you planning to move in the next six (6) months?</strong></p>
-                                <p><strong>Please leave a specific address.</strong></p>
+
+                                <?php if (!empty($application['new_address'])): ?>
+                                    <p class="ps-2">> Yes</p>
+                                    <p><strong>Please leave a specific address.</strong></p>
+                                    <p class="ps-2">> <?php echo htmlspecialchars($application['new_address'], ENT_QUOTES, 'UTF-8'); ?></p>
+                                <?php else: ?>
+                                    <p class="ps-2">> No</p>
+                                <?php endif; ?>
+
                                 <p><strong>Will the whole family be involved in the care of the animal?</strong></p>
-                                <p><strong>Please explain why no.</strong></p>
+                                <?php if (!empty($application['involved_reason'])): ?>
+                                    <p class="ps-2">> No</p>
+                                    <p><strong>Please explain why no.</strong></p>
+                                    <p class="ps-2">> <?php echo htmlspecialchars($application['involved_reason'], ENT_QUOTES, 'UTF-8'); ?></p>
+                                <?php else: ?>
+                                    <p class="ps-2">> Yes</p>
+                                <?php endif; ?>
+
                                 <p><strong>Is there anyone in your household who has objection(s) to the arrangement?</strong></p>
-                                <p><strong>Please explain why yes.</strong></p>
+                                <?php if (!empty($application['object_reason'])): ?>
+                                    <p class="ps-2">> Yes</p>
+                                    <p><strong>Please explain why yes.</strong></p>
+                                    <p class="ps-2">> <?php echo htmlspecialchars($application['object_reason'], ENT_QUOTES, 'UTF-8'); ?></p>
+                                <?php else: ?>
+                                    <p class="ps-2">> No</p>
+                                <?php endif; ?>
+
                                 <p><strong>Are there any children who visit your home frequently?</strong></p>
-                                <p><strong>Are there any other regular visitors on your home which your new companion (pet) must get along?</strong></p>
-                                <p><strong>Are there any member of your household who has an allergy to cats and dogs?</strong></p>
-                                <p><strong>Who?</strong></p>
+                                <p class="ps-2">> <?php echo ucfirst($application['children_visit']); ?></p>
+
+                                <p><strong>Are there any other regular visitors to your home which your new companion (pet) must get along?</strong></p>
+                                <p class="ps-2">> <?php echo ucfirst($application['other_visit']); ?></p>
+
+                                <p><strong>Are there any members of your household who have an allergy to cats and dogs?</strong></p>
+                                <?php if (!empty($application['member_allergy'])): ?>
+                                    <p class="ps-2">> Yes</p>
+                                    <p><strong>Who?</strong></p>
+                                    <p class="ps-2">> <?php echo htmlspecialchars($application['member_allergy'], ENT_QUOTES, 'UTF-8'); ?></p>
+                                <?php else: ?>
+                                    <p class="ps-2">> No</p>
+                                <?php endif; ?>
+
                                 <p><strong>What will happen to this animal if you have to move unexpectedly?</strong></p>
                                 <p class="ps-2">> <?php echo $application['move_unexpectedly'] ?></p>
                                 <p><strong>What kind of behavior(s) of the dog do you feel you will be unable to accept?</strong></p>
@@ -262,11 +349,27 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                                 <p><strong>What will happen to your companion animal when you go on vacation or in case of emergency?</strong></p>
                                 <p class="ps-2">> <?php echo $application['emergency'] ?></p>
                                 <p><strong>Do you have other companion animals?</strong></p>
-                                <p><strong>Please specify what type and the total number.</strong></p>
+                                <?php if (!empty($application['other_animals'])): ?>
+                                    <p class="ps-2">> Yes</p>
+                                    <p><strong>Please specify what type and the total number.</strong></p>
+                                    <p class="ps-2">> <?php echo htmlspecialchars($application['other_animals'], ENT_QUOTES, 'UTF-8'); ?></p>
+                                <?php else: ?>
+                                    <p class="ps-2">> No</p>
+                                <?php endif; ?>
+
                                 <p><strong>Do you have a regular veterinarian?</strong></p>
-                                <p><strong>Veterinarian Name</strong></p>
-                                <p><strong>Veterinarian Address/Location</strong></p>
-                                <p><strong>Veterinarian Contact Number</strong></p>
+                                <?php if (!empty($application['vet_name']) && !empty($application['vet_address']) && !empty($application['vet_number'])): ?>
+                                    <p class="ps-2">> Yes</p>
+                                    <p><strong>Veterinarian Name</strong></p>
+                                    <p class="ps-2">> <?php echo htmlspecialchars($application['vet_name'], ENT_QUOTES, 'UTF-8'); ?></p>
+                                    <p><strong>Veterinarian Address/Location</strong></p>
+                                    <p class="ps-2">> <?php echo htmlspecialchars($application['vet_address'], ENT_QUOTES, 'UTF-8'); ?></p>
+                                    <p><strong>Veterinarian Contact Number</strong></p>
+                                    <p class="ps-2">> <?php echo htmlspecialchars($application['vet_number'], ENT_QUOTES, 'UTF-8'); ?></p>
+                                <?php else: ?>
+                                    <p class="ps-2">> None</p>
+                                <?php endif; ?>
+
                             </div>
                         </div>
                     </div>
