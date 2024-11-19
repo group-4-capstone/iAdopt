@@ -225,7 +225,7 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                             </button>
                         </h2>
                         <div id="collapseQuestionnaire" class="accordion-collapse collapse show" aria-labelledby="headingQuestionnaire" data-bs-parent="#adoptionDetailsAccordion">
-                            <div class="accordion-body">
+                            <div class="accordion-body px-5">
                                 <p><strong>Why did you decide to adopt an animal?</strong></p>
                                 <p class="ps-2">> <?php echo $application['purpose'] ?></p>
                                 <p><strong>What type of residence do you live in?</strong></p>
