@@ -144,8 +144,8 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
         </div>
       </div>
       <!-- Donations Overview Section -->
-       <?php 
-        // Query to calculate the donation balance
+      <?php
+      // Query to calculate the donation balance
       $sql_donations = "SELECT SUM(amount) as total_donations FROM liquidation WHERE type = 'donation'";
       $sql_expenses = "SELECT SUM(amount) as total_expenses FROM liquidation WHERE type = 'expense'";
 
@@ -158,19 +158,19 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
 
       // Fetch donation total
       if ($result_donations->num_rows > 0) {
-          $row = $result_donations->fetch_assoc();
-          $total_donations = $row['total_donations'] ?? 0;
+        $row = $result_donations->fetch_assoc();
+        $total_donations = $row['total_donations'] ?? 0;
       }
 
       // Fetch expense total
       if ($result_expenses->num_rows > 0) {
-          $row = $result_expenses->fetch_assoc();
-          $total_expenses = $row['total_expenses'] ?? 0;
+        $row = $result_expenses->fetch_assoc();
+        $total_expenses = $row['total_expenses'] ?? 0;
       }
 
       // Calculate the balance
       $donation_balance = $total_donations - $total_expenses;
-       ?>
+      ?>
       <div class="donations-overview px-4">
         <h2>Donations Overview</h2>
         <div class="row">
@@ -216,26 +216,26 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
         </div>
       </div>
       <div class="chart-container">
-  <div class="dropdown" style="display: flex; justify-content: flex-end; margin-bottom: 20px;">
-    <!-- Dropdown button for selecting time period -->
-    <button class="dropdown-toggle btn btn-outline-primary" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-      Monthly
-    </button>
-    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-      <li><a class="dropdown-item" href="#" data-period="monthly">Monthly</a></li>
-      <li><a class="dropdown-item" href="#" data-period="quarterly">Quarterly</a></li>
-      <li><a class="dropdown-item" href="#" data-period="yearly">Yearly</a></li>
-    </ul>
-  </div>
+        <div class="dropdown" style="display: flex; justify-content: flex-end; margin-bottom: 20px;">
+          <!-- Dropdown button for selecting time period -->
+          <button class="dropdown-toggle btn btn-outline-primary" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+            Monthly
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <li><a class="dropdown-item" href="#" data-period="monthly">Monthly</a></li>
+            <li><a class="dropdown-item" href="#" data-period="quarterly">Quarterly</a></li>
+            <li><a class="dropdown-item" href="#" data-period="yearly">Yearly</a></li>
+          </ul>
+        </div>
 
-  <!-- Chart Container for Donations Chart -->
-  <div class="donationchart">
-    <canvas id="lineChart" width="800" height="400"></canvas>
-  </div>
+        <!-- Chart Container for Donations Chart -->
+        <div class="donationchart">
+          <canvas id="lineChart" width="800" height="400"></canvas>
+        </div>
 
-  <!-- Button to generate the Liquidation Report -->
-  <button class="btn btn-primary mt-3" id="generateReportBtn">Generate Liquidation Report</button>
-</div>
+        <!-- Button to generate the Liquidation Report -->
+        <button class="btn-liquidation-report">Generate Liquidation Report</button>
+      </div>
 
 
       <!-- FAQ Section with Dog Image -->
