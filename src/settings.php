@@ -134,7 +134,7 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
 </div>
 <!-- Success Modal Structure -->
 <div class="modal fade" id="successModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-lg modal-dialog-centered">
+  <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-body">
         <!-- Close button on the left -->
