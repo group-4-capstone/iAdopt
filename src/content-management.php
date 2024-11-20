@@ -10,7 +10,7 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>iADOPT | SECASPI</title>
+    <title>iADOPT | Content Management</title>
     <link rel="icon" type="image/x-icon" href="styles/assets/secaspi-logo.png">
     <link rel="stylesheet" href="styles/sidebar.css">
     <link rel="stylesheet" href="styles/content-management.css">
@@ -63,7 +63,7 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                   <div class="card p-2">
                     <div class="card-body">
                       <h4 class="pb-4"> <?php echo "ANNOUNCEMENT ID #" . $row['announcement_id']; ?></h4>
-                      <form method="post" id="announcementForm_<?php echo $row['announcement_id']; ?>" enctype="multipart/form-data">
+                      <form method="post" id="announcementForm_<?php echo $row['announcement_id']; ?>">
                         <div class="row mb-3">
                           <label for="announcementTitle" class="col-3 col-form-label">Title<span class="asterisk">*</span></label>
                           <div class="col-9">
@@ -74,11 +74,11 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                         <div class="row mb-3">
                           <label for="announcementStatus" class="col-3 col-form-label">Status<span class="asterisk">*</span></label>
                           <div class="col-3">
-                            <select class="form-select" id="announcementStatus_<?php echo $row['announcement_id']; ?>" name="status" disabled>
+                            <select class="form-select" id="announcementStatus_<?php echo $row['announcement_id']; ?>" name="announcement_status" disabled>
                               <option value="" disabled>Kindly select an option</option>
-                              <option value="Draft" <?php echo ($row['status'] == 'Draft') ? 'selected' : ''; ?>>Draft</option>
-                              <option value="Scheduled Post" <?php echo ($row['status'] == 'Scheduled Post') ? 'selected' : ''; ?>>Scheduled Post</option>
-                              <option value="Published" <?php echo ($row['status'] == 'Published') ? 'selected' : ''; ?>>Publish Now</option>
+                              <option value="Draft" <?php echo ($row['announcement_status'] == 'Draft') ? 'selected' : ''; ?>>Draft</option>
+                              <option value="Scheduled Post" <?php echo ($row['announcement_status'] == 'Scheduled Post') ? 'selected' : ''; ?>>Scheduled Post</option>
+                              <option value="Published" <?php echo ($row['announcement_status'] == 'Published') ? 'selected' : ''; ?>>Publish Now</option>
                             </select>
                           </div>
                           <label for="publishDate" class="col-3 col-form-label">Date to be Published<span class="asterisk">*</span></label>
@@ -274,10 +274,10 @@ if ($faq_result->num_rows > 0) {
                 <div class="row mb-3">
                   <label for="faqStatus_<?php echo $row['faq_id']; ?>" class="col-3 col-form-label">Status<span class="asterisk">*</span></label>
                   <div class="col-9">
-                    <select class="form-select" id="faqStatus_<?php echo $row['faq_id']; ?>" name="status" disabled>
-                      <option value="Draft" <?php echo ($row['status'] == 'Draft') ? 'selected' : ''; ?> disabled>Draft</option>
-                      <option value="Published" <?php echo ($row['status'] == 'Published') ? 'selected' : ''; ?>>Publish</option>
-                      <option value="Unpublished" <?php echo ($row['status'] == 'Unpublished') ? 'selected' : ''; ?>>Unpublish</option>
+                    <select class="form-select" id="faqStatus_<?php echo $row['faq_id']; ?>" name="faq_status" disabled>
+                      <option value="Draft" <?php echo ($row['faq_status'] == 'Draft') ? 'selected' : ''; ?> disabled>Draft</option>
+                      <option value="Published" <?php echo ($row['faq_status'] == 'Published') ? 'selected' : ''; ?>>Publish</option>
+                      <option value="Unpublished" <?php echo ($row['faq_status'] == 'Unpublished') ? 'selected' : ''; ?>>Unpublish</option>
                     </select>
                   </div>
                 </div>
@@ -486,7 +486,7 @@ if ($faq_result->num_rows > 0) {
                     <div class="row mb-3">
                       <label for="announcementStatus" class="col-3 col-form-label">Status<span class="asterisk">*</span></label>
                       <div class="col-3">
-                        <select class="form-select" id="announcementStatus" name="status">
+                        <select class="form-select" id="announcementStatus" name="announcement_status">
                           <option value="" selected disabled>Kindly select an option</option>
                           <option value="Draft">Draft</option>
                           <option value="Scheduled Post">Scheduled Post</option>
@@ -658,10 +658,10 @@ if ($faq_result->num_rows > 0) {
                   <div class="row mb-3">
                     <label for="announcementStatus" class="col-3 col-form-label">Status<span class="asterisk">*</span></label>
                     <div class="col-9">
-                      <select class="form-select" id="faqStatus" name="status">
+                      <select class="form-select" id="faqStatus" name="faq_status">
                         <option value="" selected disabled>Kindly select an option</option>
-                        <option value="draft">Draft</option>
-                        <option value="publish">Publish</option>
+                        <option value="Draft">Draft</option>
+                        <option value="Published">Publish</option>
                       </select>
                     </div>
                   </div>
@@ -682,7 +682,7 @@ if ($faq_result->num_rows > 0) {
         <!-- Content -->
          
         <div class="mx-4">
-          <table id="announcementTable" class="table table-striped mb-5">
+          <table id="announcementTable" class="table table-striped mb-4">
             <thead>
               <tr>
                 <th width="5%">#</th>
@@ -711,7 +711,7 @@ if ($faq_result->num_rows > 0) {
       <div id="News" class="tabcontent">
         <!-- Content -->
         <div class="mx-4">
-          <table id="merchTable" class="table table-striped mb-5">
+          <table id="merchTable" class="table table-striped mb-4">
             <thead>
               <tr>
                 <th width="5%">#</th>
@@ -740,7 +740,7 @@ if ($faq_result->num_rows > 0) {
       <div id="Contact" class="tabcontent">
         <!-- Content -->
         <div class="mx-4">
-          <table id="volunteerTable" class="table table-striped mb-5">
+          <table id="volunteerTable" class="table table-striped mb-4">
             <thead>
               <tr>
                 <th width="5%">#</th>
@@ -769,7 +769,7 @@ if ($faq_result->num_rows > 0) {
       <div id="About" class="tabcontent">
         <!-- Content -->
         <div class="mx-4">
-          <table id="faqTable" class="table table-striped mb-5">
+          <table id="faqTable" class="table table-striped mb-4">
             <thead>
               <tr>
                 <th width="5%">#</th>
@@ -807,6 +807,6 @@ if ($faq_result->num_rows > 0) {
   </html>
 <?php
 } else {
-  header("Location: home.php");
+  header("Location: login.php");
 }
 ?>

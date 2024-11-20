@@ -24,7 +24,7 @@ function load_data_announcements(query = '', page_number = 1) {
                     var image = response.data[count].image;
                     var title = response.data[count].title;
                     var description = response.data[count].description;
-                    var status = response.data[count].status;
+                    var announcement_status = response.data[count].announcement_status;
                     var first_name = response.data[count].first_name;
                     var last_name = response.data[count].last_name;
                     var announcement_date = response.data[count].announcement_date;
@@ -34,17 +34,17 @@ function load_data_announcements(query = '', page_number = 1) {
                     html += '<td><b>' + title + '</b></td>';
                     html += '<td>' + announcement_date + '</td>';
                     var badgeClass = '';
-                    if (status === 'Draft') {
+                    if (announcement_status === 'Draft') {
                         badgeClass = 'badge-draft'; // Gray color
-                    } else if (status === 'Published') {
+                    } else if (announcement_status === 'Published') {
                         badgeClass = 'badge-published'; // Green color
-                    } else if (status === 'Unpublished') {
+                    } else if (announcement_status === 'Unpublished') {
                         badgeClass = 'badge-unpublished'; // Red color
-                    } else if (status === 'Scheduled Post') {
+                    } else if (announcement_status === 'Scheduled Post') {
                         badgeClass = 'badge-scheduled'; // Orange color
                     }
 
-                    html += '<td><span class="custom-badge ' + badgeClass + '">' + status + '</span></td>';
+                    html += '<td><span class="custom-badge ' + badgeClass + '">' + announcement_status + '</span></td>';
 
                     html += '<td>' + first_name + ' ' + last_name + '</td>';
                     html += '<td class="text-center align-middle">';

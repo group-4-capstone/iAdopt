@@ -1,6 +1,8 @@
 <?php include_once 'includes/session-handler.php';
 include_once 'includes/db-connect.php';
 
+if (!isset($_SESSION['role']) || ($_SESSION['role'] !== 'admin' && $_SESSION['role'] !== 'head_admin')) {
+
 // Define the number of items per page
   $itemsPerPage = 9;
 
@@ -172,26 +174,29 @@ include_once 'includes/db-connect.php';
           </div>
           </div>
           <nav class="pagination-container mt-4">
-            <ul class="pagination justify-content-center">
-              <?php if ($currentPage > 1): ?>
-                  <li class="page-item">
-                      <a class="page-link" data-page="<?php echo $currentPage - 1; ?>">&lt;</a>
-                  </li>
-              <?php endif; ?>
+    <ul class="pagination">
+        <!-- "<" Previous Page Link -->
+        <li class="page-item">
+            <a class="page-link <?php echo ($currentPage == 1) ? 'disabled' : ''; ?>" 
+               data-page="<?php echo $currentPage - 1; ?>">&lt;</a>
+        </li>
 
-              <?php for ($page = 1; $page <= $totalPages; $page++): ?>
-                  <li class="page-item <?php echo ($page == $currentPage) ? 'active' : ''; ?>">
-                      <a class="page-link" data-page="<?php echo $page; ?>"><?php echo $page; ?></a>
-                  </li>
-              <?php endfor; ?>
+        <!-- Page Number Links -->
+        <?php for ($page = 1; $page <= $totalPages; $page++): ?>
+            <li class="page-item">
+                <a class="page-link <?php echo ($page == $currentPage) ? 'active' : ''; ?>" 
+                   data-page="<?php echo $page; ?>"><?php echo $page; ?></a>
+            </li>
+        <?php endfor; ?>
 
-              <?php if ($currentPage < $totalPages): ?>
-                  <li class="page-item">
-                      <a class="page-link" data-page="<?php echo $currentPage + 1; ?>">&gt;</a>
-                  </li>
-              <?php endif; ?>
-            </ul>
-          </nav>
+        <!-- ">" Next Page Link -->
+        <li class="page-item">
+            <a class="page-link <?php echo ($currentPage == $totalPages) ? 'disabled' : ''; ?>" 
+               data-page="<?php echo $currentPage + 1; ?>">&gt;</a>
+        </li>
+    </ul>
+</nav>
+
         </div>
       </div>
       </div>
@@ -201,3 +206,8 @@ include_once 'includes/db-connect.php';
 
 </body>
 </html>
+<?php
+} else {
+    header("Location: home.php");
+}
+?>

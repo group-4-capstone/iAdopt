@@ -3,7 +3,7 @@ include_once 'includes/db-connect.php';
 
 
 // Check session and role
-if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['role'] == 'head_admin')) {
+if (isset($_SESSION['email']) && $_SESSION['role'] == 'head_admin') {
   
 
 
@@ -13,7 +13,7 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>iADOPT | SECASPI</title>
+    <title>iADOPT | Account Management</title>
     <link rel="icon" type="image/x-icon" href="styles/assets/secaspi-logo.png">
     <link rel="stylesheet" href="styles/sidebar.css">
     <link rel="stylesheet" href="styles/account-management.css">
@@ -45,7 +45,7 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
           <h1><u><b>ACCOUNT MANAGEMENT</b></u></h1>
         </div>
         <p>
-          Manage contents seen in the user side and keep these information updated.
+         Keep track of active administrators and manage their roles to ensure a secure and well-organized platform.
         </p>
       </div>
     </section>
@@ -123,7 +123,7 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
 
 <!-- Success Modal Structure -->
 <div class="modal fade" id="successModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-lg modal-dialog-centered">
+  <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-body">
         <!-- Close button on the left -->
@@ -140,7 +140,7 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
 </div>
 <!-- Success Modal Structure -->
 <div class="modal fade" id="successAddModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-lg modal-dialog-centered">
+  <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-body">
         <!-- Close button on the left -->
@@ -163,13 +163,14 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
 <div class="table-section">
 
   <!-- Content -->
-    <table class="table mt-4">
+   <div class="card p-4">
+    <table class="table mt-2 table-hover">
      <thead>
         <tr>
-          <th scope="col" class="text-center">Email</th>
-          <th scope="col" class="text-center">Account Creation Date</th>
-          <th scope="col" class="text-center">Status</th>
-          <th scope="col" class="text-center">Name</th>
+          <th  class="text-center">Email</th>
+          <th  class="text-center">Account Creation Date</th>
+          <th  class="text-center">Status</th>
+          <th  class="text-center">Name</th>
         </tr>
       </thead>
       <tbody id="post_data"></tbody>
@@ -179,6 +180,7 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
          <div class="d-flex justify-content-end">
     			    <div id="pagination_link"></div>
           </div>
+   </div>
  
    
 
@@ -195,6 +197,6 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
 </html>
 <?php
 } else {
-    header("Location: home.php");
+  header("Location: dashboard.php");
 }
 ?>

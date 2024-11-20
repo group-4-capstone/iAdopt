@@ -1,6 +1,7 @@
 <?php include_once 'includes/session-handler.php';
 include_once 'includes/db-connect.php';
 
+if (!isset($_SESSION['role']) || ($_SESSION['role'] !== 'admin' && $_SESSION['role'] !== 'head_admin')) {
 ?>
 
 <!DOCTYPE html>
@@ -301,6 +302,7 @@ include_once 'includes/db-connect.php';
     </div>
   </section>
 
+
   <section class="about-section" id="about-us">
     <div class="content">
       <h2>Second Chance Aspin Shelter Philippines, Inc.</h2>
@@ -341,3 +343,9 @@ include_once 'includes/db-connect.php';
 </body>
 
 </html>
+
+<?php
+} else {
+    header("Location: dashboard.php");
+}
+?>

@@ -3,62 +3,74 @@
   background-color: white !important;
 }
 
-  .head-title {
-    margin-top: 5px;
-    border-radius: 10px;
-    box-shadow: 0 0 0 rgba(0, 0, 0, 0); /* Remove box shadow */
-    padding-bottom: 30px;
-    position: relative;
+.head-title {
+  margin-top: 5px;
+  border-radius: 10px;
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+  padding-bottom: 30px;
+  position: relative;
 }
 
-  .head-title h1{
-    color: #C06B3E !important;
-    padding-bottom: 10px;
-  }
+.head-title h1 {
+  color: #C06B3E !important;
+  padding-bottom: 10px;
+}
 
 .head-title h1 u {
-    text-underline-offset: 30px; /* Adds space between the text and the underline */
-    text-decoration-thickness: 5px; /* Adjusts the thickness of the underline if needed */
+  text-underline-offset: 30px;
+  text-decoration-thickness: 5px;
 }
 
 
 thead th {
-  color: #092E5A !important;
-  background-color: transparent !important;
-  border-bottom: gray solid 2px !important;
+  background-color: #F4D03F !important;
+  font-weight: normal;
+  padding-top: 20px !important;
+  padding-bottom: 20px !important;
+  padding-left: 10px !important;
+  text-align: center !important;
+  vertical-align: middle !important;
 }
 
-tbody th, tbody td {
+tbody th,
+tbody td {
+  background-color: #fff;
+  padding-top: 20px !important;
+  padding-bottom: 20px !important;
+  padding-left: 10px !important;
+  color: #00000088;
+  text-align: center !important;
+  /* Centers text and inline content horizontally */
+  vertical-align: middle !important;
+  /* Centers content vertically within the cell */
+}
+
+tbody th .blank,
+tbody tr .blank {
   color: black !important;
-  background-color: #F7FAFC !important;
+  background-color: transparent !important;
   border-bottom: 2px !important;
 }
 
-tbody th .blank, tbody tr .blank{
-  color: black !important;
-  background-color: transparent !important;
-  border-bottom: 2px !important;
-}
 
-
-  .table .badge.bg-green {
-    background-color: #ffff; /* Red background */
-    color: #04ef56 !important; /* Dark text color */
-    border: 1px solid #04ef56; /* Red border */
-    border-radius: 50px; /* Oval shape */
-    padding: 0.45rem  0.85rem; /* Adjust padding for oval effect */
-    font-size: 0.75rem; /* Adjust text size */
-    font-weight: 500px; 
+.table .badge.bg-green {
+  background-color: #ffff;
+  color: #04ef56 !important;
+  border: 1px solid #04ef56;
+  border-radius: 50px;
+  padding: 0.45rem 0.85rem;
+  font-size: 0.75rem;
+  font-weight: 500px;
 }
 
 .table .badge.bg-red {
-  background-color: #ffff; /* Red background */
-  color: #ff0000 !important; /* Dark text color */
-  border: 1px solid #ff0000; /* Red border */
-  border-radius: 50px; /* Oval shape */
-  padding: 0.45rem  0.85rem; /* Adjust padding for oval effect */
-  font-size: 0.75rem; /* Adjust text size */
-  font-weight: 500px; 
+  background-color: #ffff;
+  color: #ff0000 !important;
+  border: 1px solid #ff0000;
+  border-radius: 50px;
+  padding: 0.45rem 0.85rem;
+  font-size: 0.75rem;
+  font-weight: 500px;
 }
 
 
@@ -74,6 +86,53 @@ button .btn-theme {
 
 .table-section {
   padding: 20px 20px;
-  background-color: #FFF8CC;
   border-radius: 30px;
+}
+
+/* Pagination */
+.pagination-container {
+  text-align: center;
+  margin: 20px 0;
+  float: right;
+}
+
+.pagination {
+  display: inline-flex;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.pagination li {
+  margin: 0 5px;
+}
+
+.pagination a {
+  display: block;
+  padding: 8px 12px;
+  color: black;
+  background-color: #ddd;
+  text-decoration: none;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+}
+
+/* Active Page */
+.pagination a.active {
+  background-color: #C0690A;
+  color: white;
+  border-color: #C0690A;
+}
+
+/* Hover Effect */
+.pagination a:hover {
+  background-color: #6d3d09;
+  color: white;
+}
+
+/* Disabled Page Link */
+.pagination a.disabled {
+  color: #aaa;
+  pointer-events: none;
+  background-color: #f0f0f0;
 }

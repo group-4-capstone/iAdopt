@@ -23,20 +23,20 @@ function load_data_faq(query = '', page_number = 1) {
                     var first_name = response.data[count].first_name;
                     var question = response.data[count].question;
                     var answer = response.data[count].answer;
-                    var status = response.data[count].status;
+                    var faq_status = response.data[count].faq_status;
             
                     html += '<tr>';
                     html += '<td>' + faq_id + '</td>';
                     html += '<td><b>' + question + '</b></td>';
                     var badgeClass = '';
-                    if (status === 'Draft') {
+                    if (faq_status === 'Draft') {
                         badgeClass = 'badge-draft'; // Gray color
-                    } else if (status === 'Published') {
+                    } else if (faq_status === 'Published') {
                         badgeClass = 'badge-published'; // Green color
-                    }  else if (status === 'Unpublished') {
+                    }  else if (faq_status === 'Unpublished') {
                       badgeClass = 'badge-unpublished'; 
                   }
-                    html += '<td><span class="custom-badge ' + badgeClass + '">' + status + '</span></td>';
+                    html += '<td><span class="custom-badge ' + badgeClass + '">' + faq_status + '</span></td>';
                     html += '<td>' + first_name + ' ' + last_name + '</td>';
                     html += '<td class="text-center align-middle">';
                     html += '<button class="btn" data-bs-toggle="modal" data-bs-target="#FAQModal_' + faq_id + '">...</button>';

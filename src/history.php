@@ -1,11 +1,8 @@
 <?php include_once 'includes/session-handler.php'; 
 include_once 'includes/db-connect.php';
 
-
 // Check session and role
 if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['role'] == 'head_admin')) {
-  
-
 
 ?>
 <!DOCTYPE html>
@@ -14,7 +11,7 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>iADOPT | SECASPI</title>
+    <title>iADOPT | History Records</title>
     <link rel="icon" type="image/x-icon" href="styles/assets/secaspi-logo.png">
     <link rel="stylesheet" href="styles/footer.css">
     <link rel="stylesheet" href="styles/styles.css">
@@ -38,7 +35,7 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
     <section class="banner-section">
       <div class="content">
         <div class="head-title">
-          <h1><u><b>ADOPTED LOG</b></u></h1>
+          <h1><u><b>HISTORY LOG</b></u></h1>
         </div>
             <p>
                 View list of animals that are up for adoption and manage their profiles.
@@ -46,152 +43,175 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
         </div>
     </section>
 
+        <!-- Adopted log table -->
         <div class="container mt-5">
-            <div class="card">
-                <div class="card-body p-0">
-                    <table class="table table-hover mb-0" id="rescueTable">
-                        <thead>
-                            <tr>
-                                <th>Name of Adoptor</th>
-                                <th>Date of Adoption</th>
-                                <th>Adopted Pet</th>
-                                <th>Approved by</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr data-pet-name="Juan" data-rescued-by="Juan Bartolome" data-rescue-date="2023/12/13" data-status="Unadoptable" data-type="Dog" data-gender="Male" data-rescued-at="Shelter A">
-                                <td>Juan Bartolome</td>
-                                <td>2023/12/13</td>
-                                <td>Juan</td>
-                                <td>Juan Bartolome</td>
-                            </tr>
-                            <tr data-pet-name="Juan" data-rescued-by="Juan Bartolome" data-rescue-date="2023/12/13" data-status="Unadoptable" data-type="Dog" data-gender="Male" data-rescued-at="Shelter A">
-                                <td>Juan Bartolome</td>
-                                <td>2023/12/13</td>
-                                <td>Juan</td>
-                                <td>Juan Bartolome</td>
-                            </tr><tr data-pet-name="Juan" data-rescued-by="Juan Bartolome" data-rescue-date="2023/12/13" data-status="Unadoptable" data-type="Dog" data-gender="Male" data-rescued-at="Shelter A">
-                                <td>Juan Bartolome</td>
-                                <td>2023/12/13</td>
-                                <td>Juan</td>
-                                <td>Juan Bartolome</td>
-                            </tr><tr data-pet-name="Juan" data-rescued-by="Juan Bartolome" data-rescue-date="2023/12/13" data-status="Unadoptable" data-type="Dog" data-gender="Male" data-rescued-at="Shelter A">
-                                <td>Juan Bartolome</td>
-                                <td>2023/12/13</td>
-                                <td>Juan</td>
-                                <td>Juan Bartolome</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="card-footer d-flex justify-content-end">
-                    <nav>
-                        <ul class="pagination pagination-sm mb-0">
-                            <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Previous">
-                                    <span aria-hidden="true">&lt;</span>
-                                </a>
-                            </li>
-                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Next">
-                                    <span aria-hidden="true">&gt;</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-        </div>
-        <br><br>
-    </div>
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                    <div>ADOPTED LOG</div>
+                        <div class="d-flex align-items-center ms-auto">
+                            <button class="btn btn-sort d-flex align-items-center" style="white-space: nowrap;">
+                                <span class="badge text-bg-secondary"> <i class="bi bi-arrow-down-up me-1"></i><span>Sort By</span></span>
+                            </button>
 
-    <!-- Modal -->
-    <div class="modal fade" id="informationModal" tabindex="-1" aria-labelledby="informationModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content info-card">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="informationModalLabel">More Details</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="container">
-                        <!-- Three Sections Layout -->
-                        <div class="row text-center">
-                            <!-- Adopter Section -->
-                            <div class="col-md-4">
-                                <div class="adopter-section">
-                                    <img src="styles/assets/person-circle.png" class="img-fluid rounded-circle adopter-img" alt="Adopter Image">
-                                    <h6>Adopter:</h6>
-                                    <p id="rescuer">Juan Dela Cruz</p>
-                                </div>
-                            </div>
-
-                            <!-- Date of Adoption Section -->
-                            <div class="col-md-4 mb-3">
-                            <br><strong>Date of Adoption: </strong><br><br><p id="rescueDate">2023/12/13</p><br>
-                                <strong>Approved By: </strong><br><br><p id="rescued-at">Shelter A</p>
-                            </div>
-
-                            <!-- Adoption Section -->
-                            <div class="col-md-4">
-                                <div class="adopted-section">
-                                    <img src="styles/assets/aspin-2.png" class="img-fluid rounded adopted-img" alt="Adopted Pet Image">
-                                    <h6>Adopted:</h6>
-                                    <p id="petName">Juan</p>
-                                </div>
+                            <div class="input-group input-group-md">
+                                <input type="text" class="form-control" placeholder="Search"  onkeyup="load_data_adopted(this.value);">
+                                <span class="input-group-text search-icon"><i class="bi bi-search"></i></span>
                             </div>
                         </div>
-                        
+                    </div>
+
+                    <div class="card-body p-0">
+                        <table class="table table-hover mb-5" id="adoptedTable">
+                            <thead>
+                                <tr>
+                                    <th width="25%">Name of Adoptor:</th>
+                                    <th width="25%">Date of Adoption:</th>
+                                    <th width="25%">Adopted Pet:</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adopted_data"></tbody>
+                        </table>
+                        <div class="d-flex justify-content-end">
+                            <div id="adopted_pagination_link"></div>
+                        </div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-ok" data-bs-dismiss="modal">OK</button>
+            </div>
+
+
+            <!-- At Rest Log Table -->
+            <div class="container mt-5">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <div>AT REST LOG</div>
+                        <div class="d-flex align-items-center ms-auto">
+                            <button class="btn btn-sort d-flex align-items-center" style="white-space: nowrap;">
+                                <span class="badge text-bg-secondary"><i class="bi bi-arrow-down-up me-1"></i><span>Sort By</span></span>
+                            </button>
+                            <div class="input-group input-group-md">
+                                <input type="text" class="form-control" placeholder="Search" onkeyup="rest_data(this.value);">
+                                <span class="input-group-text search-icon"><i class="bi bi-search"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body p-0">
+                        <table id="rescueTable" class="table table-hover mb-5">
+                            <thead>
+                                <tr>
+                                    <th width="30%">Date of Rest</th>
+                                    <th width="40%">Name of Pet</th>
+                                    <th width="30%">Date Rescued</th>
+                                </tr>
+                            </thead>
+                            <tbody id="rest_data"></tbody>
+                        </table>
+                        <div class="d-flex justify-content-end">
+                            <div id="rest_pagination_link"></div>
+                        </div>
+                    </div>
                 </div>
+            </div>
+
+    </div>
+
+    <!--Adopted Modal -->
+<div class="modal fade" id="informationModal" tabindex="-1" aria-labelledby="informationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content info-card">
+            <div class="modal-header">
+                <h5 class="modal-title" id="informationModalLabel">More Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <!-- Three Sections Layout -->
+                    <div class="row text-center">
+                        <!-- Adopter Section -->
+                        <div class="col-md-4">
+                            <div class="adopter-section">
+                                <img src="" id="data-user-image" class="img-fluid rounded-circle adopter-img" alt="Adopter Image">
+                                <h6>Adopter:</h6>
+                                <p id="rescuer"></p>
+                            </div>
+                        </div>
+
+                        <!-- Date of Adoption Section -->
+                        <div class="col-md-4 mb-3">
+                            <br><strong>Date of Adoption: </strong><br><br><p id="rescueDate"></p><br>
+                            <strong>Approved By: </strong><br><br><p id="rescued-at">Shelter A</p>
+                        </div>
+
+                        <!-- Adoption Section -->
+                        <div class="col-md-4">
+                            <div class="adopted-section">
+                                <img src="" id="data-image" class="img-fluid rounded adopted-img" alt="Adopted Pet Image">
+                                <h6>Adopted:</h6>
+                                <p id="petName"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-ok" data-bs-dismiss="modal">OK</button>
             </div>
         </div>
     </div>
+</div>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // Get all rows from the table
-            const tableRows = document.querySelectorAll("#rescueTable tbody tr");
 
-            // Add click event listener to each row
-            tableRows.forEach(row => {
-                row.addEventListener("click", function() {
-                    // Fetch data from row attributes
-                    const petName = this.dataset.petName;
-                    const rescuedBy = this.dataset.rescuedBy;
-                    const rescueDate = this.dataset.rescueDate;
-                    const rescuedAt = this.dataset.rescuedAt;
-                    
+    
+    <!--Rest Modal -->
+    
+<div class="modal fade" id="restModal" tabindex="-1" aria-labelledby="restModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content info-card">
+            <div class="modal-header">
+                <h5 class="modal-title" id="restModalLabel">More Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row">
+                        <!-- Pet Picture Section -->
+                        <div class="col-md-4 text-center">
+                            <img src="" id="restPetImage" class="img-fluid at-rest" alt="Pet Image">
+                        </div>
 
-                    // Populate modal fields with row data
-                    document.getElementById('petName').innerText = petName;
-                    document.getElementById('rescuer').innerText = rescuedBy;
-                    document.getElementById('rescueDate').innerText = rescueDate;
-                    document.getElementById('rescued-at').innerText = rescuedAt;
-                    
+                        <!-- Name of Pet Section -->
+                        <div class="col-md-4">
+                            <strong>Name of Pet:</strong>
+                            <p id="restPetName"></p>
+                            <strong>Date of Rest:</strong>
+                            <p id="restDate"></p>
+                        </div>
+                        
+                        <!-- Date Rescued Section -->
+                        <div class="col-md-4">
+                            <strong>Date Rescued:</strong>
+                            <p id="restRescueDate"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-ok" data-bs-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
 
-                    // Show the modal
-                    const informationModal = new bootstrap.Modal(document.getElementById('informationModal'));
-                    informationModal.show();
-                });
-            });
-        });
-    </script>
+
+    
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-
+    <script src="scripts/history.js"></script>
 </body>
 
 </html>
 <?php
 } else {
-    header("Location: home.php");
+    header("Location: login.php");
 }
 ?>
