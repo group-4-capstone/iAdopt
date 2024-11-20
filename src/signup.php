@@ -19,6 +19,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <!-- JS Script CDN -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- jQuery Library -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
 <?php include_once 'components/topnavbar.php'; ?>   
@@ -86,17 +88,52 @@
                         </div>
                     </div>
 
+                    
                     <div class="input-group">
-                        <div class="input-container col-sm-12 col-lg-7 col-7">
-                            <label for="address">Address</label>
-                            <input type="text" id="address" name="address" class="form-control" placeholder="City of Santa Rosa" maxlength="50" required>
-                            <div class="invalid-feedback">Please provide a valid address.</div>
-                        </div>
-                        <div class="input-container col-sm-12 col-lg-4 col-4">
+                        <!-- Region Dropdown -->
+                        <div class="input-container col-sm-12 col-lg-5 col-5">
                             <label for="region">Region</label>
-                            <input type="text" id="region" name="region" class="form-control" placeholder="Laguna" maxlength="50" required>
+                            <select id="region" class="form-control" required>
+                                <option selected="true" disabled>Choose Region</option>
+                            </select>
+                            <input type="hidden" id="region-text" name="region">
                             <div class="invalid-feedback">Please provide a valid region.</div>
                         </div>
+                        
+                        <!-- Province Dropdown -->
+                        <div class="input-container col-sm-12 col-lg-5 col-5">
+                            <label for="province">Province</label>
+                            <select id="province"    class="form-control" required>
+                                <option selected="true" disabled>Choose Province</option>
+                            </select>
+                            <input type="hidden" id="province-text" name="province">
+                            <div class="invalid-feedback">Please provide a valid province.</div>
+                        </div>
+                        
+                        
+                    </div>
+
+                    <div class="input-group">
+                            <!-- City/Municipality Dropdown -->
+                        <div class="input-container col-sm-12 col-lg-5 col-5">
+                            <label for="city">City/Municipality</label>
+                            <select id="city"  class="form-control" required>
+                                <option selected="true" disabled>Choose City/Municipality</option>
+                            </select>
+                            <input type="hidden" id="city-text" name="city">
+                            <div class="invalid-feedback">Please provide a valid city/municipality.</div>
+                        </div>
+                        
+                        <!-- Barangay Dropdown -->
+                        <div class="input-container col-sm-12 col-lg-5 col-5">
+                            <label for="barangay">Barangay</label>
+                            <select id="barangay"  class="form-control" required>
+                                <option selected="true" disabled>Choose Barangay</option>
+                            </select>
+                            <input type="hidden" id="barangay-text" name="barangay">
+                            <div class="invalid-feedback">Please provide a valid barangay.</div>
+                        </div>
+
                     </div>
 
                     <div class="input-group">
@@ -110,9 +147,12 @@
                     <div class="input-group">
                         <div class="input-container">
                             <label for="contact-number">Contact Number</label>
-                            <input type="tel" id="contact-number" name="contact-number" class="form-control" placeholder="(555) 555-5555" maxlength="11" required>
-                            <div class="invalid-feedback">Please enter a valid contact number (10-11 digits).</div>
+                            <input type="tel" id="contact-number" name="contact-number" class="form-control" 
+                                placeholder="09123456789" minlength="11" maxlength="11" 
+                                pattern="^[0-9]{11}$" inputmode="numeric" required>
+                            <div class="invalid-feedback">Please enter a valid contact number (11 digits).</div>
                         </div>
+
                         <div class="input-container">
                             <label for="email">Email</label>
                             <input type="email" id="email" name="email" class="form-control" placeholder="juan.delacruz@example.com" maxlength="80" required>
@@ -121,17 +161,22 @@
                     </div>
 
                     <div class="input-group">
-                        <div class="input-container col-sm-12 col-lg-12 col-12">
-                            <label for="password">Password</label>
-                            <input type="password" id="password" name="password" class="form-control" placeholder="Enter your password" maxlength="80" required>
-                            <div class="invalid-feedback">Password is required.</div>
-                        </div>
-                        <div class="input-container col-sm-12 col-lg-12 col-12">
-                            <label for="confirm-password">Confirm Password</label>
-                            <input type="password" id="confirm-password" name="confirm-password" class="form-control" placeholder="Confirm your password" required>
-                            <div class="invalid-feedback">Please confirm your password.</div>
-                        </div>
+                    <!-- Password Field -->
+                    <div class="input-container col-sm-12 col-lg-12 col-12">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" class="form-control" placeholder="Enter your password" maxlength="80" required>
+                        <div class="invalid-feedback">Password must be at least 8 characters, include uppercase, lowercase, a number, and a special character.</div>
                     </div>
+
+                    <!-- Confirm Password Field -->
+                    <div class="input-container col-sm-12 col-lg-12 col-12">
+                        <label for="confirm-password">Confirm Password</label>
+                        <input type="password" id="confirm-password" name="confirm-password" class="form-control" placeholder="Confirm your password" required>
+                        <div class="invalid-feedback">Passwords do not match.</div>
+                    </div>
+                </div>
+
+
 
                     <div class="row">
                         <div class="col-12 d-flex justify-content-center">
@@ -150,6 +195,7 @@
     
     <?php include_once 'components/footer.php'; ?>
      <!-- JS Files -->
+    <script src="scripts/ph-address-selector.js"></script>
     <script src="scripts/signup.js"></script>
 </body>
 

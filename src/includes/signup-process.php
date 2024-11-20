@@ -1,6 +1,5 @@
-<?php
-// Include the database connection
-require 'db-connect.php'; // This will initialize $db from the Database class
+<?php // Include the database connection
+include 'db-connect.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Fetch and sanitize form data
@@ -9,7 +8,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $mi = mysqli_real_escape_string($db, $_POST['mi']);
     $birthdate = mysqli_real_escape_string($db, $_POST['birthdate']);
     $gender = mysqli_real_escape_string($db, $_POST['gender']);
-    $address = mysqli_real_escape_string($db, $_POST['address']);
+    
+    // Fetch and sanitize address components
+    $region = mysqli_real_escape_string($db, $_POST['region']);
+    $province = mysqli_real_escape_string($db, $_POST['province']);
+    $city = mysqli_real_escape_string($db, $_POST['city']);
+    $barangay = mysqli_real_escape_string($db, $_POST['barangay']);
+    
+    // Concatenate the address components
+    $address = $region . ', ' . $province . ', ' . $city . ', ' . $barangay;
+
     $facebook_profile = mysqli_real_escape_string($db, $_POST['facebook-profile']);
     $contact_number = mysqli_real_escape_string($db, $_POST['contact-number']);
     $email = mysqli_real_escape_string($db, $_POST['email']);
@@ -62,4 +70,3 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Close the database connection
     mysqli_close($db);
 }
-
