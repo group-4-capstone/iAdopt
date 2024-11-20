@@ -115,6 +115,7 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                             <option value="Adoptable" <?php echo $status === 'Adoptable' ? 'selected' : ''; ?>>Adoptable</option>
                         </select>
                         <input type="hidden" id="animalId" value="<?php echo $application['animal_id'] ?>" readonly>
+                        <input type="hidden" id="applicationId" value="<?php echo $application['application_id'] ?>" readonly>
                     </form>
 
                     <!-- Modal -->
@@ -206,7 +207,7 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                                 <p><strong>Email:</strong> <?php echo $application['email'] ?></p>
                                 <p><strong>Phone:</strong> <?php echo $application['contact_num'] ?></p>
                                 <p><strong>Address:</strong> <?php echo $application['complete_address'] ?></p>
-                                <p><strong>Work:</strong> <?php echo $application['profession'] ?></p>
+                                <p><strong>Work:</strong> <?php echo !empty($application['profession']) ? $application['profession'] : 'No Work'; ?></p>
                             </div>
                         </div>
                     </div>

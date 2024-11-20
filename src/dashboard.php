@@ -249,7 +249,7 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
           <div class="col-lg-6 col-md-6 col-sm-12 faq-content">
             <h2>Frequently Asked Questions</h2>
             <p>Bring joy and love into your life by adopting a furry friend. Explore our wide selection of pets ready to find their forever home.</p>
-            <a href="adopter-faqs.php" class="btn btn-primary">Read More</a>
+            <a href="admin-faqs.php" class="btn btn-primary">Read More</a>
           </div>
         </div>
       </div>
