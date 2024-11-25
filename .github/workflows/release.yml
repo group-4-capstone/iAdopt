@@ -29,18 +29,21 @@ jobs:
       - name: Get the version from VERSION file
         id: get_version
         run: |
-          VERSION=$(cat VERSION)  # Corrected path to VERSION file in the root
-          echo "VERSION=$VERSION" >> $GITHUB_ENV  # Set VERSION as an environment variable for subsequent steps
+          VERSION=$(cat VERSION)  # Read the VERSION file in the root
+          echo "VERSION=$VERSION"  # Print the VERSION value for visibility
+          echo "::set-output name=version::$VERSION"  # Set the VERSION as an output for this step
 
-      - name: Verify the version is set
-        run: echo "VERSION is ${{ env.VERSION }}"  # This will print the VERSION value in logs
+      - name: Debug VERSION content
+        run: |
+          cat VERSION  # Ensure the VERSION file content is correct
+          echo "VERSION=${{ steps.get_version.outputs.version }}"  # Print out VERSION output from previous step
 
       - name: Commit new version
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
-          git add VERSION  # Corrected path to VERSION file in the root
-          git commit -m "Bump version to ${{ env.VERSION }}"
+          git add VERSION
+          git commit -m "Bump version to ${{ steps.get_version.outputs.version }}"
           git push origin main  # Change to the appropriate branch
 
       - name: Create GitHub Release
@@ -48,11 +51,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: "v${{ env.VERSION }}"
-          release_name: "Release ${{ env.VERSION }}"
+          tag_name: "v${{ steps.get_version.outputs.version }}"
+          release_name: "Release ${{ steps.get_version.outputs.version }}"
           body: |
             ## What's New
-            Version ${{ env.VERSION }} is now live!
+            Version ${{ steps.get_version.outputs.version }} is now live!
             - Changes: (describe your changes here)
           draft: false
           prerelease: false
