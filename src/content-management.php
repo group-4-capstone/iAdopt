@@ -564,8 +564,8 @@ if ($faq_result->num_rows > 0) {
                       <div class="col-9">
                         <select class="form-select" id="merchandiseStatus" name="status">
                           <option value="" selected disabled>Kindly select an option</option>
-                          <option value="draft">Draft</option>
-                          <option value="publish">Publish Now</option>
+                          <option value="Draft">Draft</option>
+                          <option value="Published">Publish Now</option>
                         </select>
                       </div>
                     </div>
