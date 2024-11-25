@@ -46,6 +46,28 @@ body {
   top: -210px !important;
 }
 
+#reportContainer {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  background-color: #fff;
+}
+
+#reportContainer table {
+  width: 100%;
+}
+
+#reportContainer th, #reportContainer td {
+  padding: 8px;
+  border: 1px solid #ddd;
+}
+
+#reportContainer th {
+  background-color: #f4f4f4;
+}
+
+
 @media (max-width: 1024px) {
   .welcome-section img {
     left: 25%; 
@@ -251,17 +273,17 @@ a.text-decoration-none {
 }
 
 .dropdown-menu {
-  width: 150px;
+  max-width: 200px;
 }
 
 .donationchart {
-  
   padding: 20px;
   border-radius: 10px; /* Optional: add rounded corners */
   margin-top: 40px; /* Optional: add spacing */
   text-align: center;
 }
-.btn-liquidation-report {
+
+.dropdown .btn-liquidation-report {
   float: right; /* Move button to the right */
   text-align: center;
   height: 30px;
@@ -278,8 +300,8 @@ a.text-decoration-none {
   font-weight: lighter;
 }
 
-.btn-liquidation-report:hover {
-  background-color: #0056b3; /* Darker on hover */
+.dropdown .btn-liquidation-report:hover {
+  background-color: #a35c14; /* Darker on hover */
 }
 
 /* FAQ Section */
