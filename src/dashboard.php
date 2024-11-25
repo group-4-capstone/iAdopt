@@ -30,6 +30,9 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+
   </head>
 
   <body>
@@ -218,7 +221,7 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
       <div class="chart-container">
         <div class="dropdown" style="display: flex; justify-content: flex-end; margin-bottom: 20px;">
           <!-- Dropdown button for selecting time period -->
-          <button class="dropdown-toggle btn btn-outline-primary" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+          <button class="dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
             Monthly
           </button>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -234,8 +237,35 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
         </div>
 
         <!-- Button to generate the Liquidation Report -->
-        <button class="btn-liquidation-report">Generate Liquidation Report</button>
+        <div class="dropdown">
+          <button class="btn btn-liquidation-report dropdown-toggle" type="button" id="reportDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+             Generate Liquidation Report
+          </button>
+            <ul class="dropdown-menu" aria-labelledby="reportDropdown">
+              <li><a class="dropdown-item report-item" href="#" id="monthlyReport">Monthly Report</a></li>
+              <li><a class="dropdown-item report-item" href="#" id="quarterlyReport">Quarterly Report</a></li>
+              <li><a class="dropdown-item report-item" href="#" id="yearlyReport">Yearly Report</a></li>
+            </ul>
+        </div>
+
       </div>
+
+      <div id="reportContainer" style="display: none;">
+        <h1 id="reportTitle">Monthly Liquidation Report</h1>
+        <table border="1" style="width: 100%; border-collapse: collapse; text-align: center;">
+          <thead>
+            <tr>
+              <th>Period</th>
+              <th>Donations</th>
+              <th>Expenses</th>
+            </tr>
+          </thead>
+          <tbody id="reportContent">
+            <!-- Data will be dynamically inserted here -->
+          </tbody>
+        </table>
+      </div>
+
 
 
       <!-- FAQ Section with Dog Image -->
@@ -249,7 +279,7 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
           <div class="col-lg-6 col-md-6 col-sm-12 faq-content">
             <h2>Frequently Asked Questions</h2>
             <p>Bring joy and love into your life by adopting a furry friend. Explore our wide selection of pets ready to find their forever home.</p>
-            <a href="admin-faqs.php" class="btn btn-primary">Read More</a>
+            <a href="adopter-faqs.php" class="btn btn-primary">Read More</a>
           </div>
         </div>
       </div>
