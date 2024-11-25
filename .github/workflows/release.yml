@@ -1,0 +1,58 @@
+name: Create Release
+
+on:
+  push:
+    branches:
+      - main  # Adjust to the branch you want to monitor, e.g., main or master
+    paths:
+      - VERSION  # Trigger the workflow when the VERSION file changes (no 'iAdopt/' needed)
+
+jobs:
+  bump_and_release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'  # Use the version of Node.js that your project requires
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run bump-version script
+        run: node bump-version.js patch  # Change 'patch' to 'minor' or 'major' as needed
+
+      - name: Get the version from VERSION file
+        id: get_version
+        run: |
+          VERSION=$(cat VERSION)  # Corrected path to VERSION file in the root
+          echo "VERSION=$VERSION" >> $GITHUB_ENV  # Set VERSION as an environment variable for subsequent steps
+
+      - name: Verify the version is set
+        run: echo "VERSION is ${{ env.VERSION }}"  # This will print the VERSION value in logs
+
+      - name: Commit new version
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add VERSION  # Corrected path to VERSION file in the root
+          git commit -m "Bump version to ${{ env.VERSION }}"
+          git push origin main  # Change to the appropriate branch
+
+      - name: Create GitHub Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: "v${{ env.VERSION }}"
+          release_name: "Release ${{ env.VERSION }}"
+          body: |
+            ## What's New
+            Version ${{ env.VERSION }} is now live!
+            - Changes: (describe your changes here)
+          draft: false
+          prerelease: false
