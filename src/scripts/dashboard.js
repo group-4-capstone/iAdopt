@@ -87,37 +87,43 @@ document.addEventListener("DOMContentLoaded", async function () {
   let chart; // Reference to the Chart.js instance
 
   // Labels for each time period
-  const labelsMonthly = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
-  const labelsQuarterly = ['Q1', 'Q2', 'Q3', 'Q4'];
-  let labelsYearly = [];
+const labelsMonthly = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+const labelsQuarterly = ['Q1', 'Q2', 'Q3', 'Q4'];
+let labelsYearly = [];
 
-  // Fetch data based on the selected period
-  async function fetchData(period) {
-    const response = await fetch(`includes/fetch-liquidation-data.php?period=${period}`);
-    const data = await response.json();
-    return data;
+// Fetch data based on the selected period
+async function fetchData(period) {
+  const response = await fetch(`includes/fetch-liquidation-data.php?period=${period}`);
+  const data = await response.json();
+  return data;
+}
+
+// Function to update the chart
+async function updateChart(period) {
+  let data = await fetchData(period);
+  let labels = [];
+  let donationData = [];
+  let expenseData = [];
+
+  if (period === "monthly") {
+    labels = labelsMonthly;
+    donationData = data.donations;
+    expenseData = data.expenses;
+  } else if (period === "quarterly") {
+    labels = labelsQuarterly;
+    donationData = data.donations;
+    expenseData = data.expenses;
+  } else if (period === "yearly") {
+    // Get the current year
+    const currentYear = new Date().getFullYear();
+
+    // Generate an array with the current year and the last 4 years
+    labels = Array.from({ length: 5 }, (_, index) => currentYear - (4 - index));
+
+    // Assuming that data.donations and data.expenses contain data for each of these years
+    donationData = labels.map(year => data.donations[year] || 0); // Provide 0 if no data for that year
+    expenseData = labels.map(year => data.expenses[year] || 0); // Provide 0 if no data for that year
   }
-
-  // Function to update the chart
-  async function updateChart(period) {
-    let data = await fetchData(period);
-    let labels = [];
-    let donationData = [];
-    let expenseData = [];
-
-    if (period === "monthly") {
-      labels = labelsMonthly;
-      donationData = data.donations;
-      expenseData = data.expenses;
-    } else if (period === "quarterly") {
-      labels = labelsQuarterly;
-      donationData = data.donations;
-      expenseData = data.expenses;
-    } else if (period === "yearly") {
-      labels = data.map(item => item.year); // Extract year labels
-      donationData = data.map(item => item.donations); // Extract donations counts
-      expenseData = data.map(item => item.expenses); // Extract expenses counts
-    }
 
     // Destroy existing chart if it exists
     if (chart) {
@@ -218,3 +224,80 @@ document.addEventListener("DOMContentLoaded", async function () {
   // Initial load with monthly data
   updateChart("monthly");
 });
+
+// PDF GENERATION
+document.querySelectorAll('.report-item').forEach(item => {
+  item.addEventListener('click', async function (e) {
+    e.preventDefault();
+
+    const period = this.id.replace('Report', '').toLowerCase(); // Get 'monthly', 'quarterly', or 'yearly'
+
+    // Fetch data
+    const response = await fetch(`includes/fetch-liquidation-data.php?period=${period}`);
+    const data = await response.json();
+
+    // Prepare the report content
+    const reportTitle = document.getElementById('reportTitle');
+    const reportContent = document.getElementById('reportContent');
+    reportTitle.textContent = `${capitalize(period)} Liquidation Report`;
+
+    // Clear existing content
+    reportContent.innerHTML = '';
+
+    if (period === 'monthly' || period === 'quarterly') {
+      const periodNames = period === 'monthly' ?
+        ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'] :
+        ['Q1', 'Q2', 'Q3', 'Q4'];
+
+      data.donations.forEach((donation, index) => {
+        const expense = data.expenses[index];
+        const periodName = periodNames[index] ?? 'N/A';
+
+        reportContent.innerHTML += `
+          <tr>
+            <td>${periodName}</td>
+            <td>${donation.toFixed(2)}</td>
+            <td>${expense.toFixed(2)}</td>
+          </tr>
+        `;
+      });
+    } else if (period === 'yearly') {
+      Object.keys(data).forEach(year => {
+        reportContent.innerHTML += `
+          <tr>
+            <td>${year}</td>
+            <td>${data[year].donations.toFixed(2)}</td>
+            <td>${data[year].expenses.toFixed(2)}</td>
+          </tr>
+        `;
+      });
+    }
+
+    // Show the report container for rendering
+    const reportContainer = document.getElementById('reportContainer');
+    reportContainer.style.display = 'block';
+
+    // Generate PDF
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF();
+
+    await html2canvas(reportContainer, { scale: 2 }).then(canvas => {
+      const imgData = canvas.toDataURL('image/png');
+      const imgWidth = 190; // Adjust to fit page width
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+      pdf.addImage(imgData, 'PNG', 10, 10, imgWidth, imgHeight);
+    });
+
+    // Hide the container after rendering
+    reportContainer.style.display = 'none';
+
+    // Save the PDF
+    pdf.save(`${capitalize(period)}-Liquidation-Report.pdf`);
+  });
+});
+
+// Utility function to capitalize text
+function capitalize(text) {
+  return text.charAt(0).toUpperCase() + text.slice(1);
+}

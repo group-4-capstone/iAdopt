@@ -60,6 +60,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $no_fence = $_POST['no_fence'] ?? NULL;
     $litter_place = $_POST['litter_place'] ?? NULL;
 
+ 
+   
+    
+ 
+
     // Handle Rent Letter (PDF or Image)
     $rent_letter_file = '';
     if (isset($_FILES['rent_letter']) && $_FILES['rent_letter']['error'] == 0) {
@@ -67,6 +72,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $rent_letter_ext = strtolower(pathinfo($_FILES['rent_letter']['name'], PATHINFO_EXTENSION));
 
         $rent_target_dir = "../styles/assets/applications/letter/";
+        if (!is_dir($rent_target_dir)) {
+            mkdir($rent_target_dir, 0777, true); // Create directory if it doesn't exist
+        }    
         $rent_letter_file = uniqid() . '.' . $rent_letter_ext;
         $rent_target_file = $rent_target_dir . $rent_letter_file;
 
@@ -91,6 +99,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $valid_id_ext = strtolower(pathinfo($_FILES['valid_id']['name'], PATHINFO_EXTENSION));
 
         $valid_id_target_dir = "../styles/assets/applications/ids/";
+        if (!is_dir($valid_id_target_dir)) {
+            mkdir($valid_id_target_dir, 0777, true); // Create directory if it doesn't exist
+        }
         $valid_id_file = uniqid() . '.webp';
         $valid_id_target_file = $valid_id_target_dir . $valid_id_file;
 
@@ -103,6 +114,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_FILES['proof_place'])) {
         $total_files = count($_FILES['proof_place']['name']);
         $proof_place_target_dir = "../styles/assets/applications/proof/";
+        if (!is_dir($proof_place_target_dir)) {
+            mkdir($proof_place_target_dir, 0777, true); // Create directory if it doesn't exist
+        }    
 
         for ($i = 0; $i < $total_files; $i++) {
             if ($_FILES['proof_place']['error'][$i] == 0) {

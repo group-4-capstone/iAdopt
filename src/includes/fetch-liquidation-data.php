@@ -88,13 +88,6 @@ if ($timePeriod === 'monthly') {
         $type = $row['type'];
         $amount = (float)$row['total_amount'];
 
-        if (!isset($data[$year])) {
-            $data[$year] = [
-                'donations' => 0,
-                'expenses' => 0
-            ];
-        }
-
         if ($type === 'donation') {
             $data[$year]['donations'] = $amount;
         } elseif ($type === 'expense') {

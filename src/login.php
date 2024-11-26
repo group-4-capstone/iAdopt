@@ -46,8 +46,10 @@ include_once 'includes/session-manager.php';
         </div>
         <div class="login-form-section col-sm-12 col-lg-6 col-6">
         <form id="loginForm">
+        
                 <h2><strong>ACCOUNT LOGIN</strong></h2>
                 <p>SIGN IN TO YOUR ACCOUNT</p>
+                <div id="error-msg" class="alert alert-danger d-none"></div>
                 <div class="input-group col-sm-12 col-lg-6 col-6">
                     <label for="email">Email</label>
                     <input type="email" id="email" placeholder="juanadelacruz@gmail.com" required>
@@ -75,48 +77,64 @@ include_once 'includes/session-manager.php';
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
         <!-- AJAX Script for handling login -->
         <script>
-            $(document).ready(function() {
-                $("#loginForm").submit(function(e) {
-                    e.preventDefault(); // Prevent the default form submission
+       
+    $(document).ready(function() {
+        // Remove error message and red borders when user starts typing in email or password
+        $("#email, #password").on('input', function() {
+            $("#error-msg").addClass('d-none'); // Hide the error message
+            $("#email, #password").removeClass('is-invalid'); // Remove red border
+        });
 
-                    // Get form data
-                    var email = $("#email").val();
-                    var password = $("#password").val();
+        $("#loginForm").submit(function(e) {
+            e.preventDefault(); // Prevent the default form submission
 
-                    // Debugging: log email and password
-                    console.log("Email:", email);
-                    console.log("Password:", password);
+            // Clear any previous error styles
+            $("#email, #password").removeClass('is-invalid');
+            $("#error-msg").addClass('d-none'); // Hide error message initially
 
-                    $.ajax({
-                        type: "POST",
-                        url: "includes/login-process.php", // The PHP file that handles the login
-                        data: { 
-                            email: email, 
-                            password: password 
-                        },
-                        dataType: "json",
-                        success: function(response) {
-                            console.log("Response from server:", response); // Log the server response
-                            if (response.success) {
-                                // Redirect based on the user's role
-                                if (response.role === 'user') {
-                                    window.location.href = "home.php";
-                                } else if (response.role === 'admin' || response.role === 'head_admin') {
-                                    window.location.href = "dashboard.php";
-                                }
-                            } else {
-                                // Show the error message if login fails
-                                $("#error-msg").removeClass('d-none').text(response.error);
-                            }
-                        },
-                        error: function(xhr, status, error) {
-                            // Handle unexpected errors
-                            $("#error-msg").removeClass('d-none').text("An error occurred. Please try again.");
-                            console.error("Error details:", status, error);
+            // Get form data
+            var email = $("#email").val();
+            var password = $("#password").val();
+
+            $.ajax({
+                type: "POST",
+                url: "includes/login-process.php", // The PHP file that handles the login
+                data: { 
+                    email: email, 
+                    password: password 
+                },
+                dataType: "json",
+                success: function(response) {
+                    if (response.success) {
+                        // Redirect based on the user's role
+                        if (response.role === 'user') {
+                            window.location.href = "home.php";
+                        } else if (response.role === 'admin' || response.role === 'head_admin') {
+                            window.location.href = "dashboard.php";
                         }
-                    });
-                });
+                    } else {
+                        // Display the error message
+                        $("#error-msg").removeClass('d-none').text(response.error);
+
+                        // Add red border to input fields with errors
+                        if (response.error.includes('password')) {
+                            $("#password").addClass('is-invalid');
+                        } else {
+                            $("#email").addClass('is-invalid');
+                        }
+                    }
+                },
+                error: function(xhr, status, error) {
+                    // Handle unexpected errors
+                    $("#error-msg").removeClass('d-none').text("An error occurred. Please try again.");
+                    console.error("Error details:", status, error);
+                }
             });
+        });
+    });
+
+
+
         </script>
 
 </body>

@@ -84,6 +84,7 @@ $(document).ready(function () {
     const $newStatusSpan = $('#newStatus');
     const $confirmBtn = $('#confirmBtn');
     const animalId = $('#animalId').val();
+    const applicationId = $('#applicationId').val();
     let selectedStatus = '';
 
     // Listen for changes in the dropdown
@@ -103,11 +104,11 @@ $(document).ready(function () {
             method: 'POST',
             data: {
                 animal_id: animalId,
+                application_id: applicationId,
                 animal_status: selectedStatus
             },
             success: function (response) {
                 if (response.success) {
-                    $('#confirmationModal').modal('hide');
                     $('#successModal').modal('show');
                 } else {
                     alert('Error updating status: ' + response.error);
@@ -120,4 +121,3 @@ $(document).ready(function () {
         });
     });
 });
-

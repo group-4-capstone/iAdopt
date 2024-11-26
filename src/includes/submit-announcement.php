@@ -5,7 +5,7 @@ include_once 'db-connect.php';
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     $title = $_POST['title'];
-    $status = $_POST['status'];
+    $announcement_status = $_POST['announcement_status'];
     $announcementDate = isset($_POST['announcement_date']) && !empty($_POST['announcement_date']) ? $_POST['announcement_date'] : null;
     $description = $_POST['description'];
     $user_id = $_SESSION['user_id'];
@@ -43,7 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Prepare and bind the SQL query
-    $stmt = $db->prepare("INSERT INTO announcements (title, status, publish_date, description, image, admin) VALUES (?, ?, ?, ?, ?, ?)");
+    $stmt = $db->prepare("INSERT INTO announcements (title, announcement_status, publish_date, description, image, admin) VALUES (?, ?, ?, ?, ?, ?)");
 
     // Check if the statement preparation is successful
     if ($stmt === false) {
@@ -51,7 +51,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Bind the parameters to the statement, using correct parameter types
-    $stmt->bind_param("sssssi", $title, $status, $announcementDate, $description, $imageWebpFileName, $user_id); // Use $imageWebpFileName here
+    $stmt->bind_param("sssssi", $title, $announcement_status, $announcementDate, $description, $imageWebpFileName, $user_id); // Use $imageWebpFileName here
 
     // Execute the query
     if ($stmt->execute()) {

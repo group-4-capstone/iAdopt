@@ -17,6 +17,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         // Handle image upload
         $upload_dir = '../styles/assets/rescue-reports/';
+        
+        // Ensure the upload directory exists
+        if (!is_dir($upload_dir)) {
+            if (!mkdir($upload_dir, 0755, true)) {
+                throw new Exception("Failed to create directory: " . $upload_dir);
+            }
+        }
+
         $image = $_FILES['animal_image'];
 
         // Validate file extension
