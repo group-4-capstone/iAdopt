@@ -118,7 +118,6 @@
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    max-width: 900px !important; /* Adjust width as needed */
   }
   
   /* Make the modal wider */
@@ -129,7 +128,6 @@
     color: black;
     font-weight: 600;
     width: 100% !important;/* Adjust width as needed */
-    max-width: 600px !important; /* Adjust max-width as needed */
   }
 
   
@@ -144,25 +142,40 @@
     .modal-header .btn-close {
     margin-left: auto; 
     }
-    
-  
-  .modal-content form button {
-    background-color: #F8C613;
-    border-radius: 50px;
-    border: none;
-    color: white;
+
+    .yellow-btn {
+      background-color: #F8C613 !important;
+      border-radius: 50px !important;
+      border: none !important;
+      color: white !important;
+      padding: 10px 20px !important; /* Add some padding for a better button look */
+      cursor: pointer !important; /* Pointer cursor on hover */
   }
   
-  .modal-content form button:hover {
-    background-color: #E6B210;
-    border-radius: 50px;
-    border: none;
-    color: white;
-    text-decoration: underline;
+  .yellow-btn:hover {
+      background-color: #E6B210 !important;
+      border-radius: 50px !important;
+      border: none !important;
+      color: white !important;
+      text-decoration: underline !important;
   }
+
+  /* Make badges oval */
+.oval-badge {
+  border-radius: 50px !important; /* This will make the badge oval */
+  padding-left: 15px; /* Optional, adds space inside the badge */
+  padding-right: 15px; /* Optional, adds space inside the badge */
+  padding-top: 5px; /* Optional, adjust the vertical padding */
+  padding-bottom: 5px; /* Optional, adjust the vertical padding */
+}
+
   
   /* Style the input fields */
   .modal-body .form-control {
+    border-radius: 20px !important;
+  }
+
+  .modal-body .form-select {
     border-radius: 20px !important;
   }
   

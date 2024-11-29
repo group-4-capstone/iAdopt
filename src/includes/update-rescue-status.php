@@ -7,7 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($rescue_id) {
         $query = "UPDATE animals 
-                  SET animal_status = 'Under Review' 
+                  SET animal_status = 'On Process' 
                   WHERE animal_id = (SELECT animal_id FROM rescue WHERE rescue_id = ?)";
         
         // Prepare and execute the statement

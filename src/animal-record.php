@@ -66,17 +66,32 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
         case 'Rest':
             $badgeClass = 'bg-primary';
             break;
-        case 'Under Review':
+        case 'On Process':
             $badgeClass = 'bg-danger';
             break;
-        case 'Adopted': // New case for Adopted status
-            $badgeClass = 'bg-info'; // Assign a badge class, e.g., bg-info
+        case 'Adopted': 
+            $badgeClass = 'bg-info'; 
             break;
         default:
-            $badgeClass = 'bg-secondary'; // Fallback color for unknown statuses
+            $badgeClass = 'bg-secondary'; 
             break;
     }
     
+    $tags = isset($animal['tags']) ? explode(',', $animal['tags']) : [];
+    $hasSixTags = count($tags) === 6;
+
+    $vaccineQuery = "SELECT COUNT(*) as count 
+                    FROM vaccines 
+                    WHERE animal_id = ? AND vaccine_name IN ('5-in-1 Vaccine', 'Anti-Rabies Vaccine')";
+
+    $stmt = $db->prepare($vaccineQuery);
+    $stmt->bind_param('i', $animal_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $vaccineData = $result->fetch_assoc();
+
+    $hasRequiredVaccines = $vaccineData['count'] == 2;
+    $showAdoptable = $hasSixTags && $hasRequiredVaccines;
     ?>
     
 
@@ -163,14 +178,7 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                     <div class="card info-card p-4">
                         <h2 class="title">> INFORMATION SHEET</h2>
                         <p class="d-flex justify-content-end align-items-center mt-1 mb-2 me-4">
-                            <label for="status" class="me-2">Status:</label>
-                            <select id="status" class="form-select badge <?php echo $badgeClass; ?> w-25" name="animal_status" disabled>
-                                <option value="Unadoptable" <?php echo $status === 'Unadoptable' ? 'selected' : ''; ?>>Unadoptable</option>
-                                <option value="Adoptable" <?php echo $status === 'Adoptable' ? 'selected' : ''; ?>>Adoptable</option>
-                                <option value="Rest" <?php echo $status === 'Rest' ? 'selected' : ''; ?>>Rest</option>
-                                <option value="Under Review" <?php echo $status === 'Under Review' ? 'selected' : ''; ?>>Under Review</option>
-                                <option value="Adopted" <?php echo $status === 'Adopted' ? 'selected' : ''; ?>>Adopted</option>
-                            </select>
+                          Status: <span class="badge <?php echo $badgeClass; ?> w-25 ms-2"> <?php echo $status; ?> </span>
                         </p>
 
                         <div class="row mt-2">
@@ -276,10 +284,34 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                                             <input type="checkbox" id="checkbox6" name="tags[]" value="No food aggression" style="display: none;" <?php echo in_array('No food aggression', $animalTags) ? 'checked' : ''; ?>>
                                         </div>
                                     </div>
-
+                                    <?php if (!in_array($status, ['Unadoptable', 'Adoptable', 'Rest'])): ?>
+                                        <div style="display: none;" id="status_input">
+                                            <div class="row align-items-center form-group">
+                                                <div class="col-md-3">
+                                                    <label for="remarks" class="form-label">
+                                                        Update Status:
+                                                    </label>
+                                                </div>
+                                                <input type="hidden" name="current_animal_status" value="<?= htmlspecialchars($status) ?>">
+                                                <div class="col-md-9">
+                                                    <select id="status" class="form-select" name="animal_status" disabled>
+                                                        <option selected disabled>----- Kindly select a new status -----</option>
+                                                        <?php if ($showAdoptable): ?>
+                                                            <option value="Adoptable">Adoptable</option>
+                                                        <?php endif; ?>
+                                                        <option value="Unadoptable">Unadoptable</option>
+                                                        <option value="Rest">Rest</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <?php endif; ?>
 
                                     <input type="hidden" name="animal_id" value="<?php echo $animal_id ?>" readonly>
-
+                                    
+                                    <?php if ($showAdoptable): ?>
+                                      <i class="small form-group" id="adoptableInfo">*** Can be tagged as <b>Adoptable</b>, click on Edit Information to update status.</i>
+                                    <?php endif; ?>
 
                                     <div class="d-flex justify-content-end mt-5 mb-3">
                                         <button type="button" class="btn btn-primary me-4" id="editBtn"><i class="bi bi-pencil-square pe-2"></i>Edit Information</button>
