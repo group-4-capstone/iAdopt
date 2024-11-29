@@ -212,10 +212,12 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                                   <th>Mode</th>
                                   <td><?php echo $row['mode'] ?: 'N/A'; ?></td>
                               </tr>
+                              <?php if ($row['type'] == "Expense" ) { ?>
                               <tr>
                                   <th>Description</th>
                                   <td colspan="3"><?php echo $row['description'] ?: 'N/A'; ?></td>
                               </tr>
+                              <?php } ?>
                               <tr>
                                   <th>Proof</th>
                                   <td colspan="3">
@@ -231,14 +233,22 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                                   <th>Status</th>
                                   <td colspan="3">
                                   <?php 
-                                  if ($row['liquidation_status'] === 'For Verification') {
+                                    if ($row['liquidation_status'] === 'For Verification') {
                                         echo '<span class="badge bg-warning text-dark oval-badge">For Verification</span>';
                                     } else if ($row['liquidation_status'] === 'Verified') {
                                         echo '<span class="badge bg-success oval-badge">Verified</span>';
+                                        if ($row['last_updated']) {
+                                            $date = new DateTime($row['last_updated']);
+                                            echo '<br><i><small class="text-muted">Status updated at: ' . $date->format('F j, Y g:i A') . '</small></i>';
+                                        }
                                     } else if ($row['liquidation_status'] === 'Invalid') {
                                         echo '<span class="badge bg-danger oval-badge">Invalid</span>';
+                                        if ($row['last_updated']) {
+                                            $date = new DateTime($row['last_updated']);
+                                            echo '<br><i><small class="text-muted">Status updated at: ' . $date->format('F j, Y g:i A') . '</small></i>';
+                                        }
                                     }
-                                  ?>
+                                    ?>
                                 </td>
                                 <?php } ?>
                               </tr>
@@ -247,7 +257,7 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                   </div>
                     <div class="modal-footer">
                     <form id="updateLiquidationForm_<?php echo $row['liquidation_id']; ?>" class="d-flex">
-                        <?php if ($_SESSION['role'] == 'head_admin' && $row['type'] == "Donation") { ?>
+                    <?php if ($_SESSION['role'] == 'head_admin' && $row['type'] == "Donation" && $row['liquidation_status'] == "For Verification") { ?>
                             <input type="hidden" name="liquidation_id" value="<?php echo $row['liquidation_id']; ?>">
                             <button type="button" class="btn btn-success me-2" onclick="updateLiquidationStatus(<?php echo $row['liquidation_id']; ?>, 'approve')">Approve</button>
                             <button type="button" class="btn btn-danger me-2" onclick="updateLiquidationStatus(<?php echo $row['liquidation_id']; ?>, 'reject')">Reject</button>
@@ -289,7 +299,7 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
         <button type="button" class="btn-close d-flex ms-auto" onclick="window.location.href='liquidation-monitoring.php'"></button>
           <div class="text-center">
             <i class="bi bi-check-circle-fill" style="font-size: 8rem; color: #28a745;"></i>
-            <p class="mt-4 px-2"> This donation has been verfied!
+            <p class="mt-4 px-2"> This donation status has been successfully updated!
             </p>
           </div>
         </div>     
