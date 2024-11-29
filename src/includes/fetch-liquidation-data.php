@@ -29,9 +29,9 @@ if ($timePeriod === 'monthly') {
         $type = $row['type'];
         $amount = (float)$row['total_amount'];
 
-        if ($type === 'donation') {
+        if ($type === 'Donation') {
             $data['donations'][$month] = $amount;
-        } elseif ($type === 'expense') {
+        } elseif ($type === 'Expense') {
             $data['expenses'][$month] = $amount;
         }
     }
@@ -60,9 +60,9 @@ if ($timePeriod === 'monthly') {
         $type = $row['type'];
         $amount = (float)$row['total_amount'];
 
-        if ($type === 'donation') {
+        if ($type === 'Donation') {
             $data['donations'][$quarter] = $amount;
-        } elseif ($type === 'expense') {
+        } elseif ($type === 'Expense') {
             $data['expenses'][$quarter] = $amount;
         }
     }
@@ -88,9 +88,9 @@ if ($timePeriod === 'monthly') {
         $type = $row['type'];
         $amount = (float)$row['total_amount'];
 
-        if ($type === 'donation') {
+        if ($type === 'Donation') {
             $data[$year]['donations'] = $amount;
-        } elseif ($type === 'expense') {
+        } elseif ($type === 'Expense') {
             $data[$year]['expenses'] = $amount;
         }
     }

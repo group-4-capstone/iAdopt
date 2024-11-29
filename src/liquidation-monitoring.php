@@ -86,39 +86,49 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
       </div>
     </section>
 
+
     <!-- Record Donation Modal -->
-<div class="modal fade" id="donationModal" tabindex="-1" aria-labelledby="donationModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="donationModalLabel">Record Donation</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form method="post" id="donationForm" action="includes/submit-liquidation.php">
-          <div class="mb-3">
-            <label for="donationAmount" class="form-label">Amount</label>
-            <input type="number" class="form-control" id="donationAmount" name="amount" placeholder="Enter amount" step="0.10">
+    <div class="modal fade" id="donationModal" tabindex="-1" aria-labelledby="donationModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="donationModalLabel">Record Donation</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <div class="mb-3">
-            <label for="donationPurpose" class="form-label">Purpose</label>
-            <input type="text" class="form-control" id="donationPurpose" name="description" placeholder="Enter purpose">
+          <div class="modal-body">
+            <form method="post" id="donationForm">
+            <div class="mb-3 row">
+              <div class="col-md-6">
+                  <label for="donationAmount" class="form-label">Amount</label>
+                  <input type="number" class="form-control" id="donationAmount" name="amount" placeholder="Enter amount" min="0.01" step="0.01">
+              </div>
+              <div class="col-md-6">
+                  <label for="donationMode" class="form-label">Mode of Donation</label>
+                  <select class="form-select" id="donationMode" name="mode_of_donation">
+                      <option value="" selected disabled>Select a mode</option>
+                      <option value="Bank Transfer">Bank Transfer</option>
+                      <option value="GCASH">GCASH</option>
+                      <option value="Maya">Maya</option>
+                      <option value="Cash">Cash</option>
+                  </select>
+              </div>
           </div>
-          <div class="mb-3">
-            <label for="donatorName" class="form-label">Donator</label>
-            <input type="text" class="form-control" id="donatorName" name="donator" placeholder="Enter donator's name">
+              <div class="mb-3">
+                <label for="donationProof" class="form-label">Proof of Donation</label>
+                <input type="file" class="form-control" id="donationProof" name="proof_of_donation" accept=".jpg, .jpeg, .png, .webp">
+              </div>
+              <input type="hidden" name="button_id" value="submitDonation">
+              <button type="button" id="submitDonation" class="btn yellow-btn">Submit Donation</button>
+            </form>
           </div>
-          <input type="hidden" name="button_id" value="submitDonation">
-          <button type="submit" id="submitDonation" class="btn">Submit Donation</button>
-        </form>
+        </div>
       </div>
     </div>
-  </div>
-</div>
+
 
 <!-- Record Expense Modal -->
 <div class="modal fade" id="expenseModal" tabindex="-1" aria-labelledby="expenseModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="expenseModalLabel">Record Expense</h5>
@@ -128,19 +138,142 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
         <form method="post" id="expenseForm">
           <div class="mb-3">
             <label for="expenseAmount" class="form-label">Amount</label>
-            <input type="number" class="form-control" id="expenseAmount"name="amount" placeholder="Enter amount" step="0.10">
+            <input type="number" class="form-control" id="expenseAmount"name="amount" placeholder="Enter amount" step="0.01" min="0.01">
           </div>
           <div class="mb-3">
             <label for="expensePurpose" class="form-label">Purpose</label>
-            <input type="text" class="form-control" id="expensePurpose" name="description" placeholder="Enter purpose">
+            <select class="form-select" id="expensePurpose" name="description" required>
+              <option value="" selected disabled>Select a purpose</option>
+              <option value="Rent">Rent</option>
+              <option value="Salary (Renato Corpuz Jr.)">Salary (Renato Corpuz Jr.)</option>
+              <option value="Salary (Monalisa Villar)">Salary (Monalisa Villar)</option>
+              <option value="PhilHealth & SSS">PhilHealth & SSS</option>
+              <option value="Rental E VAT">Rental E VAT</option>
+              <option value="Professional Fee of Filer">Professional Fee of Filer</option>
+              <option value="Tricycle Gasoline">Tricycle Gasoline</option>
+              <option value="Bus Fare">Bus Fare</option>
+              <option value="Van Rental for Dog Food">Van Rental for Dog Food</option>
+              <option value="Electric and Water Bill">Electric and Water Bill</option>
+              <option value="Dog Food">Dog Food</option>
+              <option value="Sawdust, Liver">Sawdust, Liver</option>
+              <option value="Honey, Cleaning Materials, Reno, Bar Soap, Powder Soap">
+                Honey, Cleaning Materials, Reno, Bar Soap, Powder Soap
+              </option>
+              <option value="Vinegar">Vinegar</option>
+              <option value="Dishwashing Liquid">Dishwashing Liquid</option>
+              <option value="Bleach">Bleach</option>
+              <option value="Gasul">Gasul</option>
+              <option value="BPI Loan for Shelter Transfer">BPI Loan for Shelter Transfer</option>
+              <option value="Others">Others</option>
+            </select>
           </div>
+          <div class="mb-3 d-none" id="otherPurposeWrapper">
+            <label for="otherPurpose" class="form-label">Please specify</label>
+            <input type="text" class="form-control" id="otherPurpose" name="other_description" placeholder="Enter purpose">
+          </div>
+          <div class="mb-3">
+                <label for="expenseProof" class="form-label">Proof of Expense:</label>
+                <input type="file" class="form-control" id="expenseProof" name="proof_of_expense" accept=".jpg, .jpeg, .png, .webp">
+           </div>
           <input type="hidden" name="button_id" value="submitExpense">
-          <button type="submit" id="submitExpense" class="btn">Submit Expense</button>
+          <button type="submit" id="submitExpense" class="btn yellow-btn">Submit Expense</button>
+
         </form>
       </div>
     </div>
   </div>
 </div>
+
+  <?php
+      $liquidation_query = "SELECT * FROM liquidation";
+      $liquidation_result = $db->query($liquidation_query);
+      if ($liquidation_result->num_rows > 0) {
+        while ($row = $liquidation_result->fetch_assoc()) { ?>
+
+        <div class="modal fade" id="liquidationModal_<?php echo $row['liquidation_id']; ?>" tabindex="-1" aria-labelledby="modalLabel_<?php echo $row['liquidation_id']; ?>" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalLabel_<?php echo $row['liquidation_id']; ?>">Liquidation Details - ID <?php echo $row['liquidation_id']; ?></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <table class="table table-bordered">
+                          <tbody>
+                              <tr>
+                                  <th style="width: 25%;">Date</th>
+                                  <td style="width: 25%;"><?php echo date('F j, Y', strtotime($row['date'])); ?></td>
+                                  <th style="width: 25%;">Type</th>
+                                  <td style="width: 25%;"><?php echo $row['type']; ?></td>
+                              </tr>
+                              <tr>
+                                  <th>Amount</th>
+                                  <td><?php echo number_format($row['amount'], 2); ?></td>
+                                  <th>Mode</th>
+                                  <td><?php echo $row['mode'] ?: 'N/A'; ?></td>
+                              </tr>
+                              <?php if ($row['type'] == "Expense" ) { ?>
+                              <tr>
+                                  <th>Description</th>
+                                  <td colspan="3"><?php echo $row['description'] ?: 'N/A'; ?></td>
+                              </tr>
+                              <?php } ?>
+                              <tr>
+                                  <th>Proof</th>
+                                  <td colspan="3">
+                                      <?php if ($row['proof'] && $row['type'] == "Donation" ) { ?>
+                                          <a href="styles/assets/donations/<?php echo $row['proof']; ?>" target="_blank">View</a>
+                                      <?php } else { ?>
+                                        <a href="styles/assets/expenses/<?php echo $row['proof']; ?>" target="_blank">View</a>
+                                      <?php } ?>
+                                  </td>
+                              </tr>
+                              <tr>
+                              <?php if ( $row['type'] == "Donation" ) { ?>
+                                  <th>Status</th>
+                                  <td colspan="3">
+                                  <?php 
+                                    if ($row['liquidation_status'] === 'For Verification') {
+                                        echo '<span class="badge bg-warning text-dark oval-badge">For Verification</span>';
+                                    } else if ($row['liquidation_status'] === 'Verified') {
+                                        echo '<span class="badge bg-success oval-badge">Verified</span>';
+                                        if ($row['last_updated']) {
+                                            $date = new DateTime($row['last_updated']);
+                                            echo '<br><i><small class="text-muted">Status updated at: ' . $date->format('F j, Y g:i A') . '</small></i>';
+                                        }
+                                    } else if ($row['liquidation_status'] === 'Invalid') {
+                                        echo '<span class="badge bg-danger oval-badge">Invalid</span>';
+                                        if ($row['last_updated']) {
+                                            $date = new DateTime($row['last_updated']);
+                                            echo '<br><i><small class="text-muted">Status updated at: ' . $date->format('F j, Y g:i A') . '</small></i>';
+                                        }
+                                    }
+                                    ?>
+                                </td>
+                                <?php } ?>
+                              </tr>
+                          </tbody>
+                      </table>
+                  </div>
+                    <div class="modal-footer">
+                    <form id="updateLiquidationForm_<?php echo $row['liquidation_id']; ?>" class="d-flex">
+                    <?php if ($_SESSION['role'] == 'head_admin' && $row['type'] == "Donation" && $row['liquidation_status'] == "For Verification") { ?>
+                            <input type="hidden" name="liquidation_id" value="<?php echo $row['liquidation_id']; ?>">
+                            <button type="button" class="btn btn-success me-2" onclick="updateLiquidationStatus(<?php echo $row['liquidation_id']; ?>, 'approve')">Approve</button>
+                            <button type="button" class="btn btn-danger me-2" onclick="updateLiquidationStatus(<?php echo $row['liquidation_id']; ?>, 'reject')">Reject</button>
+                        <?php } ?>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    <?php }
+} else { ?>
+    <p>No liquidation records found.</p>
+<?php } ?>
+
 
     <!-- Success Modal -->
     <div class="modal fade" id="successDonationModal" tabindex="-1" aria-labelledby="successDonationModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
@@ -151,6 +284,22 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
           <div class="text-center">
             <i class="bi bi-check-circle-fill" style="font-size: 8rem; color: #28a745;"></i>
             <p class="mt-4 px-2"> <b> Donation </b> amount has been listed!
+            </p>
+          </div>
+        </div>     
+      </div>
+    </div>
+  </div>
+
+    <!-- Success Modal -->
+    <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successDonationModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+      <div class="modal-body">
+        <button type="button" class="btn-close d-flex ms-auto" onclick="window.location.href='liquidation-monitoring.php'"></button>
+          <div class="text-center">
+            <i class="bi bi-check-circle-fill" style="font-size: 8rem; color: #28a745;"></i>
+            <p class="mt-4 px-2"> This donation status has been successfully updated!
             </p>
           </div>
         </div>     
@@ -185,7 +334,7 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                       <th width="20%">Type</th>
                       <th width="5%">Amount</th>
                       <th width="30%">Purpose</th>
-                      <th width="25%">Donator</th>
+                      <th width="25%">Status</th>
                   </tr>
               </thead>
               <tbody>
@@ -202,6 +351,7 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
  </div>
 
  <script src="scripts/liquidation.js"></script>
+ 
 
 </body>
 </html>

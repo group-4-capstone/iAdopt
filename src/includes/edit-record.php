@@ -11,7 +11,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $rescued_at = $_POST['rescued_at'];
     $description = $_POST['description'];
     $tags = isset($_POST['tags']) ? implode(',', $_POST['tags']) : ''; 
-    $animal_status = $_POST['animal_status']; 
+    if (isset($_POST['animal_status']) && $_POST['animal_status'] !== '') {
+        $animal_status = $_POST['animal_status']; // New selected status
+    } else {
+        $animal_status = $_POST['current_animal_status']; // Fallback to currentt staus
+    }
     $imageFileName = null;
 
     if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {

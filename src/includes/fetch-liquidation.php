@@ -36,7 +36,7 @@ if(isset($_POST["query"]))
 		);
 
 		$query = "
-		SELECT liquidation_id, date, type, amount, description, donator 
+		SELECT liquidation_id, date, type, amount, description, liquidation_status, proof
 		FROM liquidation 
 		WHERE date LIKE :date 
 		OR type LIKE :type 
@@ -68,7 +68,8 @@ if(isset($_POST["query"]))
 				'type'   => str_ireplace($replace_array_1, $replace_array_2, $row["type"]),
 				'amount'      => $row['amount'],
 				'description'      => $row['description'],
-				'donator'   => $row['donator']
+				'proof'      => $row['proof'],
+				'liquidation_status'   => $row['liquidation_status']
 			);
 		}
 
@@ -76,7 +77,7 @@ if(isset($_POST["query"]))
 	else
 	{
 		$query = "
-		SELECT liquidation_id, date, type, amount, description, donator 
+		SELECT liquidation_id, date, type, amount, description, liquidation_status, proof
 		FROM liquidation
 		ORDER BY liquidation_id DESC
 		";
@@ -100,7 +101,8 @@ if(isset($_POST["query"]))
 				'type'   => $row['type'],
 				'amount'      => $row['amount'],
 				'description'      => $row['description'],
-				'donator'   => $row['donator']
+				'proof'      => $row['proof'],
+				'liquidation_status'   => $row['liquidation_status']
 			);
 		}
 

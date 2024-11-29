@@ -42,12 +42,14 @@ document.getElementById('editBtn').addEventListener('click', function() {
     let toast = new bootstrap.Toast(document.getElementById('editToast'));
     toast.show();
 
-    // Show the file upload input
+    // Show the file upload input and status
     document.getElementById('fileUploadContainer').style.display = 'block';
+    document.getElementById('status_input').style.display = 'block';
 
     // Hide "Edit Information" and "Back to Records" buttons
     document.getElementById('editBtn').style.display = 'none';
     document.getElementById('backBtn').style.display = 'none';
+    //document.getElementById('adoptableInfo').style.display = 'none';
 
     document.getElementById('qrBtn').style.display = 'none';
 
@@ -84,12 +86,15 @@ document.getElementById('applyBtn').addEventListener('click', function() {
             document.getElementById('editBtn').style.display = 'inline-block';
             document.getElementById('backBtn').style.display = 'inline-block';
             document.getElementById('qrBtn').style.display = 'inline-block';
-
+            //document.getElementById('adoptableInfo').style.display = 'block';
+            
             // Hide "Apply Changes" and "Cancel" buttons
             document.getElementById('applyBtn').style.display = 'none';
             document.getElementById('cancelBtn').style.display = 'none';
 
+
             document.getElementById('fileUploadContainer').style.display = 'none';
+            document.getElementById('status_input').style.display = 'none';
             
             $('#successEditModal').modal('show');
          
