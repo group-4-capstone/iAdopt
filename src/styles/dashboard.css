@@ -2,12 +2,6 @@ body {
   overflow-x: hidden; /* Hides horizontal scrollbar */
 }
 
-/* Admin content */
-.admin-content {
-  margin-left: 260px;
-  padding: 20px;
-}
-
 .welcome-section {
   background-color: #fff6da;
   padding: 20px;
