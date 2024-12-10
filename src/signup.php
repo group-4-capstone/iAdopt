@@ -30,19 +30,26 @@
             <p><strong>Sign up</strong> to get started</p>
         </div>
 
+        <!-- Error and Success Message Section -->
         <?php if (isset($_GET['error'])) : ?>
-        <div class="alert alert-danger">
-            <ul>
-                <?php foreach (explode(',', $_GET['error']) as $error) : ?>
-                    <li><?php echo htmlspecialchars($error); ?></li>
-                <?php endforeach; ?>
-            </ul>
-        </div>
-
+            <div class="alert alert-danger">
+                <ul>
+                    <?php foreach (explode(',', $_GET['error']) as $error) : ?>
+                        <li><?php echo htmlspecialchars($error); ?></li>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
         <?php endif; ?>
 
         <?php if (isset($_GET['success']) && $_GET['success'] === 'true') : ?>
-            <div class="alert alert-success">Registration successful!</div>
+            <div class="alert alert-success">
+                Registration successful!
+                <?php if (isset($_GET['email_sent']) && $_GET['email_sent'] === 'true') : ?>
+                    <br>Your welcome email has been sent to your email address.
+                <?php elseif (isset($_GET['email_error'])) : ?>
+                    <br>However, we encountered an issue sending the welcome email: <?php echo htmlspecialchars($_GET['email_error']); ?>
+                <?php endif; ?>
+            </div>
         <?php endif; ?>
 
         <div class="row">
@@ -59,12 +66,12 @@
                         <div class="input-container col-sm-12 col-lg-12 col-12">
                             <label for="last-name">Last Name *</label>
                             <input type="text" id="last-name" name="last-name" class="form-control" placeholder="Dela Cruz" maxlength="50" required>
-                            <div class="invalid-feedback">Please provide a valid last name.</div>
+                            <div class="invalid-feedback">Please provide a valid last name. Only letters, spaces, hyphens, and apostrophes are allowed.</div>
                         </div>
                         <div class="input-container col-sm-12 col-lg-9 col-9">
                             <label for="first-name">First Name *</label>
                             <input type="text" id="first-name" name="first-name" class="form-control" placeholder="Juan" maxlength="50" required>
-                            <div class="invalid-feedback">Please provide a valid first name.</div>
+                            <div class="invalid-feedback">Please provide a valid first name. Only letters, spaces, hyphens, and apostrophes are allowed.</div>
                         </div>
                         <div class="input-container col-sm-12 col-lg-2 col-2">
                             <label for="mi">M.I</label>
@@ -86,54 +93,6 @@
                                 <option value="female">Female</option>
                             </select>
                         </div>
-                    </div>
-
-                    
-                    <div class="input-group">
-                        <!-- Region Dropdown -->
-                        <div class="input-container col-sm-12 col-lg-5 col-5">
-                            <label for="region">Region *</label>
-                            <select id="region" class="form-control" required>
-                                <option selected="true" disabled>Choose Region</option>
-                            </select>
-                            <input type="hidden" id="region-text" name="region">
-                            <div class="invalid-feedback">Please provide a valid region.</div>
-                        </div>
-                        
-                        <!-- Province Dropdown -->
-                        <div class="input-container col-sm-12 col-lg-5 col-5">
-                            <label for="province">Province *</label>
-                            <select id="province"    class="form-control" required>
-                                <option selected="true" disabled>Choose Province</option>
-                            </select>
-                            <input type="hidden" id="province-text" name="province">
-                            <div class="invalid-feedback">Please provide a valid province.</div>
-                        </div>
-                        
-                        
-                    </div>
-
-                    <div class="input-group">
-                            <!-- City/Municipality Dropdown -->
-                        <div class="input-container col-sm-12 col-lg-5 col-5">
-                            <label for="city">City/Municipality *</label>
-                            <select id="city"  class="form-control" required>
-                                <option selected="true" disabled>Choose City/Municipality</option>
-                            </select>
-                            <input type="hidden" id="city-text" name="city">
-                            <div class="invalid-feedback">Please provide a valid city/municipality.</div>
-                        </div>
-                        
-                        <!-- Barangay Dropdown -->
-                        <div class="input-container col-sm-12 col-lg-5 col-5">
-                            <label for="barangay">Barangay *</label>
-                            <select id="barangay"  class="form-control" required>
-                                <option selected="true" disabled>Choose Barangay</option>
-                            </select>
-                            <input type="hidden" id="barangay-text" name="barangay">
-                            <div class="invalid-feedback">Please provide a valid barangay.</div>
-                        </div>
-
                     </div>
 
                     <div class="input-group">
@@ -171,7 +130,7 @@
                     <!-- Confirm Password Field -->
                     <div class="input-container col-sm-12 col-lg-12 col-12">
                         <label for="confirm-password">Confirm Password *</label>
-                        <input type="password" id="confirm-password" name="confirm-password" class="form-control" placeholder="Confirm your password" required>
+                        <input type="password" id="confirm-password" maxlength="80" name="confirm-password" class="form-control" placeholder="Confirm your password" required>
                         <div class="invalid-feedback">Passwords do not match.</div>
                     </div>
                 </div>
