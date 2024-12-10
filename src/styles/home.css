@@ -127,9 +127,9 @@ header .navbar {
 
 .hero-section .content .btn1 {
   background: none;
-  color: #C0690A;
+  color: #182d31;
   padding: 12px 30px;
-  border: 2px solid #C0690A;
+  border: 2px solid #182d31;
   font-size: 1rem;
   border-radius: 6px;
   margin-top: 38px;
@@ -143,10 +143,10 @@ header .navbar {
 }
 
 .hero-section .content .btn2 {
-  background: #C0690A;
+  background: #182d31;
   color: white;
   padding: 12px 30px;
-  border: 2px solid #C0690A;
+  border: 2px solid #182d31;
   font-size: 1rem;
   border-radius: 6px;
   margin-top: 38px;

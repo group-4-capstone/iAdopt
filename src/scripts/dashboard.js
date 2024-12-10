@@ -82,7 +82,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   const canvas = document.getElementById("lineChart");
   const ctx = canvas.getContext("2d");
   const dropdownItems = document.querySelectorAll(".dropdown-item");
-  const toggleButton = document.querySelector(".months-btn");
+  const toggleButton = document.querySelector(".donation-btn");
 
   let chart; // Reference to the Chart.js instance
 

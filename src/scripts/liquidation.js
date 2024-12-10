@@ -264,3 +264,13 @@ function load_data(query = '', page_number = 1)
     });
 }
 
+const anonymousCheckbox = document.getElementById('anonymousDonation');
+const donorNameField = document.getElementById('donorNameField');
+
+anonymousCheckbox.addEventListener('change', () => {
+  if (anonymousCheckbox.checked) {
+    donorNameField.style.display = 'none';
+  } else {
+    donorNameField.style.display = 'block';
+  }
+});
