@@ -4,6 +4,7 @@ include_once 'db-connect.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     try {
+
         // Sanitize input data
         $type = htmlspecialchars($_POST['type'], ENT_QUOTES, 'UTF-8');
         $specific = htmlspecialchars($_POST['specific'], ENT_QUOTES, 'UTF-8');

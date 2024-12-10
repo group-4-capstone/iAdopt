@@ -15,6 +15,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
  
         $uploadDir = '../styles/assets/announcement/';
+
+        // Check if the directory exists, and create it if not
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0755, true); // 0755 permissions and 'true' for recursive creation
+        }
+        
         $imageWebpFileName = uniqid() . '.webp'; 
         $uploadWebpPath = $uploadDir . $imageWebpFileName;
 

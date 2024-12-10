@@ -84,9 +84,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $mode_of_donation = $_POST['mode_of_donation'];
     $type = 'Donation';
     $liquidation_status = 'For Verification';
+    $donor_name = isset($_POST['donor_name']) && !empty($_POST['donor_name']) ? $_POST['donor_name'] : 'Anonymous';
+
+    $stmt = $db->prepare("INSERT INTO liquidation (mode, amount, donor, type, liquidation_status, user_id, proof) VALUES (?, ?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("sdsssis", $mode_of_donation, $amount, $donor_name, $type, $liquidation_status, $user_id, $proof);
     
-    $stmt = $db->prepare("INSERT INTO liquidation (mode, amount, donator, type, liquidation_status, user_id, proof) VALUES (?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("sdsssis", $mode_of_donation, $amount, $donator, $type, $liquidation_status, $user_id, $proof);
     
     } elseif ($buttonId === 'submitExpense') {
         // Set the type
