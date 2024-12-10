@@ -39,7 +39,7 @@ form {
 
 .logo {
     position: absolute; /* Position the logo absolutely within .image-section */
-    top: 15%; /* Align it to the top */
+    top: 20% !important; /* Align it to the top */
     left: 25%; /* Center horizontally */
     transform: translateX(-50%); /* Offset by 50% of its own width to center */
     text-align: center; /* Center text under the logo */
