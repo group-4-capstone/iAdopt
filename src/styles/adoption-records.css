@@ -1,0 +1,404 @@
+.card {
+    background-color: #fff !important;
+    border-radius: 10px;
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+    /* Remove box shadow */
+    padding-top: 30px;
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-bottom: 30px;
+}
+
+
+.card-header {
+    background-color: #fff !important;
+    color: #fff;
+    font-weight: bold;
+    font-size: 1.25rem;
+    display: flex !important;
+    align-items: flex-end !important;
+}
+
+.card-body {
+    overflow-x: auto;
+}
+
+.card-footer {
+    background-color: #fff !important;
+    color: #fff;
+    padding-top: 80px !important;
+    padding-bottom: 10px;
+}
+
+.table {
+    margin-bottom: 0;
+}
+
+.table thead th {
+    background-color: #F4D03F;
+    font-weight: normal;
+    padding-top: 20px !important;
+    padding-bottom: 20px !important;
+    padding-left: 10px !important;
+    text-align: center !important;
+    /* Centers text and inline content horizontally */
+    vertical-align: middle !important;
+    /* Centers content vertically within the cell */
+}
+
+.table tbody tr td {
+    background-color: #fff;
+    padding-top: 20px !important;
+    padding-bottom: 20px !important;
+    padding-left: 10px !important;
+    color: #00000088;
+    text-align: center !important;
+    /* Centers text and inline content horizontally */
+    vertical-align: middle !important;
+    /* Centers content vertically within the cell */
+}
+
+.table tbody tr:hover {
+    background-color: #fff;
+
+}
+
+
+
+.pagination .page-item .page-link {
+    color: #333;
+    border: none;
+    background-color: #fff;
+    padding-bottom: 0%;
+}
+
+
+.pagination .page-item.active .page-link {
+    background-color: #c06c3e7e;
+    /* Background color for active item */
+    color: #fff;
+    /* White text for better contrast */
+    border-radius: 10px;
+    /* Rounded corners */
+    width: 30px;
+    padding-left: 13px;
+}
+
+
+.btn-delete,
+.btn-sort {
+    border: none !important;
+}
+
+.btn-delete:hover,
+.btn-sort:hover {
+    opacity: 0.9 !important;
+}
+
+.input-group-text {
+    border: none !important;
+    /* Removes all borders */
+    background-color: transparent !important;
+    /* Makes the background transparent */
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+.search-icon i {
+    color: #000;
+    /* Sets the icon color to black */
+    padding-bottom: 4px;
+}
+
+.form-control {
+    border-radius: 100px !important;
+    /* Gives the search input rounded corners */
+    border-color: #ccc;
+    /* Light grey border color */
+    padding-right: 2rem;
+    /* Adds space for the search icon */
+}
+
+.input-group {
+    position: absolute;
+
+}
+
+.input-group-text.search-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    /* Prevents the icon from being clickable */
+}
+
+.input-group.input-group-sm.w-25 {
+    position: relative;
+}
+
+.head-title h1 {
+    color: #C06B3E !important;
+    padding-bottom: 30px;
+
+}
+
+.head-title {
+    margin-top: 5px;
+    border-radius: 10px;
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+    /* Remove box shadow */
+    padding-bottom: 30px;
+    position: relative;
+}
+
+.head-title h1 {
+    color: #C06B3E !important;
+    padding-bottom: 10px;
+}
+
+.head-title h1 u {
+    text-underline-offset: 30px;
+    /* Adds space between the text and the underline */
+    text-decoration-thickness: 5px;
+    /* Adjusts the thickness of the underline if needed */
+}
+
+/* Modal container styling */
+.modal-content.info-card {
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.modal-content {
+    background-color: #FFFFFF !important;
+}
+
+/* Title styling */
+.title {
+    font-size: 1.8rem;
+    font-weight: bold;
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Image styling */
+.modal-body img {
+    width: 80%;
+    height: 40%;
+    border-radius: 10px;
+    margin-left: 25px;
+}
+
+/* Form inputs and selects */
+.form-control,
+.form-select {
+    border-radius: 30px !important;
+    border: 1px solid #ced4da;
+    padding: 10px;
+    box-shadow: none;
+    background-color: #fff !important;
+}
+
+/* Disabled form inputs and selects */
+.form-control:disabled,
+.form-select:disabled {
+    background-color: #f8f9fa;
+    /* Lighter background to indicate disabled state */
+    color: #6c757d;
+    /* Grey text color for disabled form controls */
+    border-color: #ced4da;
+    /* Maintain the same border */
+    opacity: 1;
+    /* Prevents the form control from appearing too faded */
+}
+
+
+/* Buttons */
+.btn-cancel {
+    background-color: #6c757d;
+    color: white;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-weight: bold;
+}
+
+.btn-cancel:hover {
+    background-color: #5a6268;
+}
+
+.badge-oval {
+    display: inline-block;
+    padding: 0.35em 0.65em;
+    border: 1px solid;
+    border-radius: 80px !important;
+    font-size: 0.85em;
+    font-weight: 600;
+    text-align: center;
+}
+
+
+.badge-approved {
+    border-color: green;
+    /* Green border for Published */
+    color: green !important;
+    /* Text color */
+}
+
+.badge-rejected {
+    border-color: red;
+    /* Red border for Unpublished */
+    color: red !important;
+    /* Text color */
+}
+
+.badge-review {
+    border-color: orange;
+    /* Orange border for Scheduled Post */
+    color: orange !important;
+    /* Text color */
+}
+
+
+/* Adjustments for smaller screens */
+@media (max-width: 576px) {
+    .modal-body .row {
+        flex-direction: column;
+    }
+
+    .modal-body img {
+        width: 100%;
+    }
+
+    .modal-body .col-md-8,
+    .modal-body .col-md-4 {
+        width: 100%;
+    }
+}
+
+/* Custom CSS for the Save button */
+.btn-save {
+    background-color: #092E5A !important;
+    /* Custom color */
+    color: #fff !important;
+    /* Text color */
+    border: none;
+    /* Remove border if needed */
+}
+
+.btn-save:hover {
+    background-color: #092E5A;
+    /* Slightly darker color on hover */
+}
+
+/* Optional: Custom CSS for Cancel button */
+.btn-danger {
+    background-color: #dc3545;
+    /* Bootstrap default red color */
+    color: #fff;
+    /* Text color */
+    border: none;
+    /* Remove border if needed */
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+    /* Slightly darker red on hover */
+}
+
+
+
+
+.modal-header {
+    border: none !important;
+}
+
+.modal-footer {
+    border: none !important;
+}
+
+.modal-header .modal-title {
+    font-family: 'Poppins', bold;
+    color: #002a5c;
+    font-weight: bold;
+    font-size: 28px;
+    text-align: left;
+    /* Center the title on smaller screens */
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+.detail-name {
+    margin-top: 20px !important;
+    /* Adds some space between the image and the name */
+    text-align: center;
+    /* Ensures the name is centered */
+}
+
+.detail-name h6 {
+    font-size: 16px;
+    /* Adjusts font size */
+    color: #444;
+    /* Sets a text color */
+    display: inline-block;
+}
+
+.modal-form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    font-size: 13px;
+    color: #333;
+}
+
+.modal-input-group {
+    display: flex;
+    position: relative;
+    left: 30px !important;
+    border-radius: 5px;
+    padding: 10px 8px;
+    align-items: center !important;
+    border-style: solid;
+    border-width: 2px;
+    /* Adjust the thickness of the border */
+    border-color: #E3E3E3;
+    /* Set the border color to a custom value */
+    background-color: #f9f9f9;
+    /* Optional: Set background color inside the border */
+    width: 80%;
+}
+
+
+.modal-input-group-text {
+    border: none !important;
+    background-color: #fff;
+    font-size: 14px;
+    padding: 6px 12px;
+    color: #666;
+}
+
+.modal-btn {
+    border: 1px solid #000 !important;
+    font-size: 14px;
+    padding: 6px 12px;
+    background-color: #F0F0F0;
+    color: #333;
+    font-weight: bold;
+    display: inline-block;
+    text-align: center;
+    margin-left: 15px;
+
+}
+
+.btn-outline-secondary {
+    background-color: #f5f5f5;
+    color: #333;
+    border: 1px solid #ddd;
+}
+
+.btn-outline-secondary:hover {
+    background-color: #ddd;
+}

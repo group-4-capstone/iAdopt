@@ -1,3 +1,14 @@
+<?php include_once 'includes/session-handler.php'; 
+include_once 'includes/db-connect.php';
+
+
+// Check session and role
+if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['role'] == 'head_admin')) {
+  
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -18,6 +29,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   </head>
   <body>
 
@@ -25,68 +37,106 @@
 
    <div class="admin-content">
 
-<div class="head-title">
-    <h1><u><b>ADD RESCUED PET</b> </u></h1>
-</div>
+    <section class="banner-section">
+      <div class="content">
+        <div class="head-title">
+          <h1><u><b>ADD RESCUE</b></u></h1>
+        </div>
+            <p>
+                Add rescued animal information.
+            </p>
+        </div>
+    </section>
 
+    <div class="container mt-5 mb-5">
+        <div class="card info-card p-4">
+           <h2 class="title">INFORMATION SHEET</h2>
 
-<div class="container mt-5">
-            <div class="card info-card">
-                <div class="row">
-                <h2 class="title">INFORMATION SHEET</h2>
-                    <div class="col-md-4 col-sm-12  d-flex justify-content-center align-items-center">
-                        <img src="styles/assets/aspin-2.png" alt="Rescued Pet">
-                        
+            <form method="post" id="addRecordForm">
+                <div class="row mt-2">
+                    <div class="col-md-4 col-sm-12">
+                        <div class="upload-placeholder" id="uploadPlaceholder">
+                            <i class="bi bi-cloud-upload"></i>
+                            <span id="placeholderText">Click to upload</span>
+                            <input type="file" id="imageUpload" accept="image/*" name="image" style="display: none;">
+                        </div>
                     </div>
-                    <div class="col-md-8 col-sm-12 ">
-                        <br>
-                        <div class="row">
-                            <div class="col-md-4 form-group">
-                                <label for="name" class="form-label">Name:</label>
-                                <input type="text" id="name" class="form-control" value="Juan">
+
+                    <div class="col-md-8 col-sm-12">
+                        <div class="left-side">
+                            <div class="row">
+                                <div class="col-md-4 form-group">
+                                    <label for="name" class="form-label">Name:</label>
+                                    <input type="text" id="name" class="form-control" name="name" required>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label for="gender" class="form-label">Gender:</label>
+                                    <select id="gender" class="form-select" name="gender" required>
+                                        <option value="" selected disabled>Kindly select an option</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label for="type" class="form-label">Type:</label>
+                                    <select id="type" class="form-select" name="type" required>
+                                        <option value="" selected disabled>Kindly select an option</option>
+                                        <option value="Dog">Dog</option>
+                                        <option value="Cat">Cat</option>
+                                    </select>
+                                </div>
                             </div>
-                            <div class="col-md-4 form-group">
-                                <label for="gender" class="form-label">Gender:</label>
-                                <select id="gender" class="form-select">
-                                    <option selected>Male</option>
-                                    <option>Female</option>
-                                </select>
+                            <div class="row">
+                                <div class="col-md-6 form-group">
+                                    <label for="rescuedBy" class="form-label">Rescued By:</label>
+                                    <input type="text" id="rescuedBy" class="form-control" name="rescued_by" required>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label for="rescuedAt" class="form-label">Rescued At:</label>
+                                    <input type="text" id="rescuedAt" class="form-control" name="rescued_at" required>
+                                </div>
                             </div>
-                            <div class="col-md-4 form-group">
-                                <label for="type" class="form-label">Type:</label>
-                                <select id="type" class="form-select">
-                                    <option selected>Dog</option>
-                                    <option>Cat</option>
-                                </select>
+                            <div class="row">
+                                <div class="form-group">
+                                    <label for="remarks" class="form-label">Remarks:</label>
+                                    <textarea id="remarks" class="form-control" name="description"></textarea>
+                                </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-4 form-group">
-                                <label for="rescuedDate" class="form-label">Date Rescued:</label>
-                                <input type="date" id="rescuedDate" class="form-control" value="2023-12-13">
+                            <div class="d-flex justify-content-end mt-5 mb-3">
+                                <button type="button" class="btn btn-cancel me-2" onclick="window.location.href='rescue-records.php'">Cancel</button>
+                                <button type="submit" class="btn btn-add" id="addRecordBtn">Add</button>
                             </div>
-                            <div class="col-md-8 form-group">
-                                <label for="rescuedBy" class="form-label">Rescued By:</label>
-                                <input type="text" id="rescuedBy" class="form-control" value="Pedro Balagtas">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="rescuedAt" class="form-label">Rescued At:</label>
-                            <input type="text" id="rescuedAt" class="form-control" value="City of Santa Rosa">
-                        </div>
-                        <div class="form-group">
-                            <label for="remarks" class="form-label">Remarks:</label>
-                            <textarea id="remarks" class="form-control remarks">If the world was ending I'd wanna be next to you...</textarea>
-                        </div>
-                        <div class="d-flex justify-content-end mt-4">
-                            <button class="btn btn-cancel me-2" onclick="window.location.href='rescue-records.php'">Cancel</button>
-                            <button class="btn btn-add">Add</button>
                         </div>
                     </div>
                 </div>
-              
+            </form>
+            <div class="paw-prints-down"><img src="styles/assets/paw-down.png" alt="Paws"></div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+        <div class="modal fade" id="successRecordModal" tabindex="-1" aria-labelledby="successContentModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+            <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+            <div class="modal-body">
+                <button type="button" class="btn-close d-flex ms-auto" onclick="window.location.href='rescue-records.php'"></button>
+                <div class="text-center">
+                    <i class="bi bi-check-circle-fill" style="font-size: 8rem; color: #28a745;"></i>
+                    <p class="mt-4 px-2"> Record has been successfully added!
+                    </p>
+                </div>
+                </div>     
+            </div>
             </div>
         </div>
 
+        <script src="scripts/animal-profile.js"></script>
+        <script src="scripts/rescue-records.js"></script>
 </body>
 </html>
+
+<?php
+} else {
+  header("Location: login.php");
+}
+?>

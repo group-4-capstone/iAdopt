@@ -4,15 +4,6 @@
     background-color: white !important;
   }
   
-  .admin-content .banner-section {
-    background-color: #FFF8CC;
-    padding: 30px 30px;
-    border-radius: 30px;
-    margin-bottom: 20px;
-    background-image: url("assets/paws.png");
-    background-blend-mode: overlay;
-  }
-
   .head-title {
     margin-top: 5px;
     border-radius: 10px;
@@ -69,22 +60,58 @@
     font-weight: 500;
   }
   
-  /* Pagination */
-  .pagination .page-item.active .page-link {
-    background-color: #F8C613;
-    border-color: #F8C613;
-    color: #fff;
+  #monitoring tbody td{
+    color: black !important;
   }
-  
-  .pagination .page-link:hover {
-    background-color: #E6B210;
-    border-color: #E6B210;
-    color: #fff;
+
+  .error-message {
+    font-size: 0.875rem; /* Adjust the size as needed */
+    margin-top: 0.25rem; /* Space between input and error message */
+    text-align: left; /* Align error message to the left */
+    padding-left: 5px;
+  }
+
+  .is-invalid {
+    border-color: #dc3545 !important; 
+  }
+
+  .pagination-container {
+    text-align: center; 
+    margin: 20px 0;
+    float: right;
   }
   
   .pagination {
-    justify-content: flex-end;
+    display: inline-flex;
+    list-style-type: none; 
+    padding: 0;
+    margin: 0; 
   }
+  
+  .pagination li {
+    margin: 0 5px;
+  }
+  
+  .pagination a {
+    display: block;
+    padding: 8px 12px; 
+    color: black; 
+    text-decoration: none; 
+    border-radius: 4px; 
+  }
+  
+  .pagination a.active {
+    background-color: #C0690A;
+    color: white; 
+    border-color: #C0690A; 
+  }
+  
+  .pagination a:hover {
+    background-color: #6d3d09; 
+    color: white;
+  }
+  
+  
   
   /* Center the modal vertically and horizontally */
   .modal-dialog {

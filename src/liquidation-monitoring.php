@@ -1,9 +1,19 @@
+<?php include_once 'includes/session-handler.php'; 
+include_once 'includes/db-connect.php';
+
+
+// Check session and role
+if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['role'] == 'head_admin')) {
+  
+
+
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>iADOPT | SECASPI</title>
+    <title>iADOPT | Liquidation Monitoring</title>
     <link rel="icon" type="image/x-icon" href="styles/assets/secaspi-logo.png">
     <link rel="stylesheet" href="styles/sidebar.css">
     <link rel="stylesheet" href="styles/liquidation.css">
@@ -18,17 +28,46 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   </head>
   <body>
 
-   <?php include_once 'components/sidebar.php'; ?>
+  <?php       
+      // Query to calculate the donation balance
+      $sql_donations = "SELECT SUM(amount) as total_donations FROM liquidation WHERE type = 'donation'";
+      $sql_expenses = "SELECT SUM(amount) as total_expenses FROM liquidation WHERE type = 'expense'";
 
+      $result_donations = $db->query($sql_donations);
+      $result_expenses = $db->query($sql_expenses);
+
+      // Initialize balance
+      $total_donations = 0;
+      $total_expenses = 0;
+
+      // Fetch donation total
+      if ($result_donations->num_rows > 0) {
+          $row = $result_donations->fetch_assoc();
+          $total_donations = $row['total_donations'] ?? 0;
+      }
+
+      // Fetch expense total
+      if ($result_expenses->num_rows > 0) {
+          $row = $result_expenses->fetch_assoc();
+          $total_expenses = $row['total_expenses'] ?? 0;
+      }
+
+      // Calculate the balance
+      $donation_balance = $total_donations - $total_expenses;
+   ?>
+
+   <?php include_once 'components/sidebar.php'; ?>
+   
    <div class="admin-content">
 
     <section class="banner-section">
       <div class="content">
         <div class="head-title">
-          <h1><u><b>Liquidation Monitoring</b></u></h1>
+          <h1><u><b>LIQUIDATION MONITORING</b></u></h1>
         </div>
         <p>
           Efficiently track and manage donations and expenditures, ensuring transparency in the liquidation process.
@@ -38,8 +77,10 @@
 
     <section class="number-section">
       <div class="content">
-        <center><p class="pt-4">Donation Balance</p>
-        <h1 class="pb-4"> ₱ 3,021.50 </h1></center>
+       <center>
+          <p class="pt-4">Donation Balance</p>
+          <h1 class="pb-4">₱ <?php echo number_format($donation_balance, 2); ?></h1>
+      </center>
           <button class="btn" data-bs-toggle="modal" data-bs-target="#donationModal">Record Donation</button>
           <button class="btn" data-bs-toggle="modal" data-bs-target="#expenseModal">Record Expense</button>
       </div>
@@ -54,20 +95,21 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form>
+        <form method="post" id="donationForm" action="includes/submit-liquidation.php">
           <div class="mb-3">
             <label for="donationAmount" class="form-label">Amount</label>
-            <input type="number" class="form-control" id="donationAmount" placeholder="Enter amount">
+            <input type="number" class="form-control" id="donationAmount" name="amount" placeholder="Enter amount" step="0.10">
           </div>
           <div class="mb-3">
             <label for="donationPurpose" class="form-label">Purpose</label>
-            <input type="text" class="form-control" id="donationPurpose" placeholder="Enter purpose">
+            <input type="text" class="form-control" id="donationPurpose" name="description" placeholder="Enter purpose">
           </div>
           <div class="mb-3">
             <label for="donatorName" class="form-label">Donator</label>
-            <input type="text" class="form-control" id="donatorName" placeholder="Enter donator's name">
+            <input type="text" class="form-control" id="donatorName" name="donator" placeholder="Enter donator's name">
           </div>
-          <button type="submit" class="btn">Submit Donation</button>
+          <input type="hidden" name="button_id" value="submitDonation">
+          <button type="submit" id="submitDonation" class="btn">Submit Donation</button>
         </form>
       </div>
     </div>
@@ -83,103 +125,88 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form>
+        <form method="post" id="expenseForm">
           <div class="mb-3">
             <label for="expenseAmount" class="form-label">Amount</label>
-            <input type="number" class="form-control" id="expenseAmount" placeholder="Enter amount">
+            <input type="number" class="form-control" id="expenseAmount"name="amount" placeholder="Enter amount" step="0.10">
           </div>
           <div class="mb-3">
             <label for="expensePurpose" class="form-label">Purpose</label>
-            <input type="text" class="form-control" id="expensePurpose" placeholder="Enter purpose">
+            <input type="text" class="form-control" id="expensePurpose" name="description" placeholder="Enter purpose">
           </div>
-          <div class="mb-3">
-            <label for="responsiblePerson" class="form-label">Person Responsible</label>
-            <input type="text" class="form-control" id="responsiblePerson" placeholder="Enter responsible person's name">
-          </div>
-          <button type="submit" class="btn">Submit Expense</button>
+          <input type="hidden" name="button_id" value="submitExpense">
+          <button type="submit" id="submitExpense" class="btn">Submit Expense</button>
         </form>
       </div>
     </div>
   </div>
 </div>
 
-    <div class="container">
-        <div class="table-responsive mt-4">
-            <table id="monitoring" class="table table-hover">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Date</th>
-                        <th>Type</th>
-                        <th>Amount</th>
-                        <th>Purpose</th>
-                        <th>Person Responsible</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>09/02/2024</td>
-                        <td><span class="badge text-bg-success">Donation</span></td>
-                        <td>2000.00</td>
-                        <td>For Vet Bills of Andres</td>
-                        <td>Olivia Rodrigo</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>09/02/2024</td>
-                        <td><span class="badge text-bg-danger">Expense</span></td>
-                        <td>2000.00</td>
-                        <td>For Vet Bills of Andres</td>
-                        <td>Olivia Rodrigo</td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>09/02/2024</td>
-                        <td><span class="badge text-bg-danger">Expense</span></td>
-                        <td>2000.00</td>
-                        <td>For Vet Bills of Andres</td>
-                        <td>Olivia Rodrigo</td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td>09/02/2024</td>
-                        <td><span class="badge text-bg-success">Donation</span></td>
-                        <td>2000.00</td>
-                        <td>For Vet Bills of Andres</td>
-                        <td>Olivia Rodrigo</td>
-                    </tr>
-                    <tr>
-                        <td>5</td>
-                        <td>09/02/2024</td>
-                        <td> <span class="badge text-bg-danger">Expense</span></td>
-                        <td>2000.00</td>
-                        <td>For Vet Bills of Andres</td>
-                        <td>Olivia Rodrigo</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <nav aria-label="Page navigation example">
-            <ul class="pagination">
-                <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Previous">
-                        <span aria-hidden="true">&lt;</span>
-                    </a>
-                </li>
-                <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Next">
-                        <span aria-hidden="true">&gt;</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
+    <!-- Success Modal -->
+    <div class="modal fade" id="successDonationModal" tabindex="-1" aria-labelledby="successDonationModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+      <div class="modal-body">
+        <button type="button" class="btn-close d-flex ms-auto" onclick="window.location.href='liquidation-monitoring.php'"></button>
+          <div class="text-center">
+            <i class="bi bi-check-circle-fill" style="font-size: 8rem; color: #28a745;"></i>
+            <p class="mt-4 px-2"> <b> Donation </b> amount has been listed!
+            </p>
+          </div>
+        </div>     
+      </div>
     </div>
+  </div>
+
+     <!-- Success Modal -->
+     <div class="modal fade" id="successExpenseModal" tabindex="-1" aria-labelledby="successExpenseModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+      <div class="modal-body">
+        <button type="button" class="btn-close d-flex ms-auto" onclick="window.location.href='liquidation-monitoring.php'"></button>
+          <div class="text-center">
+            <i class="bi bi-check-circle-fill" style="font-size: 8rem; color: #28a745;"></i>
+            <p class="mt-4 px-2"> <b> Expense </b> amount has been listed!
+            </p>
+          </div>
+        </div>     
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="card p-4">
+      <div class="table-responsive mt-4">
+          <table id="monitoring" class="table table-hover mb-5">
+              <thead>
+                  <tr>
+                      <th width="5%">#</th>
+                      <th width="20%">Date</th>
+                      <th width="20%">Type</th>
+                      <th width="5%">Amount</th>
+                      <th width="30%">Purpose</th>
+                      <th width="25%">Donator</th>
+                  </tr>
+              </thead>
+              <tbody>
+                <tbody id="post_data"></tbody>
+              </tbody>
+          </table>
+          <div class="d-flex justify-content-end">
+                <div id="pagination_link"></div>
+          </div>
+      </div>
+    </div>
+</div>
 
  </div>
 
+ <script src="scripts/liquidation.js"></script>
+
 </body>
 </html>
+<?php
+} else {
+    header("Location: login.php");
+}
+?>

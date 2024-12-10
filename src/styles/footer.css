@@ -1,4 +1,3 @@
-
 /* Footer Section */
 footer {
   background: #283531;
@@ -20,18 +19,25 @@ footer {
   font-weight: 600;
 }
 
-.footer_section .footer_logo a {
+.footer_section .footer_logo {
   display: flex;
+  align-items: center;
+}
+
+.footer_section .footer_logo a {
   gap: 15px;
   align-items: center;
   color: #fff !important;
   background-color: #fff;
   border-radius: 20px;
+  display: flex;
+  padding: 10px; /* Adjust padding if needed */
 }
 
 .footer_section .footer_logo a img {
-  width: 100px; /* Adjust this value to make the image bigger */
+  width: 100px; /* Adjust width if needed */
   height: auto; /* Maintain aspect ratio */
+  aspect-ratio: 1 / 1; /* Enforce a square aspect ratio */
 }
 
 .footer_section .footer_logo a h2 {

@@ -4,15 +4,6 @@
     background-color: white !important;
   }
   
-  .admin-content .banner-section {
-    background-color: #FFF8CC;
-    padding: 30px 30px;
-    border-radius: 30px;
-    margin-bottom: 20px;
-    background-image: url("assets/paws.png");
-    background-blend-mode: overlay;
-  }
-  
   .admin-content .profile-section .end .btn,
   .profile-section .end .btn:hover {
     background: #C0690A;

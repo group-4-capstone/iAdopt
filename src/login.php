@@ -1,3 +1,9 @@
+<?php
+include_once 'includes/db-connect.php';
+include_once 'includes/session-handler.php'; 
+include_once 'includes/session-manager.php'; 
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,6 +11,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
+    <link rel="icon" type="image/x-icon" href="styles/assets/secaspi-logo.png">
     <!--links-->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles/login.css">
@@ -13,6 +20,8 @@
     <!-- Google Fonts Links For Icon -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Love+Ya+Like+A+Sister&display=swap">
+     <!-- Include jQuery -->
+     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
@@ -21,6 +30,7 @@
 
         <div class="image-section">
             <div class="row">
+                
                 <div class="col-sm-12 d-flex justify-content-center">
                     <div class="logo d-flex justify-content-center">
                         <img src="styles/assets/secaspi-logo.png" alt="Logo">
@@ -32,21 +42,27 @@
                         <h4>SECOND CHANCE ASPIN SHELTER <br> PHILIPPINES INCORPORATED</h>
                     </div>
                 </div>
+                
             </div>
             <img src="styles/assets/loginbg.png" alt="Background Image">
         </div>
-        <div class="login-form-section col-sm-12 col-lg-6 col-6">
-            <form>
+        <div class="login-form-section col-sm-12 col-6 col-lg-6 col-md-12 d-flex justify-content-center">
+        <form id="loginForm">
+        
                 <h2><strong>ACCOUNT LOGIN</strong></h2>
                 <p>SIGN IN TO YOUR ACCOUNT</p>
+                <div id="error-msg" class="alert alert-danger d-none"></div>
                 <div class="input-group col-sm-12 col-lg-6 col-6">
                     <label for="email">Email</label>
-                    <input type="email" id="email" placeholder="juanadelacruz@gmail.com">
+                    <input type="email" id="email" maxlength="100" placeholder="juanadelacruz@gmail.com" required>
                 </div>
                 <div class="input-group col-sm-12 col-lg-6 col-6">
                     <label for="password">Password</label>
-                    <input type="password" id="password" placeholder="********">
+                    <input type="password" id="password"  maxlength="100" placeholder="********" required>
                 </div>
+                <?php if (isset($_GET['error'])): ?>
+                    <div class="alert alert-danger"><?= urldecode($_GET['error']) ?></div>
+                <?php endif; ?>
                 <div class="options col-sm-12 col-lg-6 col-6">
                     <a href="#" class="forgot-password">Forgot Password?</a>
                 </div>
@@ -61,6 +77,68 @@
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- AJAX Script for handling login -->
+        <script>
+       
+    $(document).ready(function() {
+        // Remove error message and red borders when user starts typing in email or password
+        $("#email, #password").on('input', function() {
+            $("#error-msg").addClass('d-none'); // Hide the error message
+            $("#email, #password").removeClass('is-invalid'); // Remove red border
+        });
+
+        $("#loginForm").submit(function(e) {
+            e.preventDefault(); // Prevent the default form submission
+
+            // Clear any previous error styles
+            $("#email, #password").removeClass('is-invalid');
+            $("#error-msg").addClass('d-none'); // Hide error message initially
+
+            // Get form data
+            var email = $("#email").val();
+            var password = $("#password").val();
+
+            $.ajax({
+                type: "POST",
+                url: "includes/login-process.php", // The PHP file that handles the login
+                data: { 
+                    email: email, 
+                    password: password 
+                },
+                dataType: "json",
+                success: function(response) {
+                    if (response.success) {
+                        // Redirect based on the user's role
+                        if (response.role === 'user') {
+                            window.location.href = "home.php";
+                        } else if (response.role === 'admin' || response.role === 'head_admin') {
+                            window.location.href = "dashboard.php";
+                        }
+                    } else {
+                        // Display the error message
+                        $("#error-msg").removeClass('d-none').text(response.error);
+
+                        // Add red border to input fields with errors
+                        if (response.error.includes('password')) {
+                            $("#password").addClass('is-invalid');
+                        } else {
+                            $("#email").addClass('is-invalid');
+                        }
+                    }
+                },
+                error: function(xhr, status, error) {
+                    // Handle unexpected errors
+                    $("#error-msg").removeClass('d-none').text("An error occurred. Please try again.");
+                    console.error("Error details:", status, error);
+                }
+            });
+        });
+    });
+
+
+
+        </script>
+
 </body>
 
 </html>

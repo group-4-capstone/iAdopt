@@ -1,3 +1,8 @@
+<?php include_once 'includes/session-handler.php';
+include_once 'includes/db-connect.php';
+
+if (!isset($_SESSION['role']) || ($_SESSION['role'] !== 'admin' && $_SESSION['role'] !== 'head_admin')) { ?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -24,8 +29,8 @@
 
    <?php include_once 'components/topnavbar.php'; ?>
 
- <section class="profile-section">
-    <div class="container rounded bg-white mt-5 mb-5">
+ <section class="profile-section pt-5">
+    <div class="container rounded bg-white mb-5">
       <div class="row">
           <div class="col-md-3 border-right">
             <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class="rounded-circle mt-5" width="150px" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg">
@@ -56,7 +61,8 @@
             </div>
         </div>
       </div>
-      <div class="container rounded bg-white mt-5 mb-5">
+   <div class="pb-5">
+      <div class="container rounded bg-white mt-5">
         <div class="row px-3">
           <div class="col-md-6">
               <ul id="progressbar">
@@ -73,6 +79,7 @@
           </div>
         </div>
       </div>
+   </div>
     </div>
   </div>
 </section>
@@ -81,3 +88,9 @@
 
 </body>
 </html>
+
+<?php
+} else {
+    header("Location: home.php");
+}
+?>

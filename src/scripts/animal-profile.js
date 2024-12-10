@@ -1,97 +1,302 @@
-function downloadMergedImage() {
-    const canvas = document.getElementById('canvas');
-    const ctx = canvas.getContext('2d');
 
-    // Load background image
-    const background = new Image();
-    background.src = 'styles/assets/profile.png';  // Path to background image
+//===================================================pagination=====================================//
+document.addEventListener("DOMContentLoaded", function () {
+    const paginationLinks = document.querySelectorAll(".pagination .page-link");
+  
+    paginationLinks.forEach(link => {
+      link.addEventListener("click", function (event) {
+        event.preventDefault();
+        const page = this.getAttribute("data-page");
+        loadPage(page);
+      });
+    });
+  
+    function loadPage(page) {
+      const xhr = new XMLHttpRequest();
+      xhr.open("GET", `animal-profiles.php?page=${page}`, true);
+      xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+      xhr.onload = function () {
+        if (xhr.status === 200) {
+          document.getElementById("animal-cards").innerHTML = xhr.responseText;
+        }
+      };
+      xhr.send();
+    }
+  });
 
-    // Load profile image
-    const profileImage = document.getElementById('profile-image');
-    const profileSrc = profileImage.src;  // Get the source of the profile image
+// Enable editing when "Edit" button is clicked
+document.getElementById('editBtn').addEventListener('click', function() {
+    // Enable all form inputs, textareas, and select elements
+    let inputs = document.querySelectorAll('#animalInfoForm input, #animalInfoForm textarea, #animalInfoForm select');
+    inputs.forEach(input => {
+        input.removeAttribute('readonly');
+        input.removeAttribute('disabled'); 
+    });
 
-    // Ensure both images are loaded before drawing
-    background.onload = function() {
-        const foreground = new Image();
-        foreground.src = profileSrc;
+    let buttons = document.querySelectorAll('#animalInfoForm .btn-tags');
+    buttons.forEach(button => {
+        button.removeAttribute('disabled');
+    });
 
-        foreground.onload = function() {
-            // Set canvas dimensions to match the background image
-            canvas.width = background.width;
-            canvas.height = background.height;
+    // Show "Editing Mode" toast
+    let toast = new bootstrap.Toast(document.getElementById('editToast'));
+    toast.show();
 
-            // Draw the background image on canvas at its original size
-            ctx.drawImage(background, 0, 0);
+    // Show the file upload input
+    document.getElementById('fileUploadContainer').style.display = 'block';
 
-            // Desired dimensions for the profile image
-            const desiredWidth = 660;
-            const desiredHeight = 760;
+    // Hide "Edit Information" and "Back to Records" buttons
+    document.getElementById('editBtn').style.display = 'none';
+    document.getElementById('backBtn').style.display = 'none';
 
-            // Get the original dimensions of the profile image
-            const originalWidth = foreground.width;
-            const originalHeight = foreground.height;
+    document.getElementById('qrBtn').style.display = 'none';
 
-            // Calculate scaling factors
-            const widthScale = desiredWidth / originalWidth;
-            const heightScale = desiredHeight / originalHeight;
+    // Show "Apply Changes" and "Cancel" buttons
+    document.getElementById('applyBtn').style.display = 'inline-block';
+    document.getElementById('cancelBtn').style.display = 'inline-block';
+});
 
-            // Determine the scale to cover the desired dimensions
-            const scale = Math.max(widthScale, heightScale);
+// Submit the form when "Apply Changes" button is clicked
+document.getElementById('applyBtn').addEventListener('click', function() {
+    var animalInfoForm = document.getElementById('animalInfoForm');
+    var formData = new FormData(animalInfoForm); // Use FormData for file uploads
 
-            // Calculate new dimensions after scaling
-            const scaledWidth = originalWidth * scale;
-            const scaledHeight = originalHeight * scale;
+    $.ajax({
+        type: 'POST',
+        url: 'includes/edit-record.php', 
+        data: formData,
+        processData: false, 
+        contentType: false, 
+        success: function(response) {
+            console.log("Form submitted successfully:", response);
 
-            // Calculate cropping offsets to center the image
-            const xOffset = (canvas.width - desiredWidth) / 2;
-            const yOffset = (canvas.height - desiredHeight) / 2;
+            let inputs = document.querySelectorAll('#animalInfoForm input, #animalInfoForm textarea');
+            inputs.forEach(input => {
+                input.setAttribute('readonly', true);
+            });
 
-            // Additional adjustments
-            const leftAdjustment = 130;  // Move image to the left
-            const downAdjustment = 60;  // Move image down
+            let buttons = document.querySelectorAll('#animalInfoForm .btn-tags');
+            buttons.forEach(button => {
+                button.setAttribute('disabled', true);
+            });
 
-            // Calculate the rotation angle in radians
-            const angle = -3 * (Math.PI / 180);
+            // Show "Edit" and "Back" buttons again
+            document.getElementById('editBtn').style.display = 'inline-block';
+            document.getElementById('backBtn').style.display = 'inline-block';
+            document.getElementById('qrBtn').style.display = 'inline-block';
 
-            // Save the current state of the canvas
-            ctx.save();
+            // Hide "Apply Changes" and "Cancel" buttons
+            document.getElementById('applyBtn').style.display = 'none';
+            document.getElementById('cancelBtn').style.display = 'none';
 
-            // Translate the canvas to the center of the image
-            ctx.translate(canvas.width / 2, canvas.height / 2);
-
-            // Rotate the canvas
-            ctx.rotate(angle);
-
-            // Translate back to the top-left corner
-            ctx.translate(-canvas.width / 2, -canvas.height / 2);
-
-            // Draw the profile image with cropping, rotation, and adjustments
-            ctx.drawImage(
-                foreground,
-                (originalWidth - desiredWidth / scale) / 2,  // Crop horizontally
-                (originalHeight - desiredHeight / scale) / 2,  // Crop vertically
-                originalWidth - (originalWidth - desiredWidth / scale),  // Crop width
-                originalHeight - (originalHeight - desiredHeight / scale),  // Crop height
-                xOffset - leftAdjustment,  // Move image to the left
-                yOffset + downAdjustment,  // Move image down
-                desiredWidth,
-                desiredHeight
-            );
-
-            // Restore the canvas state to remove the rotation
-            ctx.restore();
-
-            // Create a link element to download the combined image
-            const link = document.createElement('a');
-            link.download = 'animal-profile.png';
-            link.href = canvas.toDataURL();
-            link.click();
-        };
-    };
-}
-
-document.querySelectorAll('.btn-tags').forEach(button => {
-    button.addEventListener('click', () => {
-        button.classList.toggle('btn-selected');
+            document.getElementById('fileUploadContainer').style.display = 'none';
+            
+            $('#successEditModal').modal('show');
+         
+        },
+        error: function(xhr, status, error) {
+            console.error("Error occurred:", xhr.responseText);
+            // Optionally, show an error message or handle the error
+            let errorToast = new bootstrap.Toast(document.getElementById('errorToast'));
+            errorToast.show();
+        }
     });
 });
+
+
+document.getElementById('cancelBtn').addEventListener('click', function() {
+  
+    let inputs = document.querySelectorAll('#animalInfoForm input, #animalInfoForm textarea');
+    inputs.forEach(input => {
+        input.setAttribute('readonly', true);
+        input.setAttribute('disabled', true);
+    });
+
+    let buttons = document.querySelectorAll('#animalInfoForm .btn-tags');
+    buttons.forEach(button => {
+        button.setAttribute('disabled', true);
+    });
+
+    document.getElementById('fileUploadContainer').style.display = 'none';
+    document.getElementById('editBtn').style.display = 'inline-block';
+    document.getElementById('backBtn').style.display = 'inline-block';
+    document.getElementById('applyBtn').style.display = 'none';
+    document.getElementById('cancelBtn').style.display = 'none';
+});
+
+
+
+function toggleButton(button) {
+    button.classList.toggle('btn-selected');
+    let checkbox = document.getElementById(`checkbox${button.id.replace('tag', '')}`);
+    checkbox.checked = button.classList.contains('btn-selected');
+}
+
+$('#qrBtn').on('click', function () {
+    const animalId = $(this).data('animal-id');
+
+    $.ajax({
+        url: 'includes/generate-qr.php',
+        type: 'POST',
+        data: { animal_id: animalId },
+        success: function (response) {
+            $('#qrCodeContainer').html(response);
+            $('#qrModal').modal('show');
+        },
+        error: function () {
+            alert('Failed to generate QR code.');
+        }
+    });
+});
+
+// Function to download the QR code as PNG
+function downloadQRCode() {
+    const qrImage = document.getElementById('qrCodeImage');
+    const qrSrc = qrImage.src;
+
+    // Get the animal_id from the data attribute
+    const animalId = qrImage.src.match(/animal_(\d+)\.png/)[1];
+
+    // Create a temporary link element
+    const downloadLink = document.createElement('a');
+    downloadLink.href = qrSrc;
+    downloadLink.download = `animal_id#${animalId}_qrcode.png`; 
+    downloadLink.click();
+}
+
+
+// Function to print the QR code
+function printQRCode() {
+    const printWindow = window.open('', '_blank');
+    const qrImageSrc = document.getElementById('qrCodeImage').src;
+
+    // Create a simple HTML for printing
+    printWindow.document.write(`
+        <html>
+            <head>
+                <title>Print QR Code</title>
+                <style>
+                    body {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        height: 100vh;
+                        margin: 0;
+                    }
+                    img {
+                        max-width: 100%;
+                        max-height: 100%;
+                    }
+                </style>
+            </head>
+            <body>
+                <img src="${qrImageSrc}" alt="QR Code">
+            </body>
+        </html>
+    `);
+
+    // Print and close
+    printWindow.document.close();
+    printWindow.focus();
+    printWindow.print();
+    printWindow.onafterprint = () => {
+        printWindow.close();
+    };
+}
+function toggleOtherInput() {
+    var vaccineSelect = document.getElementById('vaccine_name');
+    var otherVaccineInput = document.getElementById('other_vaccine_input');
+
+    // If "Other" is selected, show the text input, else hide it
+    if (vaccineSelect.value === 'Other') {
+        otherVaccineInput.style.display = 'block';
+    } else {
+        otherVaccineInput.style.display = 'none';
+    }
+}
+
+const fields = document.querySelectorAll('input, textarea');
+
+fields.forEach(field => {
+    field.addEventListener('keypress', function(event) {
+        if (event.key === ' ' && field.selectionStart === 0) {
+            event.preventDefault();
+        }
+    });
+});
+
+
+$('#submitVaccineBtn').click(function(event) {
+    event.preventDefault();
+
+    var form = $('#vaccineForm')[0];
+    var formData = new FormData(form);
+
+    $.ajax({
+        url: 'includes/submit-vaccine.php',
+        type: 'POST',
+        data: formData,
+        processData: false, 
+        contentType: false, 
+        dataType: 'json',
+        success: function (response) {
+            if (response.status === 'success') {
+                $('#addVaccineModal').modal('hide');
+                $('#successVaccineModal').modal('show');
+            }
+        },
+        error: function () {
+            alert('An unexpected error occurred.');
+        }
+    });
+});
+
+document.querySelectorAll('a[data-bs-toggle="modal"]').forEach(function (element) {
+    element.addEventListener('click', function () {
+        // Get vaccine details from the data attributes
+        const vaccineName = this.getAttribute('data-vaccine-name');
+        const vaccinationDate = this.getAttribute('data-vaccination-date');
+        const nextDueDate = this.getAttribute('data-next-due-date');
+        const vetName = this.getAttribute('data-vet-name');
+        const vetContact = this.getAttribute('data-vet-contact');
+        const remarks = this.getAttribute('data-remarks');
+        
+        // Set the values inside the modal
+        document.getElementById('modalVaccineName').textContent = vaccineName;
+        document.getElementById('modalVaccinationDate').textContent = vaccinationDate;
+        document.getElementById('modalNextDueDate').textContent = nextDueDate;
+        document.getElementById('modalVetName').textContent = vetName;
+        document.getElementById('modalVetContact').textContent = vetContact;
+        document.getElementById('modalRemarks').textContent = remarks;
+    });
+});
+
+$('#submitHealthInfoBtn').click(function(event) {
+    event.preventDefault();
+
+    var form = $('#healthInfoForm')[0];
+    var formData = new FormData(form);
+
+    $.ajax({
+        url: 'includes/submit-health-info.php',
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        dataType: 'json',
+        success: function (response) {
+            if (response.status === 'success') {
+                $('#updateHealthInfoModal').modal('hide');
+                $('#healthStatusMessage').text(response.message);
+                $('#successHealthModal').modal('show');
+            } else {
+                alert(response.message || "Failed to update health information. Please try again.");
+            }
+        },
+        error: function () {
+            alert('An unexpected error occurred.');
+        }
+    });
+});
+
+
