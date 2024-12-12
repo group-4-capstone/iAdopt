@@ -154,7 +154,7 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
               <form method="post" id="expenseForm">
                 <div class="mb-3 position-relative">
                   <label for="expensePurpose" class="form-label">Allocated for:</label>
-                  <input type="text" class="form-control" name="description" id="expensePurpose" placeholder="Type to search..." />
+                  <input type="text" class="form-control" name="description" id="expensePurpose" placeholder="Type to search..." autocomplete="off" />
                   <ul id="suggestionsList" class="list-group position-absolute" style="width: 100%; max-height: 150px; overflow-y: auto;"></ul>
                 </div>
 
