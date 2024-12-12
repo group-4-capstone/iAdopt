@@ -4,6 +4,42 @@ include_once 'includes/db-connect.php';
 // Check session and role
 if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['role'] == 'head_admin')) {
 
+// Query to count animals excluding 'waitlist' and 'rest' statuses
+$current_sql = "SELECT COUNT(*) AS current_count FROM animals WHERE animal_status NOT IN ('waitlist', 'rest')";
+$current_result = $db->query($current_sql);
+$current_count = ($current_result->num_rows > 0) ? $current_result->fetch_assoc()['current_count'] : 0;
+
+// Query to count animals marked as 'Adoptable'
+$adoption_sql = "SELECT COUNT(*) AS adoption_count FROM animals WHERE animal_status = 'Adoptable'";
+$adoption_result = $db->query($adoption_sql);
+$adoption_count = ($adoption_result->num_rows > 0) ? $adoption_result->fetch_assoc()['adoption_count'] : 0;
+
+ // Query to calculate the donation balance
+ $sql_donations = "SELECT SUM(amount) as total_donations FROM liquidation WHERE type = 'Donation'";
+ $sql_expenses = "SELECT SUM(amount) as total_expenses FROM liquidation WHERE type = 'Expense'";
+
+ $result_donations = $db->query($sql_donations);
+ $result_expenses = $db->query($sql_expenses);
+
+ // Initialize balance
+ $total_donations = 0;
+ $total_expenses = 0;
+
+ // Fetch donation total
+ if ($result_donations->num_rows > 0) {
+   $row = $result_donations->fetch_assoc();
+   $total_donations = $row['total_donations'] ?? 0;
+ }
+
+ // Fetch expense total
+ if ($result_expenses->num_rows > 0) {
+   $row = $result_expenses->fetch_assoc();
+   $total_expenses = $row['total_expenses'] ?? 0;
+ }
+
+ // Calculate the balance
+ $donation_balance = $total_donations - $total_expenses;
+
 ?>
 
   <!DOCTYPE html>
@@ -40,78 +76,143 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
 
     <!-- Admin content -->
     <div class="admin-content">
-      <div class="welcome-section">
-        <div class="welcome-title">
-          <h1>Hi! ADMIN <img src="styles/assets/paw.png" alt="paw"></h1>
-        </div>
-        <p>Bring joy and love into your life by adopting a furry friend. Explore our <br> wide selection of lovable pets ready to find their forever home.</p>
-        <img src="styles/assets/dashpin.png" alt="Cute Puppies">
-      </div>
-
-      <div class="statistics col-lg-12 px-4">
+    <div class="row px-4">
+      <!-- Chart Section -->
+      <div class="statistics col-lg-9 mb-4">
         <h5>Adoption Statistics</h5>
-        <!-- Existing chart area -->
-        <div class="row mb-3">
-          <!-- Existing chart area -->
-          <div class="d-flex flex-column position-relative min-vh-10">
-            <div class="mt-auto mb-3 me-3 text-end">
-              <div class="dropdown">
-                <button class="months-btn dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                  Monthly
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <li><a class="dropdown-item" href="#" data-period="monthly">Monthly</a></li>
-                  <li><a class="dropdown-item" href="#" data-period="quarterly">Quarterly</a></li>
-                  <li><a class="dropdown-item" href="#" data-period="yearly">Yearly</a></li>
-                </ul>
-              </div>
+        <div class="d-flex flex-column position-relative min-vh-10">
+          <div class="mt-auto mb-3 me-3 text-end">
+            <div class="dropdown">
+              <button class="months-btn dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                Monthly
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <li><a class="dropdown-item" href="#" data-period="monthly">Monthly</a></li>
+                <li><a class="dropdown-item" href="#" data-period="quarterly">Quarterly</a></li>
+                <li><a class="dropdown-item" href="#" data-period="yearly">Yearly</a></li>
+              </ul>
             </div>
-            <!-- Canvas for chart -->
-            <canvas id="barChart" width="800" height="300"></canvas>
           </div>
+          <!-- Canvas for chart -->
+          <canvas id="barChart" width="800" height="280"></canvas>
         </div>
       </div>
-      <!-- Statistics Section -->
-      <?php // Query to count animals excluding 'waitlist' and 'rest' statuses
-      $current_sql = "SELECT COUNT(*) AS current_count FROM animals WHERE animal_status NOT IN ('waitlist', 'rest')";
-      $current_result = $db->query($current_sql);
-      // Fetch and display the result
-      if ($current_result->num_rows > 0) {
-        $row = $current_result->fetch_assoc();
-        $current_count = $row['current_count'];
-      }
 
-      $adoption_sql = "SELECT COUNT(*) AS adoption_count FROM animals WHERE animal_status IN ('Adoptable')";
-      $adoption_result = $db->query($adoption_sql);
-      // Fetch and display the result
-      if ($adoption_result->num_rows > 0) {
-        $row = $adoption_result->fetch_assoc();
-        $adoption_count = $row['adoption_count'];
-      }
-      ?>
-      <div class="row px-4">
-        <!-- Current Animals Box -->
-        <div class="col-lg-6 col-md-6 col-sm-12 mb-4">
-          <div class="stat-box p-4">
-            <h6>Statistics</h6>
-            <h3>Current Animals</h3>
-            <br>
-            <h2 class="display-4"><?php echo $current_count ?></h2>
+      <!-- Statistics Section -->
+      <div class="col-lg-3">
+        <div class="row">
+          <!-- Current Animals Box -->
+          <div class="col-md-12 mb-4">
+            <div class="stat-box p-4 bg-light border rounded">
+              <h6>Statistics</h6>
+              <h3>Current Animals</h3>
+              <br>
+              <h2 class="display-4"><?php echo $current_count; ?></h2>
+            </div>
           </div>
-        </div>
-        <!-- For Adoption Box -->
-        <div class="col-lg-6 col-md-6 col-sm-12 mb-4">
-          <div class="stat-box p-4">
-            <h6>Statistics</h6>
-            <h3>For Adoption</h3>
-            <br>
-            <h2 class="display-4"><?php echo $adoption_count ?></h2>
-            <!--<img src="styles/assets/aspin-dash2.png" alt="Dog Image" class="img-fluid">-->
+          <!-- For Adoption Box -->
+          <div class="col-md-12 mb-4">
+            <div class="stat-box p-4 bg-light border rounded">
+              <h6>Statistics</h6>
+              <h3>For Adoption</h3>
+              <br>
+              <h2 class="display-4"><?php echo $adoption_count; ?></h2>
+            </div>
           </div>
         </div>
       </div>
+      <!-- Donations Overview Section -->
+      <?php
+     
+      ?>
+ <div class="donations-overview px-4">
+  <h2>Donations Overview</h2>
+  <div class="row">
+    <!-- Stats and Chart Side by Side -->
+    <div class="col-lg-3 my-3">
+      <!-- Donation Stat Boxes -->
+
+      <div class="donate-stat-box p-4 d-flex align-items-center mb-4">
+        <img src="styles/assets/donation.png" alt="Icon" class="donate-stat-icon me-3">
+        <div class="stat-content">
+          <p class="mb-0 balance-text">Donations</p>
+          <h3 class="mb-0">₱ <?php echo number_format($total_donations, 2); ?></h3>
+        </div>
+      </div>
+
+      <div class="donate-stat-box p-4 d-flex align-items-center mb-4">
+        <img src="styles/assets/expenses.png" alt="Icon" class="donate-stat-icon me-3">
+        <div class="stat-content">
+          <p class="mb-0 balance-text">Expenses</p>
+          <h3 class="mb-0">₱ <?php echo number_format($total_expenses, 2); ?></h3>
+        </div>
+      </div>
+
+      <div class="donate-stat-box p-4 d-flex align-items-center mb-4">
+        <img src="styles/assets/balance.png" alt="Icon" class="donate-stat-icon me-3">
+        <div class="stat-content">
+          <p class="mb-0 balance-text">Balance</p>
+          <h3 class="mb-0">₱ <?php echo number_format($donation_balance, 2); ?></h3>
+        </div>
+      </div>
+    </div>
+    
+
+    <!-- Chart Section -->
+    <div class="col-lg-9">
+      <div class="chart-container">
+        <div class="dropdown d-flex justify-content-end">
+          <button class="months-btn donation-btn dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+            Monthly
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <li><a class="dropdown-item" href="#" data-period="monthly">Monthly</a></li>
+            <li><a class="dropdown-item" href="#" data-period="quarterly">Quarterly</a></li>
+            <li><a class="dropdown-item" href="#" data-period="yearly">Yearly</a></li>
+          </ul>
+        </div>
+
+        <!-- Donations Chart -->
+        <div class="donationchart mb-1">
+          <canvas id="lineChart" width="800" height="235"></canvas>
+        </div>
+
+        <!-- Button to generate the Liquidation Report -->
+        <div class="dropdown">
+          <button class="px-2 btn btn-liquidation-report dropdown-toggle" type="button" id="reportDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            Generate Liquidation Report
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="reportDropdown">
+            <li><a class="dropdown-item report-item" href="#" id="monthlyReport">Monthly Report</a></li>
+            <li><a class="dropdown-item report-item" href="#" id="quarterlyReport">Quarterly Report</a></li>
+            <li><a class="dropdown-item report-item" href="#" id="yearlyReport">Yearly Report</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+      <div id="reportContainer" style="display: none;">
+        <h1 id="reportTitle">Monthly Liquidation Report</h1>
+        <table border="1" style="width: 100%; border-collapse: collapse; text-align: center;">
+          <thead>
+            <tr>
+              <th>Period</th>
+              <th>Donations</th>
+              <th>Expenses</th>
+            </tr>
+          </thead>
+          <tbody id="reportContent">
+            <!-- Data will be dynamically inserted here -->
+          </tbody>
+        </table>
+      </div>
+
+      
       <!-- Image Box Buttons -->
-      <div class="row px-4">
+      <div class="row mb-5 px-4">
         <!-- Rescue Records -->
         <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
           <a href="rescue-records.php" class="text-decoration-none">
@@ -145,125 +246,6 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
             </div>
           </a>
         </div>
-      </div>
-      <!-- Donations Overview Section -->
-      <?php
-      // Query to calculate the donation balance
-      $sql_donations = "SELECT SUM(amount) as total_donations FROM liquidation WHERE type = 'donation'";
-      $sql_expenses = "SELECT SUM(amount) as total_expenses FROM liquidation WHERE type = 'expense'";
-
-      $result_donations = $db->query($sql_donations);
-      $result_expenses = $db->query($sql_expenses);
-
-      // Initialize balance
-      $total_donations = 0;
-      $total_expenses = 0;
-
-      // Fetch donation total
-      if ($result_donations->num_rows > 0) {
-        $row = $result_donations->fetch_assoc();
-        $total_donations = $row['total_donations'] ?? 0;
-      }
-
-      // Fetch expense total
-      if ($result_expenses->num_rows > 0) {
-        $row = $result_expenses->fetch_assoc();
-        $total_expenses = $row['total_expenses'] ?? 0;
-      }
-
-      // Calculate the balance
-      $donation_balance = $total_donations - $total_expenses;
-      ?>
-      <div class="donations-overview px-4">
-        <h2>Donations Overview</h2>
-        <div class="row">
-          <!-- Donation Stat Boxes -->
-          <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
-            <div class="donate-stat-box p-4 d-flex align-items-center">
-              <img src="styles/assets/balance.png" alt="Icon" class="donate-stat-icon me-3">
-              <div class="stat-content">
-                <p class="mb-0 balance-text">Balance</p>
-                <h3 class="mb-0">₱ <?php echo number_format($donation_balance, 2); ?></h3>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
-            <div class="donate-stat-box p-4 d-flex align-items-center">
-              <img src="styles/assets/donation.png" alt="Icon" class="donate-stat-icon">
-              <div class="stat-content">
-                <p class="mb-0 balance-text">Donations</p>
-                <h3 class="mb-0">₱ <?php echo number_format($total_donations, 2); ?></h3>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
-            <div class="donate-stat-box p-4">
-              <img src="styles/assets/expenses.png" alt="Icon" class="donate-stat-icon">
-              <div class="stat-content">
-                <p class="mb-0 balance-text">Expenses</p>
-                <h3 class="mb-0">₱ <?php echo number_format($total_expenses, 2); ?></h3>
-
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
-            <div class="donate-stat-box p-4">
-              <img src="styles/assets/overall.png" alt="Icon" class="donate-stat-icon">
-              <div class="stat-content">
-                <p class="mb-0 balance-text">Overall Donation</p>
-                <h3 class="mb-0">₱ <?php echo number_format($total_donations, 2); ?></h3>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="chart-container">
-        <div class="dropdown" style="display: flex; justify-content: flex-end; margin-bottom: 20px;">
-          <!-- Dropdown button for selecting time period -->
-          <button class="dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-            Monthly
-          </button>
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <li><a class="dropdown-item" href="#" data-period="monthly">Monthly</a></li>
-            <li><a class="dropdown-item" href="#" data-period="quarterly">Quarterly</a></li>
-            <li><a class="dropdown-item" href="#" data-period="yearly">Yearly</a></li>
-          </ul>
-        </div>
-
-        <!-- Chart Container for Donations Chart -->
-        <div class="donationchart">
-          <canvas id="lineChart" width="800" height="400"></canvas>
-        </div>
-
-        <!-- Button to generate the Liquidation Report -->
-        <div class="dropdown">
-          <button class="btn btn-liquidation-report dropdown-toggle" type="button" id="reportDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-             Generate Liquidation Report
-          </button>
-            <ul class="dropdown-menu" aria-labelledby="reportDropdown">
-              <li><a class="dropdown-item report-item" href="#" id="monthlyReport">Monthly Report</a></li>
-              <li><a class="dropdown-item report-item" href="#" id="quarterlyReport">Quarterly Report</a></li>
-              <li><a class="dropdown-item report-item" href="#" id="yearlyReport">Yearly Report</a></li>
-            </ul>
-        </div>
-
-      </div>
-
-      <div id="reportContainer" style="display: none;">
-        <h1 id="reportTitle">Monthly Liquidation Report</h1>
-        <table border="1" style="width: 100%; border-collapse: collapse; text-align: center;">
-          <thead>
-            <tr>
-              <th>Period</th>
-              <th>Donations</th>
-              <th>Expenses</th>
-            </tr>
-          </thead>
-          <tbody id="reportContent">
-            <!-- Data will be dynamically inserted here -->
-          </tbody>
-        </table>
       </div>
 
 

@@ -1,3 +1,15 @@
+const textInputs = document.querySelectorAll('input[type="text"], textarea');
+
+textInputs.forEach(function(input) {
+    input.addEventListener('keydown', function(event) {
+        // Prevent space if the input is empty
+        if (input.value.length === 0 && event.key === ' ') {
+            event.preventDefault();
+        }
+    });
+});
+
+
 // Function to clear error messages for a specific input
 function clearErrorMessage(input) {
     input.classList.remove('is-invalid');
@@ -87,10 +99,17 @@ document.getElementById('submitDonation').addEventListener('click', function (ev
     const amount = document.querySelector('#donationAmount');
     const modeOfDonation = document.querySelector('#donationMode');
     const proof = document.querySelector('#donationProof');
+    const donorNameInput = document.getElementById('donorName'); 
 
     isValid &= validateAmountField(amount);
     isValid &= validateField(modeOfDonation, "Please select a mode of donation.");
     isValid &= validateImageField(proof, "Proof of donation is required.");
+
+    const anonymousCheckbox = document.getElementById('anonymousDonation');
+    
+    if (!anonymousCheckbox.checked) {
+        isValid &= validateField(donorNameInput, "Donor name is required.");
+    }
 
     if (isValid) {
         const formData = new FormData(document.getElementById('donationForm'));
@@ -124,8 +143,10 @@ document.getElementById('submitExpense').addEventListener('click', function (eve
     const purpose = document.querySelector('#expensePurpose');
     const proof = document.querySelector('#expenseProof');
 
+    
+
     isValid &= validateAmountField(amount);
-    isValid &= validateField(purpose, "Purpose is required.");
+    isValid &= validateField(purpose, "This field is required.");
     isValid &= validateImageField(proof, "Proof of expense is required.");
 
     if (isValid) {
@@ -223,17 +244,7 @@ function load_data(query = '', page_number = 1)
     }
 }
 
- // JavaScript to handle the dynamic display of the 'Others' input field
- document.getElementById('expensePurpose').addEventListener('change', function () {
-    const otherPurposeWrapper = document.getElementById('otherPurposeWrapper');
-    if (this.value === 'Others') {
-      otherPurposeWrapper.classList.remove('d-none');
-      document.getElementById('otherPurpose').setAttribute('required', 'required');
-    } else {
-      otherPurposeWrapper.classList.add('d-none');
-      document.getElementById('otherPurpose').removeAttribute('required');
-    }
-  });
+
 
   function updateLiquidationStatus(liquidationId, action) {
    
@@ -264,3 +275,13 @@ function load_data(query = '', page_number = 1)
     });
 }
 
+const anonymousCheckbox = document.getElementById('anonymousDonation');
+const donorNameField = document.getElementById('donorNameField');
+
+anonymousCheckbox.addEventListener('change', () => {
+  if (anonymousCheckbox.checked) {
+    donorNameField.style.display = 'none';
+  } else {
+    donorNameField.style.display = 'block';
+  }
+});

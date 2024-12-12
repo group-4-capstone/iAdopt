@@ -45,6 +45,10 @@
     transform: scale(1.1);
   }
   
+  th {
+    vertical-align: middle;
+  }
+  
   /* Button with Icon */
   .btn i {
     padding: 0 5px;

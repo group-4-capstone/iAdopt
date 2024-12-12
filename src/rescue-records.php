@@ -52,16 +52,30 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
             <div class="container mt-5">
                 <div class="card">
                     <div class="card-header d-flex justify-content-between align-items-center">
-                        <div class="d-flex align-items-center ms-auto">
-                            <button class="btn btn-sort d-flex align-items-center" style="white-space: nowrap;">
-                                <span class="badge text-bg-secondary"> <i class="bi bi-arrow-down-up me-1"></i><span>Sort By</span></span>
+                    <div class="d-flex align-items-center ms-auto">
+                        <div class="dropdown">
+                            <button
+                                class="btn btn-sort d-flex align-items-center"
+                                id="sortDropdown"
+                                data-bs-toggle="dropdown"
+                                aria-expanded="false"
+                                style="white-space: nowrap;"
+                            >
+                                <span class="badge text-bg-secondary">
+                                    <i class="bi bi-arrow-down-up me-1"></i><span id="sortLabel">Sort By</span>
+                                </span>
                             </button>
-
-                            <div class="input-group input-group-md">
-                                <input type="text" class="form-control" placeholder="Search">
-                                <span class="input-group-text search-icon"><i class="bi bi-search"></i></span>
-                            </div>
+                            <ul class="dropdown-menu" aria-labelledby="sortDropdown">
+                                <li><a class="dropdown-item sort-option" data-sort="desc" href="#">Newest to Oldest</a></li>
+                                <li><a class="dropdown-item sort-option" data-sort="asc" href="#">Oldest to Newest</a></li>
+                            </ul>
                         </div>
+                        <div class="input-group input-group-md ms-3">
+                            <input type="text" class="form-control" id="searchInput" placeholder="Search">
+                            <span class="input-group-text search-icon"><i class="bi bi-search"></i></span>
+                        </div>
+                    </div>
+
                     </div>
 
                     <div class="card-body p-0">
@@ -200,7 +214,7 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <form method="post" id="updateStatusForm" action="includes/update-status.php">
+                                <form method="post" id="updateStatusForm">
                                     <input type="hidden" name="rescue_id" value="<?php echo $row['rescue_id'] ?>" readonly>
                                     <button type="submit" class="btn btn-primary me-4 mb-2" onclick="$('#reportModal_<?php echo $row['rescue_id']; ?>').modal('hide');" id="acceptButton">Accept</button>
                                 </form>

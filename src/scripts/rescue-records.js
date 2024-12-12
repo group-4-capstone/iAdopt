@@ -136,9 +136,9 @@ function load_data(query = '', page_number = 1) {
                     html += '<tr onclick="window.location.href=\'animal-record.php?animal_id=' + response.data[count].animal_id + '\'">';
                     html += '<td>' + response.data[count].rescue_id + '</td>';
                     html += '<td>' + response.data[count].report_date + '</td>';
-                    html += '<td>' + name + '</td>';
+                    html += '<td>' + (name ? name : '-') + '</td>';
                     html += '<td>' + type + '</td>';
-                    html += '<td>' + rescued_by + '</td>';
+                    html += '<td>' + (rescued_by ? rescued_by : '-') + '</td>';
                     html += '<td>' + statusDisplay + '</td>';
                     html += '</tr>';
                     serial_no++;
