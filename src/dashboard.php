@@ -162,8 +162,7 @@ $adoption_count = ($adoption_result->num_rows > 0) ? $adoption_result->fetch_ass
     <div class="col-lg-9">
       <div class="chart-container">
         <div class="dropdown d-flex justify-content-end">
-          <!-- Dropdown button for selecting time period -->
-          <button class="months-btn donation-btn btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+          <button class="months-btn donation-btn dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
             Monthly
           </button>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">

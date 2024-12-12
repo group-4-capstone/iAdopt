@@ -80,8 +80,8 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                 const reportContent = document.getElementById('reportContent');
                 reportTitle.textContent = `${capitalize(period)} Liquidation Report`;
 
-                if (period === 'monthly' || period === 'quarterly') {
-                    const periodNames = period === 'monthly' ? ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'] : ['Q1', 'Q2', 'Q3', 'Q4'];
+                if (period === 'yearly' || period === 'quarterly') {
+                    const periodNames = period === 'yearly' ? ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'] : ['Q1', 'Q2', 'Q3', 'Q4'];
 
                     data.donations.forEach((donation, index) => {
                         const expense = data.expenses[index];
@@ -95,13 +95,17 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                             </tr>
                         `;
                     });
-                } else if (period === 'yearly') {
-                    Object.keys(data).forEach(year => {
+                } else if (period === 'monthly') {
+                    const periodNames = ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5'];
+                    data.donations.forEach((donation, index) => {
+                        const expense = data.expenses[index];
+                        const periodName = periodNames[index] ?? 'N/A';
+
                         reportContent.innerHTML += `
                             <tr>
-                                <td>${year}</td>
-                                <td>${data[year].donations.toFixed(2)}</td>
-                                <td>${data[year].expenses.toFixed(2)}</td>
+                                <td>${periodName}</td>
+                                <td>${donation.toFixed(2)}</td>
+                                <td>${expense.toFixed(2)}</td>
                             </tr>
                         `;
                     });
