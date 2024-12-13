@@ -48,7 +48,7 @@
         </ul>
       </div>
       <div class="pb-3 text-center">
-        <a href="#" class="text-danger" id="clearNotifications">Clear Notifications</a>
+      <a class="text-danger" id="clearNotificationsBtn" onclick="clearNotifications()">Clear Notifications</a>
       </div>
     </div>
   </div>
@@ -62,7 +62,7 @@
         <h5 class="modal-title fw-bold" id="notificationDetailModalLabel">
           <i class="bi bi-bell-fill me-2"></i>Notification Details
         </h5>
-        <button type="button" class="btn-close" onclick="window.location.reload();" aria-label="Close"></button>
+        <button type="button" class="btn-close"  data-bs-dismiss="modal" onclick="window.location.reload();" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <h6 id="notificationType" class="text-primary fw-bold mb-3"></h6>
@@ -74,7 +74,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" onclick="window.location.reload();">Close</button>
+        <button type="button" class="btn btn-secondary"  data-bs-dismiss="modal" onclick="window.location.reload();">Close</button>
       </div>
     </div>
   </div>
@@ -168,56 +168,87 @@
   load_data();
 
   function load_data(query = '') {
-    var form_data = new FormData();
-    form_data.append('query', query);
+  var form_data = new FormData();
+  form_data.append('query', query);
 
-    var ajax_request = new XMLHttpRequest();
+  var ajax_request = new XMLHttpRequest();
 
-    ajax_request.open('POST', 'includes/fetch-notifications.php');
-    ajax_request.send(form_data);
+  ajax_request.open('POST', 'includes/fetch-notifications.php');
+  ajax_request.send(form_data);
 
-    ajax_request.onreadystatechange = function() {
-      if (ajax_request.readyState == 4 && ajax_request.status == 200) {
-        var response = JSON.parse(ajax_request.responseText);
+  ajax_request.onreadystatechange = function() {
+    if (ajax_request.readyState == 4 && ajax_request.status == 200) {
+      var response = JSON.parse(ajax_request.responseText);
 
-        var html = '';
+      var html = '';
 
-        if (response.data.length > 0) {
-            for (var count = 0; count < response.data.length; count++) {
-              var isReadClass = response.data[count].is_read === '1' ? 'read' : 'unread';
-              html += '<li class="notification-item pt-3 ' + isReadClass + '" data-id="' + response.data[count].notification_id + '">';
-              html += '<a href="#">';
-              html += '<p>' + response.data[count].message + '</p>';
-              html += '</a>';
-              html += '</li>';
-          }
-        } else {
-          html += '<tr><td colspan="6" class="text-center">No Data Found</td></tr>';
-        }
+      if (response.data.length > 0) {
+  for (var count = 0; count < response.data.length; count++) {
+    var notificationClass = response.data[count].css_class;  // 'read' or 'unread'
+    html += '<li class="notification-item pt-3 ' + notificationClass + '" data-id="' + response.data[count].notification_id + '">';
+    html += '<a href="#">';
+    html += '<p>' + response.data[count].message + '</p>';
+    html += '</a>';
+    html += '</li>';
+  }
 
-        document.getElementById('post_data').innerHTML = html;
+  // Show the "Clear Notifications" button if there are notifications
+  document.getElementById('clearNotificationsBtn').style.display = 'block';
+} else {
+  // Add a <li> with a class for styling when there are no notifications
+  html += '<li class="no-notifications px-5 py-2 text-muted"> -- No Notifications Yet -- </li>';
 
-         // **Update the unread notification count badge**
-         const unreadBadge = document.querySelector('.notification-item .badge');
-            if (unreadBadge) {
-                unreadBadge.innerText = response.unread_count;
-                // Hide badge if unread count is 0
-                unreadBadge.style.display = response.unread_count > 0 ? 'inline-block' : 'none';
-            }
+  // Hide the "Clear Notifications" button when there are no notifications
+  document.getElementById('clearNotificationsBtn').style.display = 'none';
+}
 
-        // Add event listeners to open the detail modal on click
-        var notificationItems = document.querySelectorAll('.notification-item');
-        notificationItems.forEach(function(item) {
-          item.addEventListener('click', function() {
-            var notificationId = this.getAttribute('data-id');
-            $('#notificationModal').modal('hide');
-            markAsRead(notificationId);
-            showNotificationDetails(notificationId);
-          });
-        });
+
+      document.getElementById('post_data').innerHTML = html;
+      const unreadBadge = document.querySelector('.notification-item .badge');
+      if (unreadBadge) {
+        unreadBadge.innerText = response.unread_count;
+        unreadBadge.style.display = response.unread_count > 0 ? 'inline-block' : 'none';
       }
+
+      // Add event listeners to open the detail modal on click
+      var notificationItems = document.querySelectorAll('.notification-item');
+      notificationItems.forEach(function(item) {
+        item.addEventListener('click', function() {
+          var notificationId = this.getAttribute('data-id');
+          $('#notificationModal').modal('hide');
+          markAsRead(notificationId);
+          showNotificationDetails(notificationId);
+        });
+      });
     }
   }
+}
+
+// Function to clear notifications
+function clearNotifications() {
+ 
+  var currentUserId = <?php echo $_SESSION['user_id']; ?>;  // Pass the user_id from PHP to JavaScript
+  console.log(currentUserId);
+  var form_data = new FormData();
+  form_data.append('user_id', currentUserId);  // Append the user_id to FormData
+
+  var ajax_request = new XMLHttpRequest();
+  
+  ajax_request.open('POST', 'includes/clear-notifications.php');
+  ajax_request.send(form_data);
+
+  ajax_request.onreadystatechange = function() {
+    if (ajax_request.readyState == 4 && ajax_request.status == 200) {
+      var response = JSON.parse(ajax_request.responseText);
+      if (response.success) {
+        // Optionally reload the notifications
+        load_data(); // Reload notifications to reflect the update
+      } else {
+        alert('Failed to clear notifications');
+      }
+    }
+  };
+}
 
   // Function to show notification details in a new modal
   function showNotificationDetails(notificationId) {
@@ -234,7 +265,6 @@
         var response = JSON.parse(ajax_request.responseText);
 
         if (response.success) {
-          // Populate the modal with the notification details
           document.getElementById('notificationMessage').innerText = response.data.message;
           document.getElementById('notificationDate').innerText = response.data.created_at;
           document.getElementById('notificationType').innerText = response.data.notification_type;
@@ -242,34 +272,36 @@
           // Open the modal
           var myModal = new bootstrap.Modal(document.getElementById('notificationDetailModal'));
           myModal.show();
+         
         }
       }
     }
   }
 
-  // Function to mark a notification as read
   function markAsRead(notificationId) {
-    var form_data = new FormData();
-    form_data.append('notification_id', notificationId);
+  var form_data = new FormData();
+  form_data.append('notification_id', notificationId);
 
-    var ajax_request = new XMLHttpRequest();
+  var ajax_request = new XMLHttpRequest();
 
-    ajax_request.open('POST', 'includes/mark-as-read.php');
-    ajax_request.send(form_data);
+  ajax_request.open('POST', 'includes/mark-as-read.php');
+  ajax_request.send(form_data);
 
-    ajax_request.onreadystatechange = function() {
-      if (ajax_request.readyState == 4 && ajax_request.status == 200) {
-        var response = JSON.parse(ajax_request.responseText);
-        if (response.success) {
-          var notificationItem = document.querySelector('.notification-item[data-id="' + notificationId + '"]');
-          if (notificationItem && notificationItem.classList.contains('unread')) {
-          notificationItem.classList.add('read');
+  ajax_request.onreadystatechange = function() {
+    if (ajax_request.readyState == 4 && ajax_request.status == 200) {
+      var response = JSON.parse(ajax_request.responseText);
+      if (response.success) {
+        var notificationItem = document.querySelector('.notification-item[data-id="' + notificationId + '"]');
+        if (notificationItem && notificationItem.classList.contains('unread')) {
           notificationItem.classList.remove('unread');
+          notificationItem.classList.add('read');
         }
-        } else {
-          alert('Failed to mark as read');
-        }
+      } else {
+        notificationItem.classList.add('read');
+        alert('Failed to mark as read');
       }
     }
   }
+}
+
 </script>

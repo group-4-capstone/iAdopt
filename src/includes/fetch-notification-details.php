@@ -24,7 +24,6 @@ $stmt->execute();
 $result = $stmt->get_result();
 $notification = $result->fetch_assoc();
 
-// Return the results as JSON
 if ($notification) {
     echo json_encode(['success' => true, 'data' => $notification]);
 } else {
