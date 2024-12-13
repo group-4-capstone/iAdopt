@@ -80,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit;
         }
 
-        $notifStmt->bind_param("issi", $user_id, $message, $notification_type, $is_read);
+        $notifStmt->bind_param("issii", $user_id, $message, $notification_type, $is_read, $display);
         $notifStmt->execute();
         $notifStmt->close();
 
