@@ -80,6 +80,9 @@
 
 }
 
+.asterisk {
+    color: red;
+}
 
 .pagination .page-item .page-link {
     color: #333;

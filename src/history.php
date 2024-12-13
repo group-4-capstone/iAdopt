@@ -112,6 +112,43 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                 </div>
             </div>
 
+             <!-- Report Denied table -->
+        <div class="container mt-5">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                    <div>REPORTED LOG</div>
+                        <div class="d-flex align-items-center ms-auto">
+                            <button class="btn btn-sort d-flex align-items-center" style="white-space: nowrap;">
+                                <span class="badge text-bg-secondary"> <i class="bi bi-arrow-down-up me-1"></i><span>Sort By</span></span>
+                            </button>
+
+                            <div class="input-group input-group-md">
+                                <input type="text" class="form-control" placeholder="Search"  onkeyup="load_data_adopted(this.value);">
+                                <span class="input-group-text search-icon"><i class="bi bi-search"></i></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-body p-0">
+                        <table class="table table-hover mb-5" id="adoptedTable">
+                            <thead>
+                                <tr>
+                                    <th width="25%">Report Date</th>
+                                    <th width="25%">Reporter</th>
+                                    <th width="25%">Location</th>
+                                    <th width="25%">Reason of Denial</th>
+                                </tr>
+                            </thead>
+                            <tbody id="reported_data"></tbody>
+                        </table>
+                        <div class="d-flex justify-content-end">
+                            <div id="reported_pagination_link"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
     </div>
 
     <!--Adopted Modal -->

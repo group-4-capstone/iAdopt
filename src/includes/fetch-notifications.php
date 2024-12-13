@@ -1,36 +1,44 @@
 <?php
 include 'session-handler.php';
 
-if (isset($_SESSION['user_id'])) {
-   $user_id = $_SESSION['user_id']; 
-} else {
+if (!isset($_SESSION['user_id'])) {
     echo json_encode(['error' => 'User not logged in']);
     exit();
 }
 
-include 'db-connect.php'; 
+$user_id = $_SESSION['user_id'];
 
-// Fetch all notifications and count unread notifications
-$sql = "SELECT *, (SELECT COUNT(*) FROM notifications WHERE user_id = ? AND is_read = 0) as unread_count 
+include 'db-connect.php';
+
+$unread_sql = "SELECT COUNT(*) as unread_count FROM notifications WHERE user_id = ? AND is_read = 0 AND display = 1";
+$unread_stmt = $db->prepare($unread_sql);
+$unread_stmt->bind_param('i', $user_id);
+$unread_stmt->execute();
+$unread_result = $unread_stmt->get_result();
+$unread_row = $unread_result->fetch_assoc();
+$unread_count = (int)$unread_row['unread_count'];
+$unread_stmt->close();
+
+// Fetch all notifications for the user
+$sql = "SELECT notification_id, message, is_read, created_at 
         FROM notifications 
-        WHERE user_id = ? 
+        WHERE user_id = ? AND display = 1
         ORDER BY created_at DESC";
 
 $stmt = $db->prepare($sql);
+$stmt->bind_param('i', $user_id);
 
-$stmt->bind_param('ii', $user_id, $user_id);
-
-$stmt->execute();
+if (!$stmt->execute()) {
+    echo json_encode(['error' => 'Failed to fetch notifications']);
+    exit();
+}
 
 $result = $stmt->get_result();
-
 $notifications = [];
-$unread_count = 0;
+
 while ($row = $result->fetch_assoc()) {
+    $row['css_class'] = $row['is_read'] == 1 ? 'read' : 'unread';
     $notifications[] = $row;
-    if ($unread_count === 0) {
-        $unread_count = (int)$row['unread_count'];
-    }
 }
 
 echo json_encode([

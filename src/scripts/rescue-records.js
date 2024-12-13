@@ -1,16 +1,49 @@
-// Updating status of accepted report
-$('#updateStatusForm').submit(function (e) {
+$('[id^="updateStatusForm_"]').submit(function (e) {
     e.preventDefault();
 });
 
-$('#acceptButton').click(function () {
+$('[id^="acceptButton_"]').click(function () {
+    $('#confirmationText').text('Are you sure you want to accept this report?');
+    $('#denyReasonContainer').hide();
     $('#confirmationModal').modal('show');
+    $('#confirmActionButton').data('action', 'accept');
+    console.log("clicked accept button");
 });
 
-$('#confirmAcceptButton').click(function () {
-    $('#confirmationModal').modal('hide');
+$('[id^="denyButton_"]').click(function () {
+    $('#confirmationText').text('Are you sure you want to deny this report?');
+    $('#denyReasonContainer').show();
+    $('#confirmationModal').modal('show');
+    $('#confirmActionButton').data('action', 'deny');
+});
 
-    var formData = new FormData($('#updateStatusForm')[0]);
+$('#denyReason').on('input', function () {
+    $(this).css('border', '');
+    $('#denyReasonError').remove();
+});
+
+$('#confirmActionButton').click(function () {
+    var action = $(this).data('action');
+    var formData = new FormData($('[id^="updateStatusForm_"]')[0]);
+    formData.append('action', action);
+
+    if (action === 'deny') {
+        var $denyReasonInput = $('#denyReason');
+        var reason = $denyReasonInput.val();
+
+        $denyReasonInput.css('border', '');
+        $('#denyReasonError').remove();
+
+        if (!reason) {
+            $denyReasonInput.css('border', '1px solid red');
+            $denyReasonInput.after('<div id="denyReasonError" style="color: red; font-size: 0.9rem;">This is required.</div>');
+            return; 
+        } else {
+            formData.append('deny_reason', reason);
+        }
+    }
+
+    $('#confirmationModal').modal('hide'); 
 
     $.ajax({
         type: 'POST',
@@ -19,6 +52,11 @@ $('#confirmAcceptButton').click(function () {
         contentType: false,
         processData: false,
         success: function (response) {
+            if (action === 'accept') {
+                $('#successMessage').text('Report has been accepted!');
+            } else if (action === 'deny') {
+                $('#successMessage').text('Report has been denied!');
+            }
             $('#successModal').modal('show');
         },
         error: function (xhr, status, error) {
@@ -26,6 +64,7 @@ $('#confirmAcceptButton').click(function () {
         }
     });
 });
+
 
 // ----------------------------- DISPLAY AND PAGINATION -------------------------- //
 // ----------------------------- REPORTS TABLE ----------------------------------- //
