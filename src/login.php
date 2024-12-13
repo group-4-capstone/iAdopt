@@ -30,6 +30,7 @@ include_once 'includes/session-manager.php';
 
         <div class="image-section">
             <div class="row">
+                
                 <div class="col-sm-12 d-flex justify-content-center">
                     <div class="logo d-flex justify-content-center">
                         <img src="styles/assets/secaspi-logo.png" alt="Logo">
@@ -41,10 +42,11 @@ include_once 'includes/session-manager.php';
                         <h4>SECOND CHANCE ASPIN SHELTER <br> PHILIPPINES INCORPORATED</h>
                     </div>
                 </div>
+                
             </div>
             <img src="styles/assets/loginbg.png" alt="Background Image">
         </div>
-        <div class="login-form-section col-sm-12 col-lg-6 col-6">
+        <div class="login-form-section col-sm-12 col-6 col-lg-6 col-md-12 d-flex justify-content-center">
         <form id="loginForm">
         
                 <h2><strong>ACCOUNT LOGIN</strong></h2>
@@ -52,11 +54,11 @@ include_once 'includes/session-manager.php';
                 <div id="error-msg" class="alert alert-danger d-none"></div>
                 <div class="input-group col-sm-12 col-lg-6 col-6">
                     <label for="email">Email</label>
-                    <input type="email" id="email" placeholder="juanadelacruz@gmail.com" required>
+                    <input type="email" id="email" maxlength="100" placeholder="juanadelacruz@gmail.com" required>
                 </div>
                 <div class="input-group col-sm-12 col-lg-6 col-6">
                     <label for="password">Password</label>
-                    <input type="password" id="password" placeholder="********" required>
+                    <input type="password" id="password"  maxlength="100" placeholder="********" required>
                 </div>
                 <?php if (isset($_GET['error'])): ?>
                     <div class="alert alert-danger"><?= urldecode($_GET['error']) ?></div>
