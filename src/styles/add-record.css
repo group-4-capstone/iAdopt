@@ -183,31 +183,64 @@
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
+        position: relative; /* Added for positioning child elements */
+        overflow: hidden;
     }
-
+    
     .upload-placeholder i {
         margin-right: 8px;
         font-size: 24px;
         color: #666;
     }
-
+    
     #placeholderText {
         font-size: 16px;
         color: #666;
     }
-
+    
     .upload-placeholder:hover {
         border-color: #aaa;
     }
-
+    
+    /* New styles for uploaded image */
+    .upload-placeholder img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: none; /* Hidden by default */
+    }
+    
+    /* Overlay styles */
+    .upload-placeholder .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+        color: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        font-size: 14px;
+        display: none; /* Hidden by default */
+    }
+    
+    .upload-placeholder:hover .overlay {
+        display: flex; /* Show overlay on hover */
+    }
+    
+    /* Existing image container */
     .image-container {
         width: 100%;
-        /* Adjust the width as needed, or set a fixed width */
         max-width: 300px;
-        /* Optional: limit the width */
         position: relative;
-        padding-bottom: 133.33%;
-        /* 4:3 aspect ratio (height/width * 100) */
+        padding-bottom: 133.33%; /* 4:3 aspect ratio */
         overflow: hidden;
     }
+    
 
