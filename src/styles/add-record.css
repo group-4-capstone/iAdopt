@@ -31,24 +31,16 @@
 
     .paw-prints-down {
         position: absolute;
-        /* Position relative to the card */
         bottom: 0;
-        /* Stick to the bottom of the card */
         left: 0;
-        /* Align to the left edge */
         width: 100%;
-        /* Full width of the card */
         display: flex;
-        /* Flex for alignment */
     }
 
     .paw-prints-down img {
         width: 30%;
-        /* Adjust the size as needed */
         height: auto;
         margin: 0 0 30px 50px;
-
-
     }
 
     .card {
@@ -57,8 +49,6 @@
 
     .info-card {
         position: relative;
-        /* Ensure the paw prints position relative to the card */
-
     }
 
 
@@ -168,9 +158,10 @@
     }
 
     .upload-placeholder {
+        margin-left: 20px;
         width: 100%;
-        max-width: 300px;
-        height: 150px;
+        max-width: 280px;
+        height: 200px;
         border: 2px dashed #ccc;
         display: flex;
         justify-content: center;
@@ -234,13 +225,14 @@
         display: flex; /* Show overlay on hover */
     }
     
-    /* Existing image container */
-    .image-container {
-        width: 100%;
-        max-width: 300px;
-        position: relative;
-        padding-bottom: 133.33%; /* 4:3 aspect ratio */
-        overflow: hidden;
-    }
+    /* Portrait image container */
+        .image-container {
+            width: 100%;
+            max-width: 300px;
+            position: relative;
+            padding-bottom: 133.33%; /* 3:4 aspect ratio (height > width) */
+            overflow: hidden;
+        }
+
     
 

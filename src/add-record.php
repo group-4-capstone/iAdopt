@@ -57,15 +57,16 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                     <form method="post" id="addRecordForm">
                         <div class="row mt-2">
                             <div class="col-md-4 col-sm-12">
-                                <div class="upload-placeholder" id="uploadPlaceholder">
-                                    <img id="uploadedImage" src="" alt="" style="display: none;">
-                                    <div class="overlay text-white" id="overlay" style="display: none;">
-                                        <span>Click to reupload a picture</span>
-                                    </div>
-                                    <i class="bi bi-cloud-upload" id="uploadIcon"></i>
-                                    <span id="placeholderText">Click to upload</span>
-                                    <input type="file" id="imageUpload" accept="image/*" name="image" style="display: none;">
+                            <div class="upload-placeholder" id="uploadPlaceholder">
+                                <img id="uploadedImage" src="" alt="" style="display: none;">
+                                <div class="overlay text-white" id="overlay" style="display: none;">
+                                    <span>Click to reupload a picture</span>
                                 </div>
+                                <i class="bi bi-cloud-upload" id="uploadIcon"></i>
+                                <span id="placeholderText">Click to upload</span>
+                                <input type="file" id="imageUpload" accept="image/*" name="image" style="display: none;">
+                            </div>
+                           <!-- <span id="fileNameDisplay" style="display: none; margin-top: 10px; font-size: 14px; color: #555;"></span> -->
                             </div>
 
                             <div class="col-md-8 col-sm-12">
@@ -116,6 +117,7 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                             </div>
                         </div>
                     </form>
+                    <div class="my-2"></div>
                     <div class="paw-prints-down"><img src="styles/assets/paw-down.png" alt="Paws"></div>
                 </div>
             </div>
