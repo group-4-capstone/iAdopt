@@ -7,7 +7,6 @@ $('[id^="acceptButton_"]').click(function () {
     $('#denyReasonContainer').hide();
     $('#confirmationModal').modal('show');
     $('#confirmActionButton').data('action', 'accept');
-    console.log("clicked accept button");
 });
 
 $('[id^="denyButton_"]').click(function () {
@@ -205,7 +204,7 @@ document.getElementById('uploadPlaceholder').addEventListener('click', function 
     document.getElementById('imageUpload').click();
 });
 
-// Handle file input change and update placeholder with image preview
+// Handle file input change and update placeholder with image preview and file name
 document.getElementById('imageUpload').addEventListener('change', function (event) {
     const files = event.target.files;
     const validExtensions = ['jpg', 'jpeg', 'png'];
@@ -213,6 +212,9 @@ document.getElementById('imageUpload').addEventListener('change', function (even
 
     // Clear any previous error messages related to image upload
     removeError(event.target);
+
+    // Reference to file name display element
+    const fileNameDisplay = document.getElementById('fileNameDisplay');
 
     Array.from(files).forEach(file => {
         const fileName = file.name;
@@ -228,7 +230,13 @@ document.getElementById('imageUpload').addEventListener('change', function (even
                 uploadPlaceholder.style.backgroundSize = 'cover';
                 uploadPlaceholder.style.backgroundPosition = 'center';
                 document.getElementById('placeholderText').style.display = 'none';
+                document.getElementById('overlay').style.display = 'block';
+
                 uploadPlaceholder.querySelector('i').style.display = 'none';
+
+                // Display the file name
+                fileNameDisplay.textContent = `Uploaded file: ${fileName}`;
+                fileNameDisplay.style.display = 'block';
 
                 // Remove the error message if a valid image is uploaded
                 removeError(document.getElementById('imageUpload'));
@@ -237,11 +245,14 @@ document.getElementById('imageUpload').addEventListener('change', function (even
         }
     });
 
-    // Optionally handle invalid files
+    // Handle invalid files
     if (invalidFiles.length > 0) {
         console.warn(`Invalid file type: ${invalidFiles.join(', ')}`);
         event.target.value = ''; // Clear the input
         showError(event.target, "Please upload a valid image (JPG, JPEG, or PNG).");
+
+        // Clear the file name display if invalid files were uploaded
+        fileNameDisplay.style.display = 'none';
     }
 });
 
@@ -309,6 +320,8 @@ function validateForm() {
             if (field.element.files.length === 0) {
                 isValid = false;
                 showError(field.element, field.message);
+            } else {
+                removeError(field.element);
             }
         } else {
             if (field.element.value.trim() === "") {
@@ -327,6 +340,9 @@ function validateForm() {
 
 // Function to display error message
 function showError(input, message) {
+    // Avoid adding duplicate error messages
+    removeError(input);
+
     var errorMessage = document.createElement('div');
     errorMessage.className = 'error-message text-danger';
     errorMessage.innerText = message;
@@ -339,13 +355,15 @@ function showError(input, message) {
         input.parentNode.insertBefore(errorMessage, input.nextSibling);
     }
 
-    // Add input event listener to remove the error message
-    input.addEventListener('input', function () {
-        if (input.value.trim() !== "") {
-            input.classList.remove('is-invalid');
-            removeError(input);
-        }
-    });
+    // Add input event listener to remove the error message dynamically
+    if (input.id !== 'imageUpload') {
+        input.addEventListener('input', function () {
+            if (input.value.trim() !== "") {
+                input.classList.remove('is-invalid');
+                removeError(input);
+            }
+        });
+    }
 }
 
 // Function to remove error messages
@@ -363,4 +381,12 @@ function clearErrorMessages() {
         msg.remove();
     });
 }
+
+// Event listener for the image upload to remove error message dynamically
+document.getElementById('imageUpload').addEventListener('change', function () {
+    if (this.files.length > 0) {
+        removeError(this);
+    }
+});
+
 
