@@ -151,6 +151,50 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
 
     </div>
 
+    <!-- Deny Reports Modal -->
+<div class="modal fade" id="denyReportsModal" tabindex="-1" aria-labelledby="denyReportsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="denyReportsModalLabel">Deny Report Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <!-- Left Column: Animal Image -->
+                    <div class="col-md-4 mb-3">
+                        <img id="denyAnimalImage" class="img-fluid" alt="Animal Image">
+                    </div>
+
+                    <!-- Right Column: Report Details -->
+                    <div class="col-md-8 mb-3">
+                        <div>
+                            <strong>Location:</strong>
+                            <p id="denyLocation"></p>
+                        </div>
+                        <div>
+                            <strong>Report Date:</strong>
+                            <p id="denyReportDate"></p>
+                        </div>
+                        <div>
+                            <strong>Reporter:</strong>
+                            <p id="denyReporter"></p>
+                        </div>
+                        <div>
+                            <strong>Reason for Denial:</strong>
+                            <p id="denyReason"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
     <!--Adopted Modal -->
 <div class="modal fade" id="informationModal" tabindex="-1" aria-labelledby="informationModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
