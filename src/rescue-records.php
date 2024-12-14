@@ -52,6 +52,7 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
             <div class="container mt-5">
                 <div class="card">
                     <div class="card-header d-flex justify-content-between align-items-center">
+                        <h4>Rescue Reports</h4>
                     <div class="d-flex align-items-center ms-auto">
                         <div class="dropdown">
                             <button
@@ -103,6 +104,7 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
             <div class="container mt-5">
                 <div class="card">
                     <div class="card-header d-flex justify-content-between align-items-center">
+                      <h4>Rescue Records</h4>
                         <div class="d-flex align-items-center ms-auto">
                             <button class="btn btn-add d-flex align-items-center" onclick="window.location.href='add-record.php'">
                                 <span class="badge text-bg-success"><i class="bi bi-plus me-1"></i><span>Add</span></span>

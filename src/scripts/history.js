@@ -154,3 +154,86 @@ function attachRestRowClickEvent() {
         });
     });
 }
+
+// Load data for the Reports Log Table
+load_data_deny();
+
+function load_data_deny(query = '', page_number = 1) {
+    var form_data = new FormData();
+    form_data.append('query', query);
+    form_data.append('page', page_number);
+
+    var ajax_request = new XMLHttpRequest();
+    ajax_request.open('POST', 'includes/fetch-deny-reports.php');
+    ajax_request.send(form_data);
+
+    ajax_request.onreadystatechange = function () {
+        if (ajax_request.readyState == 4 && ajax_request.status == 200) {
+            var response = JSON.parse(ajax_request.responseText);
+            var html = '';
+            var serial_no = 1;
+
+            if (response.data.length > 0) {
+                for (var count = 0; count < response.data.length; count++) {
+                    
+                    var report_date = response.data[count].report_date;
+                    var first_name = response.data[count].first_name;
+                    var last_name = response.data[count].last_name;
+                    var location = response.data[count].location;
+                    var deny_reason = response.data[count].deny_reason;
+                    var animal_id = response.data[count].animal_id;
+                    var name = response.data[count].name;
+                    var addition_date = response.data[count].addition_date;
+                    var animal_image = response.data[count].animal_image; 
+
+                    html += '<tr data-bs-toggle="modal" data-bs-target="#denyReportsModal" ' +
+                    'data-location="' + location + '" ' +
+                    'data-report-date="' + report_date + '" ' +
+                    'data-reporter="' + first_name + " " + last_name + '" ' +
+                    'data-reason="' + deny_reason + '" ' +
+                    'data-animal-image="' + animal_image + '">';
+                    html += '<td>' + report_date + '</td>';
+                    html += '<td>' + first_name + " " + last_name + '</td>';
+                    html += '<td>' + location + '</td>';
+                    html += '<td>' + deny_reason + '</td>';
+                    html += '</tr>';
+                    serial_no++;
+                }
+            } else {
+                html += '<tr><td colspan="5" class="text-center">No Data Found</td></tr>';
+            }
+
+            document.getElementById('reported_data').innerHTML = html;
+            document.getElementById('reported_pagination_link').innerHTML = response.pagination;
+
+            // Reattach event listeners for the new rows
+            attachDenytRowClickEvent();
+        }
+    };
+}
+
+// Function to handle row click and populate the Deny Reports modal
+function attachDenytRowClickEvent() {
+    var rows = document.querySelectorAll('#reported_data tr');
+    rows.forEach(function(row) {
+        row.addEventListener('click', function() {
+            var location = this.getAttribute('data-location');
+            var reportDate = this.getAttribute('data-report-date');
+            var reporter = this.getAttribute('data-reporter');
+            var denyReason = this.getAttribute('data-reason');
+            var animalImage = this.getAttribute('data-animal-image');
+
+            console.log(animalImage);
+
+            // Update the modal content
+            document.getElementById('denyLocation').innerText = location;
+            document.getElementById('denyReportDate').innerText = reportDate;
+            document.getElementById('denyReporter').innerText = reporter;
+            document.getElementById('denyReason').innerText = denyReason;
+
+            // Set the image source in the modal
+            document.getElementById('denyAnimalImage').src = 'styles/assets/rescue-reports/' + animalImage;
+        });
+    });
+}
+

@@ -50,13 +50,13 @@ if (!isset($_SESSION['role']) || ($_SESSION['role'] !== 'admin' && $_SESSION['ro
         <?php 
           $isDisabled = !isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true ? 'disabled' : '';
         ?>
-        <form id="rescueForm" method="post" action="includes/submit-rescue.php" enctype="multipart/form-data">
+        <form id="rescueForm" method="post">
           <div class="step">
             <h5 class="text-center">Report Details</h5>
             <p class="text-center mb-4">Kindly supply the following details of the dog/cat you want to be rescued.</p>
 
             <div class="mb-3">
-              <label for="animalType">Type of Animal:</label>
+              <label for="animalType">Type of Animal: <span class="asterisk"> *</span></label>
               <select id="animalType" name="type" class="form-select" <?php echo $isDisabled; ?>>
                 <option value="" disabled selected>Select the type of animal</option>
                 <option value="Dog">Dog</option>
@@ -65,30 +65,42 @@ if (!isset($_SESSION['role']) || ($_SESSION['role'] !== 'admin' && $_SESSION['ro
             </div>
 
             <div class="mb-3">
-              <label>Current location of the animal:</label>
-              <div class="row">
-                <div class="col-lg-3 col-12 col-sm-12">
-                  <input type="text" placeholder="Gumamela Village" name="specific" <?php echo $isDisabled; ?>>
+                <label class="mb-3">Current location of the animal:</label>
+                <div class="row">
+                 <div class="col-sm-12 col-lg-6 mb-3">
+                    <label>Region<span class="asterisk"> *</span></label>
+                    <select name="region" id="region" <?php echo $isDisabled; ?> required ></select>
+                    <input type="hidden" class="form-control form-control-md" name="region" id="region-text" required>
                 </div>
-                <div class="col-lg-3 col-12 col-sm-12">
-                  <input type="text" placeholder="Brgy. Malitlit" name="barangay" <?php echo $isDisabled; ?>>
+                <div class="col-sm-6 mb-3">
+                    <label>Province<span class="asterisk"> *</span></label>
+                    <select name="province" id="province" required <?php echo $isDisabled; ?>></select>
+                    <input type="hidden" class="form-control form-control-md" name="province"  id="province-text" required>
                 </div>
-                <div class="col-lg-3 col-12 col-sm-12">
-                  <input type="text" placeholder="Calamba" name="municipality" <?php echo $isDisabled; ?>>
+                <div class="col-sm-6 mb-3">
+                    <label>City / Municipality<span class="asterisk"> *</span></label>
+                    <select name="city" id="city" required <?php echo $isDisabled; ?>></select>
+                    <input type="hidden" class="form-control form-control-md" name="municipality" id="city-text">
                 </div>
-                <div class="col-lg-3 col-12 col-sm-12">
-                  <input type="text" placeholder="Laguna" name="province" <?php echo $isDisabled; ?>>
+                <div class="col-sm-6 mb-3">
+                    <label>Barangay<span class="asterisk"> *</span></label>
+                    <select name="barangay" id="barangay" required <?php echo $isDisabled; ?>></select>
+                    <input type="hidden" class="form-control form-control-md" name="barangay"  id="barangay-text">
                 </div>
-              </div>
+                <div class="col-lg-12 mb-3">
+                    <label for="street-text">Street, Subdivision/Village<span class="asterisk"> *</span></label>
+                    <input type="text" class="form-control form-control-md" name="specific" <?php echo $isDisabled; ?> id="street-text" required>
+                </div>
+                </div>
             </div>
 
             <div class="mb-3">
-              <label>Rescue Report Details:</label>
+              <label>Rescue Report Details: <span class="asterisk"> *</span></label>
               <input type="text" name="rescue_description" placeholder="Input details regarding the rescue of the animal" <?php echo $isDisabled; ?>>
             </div>
 
             <div class="mb-4">
-              <label for="placeUploads">Upload video or pictures of the dog/cat that will be rescued:</label>
+              <label for="placeUploads">Upload video or pictures of the dog/cat that will be rescued: <span class="asterisk"> *</span></label>
               <input type="file" id="placeUploads" name="animal_image" accept=".jpg,.jpeg,.png,.mp4,.mov" <?php echo $isDisabled; ?>>
             </div>
           </div>
@@ -141,6 +153,7 @@ if (!isset($_SESSION['role']) || ($_SESSION['role'] !== 'admin' && $_SESSION['ro
 
   <script src="scripts/form.js"></script>
   <script src="scripts/report-stray.js"></script>
+  <script src="scripts/ph-address-selector.js"></script>
    
    <?php include_once 'components/footer.php'; ?>
 

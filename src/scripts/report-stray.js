@@ -51,6 +51,7 @@ document.getElementById('submitVisitBtn').addEventListener('click', function(eve
         { element: rescueForm.querySelector('input[name="barangay"]'), message: "This field is required." },
         { element: rescueForm.querySelector('input[name="municipality"]'), message: "This field is required." },
         { element: rescueForm.querySelector('input[name="province"]'), message: "This field is required." },
+        { element: rescueForm.querySelector('input[name="region"]'), message: "This field is required." },
         { element: rescueForm.querySelector('input[name="rescue_description"]'), message: "This field is required." },
         { element: document.getElementById('placeUploads'), message: "This field is required.", isFileInput: true }
     ];
@@ -99,13 +100,23 @@ function showError(input, message) {
     input.classList.add('is-invalid');
     input.parentNode.insertBefore(errorMessage, input.nextSibling); 
 
-    // Add input event listener to remove the error message
+    // Add input event listener to remove the error message for text inputs
     input.addEventListener('input', function() {
         if (input.value.trim() !== "") {
             input.classList.remove('is-invalid');
             removeError(input);
         }
     });
+
+    // Add change event listener to remove the error message for select inputs
+    if (input.tagName.toLowerCase() === 'select') {
+        input.addEventListener('change', function() {
+            if (input.value.trim() !== "") {
+                input.classList.remove('is-invalid');
+                removeError(input);
+            }
+        });
+    }
 }
 
 // Function to remove error message
@@ -115,3 +126,4 @@ function removeError(input) {
         errorMessage.remove();
     }
 }
+
