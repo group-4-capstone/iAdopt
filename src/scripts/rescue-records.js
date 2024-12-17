@@ -180,22 +180,14 @@ function load_data(query = '', page_number = 1) {
                     html += '<td>' + statusDisplay + '</td>';
                     html += '</tr>';
                     serial_no++;
-
                 }
             }
-
-
             else {
-                html += '<tr><td colspan="3" class="text-center">No Data Found</td></tr>';
+                html += '<tr><td colspan="6" class="text-center">No Data Found</td></tr>';
             }
-
             document.getElementById('post_data').innerHTML = html;
-
-
             document.getElementById('pagination_link').innerHTML = response.pagination;
-
         }
-
     }
 }
 

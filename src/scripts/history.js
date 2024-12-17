@@ -43,7 +43,7 @@ function load_data_adopted(query = '', page_number = 1) {
                     serial_no++;
                 }
             } else {
-                html += '<tr><td colspan="5" class="text-center">No Data Found</td></tr>';
+                html += '<tr><td colspan="3" class="text-center">No Data Found</td></tr>';
             }
 
             document.getElementById('adopted_data').innerHTML = html;
@@ -114,7 +114,6 @@ function load_data(query = '', page_number = 1) {
                             'data-date-of-rest="' + date_of_rest + '" ' +
                             'data-addition-date="' + addition_date + '" ' +
                             'data-image="' + image + '">'; // Include the image data
-                    
                     html += '<td>' + date_of_rest + '</td>';
                     html += '<td>' + name + '</td>';
                     html += '<td>' + addition_date + '</td>';
@@ -175,7 +174,7 @@ function load_data_deny(query = '', page_number = 1) {
 
             if (response.data.length > 0) {
                 for (var count = 0; count < response.data.length; count++) {
-                    
+
                     var report_date = response.data[count].report_date;
                     var first_name = response.data[count].first_name;
                     var last_name = response.data[count].last_name;
@@ -184,18 +183,21 @@ function load_data_deny(query = '', page_number = 1) {
                     var animal_id = response.data[count].animal_id;
                     var name = response.data[count].name;
                     var addition_date = response.data[count].addition_date;
-                    var animal_image = response.data[count].animal_image; 
+                    var animal_image = response.data[count].animal_image;
 
-                    html += '<tr data-bs-toggle="modal" data-bs-target="#denyReportsModal" ' +
-                    'data-location="' + location + '" ' +
-                    'data-report-date="' + report_date + '" ' +
-                    'data-reporter="' + first_name + " " + last_name + '" ' +
-                    'data-reason="' + deny_reason + '" ' +
-                    'data-animal-image="' + animal_image + '">';
+                    // Add the data- attributes into hidden span elements inside the row
+                    html += '<tr data-bs-toggle="modal" data-bs-target="#denyReportsModal">';
                     html += '<td>' + report_date + '</td>';
                     html += '<td>' + first_name + " " + last_name + '</td>';
                     html += '<td>' + location + '</td>';
                     html += '<td>' + deny_reason + '</td>';
+                    html += '<td style="display:none;">' +  // Hidden data for modal trigger
+                        '<span class="data-location">' + location + '</span>' +
+                        '<span class="data-report-date">' + report_date + '</span>' +
+                        '<span class="data-reporter">' + first_name + " " + last_name + '</span>' +
+                        '<span class="data-reason">' + deny_reason + '</span>' +
+                        '<span class="data-animal-image">' + animal_image + '</span>' +
+                        '</td>';
                     html += '</tr>';
                     serial_no++;
                 }
@@ -217,13 +219,12 @@ function attachDenytRowClickEvent() {
     var rows = document.querySelectorAll('#reported_data tr');
     rows.forEach(function(row) {
         row.addEventListener('click', function() {
-            var location = this.getAttribute('data-location');
-            var reportDate = this.getAttribute('data-report-date');
-            var reporter = this.getAttribute('data-reporter');
-            var denyReason = this.getAttribute('data-reason');
-            var animalImage = this.getAttribute('data-animal-image');
-
-            console.log(animalImage);
+            // Retrieve the hidden data from the spans
+            var location = row.querySelector('.data-location').textContent;
+            var reportDate = row.querySelector('.data-report-date').textContent;
+            var reporter = row.querySelector('.data-reporter').textContent;
+            var denyReason = row.querySelector('.data-reason').textContent;
+            var animalImage = row.querySelector('.data-animal-image').textContent;
 
             // Update the modal content
             document.getElementById('denyLocation').innerText = location;

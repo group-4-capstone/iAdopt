@@ -55,13 +55,8 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                         <h4>Rescue Reports</h4>
                     <div class="d-flex align-items-center ms-auto">
                         <div class="dropdown">
-                            <button
-                                class="btn btn-sort d-flex align-items-center"
-                                id="sortDropdown"
-                                data-bs-toggle="dropdown"
-                                aria-expanded="false"
-                                style="white-space: nowrap;"
-                            >
+                            <button class="btn btn-sort d-flex align-items-center" id="sortDropdown"
+                                data-bs-toggle="dropdown" aria-expanded="false" style="white-space: nowrap;">
                                 <span class="badge text-bg-secondary">
                                     <i class="bi bi-arrow-down-up me-1"></i><span id="sortLabel">Sort By</span>
                                 </span>
@@ -72,7 +67,7 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                             </ul>
                         </div>
                         <div class="input-group input-group-md ms-3">
-                            <input type="text" class="form-control" id="searchInput" placeholder="Search">
+                            <input type="text" class="form-control" id="searchInput" placeholder="Search" onkeyup="load_data_report(this.value);">
                             <span class="input-group-text search-icon"><i class="bi bi-search"></i></span>
                         </div>
                     </div>
