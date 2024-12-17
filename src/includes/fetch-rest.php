@@ -1,244 +1,86 @@
 <?php
 
-//process_data.php
+// reports_data.php
 
-if(isset($_POST["query"]))
-{
+if (isset($_POST["query"])) {
 
-	$connect = new PDO("mysql:host=localhost; dbname=iadopt", "root", "");
+    $connect = new PDO("mysql:host=localhost; dbname=iadopt", "root", "");
 
-	$data = array();
+    $data = array();
 
-	$limit = 5;
+    $limit = 5;
+    $page = $_POST["page"] > 1 ? $_POST["page"] : 1;
+    $start = ($page - 1) * $limit;
 
-	$page = 1;
+    // Clean the search query
+    $condition = trim(preg_replace('/[^A-Za-z0-9\- ]/', '', $_POST["query"]));
 
-	if($_POST["page"] > 1)
-	{
-		$start = (($_POST["page"] - 1) * $limit);
+    // Parameters to use in the SQL query
+    $query_params = [
+        ':date_of_rest'   => '%' . $condition . '%',
+        ':name'           => '%' . $condition . '%',
+        ':addition_date'  => '%' . $condition . '%',
+    ];
 
-		$page = $_POST["page"];
-	}
-	else
-	{
-		$start = 0;
-	}
+    // Modified query to fetch animals with 'Rest' status
+    $query = "
+    SELECT date_of_rest, addition_date, name, image
+    FROM animals
+    WHERE animal_status = 'Rest' AND (
+        date_of_rest LIKE :date_of_rest OR 
+        addition_date LIKE :addition_date OR
+        name LIKE :name
+    )
+    ORDER BY addition_date DESC
+    ";
 
-	if($_POST["query"] != '')
-	{
-		$condition = preg_replace('/[^A-Za-z0-9\- ]/', '', $_POST["query"]);
-		$condition = trim($condition);
-		$condition = str_replace(" ", "%", $condition);
+    // Add LIMIT for pagination
+    $filter_query = $query . ' LIMIT ' . $start . ', ' . $limit;
 
-		$sample_data = array(
-			':name'         => '%' . $condition . '%',
-			':last_name'   => '%' . $condition . '%'
-		);
+    // Prepare and execute the statement
+    $statement = $connect->prepare($query);
+    $statement->execute($query_params);
+    $total_data = $statement->rowCount();
 
-		
-        // Fetch data from the 'animals' table with pagination
-        $query = "SELECT * FROM animals WHERE animal_status = 'Rest' DESC LIMIT :start, :limit";
+    // Prepare the filtered data
+    $statement = $connect->prepare($filter_query);
+    $statement->execute($query_params);
+    $result = $statement->fetchAll();
 
-		$filter_query = $query . ' LIMIT ' . $start . ', ' . $limit;
+    // Highlight matching parts safely
+    $escaped_condition = htmlspecialchars($condition, ENT_QUOTES, 'UTF-8');
+    $highlighted_condition = '<span style="background-color:#555; color:#fff">' . $escaped_condition . '</span>';
 
-		$statement = $connect->prepare($query);
-		$statement->execute($sample_data);
-		$total_data = $statement->rowCount();
+    foreach ($result as $row) {
+        $data[] = [
+            'date_of_rest'   => str_ireplace($escaped_condition, $highlighted_condition, htmlspecialchars($row['date_of_rest'])),
+            'name'           => str_ireplace($escaped_condition, $highlighted_condition, htmlspecialchars($row['name'])),
+            'addition_date'  => str_ireplace($escaped_condition, $highlighted_condition, htmlspecialchars($row['addition_date'])),
+            'image'          => $row['image'],  // Image does not need highlighting
+        ];
+    }
 
-		$statement = $connect->prepare($filter_query);
-		$statement->execute($sample_data);
+    // Handle pagination
+    $pagination_html = '<div align="center"><ul class="pagination">';
 
-		$result = $statement->fetchAll();
+    $total_links = ceil($total_data / $limit);
+    $previous_link = $page > 1 ? '<li class="page-item"><a class="page-link" href="javascript:load_data_report(`' . $_POST["query"] . '`, ' . ($page - 1) . ')"><</a></li>' : '<li class="page-item disabled"><a class="page-link" href="#"><</a></li>';
 
-		$replace_array_1 = explode('%', $condition);
-		foreach($replace_array_1 as $row_data)
-		{
-			$replace_array_2[] = '<span style="background-color:#'.rand(100000, 999999).'; color:#fff">'.$row_data.'</span>';
-		}
+    $next_link = $page < $total_links ? '<li class="page-item"><a class="page-link" href="javascript:load_data_report(`' . $_POST["query"] . '`, ' . ($page + 1) . ')">></a></li>' : '<li class="page-item disabled"><a class="page-link" href="#">></a></li>';
 
-		foreach($result as $row)
-		{
-			$data[] = array(
-				
-				'date_of_rest'   => $row['date_of_rest'],
-				'name'   => $row['name'],
-				'addition_date'   => $row['addition_date']
-			);
-		}
+    $page_links = '';
+    for ($count = 1; $count <= $total_links; $count++) {
+        $active_class = $page == $count ? ' active' : '';
+        $page_links .= '<li class="page-item' . $active_class . '"><a class="page-link" href="javascript:load_data_report(`' . $_POST["query"] . '`, ' . $count . ')">' . $count . '</a></li>';
+    }
 
-	}
-	else
-	{
-		$query = "
-		 SELECT * FROM animals WHERE animal_status = 'Rest'
-		
-		";
+    $pagination_html .= $previous_link . $page_links . $next_link . '</ul></div>';
 
-		$filter_query = $query . ' LIMIT ' . $start . ', ' . $limit;
-
-		$statement = $connect->prepare($query);
-		$statement->execute();
-		$total_data = $statement->rowCount();
-
-		$statement = $connect->prepare($filter_query);
-		$statement->execute();
-
-		$result = $statement->fetchAll();
-
-		foreach($result as $row)
-		{
-			$data[] = array(
-				'date_of_rest' => isset($row['date_of_rest']) ? $row['date_of_rest'] : null,
-                'name' => $row['name'],
-                'addition_date' => $row['addition_date'],
-                'image' => $row['image']
-
-                
-			);
-		}
-
-	}
-
-	$pagination_html = '
-	<div align="center">
-  		<ul class="pagination">
-	';
-
-	$total_links = ceil($total_data/$limit);
-
-	$previous_link = '';
-	$next_link = '';
-	$page_link = '';
-
-	if($total_links > 4)
-	{
-		if($page < 5)
-		{
-			for($count = 1; $count <= 5; $count++)
-			{
-				$page_array[] = $count;
-			}
-			$page_array[] = '...';
-			$page_array[] = $total_links;
-		}
-		else
-		{
-			$end_limit = $total_links - 5;
-
-			if($page > $end_limit)
-			{
-				$page_array[] = 1;
-				$page_array[] = '...';
-				for($count = $end_limit; $count <= $total_links; $count++)
-				{
-					$page_array[] = $count;
-				}
-			}
-			else
-			{
-				$page_array[] = 1;
-				$page_array[] = '...';
-				for($count = $page - 1; $count <= $page + 1; $count++)
-				{
-					$page_array[] = $count;
-				}
-				$page_array[] = '...';
-				$page_array[] = $total_links;
-			}
-		}
-	}
-	else
-	{
-		for($count = 1; $count <= $total_links; $count++)
-		{
-			$page_array[] = $count;
-		}
-	}
-
-	for($count = 0; $count < count($page_array); $count++)
-	{
-		if($page == $page_array[$count])
-		{
-			$page_link .= '
-			<li class="page-item active">
-	      		<a class="page-link" href="#">'.$page_array[$count].' <span class="sr-only"></span></a>
-	    	</li>
-			';
-
-			$previous_id = $page_array[$count] - 1;
-
-			if($previous_id > 0)
-			{
-				$previous_link = '<li class="page-item"><a class="page-link" href="javascript:load_data(`'.$_POST["query"].'`, '.$previous_id.')"><</a></li>';
-			}
-			else
-			{
-				$previous_link = '
-				<li class="page-item disabled">
-			        <a class="page-link" href="#"><</a>
-			    </li>
-				';
-			}
-
-			$next_id = $page_array[$count] + 1;
-
-			if($next_id > $total_links)
-			{
-				$next_link = '
-				<li class="page-item disabled">
-	        		<a class="page-link" href="#">></a>
-	      		</li>
-				';
-			}
-			else
-			{
-				$next_link = '
-				<li class="page-item"><a class="page-link" href="javascript:load_data(`'.$_POST["query"].'`, '.$next_id.')">></a></li>
-				';
-			}
-
-		}
-		else
-		{
-			if($page_array[$count] == '...')
-			{
-				$page_link .= '
-				<li class="page-item disabled">
-	          		<a class="page-link" href="#">...</a>
-	      		</li>
-				';
-			}
-			else
-			{
-				$page_link .= '
-				<li class="page-item">
-					<a class="page-link" href="javascript:load_data(`'.$_POST["query"].'`, '.$page_array[$count].')">'.$page_array[$count].'</a>
-				</li>
-				';
-			}
-		}
-	}
-
-	$pagination_html .= $previous_link . $page_link . $next_link;
-
-	$pagination_html .= '
-		</ul>
-	</div>
-	';
-
-	$output = array(
-		'data'          => $data,
-		'pagination'    => $pagination_html,
-		'total_data'    => $total_data
-	);
-
-	echo json_encode($output);
-
+    // Return the data and pagination
+    echo json_encode([
+        'data'       => $data,
+        'pagination' => $pagination_html,
+        'total_data' => $total_data
+    ]);
 }
-
 ?>
-
-
-
-
-
