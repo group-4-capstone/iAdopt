@@ -114,7 +114,7 @@ $adoption_count = ($adoption_result->num_rows > 0) ? $adoption_result->fetch_ass
           <div class="col-md-12 mb-4">
             <div class="stat-box p-4 bg-light border rounded">
               <h6>Statistics</h6>
-              <h3>For Adoption</h3>
+              <h3>Adoptable Animals</h3>
               <br>
               <h2 class="display-4"><?php echo $adoption_count; ?></h2>
             </div>

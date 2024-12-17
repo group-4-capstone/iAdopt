@@ -59,10 +59,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $fence = $_POST['fence'] ?? NULL;
     $no_fence = $_POST['no_fence'] ?? NULL;
     $litter_place = $_POST['litter_place'] ?? NULL;
-
- 
-   
-    
  
 
     // Handle Rent Letter (PDF or Image)

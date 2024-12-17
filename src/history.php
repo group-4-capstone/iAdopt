@@ -123,14 +123,14 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                             </button>
 
                             <div class="input-group input-group-md">
-                                <input type="text" class="form-control" placeholder="Search"  onkeyup="load_data_adopted(this.value);">
+                                <input type="text" class="form-control" placeholder="Search"  onkeyup="load_data_deny(this.value);">
                                 <span class="input-group-text search-icon"><i class="bi bi-search"></i></span>
                             </div>
                         </div>
                     </div>
 
                     <div class="card-body p-0">
-                        <table class="table table-hover mb-5" id="adoptedTable">
+                        <table class="table table-hover mb-5" id="denyTable">
                             <thead>
                                 <tr>
                                     <th width="25%">Report Date</th>
