@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", async function () {
   const canvas = document.getElementById("barChart");
   const ctx = canvas.getContext("2d");
-  const dropdownItems = document.querySelectorAll(".dropdown-item");
+  const dropdownItems = document.querySelectorAll(".adoption");
   const toggleButton = document.querySelector(".months-btn");
 
   let chart; // Reference to the Chart.js instance
@@ -115,7 +115,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 document.addEventListener("DOMContentLoaded", async function () {
   const canvas = document.getElementById("lineChart");
   const ctx = canvas.getContext("2d");
-  const dropdownItems = document.querySelectorAll(".dropdown-item");
+  const dropdownItems = document.querySelectorAll(".liquidation");
   const toggleButton = document.querySelector(".donation-btn");
 
   let chart; 

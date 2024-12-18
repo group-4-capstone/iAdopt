@@ -83,13 +83,13 @@ $adoption_count = ($adoption_result->num_rows > 0) ? $adoption_result->fetch_ass
         <div class="d-flex flex-column position-relative min-vh-10">
           <div class="mt-auto mb-3 me-3 text-end">
             <div class="dropdown">
-              <button class="months-btn dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+              <button class="months-btn dropdown-toggle" type="button" id="dropdownAdoptionButton" data-bs-toggle="dropdown" aria-expanded="false">
                 Monthly
               </button>
-              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <li><a class="dropdown-item" href="#" data-period="monthly">Monthly</a></li>
-                <li><a class="dropdown-item" href="#" data-period="quarterly">Quarterly</a></li>
-                <li><a class="dropdown-item" href="#" data-period="yearly">Yearly</a></li>
+              <ul class="dropdown-menu" aria-labelledby="dropdownAdoptionButton">
+                <li><a class="dropdown-item adoption" href="#" data-period="monthly">Monthly</a></li>
+                <li><a class="dropdown-item adoption" href="#" data-period="quarterly">Quarterly</a></li>
+                <li><a class="dropdown-item adoption" href="#" data-period="yearly">Yearly</a></li>
               </ul>
             </div>
           </div>
@@ -162,13 +162,13 @@ $adoption_count = ($adoption_result->num_rows > 0) ? $adoption_result->fetch_ass
     <div class="col-lg-9">
       <div class="chart-container">
         <div class="dropdown d-flex justify-content-end">
-          <button class="months-btn donation-btn dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+          <button class="months-btn donation-btn dropdown-toggle" type="button" id="dropdownLiquidationButton" data-bs-toggle="dropdown" aria-expanded="false">
             Monthly
           </button>
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <li><a class="dropdown-item" href="#" data-period="monthly">Monthly</a></li>
-            <li><a class="dropdown-item" href="#" data-period="quarterly">Quarterly</a></li>
-            <li><a class="dropdown-item" href="#" data-period="yearly">Yearly</a></li>
+          <ul class="dropdown-menu" aria-labelledby="dropdownLiquidationButton">
+            <li><a class="dropdown-item liquidation" href="#" data-period="monthly">Monthly</a></li>
+            <li><a class="dropdown-item liquidation" href="#" data-period="quarterly">Quarterly</a></li>
+            <li><a class="dropdown-item liquidation" href="#" data-period="yearly">Yearly</a></li>
           </ul>
         </div>
 
