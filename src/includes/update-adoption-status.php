@@ -33,10 +33,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $message = "Congratulations! Your application has been approved. Interview scheduled on: $formattedDate.";
             $notification_type = 'Application Approved';
             $is_read = 0; // Unread by default
+            $display = 1;
+            $notifSql = "INSERT INTO notifications (user_id, message, notification_type, is_read, created_at, display) VALUES (?, ?, ?, ?, NOW(), ?)";
 
-            $notifSql = "INSERT INTO notifications (user_id, message, notification_type, is_read, created_at) VALUES (?, ?, ?, ?, NOW())";
             $notifStmt = $db->prepare($notifSql);
-            $notifStmt->bind_param("issi", $user_id, $message, $notification_type, $is_read);
+            $notifStmt->bind_param("issi", $user_id, $message, $notification_type, $is_read, $display);
             $notifStmt->execute();
 
             echo json_encode(['success' => true]);
@@ -56,10 +57,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $message = "We're sorry. Your application has been rejected. Reason: $status_message.";
             $notification_type = 'Application Rejected';
             $is_read = 0; // Unread by default
+            $display = 1;
 
-            $notifSql = "INSERT INTO notifications (user_id, message, notification_type, is_read, created_at) VALUES (?, ?, ?, ?, NOW())";
+            $notifSql = "INSERT INTO notifications (user_id, message, notification_type, is_read, created_at, display) VALUES (?, ?, ?, ?, NOW(), ?)";
             $notifStmt = $db->prepare($notifSql);
-            $notifStmt->bind_param("issi", $user_id, $message, $notification_type, $is_read);
+            $notifStmt->bind_param("issi", $user_id, $message, $notification_type, $is_read, $display );
             $notifStmt->execute();
 
             echo json_encode(['success' => true]);

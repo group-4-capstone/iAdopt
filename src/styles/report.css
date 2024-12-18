@@ -22,6 +22,10 @@
   text-align: center;
 }
 
+.asterisk {
+  color: red;
+}
+
 #rescueForm {
   max-width: 83%;
   background-color: #ffffff;

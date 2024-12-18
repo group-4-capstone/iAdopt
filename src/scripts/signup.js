@@ -1,6 +1,89 @@
+//============================Last-Name Special Characters===========================// 
+document.getElementById('last-name').addEventListener('input', function (e) {
+    const regex = /^[a-zA-Z\s'-]*$/; // Allow only letters, spaces, hyphens, and apostrophes
+    const inputField = e.target;
 
+    // Check if input contains invalid characters or is only spaces
+    if (!regex.test(inputField.value) || inputField.value.trim() === '') {
+        // Remove invalid characters by keeping only valid ones
+        inputField.value = inputField.value.replace(/[^a-zA-Z\s'-]/g, '').trim();
+
+        // Add the invalid class and show the error
+        inputField.classList.add('is-invalid');
+        const error = document.querySelector('.invalid-feedback');
+        error.classList.remove('d-none');
+
+        // Hide error after 2 seconds
+        setTimeout(() => {
+            inputField.classList.remove('is-invalid');
+            error.classList.add('d-none');
+        }, 2000); // Hide error after 2 seconds
+    } else {
+        // If input is valid, remove the invalid class and hide the error
+        inputField.classList.remove('is-invalid');
+        const error = document.querySelector('.invalid-feedback');
+        error.classList.add('d-none');
+    }
+});
+//============================Last-Name Special Characters===========================// 
+document.getElementById('first-name').addEventListener('input', function (e) {
+    const regex = /^[a-zA-Z\s'-]*$/; // Allow only letters, spaces, hyphens, and apostrophes
+    const inputField = e.target;
+
+    // Check if input contains invalid characters or is only spaces
+    if (!regex.test(inputField.value) || inputField.value.trim() === '') {
+        // Remove invalid characters by keeping only valid ones
+        inputField.value = inputField.value.replace(/[^a-zA-Z\s'-]/g, '').trim();
+
+        // Add the invalid class and show the error
+        inputField.classList.add('is-invalid');
+        const error = document.querySelector('.invalid-feedback');
+        error.classList.remove('d-none');
+
+        // Hide error after 2 seconds
+        setTimeout(() => {
+            inputField.classList.remove('is-invalid');
+            error.classList.add('d-none');
+        }, 2000); // Hide error after 2 seconds
+    } else {
+        // If input is valid, remove the invalid class and hide the error
+        inputField.classList.remove('is-invalid');
+        const error = document.querySelector('.invalid-feedback');
+        error.classList.add('d-none');
+    }
+});
+//============================Middle-Name Special Characters===========================// 
+document.getElementById('mi').addEventListener('input', function (e) {
+    const regex = /^[a-zA-Z\s'-]*$/; // Allow only letters, spaces, hyphens, and apostrophes
+    const inputField = e.target;
+
+    // Check if input contains invalid characters or is only spaces
+    if (!regex.test(inputField.value) || inputField.value.trim() === '') {
+        // Remove invalid characters by keeping only valid ones
+        inputField.value = inputField.value.replace(/[^a-zA-Z\s'-]/g, '').trim();
+
+        // Add the invalid class and show the error
+        inputField.classList.add('is-invalid');
+        const error = document.querySelector('.invalid-feedback');
+        error.classList.remove('d-none');
+
+        // Hide error after 2 seconds
+        setTimeout(() => {
+            inputField.classList.remove('is-invalid');
+            error.classList.add('d-none');
+        }, 2000); // Hide error after 2 seconds
+    } else {
+        // If input is valid, remove the invalid class and hide the error
+        inputField.classList.remove('is-invalid');
+        const error = document.querySelector('.invalid-feedback');
+        error.classList.add('d-none');
+    }
+});
+
+
+    
     //============================ Birthdate only 18 y/o ===========================// 
-    document.addEventListener('DOMContentLoaded', function () {
+    
         const birthdateInput = document.getElementById('birthdate');
         
         // Get today's date and subtract 18 years
@@ -9,26 +92,31 @@
         
         // Set the max attribute to allow only birthdates for users who are at least 18 years old
         birthdateInput.max = minDate.toISOString().split('T')[0];
-    });
 
 
-    //============================ Contact Number Validation =======================//
-    document.getElementById('contact-number').addEventListener('input', function () {
-        const contactNumberInput = document.getElementById('contact-number');
-        const contactError = document.getElementById('contact-error');
-        const contactNumber = contactNumberInput.value;
-        const contactRegex = /^[0-9]{10,11}$/; // Only allow 10-11 digits
 
-        // If contact number is invalid, display error and mark as invalid
-        if (!contactRegex.test(contactNumber)) {
-            contactError.style.display = 'block';
-            contactNumberInput.classList.add('is-invalid');
-        } else {
-            // If valid, hide error and mark as valid
-            contactError.style.display = 'none';
-            contactNumberInput.classList.remove('is-invalid');
-        }
-    });
+   //============================ Contact Number Validation =======================//
+document.getElementById('contact-number').addEventListener('input', function (e) {
+    const contactNumberInput = e.target;
+    const contactError = contactNumberInput.nextElementSibling; // Get the next sibling which is the invalid-feedback div
+    const contactNumber = contactNumberInput.value;
+
+    // Remove any non-numeric characters (allow only digits)
+    contactNumberInput.value = contactNumber.replace(/\D/g, '');  // \D matches any non-digit character
+
+    // Contact number regex: only allow exactly 11 digits
+    const contactRegex = /^[0-9]{11}$/;
+
+    // If contact number is invalid, display error and mark as invalid
+    if (!contactRegex.test(contactNumberInput.value)) {
+        contactNumberInput.classList.add('is-invalid');
+        contactError.style.display = 'block';  // Show the invalid-feedback message
+    } else {
+        // If valid, hide error and mark as valid
+        contactNumberInput.classList.remove('is-invalid');
+        contactError.style.display = 'none';  // Hide the invalid-feedback message
+    }
+});
 
 
     //============================== Space Only / Validation =========================// 
@@ -67,75 +155,60 @@
     });
 
 
-    //============= Address Submission ==================//
+//============================ Password Validation =======================//
+const passwordInput = document.getElementById('password');
+const confirmPasswordInput = document.getElementById('confirm-password');
+const form = document.querySelector('form');
 
-    document.querySelector('form').addEventListener('submit', function (e) {
-        let valid = true;
-    
-        // Validate each address dropdown
-        const region = document.getElementById('region');
-        const province = document.getElementById('province');
-        const city = document.getElementById('city');
-        const barangay = document.getElementById('barangay');
-    
-        // Check if any dropdown is not selected
-        if (region.value === "Choose Region" || province.value === "Choose Province" || city.value === "Choose City/Municipality" || barangay.value === "Choose Barangay") {
-            valid = false;
-            alert("Please fill out the complete address.");
-        }
-    
-        // Prevent form submission if validation fails
-        if (!valid) {
-            e.preventDefault();
-        }
-    });
-    
- //=============Password Validation ==================//
-    document.addEventListener('DOMContentLoaded', function () {
-        const passwordInput = document.getElementById('password');
-        const confirmPasswordInput = document.getElementById('confirm-password');
-        const form = document.querySelector('form');
-    
-        // Regular expression for a strong password
-        const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-    
-        form.addEventListener('submit', function (e) {
-            let valid = true;
-    
-            // Check password strength
-            if (!strongPasswordRegex.test(passwordInput.value)) {
-                valid = false;
-                passwordInput.classList.add('is-invalid');
-            } else {
-                passwordInput.classList.remove('is-invalid');
-            }
-    
-            // Check if passwords match
-            if (passwordInput.value !== confirmPasswordInput.value) {
-                valid = false;
-                confirmPasswordInput.classList.add('is-invalid');
-            } else {
-                confirmPasswordInput.classList.remove('is-invalid');
-            }
-    
-            // Prevent form submission if validation fails
-            if (!valid) {
-                e.preventDefault();
-            }
-        });
-    
-        // Real-time validation for password strength
-        passwordInput.addEventListener('input', function () {
-            if (strongPasswordRegex.test(passwordInput.value)) {
-                passwordInput.classList.remove('is-invalid');
-            }
-        });
-    
-        // Real-time validation for password confirmation
-        confirmPasswordInput.addEventListener('input', function () {
-            if (passwordInput.value === confirmPasswordInput.value) {
-                confirmPasswordInput.classList.remove('is-invalid');
-            }
-        });
-    });
-    
+// Regular expression for a strong password
+const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+// Real-time validation for password strength
+passwordInput.addEventListener('input', function () {
+    const passwordError = passwordInput.nextElementSibling; // Invalid-feedback div
+    if (!strongPasswordRegex.test(passwordInput.value)) {
+        passwordInput.classList.add('is-invalid');
+        passwordError.style.display = 'block'; // Show the invalid-feedback message
+    } else {
+        passwordInput.classList.remove('is-invalid');
+        passwordError.style.display = 'none'; // Hide the invalid-feedback message
+    }
+});
+
+// Real-time validation for password confirmation
+confirmPasswordInput.addEventListener('input', function () {
+    const confirmPasswordError = confirmPasswordInput.nextElementSibling; // Invalid-feedback div
+    if (passwordInput.value !== confirmPasswordInput.value) {
+        confirmPasswordInput.classList.add('is-invalid');
+        confirmPasswordError.style.display = 'block'; // Show the invalid-feedback message
+    } else {
+        confirmPasswordInput.classList.remove('is-invalid');
+        confirmPasswordError.style.display = 'none'; // Hide the invalid-feedback message
+    }
+});
+
+// Form submit validation
+form.addEventListener('submit', function (e) {
+    let valid = true;
+
+    // Check password strength
+    if (!strongPasswordRegex.test(passwordInput.value)) {
+        valid = false;
+        passwordInput.classList.add('is-invalid');
+    } else {
+        passwordInput.classList.remove('is-invalid');
+    }
+
+    // Check if passwords match
+    if (passwordInput.value !== confirmPasswordInput.value) {
+        valid = false;
+        confirmPasswordInput.classList.add('is-invalid');
+    } else {
+        confirmPasswordInput.classList.remove('is-invalid');
+    }
+
+    // Prevent form submission if validation fails
+    if (!valid) {
+        e.preventDefault();
+    }
+});

@@ -4,10 +4,10 @@ include_once 'includes/db-connect.php';
 
 // Check session and role
 if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['role'] == 'head_admin')) {
-    
+
     if (isset($_GET['animal_id'])) {
         $animal_id = $_GET['animal_id'];
-    
+
         $report_query = "
             SELECT rescue.*, animals.*, users.first_name, users.last_name
             FROM rescue
@@ -15,12 +15,12 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
             INNER JOIN users ON rescue.user_id = users.user_id
             WHERE animals.animal_id = ? AND rescue.report_type = 'report'
         ";
-    
+
         $report_stmt = $db->prepare($report_query);
         $report_stmt->bind_param("i", $animal_id);
         $report_stmt->execute();
         $report_result = $report_stmt->get_result();
-    
+
         if ($report_result->num_rows > 0) {
             $animal = $report_result->fetch_assoc();
         } else {
@@ -30,12 +30,12 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                 INNER JOIN animals ON rescue.animal_id = animals.animal_id
                 WHERE animals.animal_id = ? AND rescue.report_type = 'rescue'
             ";
-    
+
             $stmt = $db->prepare($query);
             $stmt->bind_param("i", $animal_id);
             $stmt->execute();
             $result = $stmt->get_result();
-    
+
             if ($result->num_rows > 0) {
                 $animal = $result->fetch_assoc();
             } else {
@@ -49,10 +49,10 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
         header("Location: not-found.php");
         exit();
     }
-    
+
     $status = htmlspecialchars($animal['animal_status']);
     $badgeClass = '';
-    
+
     switch ($status) {
         case 'Waitlist':
             $badgeClass = 'bg-warning';
@@ -69,14 +69,14 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
         case 'On Process':
             $badgeClass = 'bg-danger';
             break;
-        case 'Adopted': 
-            $badgeClass = 'bg-info'; 
+        case 'Adopted':
+            $badgeClass = 'bg-info';
             break;
         default:
-            $badgeClass = 'bg-secondary'; 
+            $badgeClass = 'bg-secondary';
             break;
     }
-    
+
     $tags = isset($animal['tags']) ? explode(',', $animal['tags']) : [];
     $hasSixTags = count($tags) === 6;
 
@@ -92,8 +92,8 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
 
     $hasRequiredVaccines = $vaccineData['count'] == 2;
     $showAdoptable = $hasSixTags && $hasRequiredVaccines;
-    ?>
-    
+?>
+
 
     <!DOCTYPE html>
     <html lang="en">
@@ -148,6 +148,18 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                 </div>
             </div>
 
+            <div class="toast-container position-fixed top-0 end-0 p-3">
+                <div id="noChangesToast" class="toast align-items-center text-bg-warning border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            No changes detected. Please modify the form before applying changes.
+                        </div>
+                        <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>
+            </div>
+
+
             <!-- QR Code Modal -->
             <div class="modal fade" id="qrModal" tabindex="-1" aria-labelledby="qrModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
                 <div class="modal-dialog modal-dialog-centered">
@@ -178,7 +190,7 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                     <div class="card info-card p-4">
                         <h2 class="title">> INFORMATION SHEET</h2>
                         <p class="d-flex justify-content-end align-items-center mt-1 mb-2 me-4">
-                          Status: <span class="badge <?php echo $badgeClass; ?> w-25 ms-2"> <?php echo $status; ?> </span>
+                            Status: <span class="badge <?php echo $badgeClass; ?> w-25 ms-2"> <?php echo $status; ?> </span>
                         </p>
 
                         <div class="row mt-2">
@@ -308,9 +320,9 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                                     <?php endif; ?>
 
                                     <input type="hidden" name="animal_id" value="<?php echo $animal_id ?>" readonly>
-                                    
+
                                     <?php if ($showAdoptable): ?>
-                                      <i class="small form-group" id="adoptableInfo">*** Can be tagged as <b>Adoptable</b>, click on Edit Information to update status.</i>
+                                        <i class="small form-group" id="adoptableInfo">*** Can be tagged as <b>Adoptable</b>, click on Edit Information to update status.</i>
                                     <?php endif; ?>
 
                                     <div class="d-flex justify-content-end mt-5 mb-3">
@@ -341,9 +353,12 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                                     <div class="accordion-body">
                                         <div class="row">
                                             <div class="row mt-2 px-4">
+
                                                 <div class="col-lg-6">
                                                     <p class="text-center"><strong>Rescue ID:</strong> <?php echo $animal['rescue_id'] ?></p>
-                                                    <img id="animalImage" src="styles/assets/rescue-reports/<?php echo $animal['animal_image'] ?>" alt="Animal Image" class="img-fluid" style="max-width: 100%; height: auto;">
+                                                    <div class="ratio ratio-4x3" style="max-width: 90%; overflow: hidden;">
+                                                        <img id="modalAnimalImage" src="styles/assets/rescue-reports/<?php echo $animal['animal_image'] ?>" alt="Animal Image" class="img-fluid object-fit-cover" style="width: 100%; height: 100%;">
+                                                    </div>
                                                 </div>
                                                 <div class="col-lg-6 d-flex flex-column justify-content-center">
                                                     <?php
@@ -414,47 +429,47 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                                             </a>
 
                                             <!-- Modal for Updating General Health Information -->
-                                        <div class="modal fade" id="updateHealthInfoModal" tabindex="-1" aria-labelledby="updateHealthInfoModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog modal-dialog-centered">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="updateHealthInfoModalLabel">Update General Health Information</h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <form id="healthInfoForm" method="POST">
-                                                            <input type="hidden" id="animal_id" name="animal_id" value="<?php echo $animal_id; ?>" readonly>
-                                                            <div class="mb-3">
-                                                                <label for="weight" class="form-label">Weight (kg)</label>
-                                                                <input type="number" step="0.1" class="form-control" id="weight" name="weight"
-                                                                    placeholder="Enter weight" value="<?php echo $weight; ?>" required>
-                                                            </div>
-                                                            <div class="mb-3">
-                                                                <label for="age" class="form-label">Age (months)</label>
-                                                                <input type="number" class="form-control" id="age" name="age" 
-                                                                    placeholder="Enter age in months" value="<?php echo $age; ?>" required>
-                                                            </div>
-                                                            <div class="mb-3">
-                                                                <label for="illness_injuries" class="form-label">Illness/Injuries</label>
-                                                                <input type="text" class="form-control" id="illness_injuries" name="illness_injuries" 
-                                                                    placeholder="Enter details about illness or injuries" value="<?php echo $illness_injuries; ?>">
-                                                            </div>
-                                                            <div class="mb-3">
-                                                                <label for="medical_treatments" class="form-label">Medical Treatments</label>
-                                                                <input type="text" class="form-control" id="medical_treatments" name="medical_treatments" 
-                                                                    placeholder="Enter details about medical treatments" value="<?php echo $medical_treatments; ?>">
-                                                            </div>
-                                                            <div class="d-flex justify-content-end">
-                                                                <button type="button" id="submitHealthInfoBtn" class="btn btn-primary">Update</button>
-                                                            </div>
-                                                        </form>
+                                            <div class="modal fade" id="updateHealthInfoModal" tabindex="-1" aria-labelledby="updateHealthInfoModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="updateHealthInfoModalLabel">Update General Health Information</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <form id="healthInfoForm" method="POST">
+                                                                <input type="hidden" id="animal_id" name="animal_id" value="<?php echo $animal_id; ?>" readonly>
+                                                                <div class="mb-3">
+                                                                    <label for="weight" class="form-label">Weight (kg)</label>
+                                                                    <input type="number" step="0.1" class="form-control" id="weight" name="weight"
+                                                                        placeholder="Enter weight" value="<?php echo $weight; ?>" required>
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <label for="age" class="form-label">Age (months)</label>
+                                                                    <input type="number" class="form-control" id="age" name="age"
+                                                                        placeholder="Enter age in months" value="<?php echo $age; ?>" required>
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <label for="illness_injuries" class="form-label">Illness/Injuries</label>
+                                                                    <input type="text" class="form-control" id="illness_injuries" name="illness_injuries"
+                                                                        placeholder="Enter details about illness or injuries" value="<?php echo $illness_injuries; ?>">
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <label for="medical_treatments" class="form-label">Medical Treatments</label>
+                                                                    <input type="text" class="form-control" id="medical_treatments" name="medical_treatments"
+                                                                        placeholder="Enter details about medical treatments" value="<?php echo $medical_treatments; ?>">
+                                                                </div>
+                                                                <div class="d-flex justify-content-end">
+                                                                    <button type="button" id="submitHealthInfoBtn" class="btn btn-primary">Update</button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                      </div>
                                         <div class="col-md-6">
-                                        <h5>Vaccinations:</h5>
+                                            <h5>Vaccinations:</h5>
                                             <?php
                                             $sql = "SELECT * FROM vaccines WHERE animal_id = '$animal_id'";
                                             // Execute the query
@@ -635,7 +650,7 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                 </div>
             </div>
 
-              <!-- Success Record Modal -->
+            <!-- Success Record Modal -->
             <div class="modal fade" id="successHealthModal" tabindex="-1" aria-labelledby="successContentModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">

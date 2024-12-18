@@ -52,29 +52,25 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
             <div class="container mt-5">
                 <div class="card">
                     <div class="card-header d-flex justify-content-between align-items-center">
-                    <div class="d-flex align-items-center ms-auto">
-                        <div class="dropdown">
-                            <button
-                                class="btn btn-sort d-flex align-items-center"
-                                id="sortDropdown"
-                                data-bs-toggle="dropdown"
-                                aria-expanded="false"
-                                style="white-space: nowrap;"
-                            >
-                                <span class="badge text-bg-secondary">
-                                    <i class="bi bi-arrow-down-up me-1"></i><span id="sortLabel">Sort By</span>
-                                </span>
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="sortDropdown">
-                                <li><a class="dropdown-item sort-option" data-sort="desc" href="#">Newest to Oldest</a></li>
-                                <li><a class="dropdown-item sort-option" data-sort="asc" href="#">Oldest to Newest</a></li>
-                            </ul>
+                        <h4>Rescue Reports</h4>
+                        <div class="d-flex align-items-center ms-auto">
+                            <div class="dropdown">
+                                <button class="btn btn-sort d-flex align-items-center" id="reportsSortToggle"
+                                    data-bs-toggle="dropdown" aria-expanded="false" style="white-space: nowrap;">
+                                    <span class="badge text-bg-secondary">
+                                        <i class="bi bi-arrow-down-up me-1"></i><span id="sortLabel">Sort By</span>
+                                    </span>
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="reportsSortToggle">
+                                    <li><a class="dropdown-item report-sort-option" data-sort="desc" href="#">Newest to Oldest</a></li>
+                                    <li><a class="dropdown-item report-sort-option" data-sort="asc" href="#">Oldest to Newest</a></li>
+                                </ul>
+                            </div>
+                            <div class="input-group input-group-md ms-3">
+                                <input type="text" class="form-control" id="searchInput" placeholder="Search" onkeyup="load_data_report(this.value);">
+                                <span class="input-group-text search-icon"><i class="bi bi-search"></i></span>
+                            </div>
                         </div>
-                        <div class="input-group input-group-md ms-3">
-                            <input type="text" class="form-control" id="searchInput" placeholder="Search">
-                            <span class="input-group-text search-icon"><i class="bi bi-search"></i></span>
-                        </div>
-                    </div>
 
                     </div>
 
@@ -103,14 +99,23 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
             <div class="container mt-5">
                 <div class="card">
                     <div class="card-header d-flex justify-content-between align-items-center">
+                        <h4>Rescue Records</h4>
                         <div class="d-flex align-items-center ms-auto">
                             <button class="btn btn-add d-flex align-items-center" onclick="window.location.href='add-record.php'">
                                 <span class="badge text-bg-success"><i class="bi bi-plus me-1"></i><span>Add</span></span>
                             </button>
-                            <button class="btn btn-sort d-flex align-items-center" style="white-space: nowrap;">
-                                <span class="badge text-bg-secondary"> <i class="bi bi-arrow-down-up me-1"></i><span>Sort By</span></span>
-                            </button>
-
+                            <div class="dropdown">
+                                <button class="btn btn-sort d-flex align-items-center" id="recordsSortToggle"
+                                    data-bs-toggle="dropdown" aria-expanded="false" style="white-space: nowrap;">
+                                    <span class="badge text-bg-secondary">
+                                        <i class="bi bi-arrow-down-up me-1"></i><span id="sortLabel">Sort By</span>
+                                    </span>
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="recordsSortToggle">
+                                    <li><a class="dropdown-item record-sort-option" data-sort="desc" href="#">Newest to Oldest</a></li>
+                                    <li><a class="dropdown-item record-sort-option" data-sort="asc" href="#">Oldest to Newest</a></li>
+                                </ul>
+                            </div>
                             <div class="input-group input-group-md">
                                 <input type="text" class="form-control" placeholder="Search" onkeyup="load_data(this.value);">
                                 <span class="input-group-text search-icon"><i class="bi bi-search"></i></span>
@@ -141,19 +146,33 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
             </div>
         </div>
 
+
         <!-- Confirmation Modal -->
-        <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true" data-bs-backdrop="static">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="confirmationModalLabel">Confirm Acceptance</h5>
+                        <h5 class="modal-title" id="confirmationModalLabel">Confirm Action</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        Are you sure you want to accept this report?
+                        <p id="confirmationText">Are you sure you want to proceed with this action?</p>
+                        <div id="denyReasonContainer" class="row align-items-center" style="display: none;">
+                            <label for="denyReason" class="col-3 form-label">Reason:<span class="asterisk"> *</span></label>
+                            <div class="col-9">
+                                <select id="denyReason" class="form-select" name="deny_reason">
+                                    <option selected disabled>--- Select a reason ---</option>
+                                    <option value="Shelter is in full capacity">Shelter is in full capacity</option>
+                                    <option value="Unable to rescue due to the animal's condition">Unable to rescue due to the animal's condition</option>
+                                    <option value="Invalid report">Invalid report</option>
+                                    <option value="Duplicate report">Duplicate report</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-primary" id="confirmAcceptButton">Yes</button>
+                        <button type="button" class="btn btn-primary" id="confirmActionButton">Confirm</button>
                     </div>
                 </div>
             </div>
@@ -167,14 +186,24 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                         <button type="button" class="btn-close d-flex ms-auto" data-bs-dismiss="modal" onclick="location.reload();"></button>
                         <div class="text-center">
                             <i class="bi bi-check-circle-fill" style="font-size: 8rem; color: #28a745;"></i>
-                            <p class="mt-4 px-2"> Report has been accepted!
-                            </p>
+                            <p class="mt-4 px-2" id="successMessage">Report has been accepted!</p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
+        <!-- Toast Notification -->
+            <div class="toast-container position-fixed top-0 end-0 p-3">
+                <div id="copyToast" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="polite" aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            Verification message copied to clipboard!
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>
+            </div>
 
         <?php
         $report_query = "SELECT * FROM rescue INNER JOIN animals ON rescue.animal_id = animals.animal_id INNER JOIN users ON rescue.user_id = users.user_id
@@ -182,7 +211,37 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
 
         $report_result = $db->query($report_query);
         if ($report_result->num_rows > 0) {
-            while ($row = $report_result->fetch_assoc()) { ?>
+            while ($row = $report_result->fetch_assoc()) {
+                $date = new DateTime($row['report_date']);
+                $formattedDate = $date->format('F j, Y g:i A');
+
+                $reporterName = htmlspecialchars($row['first_name'] . ' ' . $row['last_name']);
+                $animalType = htmlspecialchars($row['type']);
+                $reportLocation = htmlspecialchars($row['location']);
+                $reportDescription = htmlspecialchars($row['rescue_description']);
+                $reportDate = $formattedDate;
+                $fbLink = htmlspecialchars($row['fb_link']);
+                $contactNum = htmlspecialchars($row['contact_num']);
+                $email = htmlspecialchars($row['email']);
+
+                $verificationMessage = <<<EOD
+                                            Hi $reporterName,
+
+                                            We have received your report and would like to verify the details with you:
+
+                                            - Report Date: $reportDate
+                                            - Type: $animalType
+                                            - Location: $reportLocation
+                                            - Description: $reportDescription
+
+                                            Please review the information above and confirm if everything is correct or let us know if any changes are needed.
+
+                                            Thank you for your cooperation.
+
+                                            Best regards,  
+                                            SECASPI
+                                            EOD;
+        ?>
 
                 <!-- View rescue details modal -->
                 <div class="modal fade" id="reportModal_<?php echo $row['rescue_id']; ?>" data-bs-backdrop="static" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
@@ -194,95 +253,56 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                             </div>
                             <div class="modal-body">
                                 <div class="row mt-2 px-4">
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-6 col-12">
                                         <p class="text-center"><strong>Rescue ID:</strong> <?php echo $row['rescue_id'] ?></p>
-                                        <img id="modalAnimalImage" src="styles/assets/rescue-reports/<?php echo $row['animal_image'] ?>" alt="Animal Image" class="img-fluid" style="max-width: 100%; height: auto;">
+                                        <div class="ratio ratio-4x3" style="max-width: 90%; overflow: hidden;">
+                                            <img id="modalAnimalImage" src="styles/assets/rescue-reports/<?php echo $row['animal_image'] ?>" alt="Animal Image" class="img-fluid object-fit-cover" style="width: 100%; height: 100%;">
+                                        </div>
                                     </div>
-                                    <div class="col-lg-6  d-flex flex-column justify-content-center">
-                                        <?php
-                                        $date = new DateTime($row['report_date']);
-                                        $formattedDate = $date->format('F j, Y g:i A');
-                                        ?>
-                                        <p><strong>Report Date:</strong> <?php echo $formattedDate; ?> </p>
+                                    <div class="col-lg-6 col-12 d-flex flex-column justify-content-center">
+                                        <p><strong>Report Date:</strong> <?php echo $reportDate; ?> </p>
+                                        <p><strong>Type:</strong> <?php echo $animalType ?></p>
+                                        <p><strong>Location:</strong> <?php echo $reportLocation ?> </p>
+                                        <p><strong>Report Description:</strong> <?php echo $reportDescription ?></p>
+                                        <br>
+                                        <p><strong>Reporter:</strong> <?php echo $reporterName?></p>
+                                        <div class="ms-2">
+                                            <strong>Contact Details:</strong>
+                                            <ul>
+                                                <li>
+                                                    <strong>FB Account:</strong>
+                                                    <a href="<?php echo htmlspecialchars($row['fb_link']); ?>" target="_blank" rel="noopener noreferrer">
+                                                        Visit Facebook Profile
+                                                    </a>
+                                                </li>
+                                                <li><strong>Phone Number:</strong> <?php echo htmlspecialchars($row['contact_num']); ?></li>
+                                                <li><strong>Email:</strong> <a href="mailto:<?php echo htmlspecialchars($row['email']); ?>"><?php echo htmlspecialchars($row['email']); ?></a></li>
+                                            </ul>
+                                        </div>
+                                        <!-- Copy Link -->
+                                        <a href="#" id="copyLink_<?php echo $row['rescue_id'] ?>" class="btn btn-primary">Copy Automated Message</a>
 
-                                        <p><strong>Type:</strong> <?php echo $row['type'] ?></p>
-                                        <p><strong>Location:</strong> <?php echo $row['location'] ?> </p>
-                                        <p><strong>Reporter:</strong> <?php echo $row['first_name'] . ' ' . $row['last_name'] ?> </p>
-                                        <p><strong>Status:</strong> <?php echo $row['animal_status'] ?></p>
-                                        <p><strong>Report Description:</strong> <?php echo $row['rescue_description'] ?></p>
+                                        <!-- Hidden Element to Store the Message -->
+                                        <textarea id="verificationMessage_<?php echo $row['rescue_id'] ?>" class="d-none"><?php echo $verificationMessage; ?></textarea>
+
                                     </div>
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <form method="post" id="updateStatusForm">
+                                <form method="post" id="updateStatusForm_<?php echo $row['rescue_id'] ?>">
                                     <input type="hidden" name="rescue_id" value="<?php echo $row['rescue_id'] ?>" readonly>
-                                    <button type="submit" class="btn btn-primary me-4 mb-2" onclick="$('#reportModal_<?php echo $row['rescue_id']; ?>').modal('hide');" id="acceptButton">Accept</button>
+                                    <button type="submit" class="btn btn-success me-2 mb-2" onclick="$('#reportModal_<?php echo $row['rescue_id']; ?>').modal('hide');" id="acceptButton_<?php echo $row['rescue_id'] ?>">
+                                        Accept
+                                    </button>
+                                    <button type="submit" class="btn btn-danger mb-2" onclick="$('#reportModal_<?php echo $row['rescue_id']; ?>').modal('hide');" id="denyButton__<?php echo $row['rescue_id'] ?>">
+                                        Deny
+                                    </button>
                                 </form>
                             </div>
                         </div>
                     </div>
                 </div><?php }
                 } ?>
-
-
-        <!-- Rescue Request Modal -->
-        <div class="modal fade" id="rescueRequestModal" tabindex="-1" aria-labelledby="rescueRequestModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="rescueRequestModalLabel">RESCUE REQUEST DETAILS</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="container">
-                            <form>
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <img src="styles/assets/aspin-2.png" class="img-fluid rounded" alt="Pet Image">
-                                    </div>
-                                    <div class="col-md-8">
-                                        <!-- Stacked form fields -->
-                                        <div class="row">
-                                            <div class="mb-3 col-lg-4">
-                                                <label for="rescueDate" class="form-label">Date Rescued:</label>
-                                                <input type="text" class="form-control text-center" id="rescueDate" disabled>
-                                            </div>
-                                            <div class="mb-3 col-lg-8">
-                                                <label for="characteristics" class="form-label">Characteristics:</label>
-                                                <input type="text" class="form-control" id="characteristics" disabled>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="mb-3 col-lg-12">
-                                                <label for="reporter" class="form-label">Reporter:</label>
-                                                <input type="text" class="form-control" id="reporter" disabled>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="mb-3 col-lg-12">
-                                                <label for="address" class="form-label">Address:</label>
-                                                <input type="text" class="form-control" id="address" disabled>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="remarks" class="form-label">Other Details:</label>
-                                            <textarea class="form-control" id="remarks" rows="3" disabled></textarea>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Reject</button>
-                        <button type="button" class="btn btn-save">Approve</button>
-                    </div>
-                    <div class="paw-prints-down"><img src="styles/assets/paw-down.png" alt="Paws"></div>
-                </div>
-            </div>
-        </div>
-
-
 
         <script src="scripts/rescue-records.js"></script>
 
