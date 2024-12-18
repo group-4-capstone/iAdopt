@@ -64,15 +64,33 @@ $('#confirmActionButton').click(function () {
     });
 });
 
+// Rescue Reports Sort By Event Listener
+document.querySelectorAll('.report-sort-option').forEach(item => {
+    item.addEventListener('click', function (e) {
+        e.preventDefault();
+        const sortOrder = this.getAttribute('data-sort');
+        load_data_report('', 1, sortOrder);
+    });
+});
+
+// Rescue Records Sort By Event Listener
+document.querySelectorAll('.record-sort-option').forEach(item => {
+    item.addEventListener('click', function (e) {
+        e.preventDefault();
+        const sortOrder = this.getAttribute('data-sort');
+        load_data('', 1, sortOrder);
+    });
+});
 
 // ----------------------------- DISPLAY AND PAGINATION -------------------------- //
 // ----------------------------- REPORTS TABLE ----------------------------------- //
 load_data_report();
 
-function load_data_report(query = '', page_number = 1) {
+function load_data_report(query = '', page_number = 1, sort_order = 'desc') {
     var form_data = new FormData();
     form_data.append('query', query);
     form_data.append('page', page_number);
+    form_data.append('sort_order', sort_order); // Add sort_order parameter
 
     var ajax_request = new XMLHttpRequest();
     ajax_request.open('POST', 'includes/fetch-reports.php');
@@ -114,22 +132,41 @@ function load_data_report(query = '', page_number = 1) {
     };
 }
 
-
+document.querySelectorAll('[id^="copyLink_"]').forEach(function(copyLink) {
+    copyLink.addEventListener('click', function (e) {
+        e.preventDefault();
+        
+        // Get the rescue_id from the link's id
+        const rescueId = this.id.split('_')[1];
+        
+        // Find the corresponding textarea by using the same rescue_id
+        const message = document.getElementById('verificationMessage_' + rescueId);
+        
+        // Copy the message to clipboard
+        message.classList.remove('d-none');  // Make it visible temporarily
+        message.select();
+        document.execCommand('copy');
+        message.classList.add('d-none');  // Hide it again
+        
+        // Show Bootstrap toast
+        const toastElement = document.getElementById('copyToast');
+        const toast = new bootstrap.Toast(toastElement);
+        toast.show();
+    });
+});
 
 // ----------------------------- RESCUE TABLE ----------------------------------- //
 load_data();
 
-function load_data(query = '', page_number = 1) {
+
+function load_data(query = '', page_number = 1, sort_order = 'desc') {
     var form_data = new FormData();
-
     form_data.append('query', query);
-
     form_data.append('page', page_number);
+    form_data.append('sort_order', sort_order); 
 
     var ajax_request = new XMLHttpRequest();
-
     ajax_request.open('POST', 'includes/fetch-records.php');
-
     ajax_request.send(form_data);
 
     ajax_request.onreadystatechange = function () {
@@ -137,31 +174,17 @@ function load_data(query = '', page_number = 1) {
             var response = JSON.parse(ajax_request.responseText);
 
             var html = '';
-
             var serial_no = 1;
 
             if (response.data.length > 0) {
                 for (var count = 0; count < response.data.length; count++) {
-                    // Capitalize the first letter of each word for name, type, and rescued_by
-                    var name = response.data[count].name.toLowerCase().replace(/\b\w/g, function (char) {
-                        return char.toUpperCase();
-                    });
+                    var name = response.data[count].name.toLowerCase().replace(/\b\w/g, char => char.toUpperCase());
+                    var type = response.data[count].type.toLowerCase().replace(/\b\w/g, char => char.toUpperCase());
+                    var rescued_by = response.data[count].rescued_by.toLowerCase().replace(/\b\w/g, char => char.toUpperCase());
 
-                    var type = response.data[count].type.toLowerCase().replace(/\b\w/g, function (char) {
-                        return char.toUpperCase();
-                    });
-
-                    var rescued_by = response.data[count].rescued_by.toLowerCase().replace(/\b\w/g, function (char) {
-                        return char.toUpperCase();
-                    });
-
-                    // Capitalize and conditionally apply the badge class for animal_status
                     var status = response.data[count].animal_status.toLowerCase();
-                    var statusDisplay = status.replace(/\b\w/g, function (char) {
-                        return char.toUpperCase();
-                    });
+                    var statusDisplay = status.replace(/\b\w/g, char => char.toUpperCase());
 
-                
                     if (statusDisplay === "Adoptable") {
                         statusDisplay = '<span class="badge bg-success text-light">Adoptable</span>';
                     } else if (statusDisplay === "On Process") {
@@ -169,8 +192,7 @@ function load_data(query = '', page_number = 1) {
                     } else if (statusDisplay === "Unadoptable") {
                         statusDisplay = '<span class="badge bg-secondary text-light">Unadoptable</span>';
                     }
-                    
-                    // Construct the HTML for each row in the table
+
                     html += '<tr onclick="window.location.href=\'animal-record.php?animal_id=' + response.data[count].animal_id + '\'">';
                     html += '<td>' + response.data[count].rescue_id + '</td>';
                     html += '<td>' + response.data[count].report_date + '</td>';
@@ -181,15 +203,16 @@ function load_data(query = '', page_number = 1) {
                     html += '</tr>';
                     serial_no++;
                 }
-            }
-            else {
+            } else {
                 html += '<tr><td colspan="6" class="text-center">No Data Found</td></tr>';
             }
+
             document.getElementById('post_data').innerHTML = html;
             document.getElementById('pagination_link').innerHTML = response.pagination;
         }
     }
 }
+
 
 // Clicking the placeholder triggers the file input
 document.getElementById('uploadPlaceholder').addEventListener('click', function () {

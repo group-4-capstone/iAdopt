@@ -12,6 +12,8 @@ if (isset($_POST["query"])) {
     $page = $_POST["page"] > 1 ? $_POST["page"] : 1;
     $start = ($page - 1) * $limit;
 
+    $sort_order = isset($_POST["sort_order"]) && $_POST["sort_order"] === 'asc' ? 'ASC' : 'DESC';
+
     $condition = trim(preg_replace('/[^A-Za-z0-9\- ]/', '', $_POST["query"]));
 
     $query_params = [
@@ -40,7 +42,7 @@ if (isset($_POST["query"])) {
           animals.type LIKE :type OR 
           rescue.location LIKE :location
       )
-    ORDER BY rescue.rescue_id DESC
+      ORDER BY rescue.report_date $sort_order
     ";
 
     $filter_query = $query . ' LIMIT ' . $start . ', ' . $limit;

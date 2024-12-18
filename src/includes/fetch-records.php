@@ -1,7 +1,5 @@
 <?php
 
-// records_data.php
-
 if (isset($_POST["query"])) {
 
     $connect = new PDO("mysql:host=localhost; dbname=iadopt", "root", "");
@@ -12,79 +10,79 @@ if (isset($_POST["query"])) {
     $page = $_POST["page"] > 1 ? $_POST["page"] : 1;
     $start = ($page - 1) * $limit;
 
+    $sort_order = isset($_POST["sort_order"]) && $_POST["sort_order"] === 'asc' ? 'ASC' : 'DESC';
+
     $condition = trim(preg_replace('/[^A-Za-z0-9\- ]/', '', $_POST["query"]));
 
-        $query_params = [
-            ':report_date'    => '%' . $condition . '%',
-            ':animal_id'      => '%' . $condition . '%',
-            ':rescued_by'     => '%' . $condition . '%',
-            ':animal_status'  => '%' . $condition . '%',
-            ':name'  => '%' . $condition . '%',
-            ':type'  => '%' . $condition . '%'
-        ];
-        $query = "
-        SELECT rescue.rescue_id, rescue.report_date, animals.animal_id, animals.name, animals.type, rescue.rescued_by, animals.animal_status
-        FROM rescue
-        INNER JOIN animals ON rescue.animal_id = animals.animal_id
-        WHERE animals.animal_status NOT IN ('Waitlist','Rest','Adopted','Denied')
-        AND (
-            rescue.report_date LIKE :report_date 
-            OR animals.animal_id LIKE :animal_id 
-            OR rescue.rescued_by LIKE :rescued_by 
-            OR animals.animal_status LIKE :animal_status
-            OR animals.name LIKE :name
-            OR animals.type LIKE :type
-        )
-        ORDER BY rescue.rescue_id DESC
+    $query_params = [
+        ':report_date'    => '%' . $condition . '%',
+        ':animal_id'      => '%' . $condition . '%',
+        ':rescued_by'     => '%' . $condition . '%',
+        ':animal_status'  => '%' . $condition . '%',
+        ':name'           => '%' . $condition . '%',
+        ':type'           => '%' . $condition . '%'
+    ];
+
+    $query = "
+    SELECT rescue.rescue_id, rescue.report_date, animals.animal_id, animals.name, animals.type, rescue.rescued_by, animals.animal_status
+    FROM rescue
+    INNER JOIN animals ON rescue.animal_id = animals.animal_id
+    WHERE animals.animal_status NOT IN ('Waitlist', 'Rest', 'Adopted', 'Denied')
+    AND (
+        rescue.report_date LIKE :report_date 
+        OR animals.animal_id LIKE :animal_id 
+        OR rescue.rescued_by LIKE :rescued_by 
+        OR animals.animal_status LIKE :animal_status
+        OR animals.name LIKE :name
+        OR animals.type LIKE :type
+    )
+    ORDER BY rescue.report_date $sort_order
     ";
-    
 
-        $filter_query = $query . ' LIMIT ' . $start . ', ' . $limit;
+    $filter_query = $query . ' LIMIT ' . $start . ', ' . $limit;
 
-        $statement = $connect->prepare($query);
-        $statement->execute($query_params);
-        $total_data = $statement->rowCount();
+    $statement = $connect->prepare($query);
+    $statement->execute($query_params);
+    $total_data = $statement->rowCount();
 
-        $statement = $connect->prepare($filter_query);
-        $statement->execute($query_params);
-        $result = $statement->fetchAll();
+    $statement = $connect->prepare($filter_query);
+    $statement->execute($query_params);
+    $result = $statement->fetchAll();
 
-       $escaped_condition = htmlspecialchars($condition, ENT_QUOTES, 'UTF-8');
-       $highlighted_condition = '<span style="background-color:#555; color:#fff">' . $escaped_condition . '</span>';
-       
-       foreach ($result as $row) {
-           $data[] = array(
-               'rescue_id'     => $row["rescue_id"],
-               'report_date'   => str_ireplace($escaped_condition, $highlighted_condition, htmlspecialchars($row["report_date"], ENT_QUOTES, 'UTF-8')),
-               'animal_id'     => $row["animal_id"],
-               'name'          => str_ireplace($escaped_condition, $highlighted_condition, htmlspecialchars($row["name"], ENT_QUOTES, 'UTF-8')),
-               'type'          => str_ireplace($escaped_condition, $highlighted_condition, htmlspecialchars($row["type"], ENT_QUOTES, 'UTF-8')),
-               'rescued_by'    => str_ireplace($escaped_condition, $highlighted_condition, htmlspecialchars($row["rescued_by"], ENT_QUOTES, 'UTF-8')),
-               'animal_status' => str_ireplace($escaped_condition, $highlighted_condition, htmlspecialchars($row["animal_status"], ENT_QUOTES, 'UTF-8')),
-           );
-       }
-       
+    $escaped_condition = htmlspecialchars($condition, ENT_QUOTES, 'UTF-8');
+    $highlighted_condition = '<span style="background-color:#555; color:#fff">' . $escaped_condition . '</span>';
 
-       $pagination_html = '<div align="center"><ul class="pagination">';
+    foreach ($result as $row) {
+        $data[] = array(
+            'rescue_id'     => $row["rescue_id"],
+            'report_date'   => str_ireplace($escaped_condition, $highlighted_condition, htmlspecialchars($row["report_date"], ENT_QUOTES, 'UTF-8')),
+            'animal_id'     => $row["animal_id"],
+            'name'          => str_ireplace($escaped_condition, $highlighted_condition, htmlspecialchars($row["name"], ENT_QUOTES, 'UTF-8')),
+            'type'          => str_ireplace($escaped_condition, $highlighted_condition, htmlspecialchars($row["type"], ENT_QUOTES, 'UTF-8')),
+            'rescued_by'    => str_ireplace($escaped_condition, $highlighted_condition, htmlspecialchars($row["rescued_by"], ENT_QUOTES, 'UTF-8')),
+            'animal_status' => str_ireplace($escaped_condition, $highlighted_condition, htmlspecialchars($row["animal_status"], ENT_QUOTES, 'UTF-8')),
+        );
+    }
 
-       $total_links = ceil($total_data / $limit);
-       $previous_link = $page > 1 ? '<li class="page-item"><a class="page-link" href="javascript:load_data(`' . $_POST["query"] . '`, ' . ($page - 1) . ')"><</a></li>' : '<li class="page-item disabled"><a class="page-link" href="#"><</a></li>';
-   
-       $next_link = $page < $total_links ? '<li class="page-item"><a class="page-link" href="javascript:load_data(`' . $_POST["query"] . '`, ' . ($page + 1) . ')">></a></li>' : '<li class="page-item disabled"><a class="page-link" href="#">></a></li>';
-   
-       $page_links = '';
-       for ($count = 1; $count <= $total_links; $count++) {
-           $active_class = $page == $count ? ' active' : '';
-           $page_links .= '<li class="page-item' . $active_class . '"><a class="page-link" href="javascript:load_data(`' . $_POST["query"] . '`, ' . $count . ')">' . $count . '</a></li>';
-       }
-   
-       $pagination_html .= $previous_link . $page_links . $next_link . '</ul></div>';
-   
-       echo json_encode([
-           'data'       => $data,
-           'pagination' => $pagination_html,
-           'total_data' => $total_data
-       ]);
+    $pagination_html = '<div align="center"><ul class="pagination">';
+    $total_links = ceil($total_data / $limit);
+
+    $previous_link = $page > 1 ? '<li class="page-item"><a class="page-link" href="javascript:load_data(`' . $_POST["query"] . '`, ' . ($page - 1) . ')"><</a></li>' : '<li class="page-item disabled"><a class="page-link" href="#"><</a></li>';
+    $next_link = $page < $total_links ? '<li class="page-item"><a class="page-link" href="javascript:load_data(`' . $_POST["query"] . '`, ' . ($page + 1) . ')">></a></li>' : '<li class="page-item disabled"><a class="page-link" href="#">></a></li>';
+
+    $page_links = '';
+    for ($count = 1; $count <= $total_links; $count++) {
+        $active_class = $page == $count ? ' active' : '';
+        $page_links .= '<li class="page-item' . $active_class . '"><a class="page-link" href="javascript:load_data(`' . $_POST["query"] . '`, ' . $count . ')">' . $count . '</a></li>';
+    }
+
+    $pagination_html .= $previous_link . $page_links . $next_link . '</ul></div>';
+
+    echo json_encode([
+        'data'       => $data,
+        'pagination' => $pagination_html,
+        'total_data' => $total_data
+    ]);
 }
 
 ?>
