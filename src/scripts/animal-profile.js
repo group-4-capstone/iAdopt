@@ -1,36 +1,35 @@
 
-//===================================================pagination=====================================//
-document.addEventListener("DOMContentLoaded", function () {
-    const paginationLinks = document.querySelectorAll(".pagination .page-link");
-  
-    paginationLinks.forEach(link => {
-      link.addEventListener("click", function (event) {
-        event.preventDefault();
-        const page = this.getAttribute("data-page");
-        loadPage(page);
-      });
-    });
-  
-    function loadPage(page) {
-      const xhr = new XMLHttpRequest();
-      xhr.open("GET", `animal-profiles.php?page=${page}`, true);
-      xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-      xhr.onload = function () {
-        if (xhr.status === 200) {
-          document.getElementById("animal-cards").innerHTML = xhr.responseText;
-        }
-      };
-      xhr.send();
-    }
-  });
+let initialFormValues = {};
 
-// Enable editing when "Edit" button is clicked
+// Function to get all current values of the form, including button states
+function getCurrentFormValues() {
+    let values = {};
+
+    // Get values for inputs, textareas, and selects
+    document.querySelectorAll('#animalInfoForm input, #animalInfoForm textarea, #animalInfoForm select').forEach(input => {
+        if (input.type === 'checkbox') {
+            values[input.id] = input.checked; // Track checkbox state
+        } else {
+            values[input.name] = input.value;
+        }
+    });
+
+    // Track the presence of 'btn-selected' class on buttons
+    document.querySelectorAll('#animalInfoForm .btn-tags').forEach(button => {
+        values[button.id] = button.classList.contains('btn-selected');
+    });
+
+    return values;
+}
+
+
+// Save initial form values when "Edit" button is clicked
 document.getElementById('editBtn').addEventListener('click', function() {
-    // Enable all form inputs, textareas, and select elements
+    // Enable form inputs and buttons
     let inputs = document.querySelectorAll('#animalInfoForm input, #animalInfoForm textarea, #animalInfoForm select');
     inputs.forEach(input => {
         input.removeAttribute('readonly');
-        input.removeAttribute('disabled'); 
+        input.removeAttribute('disabled');
     });
 
     let buttons = document.querySelectorAll('#animalInfoForm .btn-tags');
@@ -38,24 +37,50 @@ document.getElementById('editBtn').addEventListener('click', function() {
         button.removeAttribute('disabled');
     });
 
+    // Save the initial form values
+    initialFormValues = getCurrentFormValues();
+
     // Show "Editing Mode" toast
     let toast = new bootstrap.Toast(document.getElementById('editToast'));
     toast.show();
 
-    // Show the file upload input and status
+    // Show file upload input and status
     document.getElementById('fileUploadContainer').style.display = 'block';
     document.getElementById('status_input').style.display = 'block';
 
     // Hide "Edit Information" and "Back to Records" buttons
     document.getElementById('editBtn').style.display = 'none';
     document.getElementById('backBtn').style.display = 'none';
-    //document.getElementById('adoptableInfo').style.display = 'none';
-
     document.getElementById('qrBtn').style.display = 'none';
 
     // Show "Apply Changes" and "Cancel" buttons
     document.getElementById('applyBtn').style.display = 'inline-block';
     document.getElementById('cancelBtn').style.display = 'inline-block';
+    document.getElementById('applyBtn').setAttribute('disabled', true); // Initially disable the apply button
+});
+
+// Function to check if any form value has changed
+function hasFormChanged() {
+    let currentValues = getCurrentFormValues();
+    for (let key in currentValues) {
+        if (currentValues[key] !== initialFormValues[key]) {
+            return true;
+        }
+    }
+    return false;
+}
+
+
+
+// Add event listeners to all form inputs to detect changes
+document.querySelectorAll('#animalInfoForm input, #animalInfoForm textarea, #animalInfoForm select').forEach(input => {
+    input.addEventListener('input', function() {
+        if (hasFormChanged()) {
+            document.getElementById('applyBtn').removeAttribute('disabled');
+        } else {
+            document.getElementById('applyBtn').setAttribute('disabled', true);
+        }
+    });
 });
 
 // Submit the form when "Apply Changes" button is clicked
@@ -72,9 +97,10 @@ document.getElementById('applyBtn').addEventListener('click', function() {
         success: function(response) {
             console.log("Form submitted successfully:", response);
 
-            let inputs = document.querySelectorAll('#animalInfoForm input, #animalInfoForm textarea');
+            let inputs = document.querySelectorAll('#animalInfoForm input, #animalInfoForm textarea, #animalInfoForm select');
             inputs.forEach(input => {
                 input.setAttribute('readonly', true);
+                input.setAttribute('disabled', true);
             });
 
             let buttons = document.querySelectorAll('#animalInfoForm .btn-tags');
@@ -86,32 +112,37 @@ document.getElementById('applyBtn').addEventListener('click', function() {
             document.getElementById('editBtn').style.display = 'inline-block';
             document.getElementById('backBtn').style.display = 'inline-block';
             document.getElementById('qrBtn').style.display = 'inline-block';
-            //document.getElementById('adoptableInfo').style.display = 'block';
             
             // Hide "Apply Changes" and "Cancel" buttons
             document.getElementById('applyBtn').style.display = 'none';
             document.getElementById('cancelBtn').style.display = 'none';
-
+            document.getElementById('applyBtn').setAttribute('disabled', true);
 
             document.getElementById('fileUploadContainer').style.display = 'none';
             document.getElementById('status_input').style.display = 'none';
             
             $('#successEditModal').modal('show');
-         
         },
         error: function(xhr, status, error) {
             console.error("Error occurred:", xhr.responseText);
-            // Optionally, show an error message or handle the error
+            // Show an error message toast
             let errorToast = new bootstrap.Toast(document.getElementById('errorToast'));
             errorToast.show();
         }
     });
 });
 
-
+// Cancel button functionality
 document.getElementById('cancelBtn').addEventListener('click', function() {
-  
-    let inputs = document.querySelectorAll('#animalInfoForm input, #animalInfoForm textarea');
+    // Reset form values to initial values
+    for (let name in initialFormValues) {
+        let element = document.querySelector(`#animalInfoForm [name="${name}"]`);
+        if (element) {
+            element.value = initialFormValues[name];
+        }
+    }
+
+    let inputs = document.querySelectorAll('#animalInfoForm input, #animalInfoForm textarea, #animalInfoForm select');
     inputs.forEach(input => {
         input.setAttribute('readonly', true);
         input.setAttribute('disabled', true);
@@ -123,10 +154,13 @@ document.getElementById('cancelBtn').addEventListener('click', function() {
     });
 
     document.getElementById('fileUploadContainer').style.display = 'none';
+    document.getElementById('status_input').style.display = 'none';
     document.getElementById('editBtn').style.display = 'inline-block';
     document.getElementById('backBtn').style.display = 'inline-block';
+    document.getElementById('qrBtn').style.display = 'inline-block';
     document.getElementById('applyBtn').style.display = 'none';
     document.getElementById('cancelBtn').style.display = 'none';
+    document.getElementById('applyBtn').setAttribute('disabled', true);
 });
 
 
@@ -135,6 +169,8 @@ function toggleButton(button) {
     button.classList.toggle('btn-selected');
     let checkbox = document.getElementById(`checkbox${button.id.replace('tag', '')}`);
     checkbox.checked = button.classList.contains('btn-selected');
+
+    document.getElementById('applyBtn').disabled = !hasFormChanged();
 }
 
 $('#qrBtn').on('click', function () {
