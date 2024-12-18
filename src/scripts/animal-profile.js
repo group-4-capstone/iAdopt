@@ -108,20 +108,22 @@ document.getElementById('applyBtn').addEventListener('click', function() {
                 button.setAttribute('disabled', true);
             });
 
+              
+            $('#successEditModal').modal('show');
+
+             // Hide "Apply Changes" and "Cancel" buttons
+             document.getElementById('applyBtn').style.display = 'none';
+             document.getElementById('cancelBtn').style.display = 'none';
+             document.getElementById('applyBtn').setAttribute('disabled', true);
+ 
+             document.getElementById('fileUploadContainer').style.display = 'none';
+             document.getElementById('status_input').style.display = 'none';
+
             // Show "Edit" and "Back" buttons again
             document.getElementById('editBtn').style.display = 'inline-block';
             document.getElementById('backBtn').style.display = 'inline-block';
             document.getElementById('qrBtn').style.display = 'inline-block';
-            
-            // Hide "Apply Changes" and "Cancel" buttons
-            document.getElementById('applyBtn').style.display = 'none';
-            document.getElementById('cancelBtn').style.display = 'none';
-            document.getElementById('applyBtn').setAttribute('disabled', true);
-
-            document.getElementById('fileUploadContainer').style.display = 'none';
-            document.getElementById('status_input').style.display = 'none';
-            
-            $('#successEditModal').modal('show');
+          
         },
         error: function(xhr, status, error) {
             console.error("Error occurred:", xhr.responseText);
@@ -155,11 +157,12 @@ document.getElementById('cancelBtn').addEventListener('click', function() {
 
     document.getElementById('fileUploadContainer').style.display = 'none';
     document.getElementById('status_input').style.display = 'none';
+    document.getElementById('applyBtn').style.display = 'none';
+    document.getElementById('cancelBtn').style.display = 'none';
     document.getElementById('editBtn').style.display = 'inline-block';
     document.getElementById('backBtn').style.display = 'inline-block';
     document.getElementById('qrBtn').style.display = 'inline-block';
-    document.getElementById('applyBtn').style.display = 'none';
-    document.getElementById('cancelBtn').style.display = 'none';
+   
     document.getElementById('applyBtn').setAttribute('disabled', true);
 });
 
