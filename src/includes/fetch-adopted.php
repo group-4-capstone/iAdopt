@@ -13,6 +13,8 @@ if (isset($_POST["query"])) {
     $page = $_POST["page"] > 1 ? $_POST["page"] : 1;
     $start = ($page - 1) * $limit;
 
+    $sort_order = isset($_POST["sort_order"]) && $_POST["sort_order"] === 'asc' ? 'ASC' : 'DESC';
+
     // Sanitizing the search query to prevent unwanted characters
     $condition = trim(preg_replace('/[^A-Za-z0-9\- ]/', '', $_POST["query"]));
 
@@ -41,7 +43,7 @@ if (isset($_POST["query"])) {
 		   applications.adoption_date LIKE :adoption_date)
 	  AND animals.animal_status = 'Adopted'
 	  AND applications.application_status = 'Approved'
-	ORDER BY applications.application_id DESC
+	ORDER BY applications.adoption_date $sort_order
 	";	
 
     // Apply pagination to the query
