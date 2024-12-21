@@ -73,9 +73,9 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                         <table class="table table-hover mb-5" id="adoptedTable">
                             <thead>
                                 <tr>
-                                    <th width="25%">Date of Adoption:</th>
-                                    <th width="25%">Name of Adoptor:</th>
-                                    <th width="25%">Adopted Pet:</th>
+                                    <th width="25%">Date of Adoption</th>
+                                    <th width="25%">Name of Adoptor</th>
+                                    <th width="25%">Adopted Pet</th>
                                 </tr>
                             </thead>
                             <tbody id="adopted_data"></tbody>
