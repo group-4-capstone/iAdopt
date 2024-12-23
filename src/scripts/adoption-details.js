@@ -78,46 +78,25 @@ $(document).ready(function() {
     });
 });
 
-$(document).ready(function () {
-    const $statusDropdown = $('#status');
-    const $confirmationModal = $('#confirmationModal');
-    const $newStatusSpan = $('#newStatus');
-    const $confirmBtn = $('#confirmBtn');
-    const animalId = $('#animalId').val();
-    const applicationId = $('#applicationId').val();
-    let selectedStatus = '';
+document.getElementById('confirmBtn').addEventListener('click', function () {
+    const animalId = document.getElementById('animalId').value;
+    const formData = new FormData();
+    formData.append('animal_id', animalId);
 
-    // Listen for changes in the dropdown
-    $statusDropdown.on('change', function () {
-        selectedStatus = $(this).val();
-        $newStatusSpan.text(selectedStatus); // Update modal with selected status
-        $confirmationModal.modal('show'); // Show modal
-    });
-
-    // Handle confirmation
-    $confirmBtn.on('click', function () {
-        $confirmationModal.modal('hide');
-
-        // Send AJAX request to update status
-        $.ajax({
-            url: 'includes/update-animal-status.php',
-            method: 'POST',
-            data: {
-                animal_id: animalId,
-                application_id: applicationId,
-                animal_status: selectedStatus
-            },
-            success: function (response) {
-                if (response.success) {
-                    $('#successModal').modal('show');
-                } else {
-                    alert('Error updating status: ' + response.error);
-                }
-            },
-            error: function (xhr, status, error) {
-                console.error('Error:', error);
-                alert('An unexpected error occurred.');
-            }
-        });
+    $.ajax({
+        type: 'POST',
+        url: 'includes/update-to-adopted.php',
+        data: formData,
+        processData: false, 
+        contentType: false,
+        success: function (response) {
+            console.log("Form submitted successfully:", response);
+            $('#confirmationModal').modal('hide');
+            $('#successModal').modal('show');
+        },
+        error: function (xhr, status, error) {
+            console.error("Error occurred:", xhr.responseText);
+            alert('Failed to mark as adopted.');
+        }
     });
 });
