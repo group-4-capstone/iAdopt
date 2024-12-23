@@ -34,7 +34,7 @@ function load_data_adopted(query = '', page_number = 1, sort_order = 'desc'){
     var form_data = new FormData();
     form_data.append('query', query);
     form_data.append('page', page_number);
-    form_data.append('sort_order', sort_order); // Add sort_order parameter
+    form_data.append('sort_order', sort_order); 
 
     var ajax_request = new XMLHttpRequest();
     ajax_request.open('POST', 'includes/fetch-adopted.php');
@@ -54,16 +54,8 @@ function load_data_adopted(query = '', page_number = 1, sort_order = 'desc'){
                     var name = response.data[count].name;
                     var first_name = response.data[count].first_name;
                     var last_name = response.data[count].last_name;
-                    var application_id = response.data[count].application_id;
-                    var image = response.data[count].image;
-                    var user_image = response.data[count].user_image;
-
-                    // Use default image if none is provided for user or animal
-                    if (!user_image || user_image.trim() === '') {
-                        user_image = 'styles/assets/person-circle.png'; // Default user image
-                    }
-
-                    html += '<tr onclick="window.location.href=\'animal-record.php?animal_id=' + response.data[count].animal_id + '\'">';
+    
+                    html += '<tr onclick="window.location.href=\'animal-record.php?animal_id=' + animal_id + '\'">';
                     html += '<td>' + adoption_date + '</td>';
                     html += '<td>' + first_name + " " + last_name + '</td>';
                     html += '<td>' + name + '</td>';
