@@ -13,7 +13,7 @@ if ($timePeriod === 'monthly') {
                 WEEK(adoption_date, 1) AS period, 
                 COUNT(*) AS adoption_count
             FROM 
-                applications
+                animals
             WHERE 
                 adoption_date IS NOT NULL
                 AND MONTH(adoption_date) = $currentMonth
@@ -38,7 +38,7 @@ if ($timePeriod === 'monthly') {
                 QUARTER(adoption_date) AS period,
                 COUNT(*) AS adoption_count
             FROM 
-                applications
+                animals
             WHERE 
                 adoption_date IS NOT NULL
             GROUP BY 
@@ -63,7 +63,7 @@ if ($timePeriod === 'monthly') {
                 MONTH(adoption_date) AS period,
                 COUNT(*) AS adoption_count
             FROM 
-                applications
+                animals
             WHERE 
                 adoption_date IS NOT NULL
                 AND YEAR(adoption_date) = $currentYear

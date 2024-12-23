@@ -24,26 +24,26 @@ if (isset($_POST["query"])) {
         ':first_name'       => '%' . $condition . '%',
         ':last_name'        => '%' . $condition . '%',
         ':animal_status'    => '%' . $condition . '%',
-        ':animal_name'      => '%' . $condition . '%',
-        ':adoption_date'    => '%' . $condition . '%',
+        ':name'             => '%' . $condition . '%',
+        ':adoption_date'    => '%' . $condition . '%'
     ];
 
     // SQL query to fetch data
 	$query = "
 	SELECT applications.application_id, applications.complete_address, users.first_name, users.last_name, 
-		   animals.animal_status, animals.name, applications.adoption_date
+		   animals.animal_status, animals.name, animals.adoption_date, animals.animal_id, users.user_id
 	FROM applications
 	INNER JOIN users ON applications.user_id = users.user_id
 	INNER JOIN animals ON applications.animal_id = animals.animal_id
-	WHERE (applications.complete_address LIKE :complete_address OR 
+	WHERE animals.animal_status = 'Adopted' AND
+          applications.application_status = 'Approved' AND
+          (applications.complete_address LIKE :complete_address OR 
 		   users.first_name LIKE :first_name OR 
 		   users.last_name LIKE :last_name OR 
 		   animals.animal_status LIKE :animal_status OR
-		   animals.name LIKE :animal_name OR
-		   applications.adoption_date LIKE :adoption_date)
-	  AND animals.animal_status = 'Adopted'
-	  AND applications.application_status = 'Approved'
-	ORDER BY applications.adoption_date $sort_order
+		   animals.name LIKE :name OR
+		   animals.adoption_date LIKE :adoption_date)
+	ORDER BY animals.adoption_date $sort_order
 	";	
 
     // Apply pagination to the query
@@ -66,11 +66,12 @@ if (isset($_POST["query"])) {
     foreach ($result as $row) {
         $data[] = array(
             'application_id'   => $row["application_id"],
+            'animal_id'   => $row["animal_id"],
             'first_name'       => str_ireplace($escaped_condition, $highlighted_condition, htmlspecialchars($row["first_name"])),
             'last_name'        => str_ireplace($escaped_condition, $highlighted_condition, htmlspecialchars($row["last_name"])),
             'animal_status'    => str_ireplace($escaped_condition, $highlighted_condition, htmlspecialchars($row["animal_status"])),
-            'animal_name'      => str_ireplace($escaped_condition, $highlighted_condition, htmlspecialchars($row["animal_name"])),
-            'adoption_date'    => str_ireplace($escaped_condition, $highlighted_condition, htmlspecialchars($row["adoption_date"])),
+            'name'      => str_ireplace($escaped_condition, $highlighted_condition, htmlspecialchars($row["name"])),
+            'adoption_date'    => str_ireplace($escaped_condition, $highlighted_condition, htmlspecialchars($row["adoption_date"]))
         );
     }
 
@@ -78,14 +79,14 @@ if (isset($_POST["query"])) {
     $pagination_html = '<div align="center"><ul class="pagination">';
 
     $total_links = ceil($total_data / $limit);
-    $previous_link = $page > 1 ? '<li class="page-item"><a class="page-link" href="javascript:load_data_application(`' . $_POST["query"] . '`, ' . ($page - 1) . ')"><</a></li>' : '<li class="page-item disabled"><a class="page-link" href="#"><</a></li>';
+    $previous_link = $page > 1 ? '<li class="page-item"><a class="page-link" href="javascript:load_data_adopted(`' . $_POST["query"] . '`, ' . ($page - 1) . ')"><</a></li>' : '<li class="page-item disabled"><a class="page-link" href="#"><</a></li>';
 
-    $next_link = $page < $total_links ? '<li class="page-item"><a class="page-link" href="javascript:load_data_application(`' . $_POST["query"] . '`, ' . ($page + 1) . ')">></a></li>' : '<li class="page-item disabled"><a class="page-link" href="#">></a></li>';
+    $next_link = $page < $total_links ? '<li class="page-item"><a class="page-link" href="javascript:load_data_adopted(`' . $_POST["query"] . '`, ' . ($page + 1) . ')">></a></li>' : '<li class="page-item disabled"><a class="page-link" href="#">></a></li>';
 
     $page_links = '';
     for ($count = 1; $count <= $total_links; $count++) {
         $active_class = $page == $count ? ' active' : '';
-        $page_links .= '<li class="page-item' . $active_class . '"><a class="page-link" href="javascript:load_data_application(`' . $_POST["query"] . '`, ' . $count . ')">' . $count . '</a></li>';
+        $page_links .= '<li class="page-item' . $active_class . '"><a class="page-link" href="javascript:load_data_adopted(`' . $_POST["query"] . '`, ' . $count . ')">' . $count . '</a></li>';
     }
 
     $pagination_html .= $previous_link . $page_links . $next_link . '</ul></div>';

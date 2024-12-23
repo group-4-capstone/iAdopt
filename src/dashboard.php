@@ -5,7 +5,7 @@ include_once 'includes/db-connect.php';
 if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['role'] == 'head_admin')) {
 
 // Query to count animals excluding 'waitlist' and 'rest' statuses
-$current_sql = "SELECT COUNT(*) AS current_count FROM animals WHERE animal_status NOT IN ('waitlist', 'rest')";
+$current_sql = "SELECT COUNT(*) AS current_count FROM animals WHERE animal_status NOT IN ('waitlist', 'rest', 'adopted', 'denied')";
 $current_result = $db->query($current_sql);
 $current_count = ($current_result->num_rows > 0) ? $current_result->fetch_assoc()['current_count'] : 0;
 

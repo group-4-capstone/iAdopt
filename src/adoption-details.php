@@ -6,7 +6,7 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
 
     if (isset($_GET['id'])) {
         $application_id = $_GET['id'];
-    
+
         $query = "
             SELECT *
             FROM applications 
@@ -14,12 +14,12 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
             INNER JOIN animals ON applications.animal_id = animals.animal_id
             WHERE applications.application_id = ? 
         ";
-    
+
         $stmt = $db->prepare($query);
         $stmt->bind_param("i", $application_id);
         $stmt->execute();
         $result = $stmt->get_result();
-    
+
         if ($result->num_rows > 0) {
             $application = $result->fetch_assoc();
         } else {
@@ -35,7 +35,7 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
 
     $status = $application['animal_status'];
     $badgeClass = '';
-    
+
     switch ($status) {
         case 'Waitlist':
             $badgeClass = 'bg-warning';
@@ -59,7 +59,7 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
             $badgeClass = 'bg-secondary'; // Fallback color for unknown statuses
             break;
     }
-    
+
 ?>
     <!DOCTYPE html>
     <html lang="en">
@@ -81,7 +81,7 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     </head>
 
@@ -101,55 +101,50 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                     </p>
                 </div>
             </section>
-            
+
 
             <div class="container my-5">
                 <!-- Selected Dog Details -->
                 <div class="row dog-details mb-4">
-                  <form id="statusForm" method="post" class="d-flex justify-content-end align-items-center mt-1 mb-2 me-4">
+                    <div class="d-flex justify-content-end align-items-center mt-1 mb-2 me-4">
                         <label for="status" class="me-2">Status:</label>
-                        <select 
-                            id="status" class="form-select badge <?php echo $badgeClass; ?> w-25" name="animal_status" 
-                            <?php echo $status === 'Adopted' ? 'disabled' : ''; ?>>
-                            <option value="Adopted" <?php echo $status === 'Adopted' ? 'selected' : ''; ?>>Adopted</option>
-                            <option value="Adoptable" <?php echo $status === 'Adoptable' ? 'selected' : ''; ?>>Adoptable</option>
-                        </select>
-                        <input type="hidden" id="animalId" value="<?php echo $application['animal_id'] ?>" readonly>
-                        <input type="hidden" id="applicationId" value="<?php echo $application['application_id'] ?>" readonly>
-                    </form>
+                        <span class="badge <?php echo $badgeClass; ?> w-25">
+                            <?php echo $status; ?>
+                        </span>
+                    </div>
 
                     <!-- Modal -->
                     <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="confirmationModalLabel">Confirm Status Change</h5>
+                                    <h5 class="modal-title" id="confirmationModalLabel">Confirm Adoption</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    Are you sure you want to change the status to <span id="newStatus"></span>?
+                                    Do you confirm that <strong><?php echo $application['name'] ?></strong> is adopted?
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                    <button type="button" id="confirmBtn" class="btn btn-primary">Confirm</button>
+                                    <button type="button" id="confirmBtn" class="btn btn-warning text-white">Yes</button>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                     <!-- Success Modal -->
+                    <!-- Success Modal -->
                     <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successContentModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
                         <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content">
-                            <div class="modal-body">
-                            <button type="button" class="btn-close d-flex ms-auto" onclick="window.location.reload();" ></button>
-                            <div class="text-center">
-                                <i class="bi bi-check-circle-fill" style="font-size: 8rem; color: #28a745;"></i>
-                                <p class="mt-4 px-2"> Status has been updated successfully to <b>ADOPTED</b> !
-                                </p>
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    <button type="button" class="btn-close d-flex ms-auto" onclick="window.location.reload();"></button>
+                                    <div class="text-center">
+                                        <i class="bi bi-check-circle-fill" style="font-size: 8rem; color: #28a745;"></i>
+                                        <p class="mt-4 px-2"> Status has been updated successfully to <b>ADOPTED</b> !
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
-                            </div>
-                        </div>
                         </div>
                     </div>
 
@@ -158,13 +153,27 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                         <img src="styles/assets/animals/<?php echo $application['image'] ?>" class="img-fluid rounded-circle" alt="Selected Dog" style="width: 200px; height: 200px; object-fit: cover;">
                     </div>
                     <div class="col-lg-8">
-                        <h2 class="mb-3"><?php echo $application['type'] ?> Name: <strong><?php echo $application['name'] ?></strong></h2>
+                        <h2 class="mb-3">
+                            <?php echo $application['type'] ?> Name: <strong><?php echo $application['name'] ?></strong>
+                        </h2>
                         <p><strong>Date Rescued:</strong>
                             <?php
                             $originalDate = $application['addition_date'];
                             echo date("F j, Y", strtotime($originalDate));
-                            ?></p>
+                            ?>
+                        </p>
                         <p><strong>Description:</strong> <?php echo $application['description'] ?></p>
+
+                        <?php if ($application['application_status'] === 'Approved' && $application['animal_status'] !== 'Adopted') { ?>
+                            <div style="text-align: right; margin-top: 20px;">
+                                <form id="markAdoptedForm">
+                                    <input type="hidden" id="animalId" value="<?php echo $application['animal_id'] ?>" readonly>
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmationModal">
+                                        <span><i class="fa-solid fa-check me-1"></i> Mark as Adopted</span>
+                                    </button>
+                                </form>
+                            </div>
+                        <?php }  ?>
                     </div>
                 </div>
 
@@ -175,27 +184,29 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                             <h4 class="mt-2">Adopter Information</h4>
                             <p class="mt-3 ps-3">Application Status:
                                 <span class="badge 
-                    <?php
-                    if ($application['application_status'] === 'Under Review') echo 'bg-warning text-dark';
-                    elseif ($application['application_status'] === 'Rejected') echo 'bg-danger';
-                    elseif ($application['application_status'] === 'Approved') echo 'bg-success';
-                    ?>">
+                                    <?php
+                                    if ($application['application_status'] === 'Under Review') echo 'bg-warning text-dark';
+                                    elseif ($application['application_status'] === 'Rejected') echo 'bg-danger';
+                                    elseif ($application['application_status'] === 'Approved') echo 'bg-success';
+                                    ?>">
                                     <?php echo $application['application_status']; ?>
                                 </span>
                             </p>
                             <?php if ($application['application_status'] === 'Rejected') echo 'Reason: ' . $application['status_message']; ?>
                             <p class="ps-2">
                                 <?php
-                               if ($application['application_status'] === 'Approved') {
-                                   $interviewDate = new DateTime($application['sched_interview']);
-                                   echo '<br>Scheduled Interview:<br> ' . $interviewDate->format('d F Y, h:i A');
-                                   echo ' <i class="bi bi-pencil-square edit-interview-icon" data-bs-toggle="modal" data-bs-target="#scheduleInterviewModal" 
-                                       data-application-id="' . $application['application_id'] . '"
-                                       data-interview-date="' . $interviewDate->format('Y-m-d') . '"
-                                       data-interview-time="' . $interviewDate->format('H:i') . '"
-                                       style="cursor:pointer;"></i>';
-                               }
-                               ?>
+                                if ($application['application_status'] === 'Approved') {
+                                    $interviewDate = new DateTime($application['sched_interview']);
+                                    echo '<br>Scheduled Interview:<br> ' . $interviewDate->format('d F Y, h:i A');
+                                    if ($application['animal_status'] !== 'Adopted') {
+                                        echo ' <i class="bi bi-pencil-square edit-interview-icon" data-bs-toggle="modal" data-bs-target="#scheduleInterviewModal" 
+                                        data-application-id="' . $application['application_id'] . '"
+                                        data-interview-date="' . $interviewDate->format('Y-m-d') . '"
+                                        data-interview-time="' . $interviewDate->format('H:i') . '"
+                                        style="cursor:pointer;"></i>';
+                                    }
+                                }
+                                ?>
                             </p>
 
                         </div>
@@ -233,7 +244,7 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                                 <p class="ps-2">> <?php echo $application['residence'] ?></p>
 
                                 <?php if (
-                                    $application['residence'] === 'Detached House (with fence/gate)' || 
+                                    $application['residence'] === 'Detached House (with fence/gate)' ||
                                     $application['residence'] === 'Townhouse (with fence/gate)'
                                 ): ?>
                                     <p><strong>Please specify the height and type of your fence.</strong></p>
@@ -244,51 +255,51 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                                 <?php endif; ?>
 
                                 <?php if ($application['type'] === 'Cat'): ?>
-                                <p><strong>If adopting a cat, where will the litter box be kept?</strong></p>
-                                <p class="ps-2">> <?php echo $application['litter_place']; ?></p>
-                            <?php endif; ?>
+                                    <p><strong>If adopting a cat, where will the litter box be kept?</strong></p>
+                                    <p class="ps-2">> <?php echo $application['litter_place']; ?></p>
+                                <?php endif; ?>
 
-                            <p><strong>Is the residence for RENT?</strong></p>
-                            <?php if (!empty($application['rent_letter'])): ?>
-                                <p class="ps-2">> Yes.
-                              
-                                <p><strong>Please upload a written letter from your landlord that pets are allowed.</strong></p>
-                                <a href="#" data-bs-toggle="modal" data-bs-target="#rentLetterModal" class="text-primary">View File</a></p>
+                                <p><strong>Is the residence for RENT?</strong></p>
+                                <?php if (!empty($application['rent_letter'])): ?>
+                                    <p class="ps-2">> Yes.
 
-                                <!-- Modal for viewing rent letter -->
-                                <div class="modal fade" id="rentLetterModal" tabindex="-1" aria-labelledby="rentLetterModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered modal-lg">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="rentLetterModalLabel">Rent Letter</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <?php
-                                                $fileExtension = strtolower(pathinfo($application['rent_letter'], PATHINFO_EXTENSION)); // Ensure case insensitivity
-                                                $rentLetterPath = 'styles/assets/applications/letter/' . htmlspecialchars($application['rent_letter'], ENT_QUOTES, 'UTF-8'); // Construct safe file path
-                                                
-                                                if (in_array($fileExtension, ['jpg', 'jpeg', 'png', 'webp'])) {
-                                                    // Display image
-                                                    echo '<img src="' . $rentLetterPath . '" alt="Rent Letter" class="img-fluid">';
-                                                } elseif ($fileExtension === 'pdf') {
-                                                    // Embed PDF
-                                                    echo '<embed src="' . $rentLetterPath . '" type="application/pdf" width="100%" height="600px">';
-                                                } else {
-                                                    echo '<p>Unable to preview this file type.</p>';
-                                                }
-                                                ?>
-                                                
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <p><strong>Please upload a written letter from your landlord that pets are allowed.</strong></p>
+                                    <a href="#" data-bs-toggle="modal" data-bs-target="#rentLetterModal" class="text-primary">View File</a></p>
+
+                                    <!-- Modal for viewing rent letter -->
+                                    <div class="modal fade" id="rentLetterModal" tabindex="-1" aria-labelledby="rentLetterModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="rentLetterModalLabel">Rent Letter</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <?php
+                                                    $fileExtension = strtolower(pathinfo($application['rent_letter'], PATHINFO_EXTENSION)); // Ensure case insensitivity
+                                                    $rentLetterPath = 'styles/assets/applications/letter/' . htmlspecialchars($application['rent_letter'], ENT_QUOTES, 'UTF-8'); // Construct safe file path
+
+                                                    if (in_array($fileExtension, ['jpg', 'jpeg', 'png', 'webp'])) {
+                                                        // Display image
+                                                        echo '<img src="' . $rentLetterPath . '" alt="Rent Letter" class="img-fluid">';
+                                                    } elseif ($fileExtension === 'pdf') {
+                                                        // Embed PDF
+                                                        echo '<embed src="' . $rentLetterPath . '" type="application/pdf" width="100%" height="600px">';
+                                                    } else {
+                                                        echo '<p>Unable to preview this file type.</p>';
+                                                    }
+                                                    ?>
+
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            <?php else: ?>
-                                <p class="ps-2">> No</p>
-                            <?php endif; ?>
+                                <?php else: ?>
+                                    <p class="ps-2">> No</p>
+                                <?php endif; ?>
 
                                 <p><strong>In which part of the house will the animal stay?</strong></p>
                                 <p class="ps-2">> <?php echo $application['house_part'] ?></p>
@@ -488,22 +499,22 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                     </div>
                 </div>
 
-                
-      <!-- Success Status Update Modal -->
-<div class="modal fade" id="statusUpdateModal" tabindex="-1" aria-labelledby="statusUpdateModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-body">
-                <button type="button" class="btn-close d-flex ms-auto" data-bs-dismiss="modal" onclick="location.reload();"></button>
-                <div class="text-center">
-                    <i class="bi bi-check-circle-fill" style="font-size: 8rem; color: #28a745;"></i>
-                    <p class="mt-4 px-2"> The application status has been updated successfully!
-                    </p>
+
+                <!-- Success Status Update Modal -->
+                <div class="modal fade" id="statusUpdateModal" tabindex="-1" aria-labelledby="statusUpdateModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                <button type="button" class="btn-close d-flex ms-auto" data-bs-dismiss="modal" onclick="location.reload();"></button>
+                                <div class="text-center">
+                                    <i class="bi bi-check-circle-fill" style="font-size: 8rem; color: #28a745;"></i>
+                                    <p class="mt-4 px-2"> The application status has been updated successfully!
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-    </div>
-</div>
 
 
             </div>
