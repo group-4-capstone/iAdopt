@@ -17,6 +17,8 @@ if (isset($_GET['animal_id'])) {
 
   if ($result->num_rows > 0) {
     $animal = $result->fetch_assoc();
+  } else {
+    header("Location: not-found.php");
   }
 }
 
@@ -194,10 +196,12 @@ $tagsArray = explode(",", $tags);
             </div>
 
             <!-- If cat selected pet -->
+             <?php if ($animal['type'] == 'Cat') { ?>
               <div class="mb-3">
-              If adopting a cat, where will be the litter box be kept?
-              <input type="text" id="litter_place" name="litter_place" required>
+                 If adopting a cat, where will be the litter box be kept?
+              <input type="text" id="litter_place" name="litter_place">
               </div>
+              <?php } ?>
 
             <div class="mb-3">
                 Is the residence for RENT?
@@ -230,7 +234,7 @@ $tagsArray = explode(",", $tags);
                 <input type="text" name="household_members" required>
             </div>
             <div class="mb-3">
-                <label>How long have you lived in the address registered here?</label>
+                <label>How many years have you lived in the address registered here?</label>
                 <input type="number" name="reg_years" required>
             </div>
             <div class="mb-3">

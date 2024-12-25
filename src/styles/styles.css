@@ -32,25 +32,25 @@
 }
 
 .user-banner-section .content h2 {
-  font-size: 52px;
+  font-size: 50px;
   color: #F90B1B;
   font-weight: 900;
-  line-height: 70px;
+  line-height: 60px;
   margin: 0 auto;
 }
 
 .user-banner-section .content h4 {
-  font-size: 36px;
+  font-size: 32px;
   color: #1A1385;
   font-weight:bold;
-  line-height: 70px;
+  line-height: 60px;
   margin: 0 auto;
 }
 
 .user-banner-section .content p {
   font-weight: 500;
-  max-width: 500px;
-  font-size: 16px;
+  max-width: 520px;
+  font-size: 15px;
   margin: 0; 
   padding: 0 3px;
   text-align: left; 
@@ -85,7 +85,7 @@
     }
 
     .user-banner-section .content h2 {
-      font-size: 40px;
+      font-size: 38px;
       color: #F90B1B;
       font-weight: 900;
       line-height: 70px;
@@ -93,7 +93,7 @@
     }
     
     .user-banner-section .content h4 {
-      font-size: 30px;
+      font-size: 28px;
       color: #1A1385;
       font-weight: bold;
       line-height: 70px;

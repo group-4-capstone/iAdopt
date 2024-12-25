@@ -51,8 +51,8 @@ if (isset($_POST["query"])) {
         $data[] = [
             'announcement_id'     => $row["announcement_id"],
             'title'               => str_ireplace($escaped_condition, $highlighted_condition, htmlspecialchars($row['title'])),
-            'description'         => str_ireplace($escaped_condition, $highlighted_condition, htmlspecialchars($row['description'])),
-            'image'               => $row['image'],  // Image does not need highlighting
+            'description'         => str_ireplace($escaped_condition, $highlighted_condition, $row['description']),
+            'image'               => $row['image'], 
             'announcement_status' => $row['announcement_status'],
             'publish_date'        => $row['publish_date'],
             'first_name'          => $row["first_name"],

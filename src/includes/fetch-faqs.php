@@ -51,7 +51,7 @@ if (isset($_POST["query"])) {
         $data[] = [
             'faq_id'     => $row["faq_id"],
             'question'   => str_ireplace($escaped_condition, $highlighted_condition, htmlspecialchars($row['question'])),
-            'answer'     => htmlspecialchars($row['answer']),
+           'answer' => $row['answer'],
             'faq_status' => str_ireplace($escaped_condition, $highlighted_condition, htmlspecialchars($row['faq_status'])),
             'last_name'  => htmlspecialchars($row['last_name']),
             'first_name' => htmlspecialchars($row['first_name'])

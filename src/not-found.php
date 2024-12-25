@@ -1,6 +1,8 @@
 <?php
 include_once 'includes/session-handler.php';
 include_once 'includes/db-connect.php';
+
+$role = $_SESSION['role'] ?? null;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -28,10 +30,10 @@ include_once 'includes/db-connect.php';
     <img src="styles/assets/blank.svg" alt="No Data" class="img-fluid">
     <h1 class="mt-4">No Data Available</h1>
     <p class="text-muted">It seems there's nothing to display here yet.</p>
-    <?php if ($_SESSION['role'] == 'admin' || $_SESSION['role'] == 'head_admin') { ?>
-      <a href="dashboard.php" class="btn btn-primary">Go to Home</a>
+    <?php if ($role === 'admin' || $role === 'head_admin') { ?>
+    <a href="dashboard.php" class="btn btn-primary">Go to Home</a>
     <?php } else { ?>
-      <a href="home.php" class="btn btn-primary">Go to Home</a>
+        <a href="home.php" class="btn btn-primary">Go to Home</a>
     <?php } ?>
   </div>
 </div>
