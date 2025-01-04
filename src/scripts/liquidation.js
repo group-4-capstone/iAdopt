@@ -9,6 +9,11 @@ textInputs.forEach(function(input) {
     });
 });
 
+document.getElementById('or_number').addEventListener('input', function (e) {
+    // Replace any non-numeric characters with an empty string
+    this.value = this.value.replace(/[^0-9]/g, '');
+});
+
 
 // Function to clear error messages for a specific input
 function clearErrorMessage(input) {
@@ -143,7 +148,6 @@ document.getElementById('submitExpense').addEventListener('click', function (eve
     const purpose = document.querySelector('#expensePurpose');
     const proof = document.querySelector('#expenseProof');
 
-    
 
     isValid &= validateAmountField(amount);
     isValid &= validateField(purpose, "This field is required.");
@@ -206,11 +210,8 @@ function load_data(query = '', page_number = 1)
                     html += '<td>' + response.data[count].date + '</td>';
                     html += '<td><span class="badge text-bg-' + (response.data[count].type === 'Donation' ? 'success' : 'danger') + '">' + response.data[count].type.charAt(0).toUpperCase() + response.data[count].type.slice(1) + '</span></td>';
                     html += '<td>' + response.data[count].amount + '</td>';
-                    if (response.data[count].type === 'Donation') {
-                        html += '<td>N/A</td>';
-                    } else {
-                        html += '<td>' + (response.data[count].description ? response.data[count].description : '') + '</td>';
-                    }
+                    html += '<td>' + response.data[count].description + '</td>';
+                  
                     html += '<td>';
                  
                     // Check the liquidation status and assign the appropriate badge class

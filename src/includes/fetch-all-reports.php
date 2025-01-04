@@ -12,6 +12,9 @@ if (isset($_POST["query"])) {
     $page = isset($_POST["page"]) && $_POST["page"] > 1 ? intval($_POST["page"]) : 1;
     $start = ($page - 1) * $limit;
 
+    $sort_order = isset($_POST["sort_order"]) && $_POST["sort_order"] === 'asc' ? 'ASC' : 'DESC';
+
+
     $condition = trim(preg_replace('/[^A-Za-z0-9\- ]/', '', $_POST["query"]));
 
     $query_params = [
@@ -22,6 +25,7 @@ if (isset($_POST["query"])) {
         ':location'       => '%' . $condition . '%',
         ':type'           => '%' . $condition . '%',
         ':animal_status'  => '%' . $condition . '%',
+        ':report_type'  => '%' . $condition . '%',
         ':deny_reason'    => '%' . $condition . '%'
     ];
 
@@ -29,6 +33,8 @@ if (isset($_POST["query"])) {
     SELECT 
         rescue.rescue_id, 
         rescue.report_date, 
+        rescue.report_type, 
+        animals.animal_id, 
         animals.type, 
         rescue.location, 
         animals.animal_status, 
@@ -39,9 +45,10 @@ if (isset($_POST["query"])) {
     FROM rescue
     INNER JOIN animals ON rescue.animal_id = animals.animal_id
     INNER JOIN users ON rescue.user_id = users.user_id
-    WHERE animals.animal_status IN ('Denied')
+    WHERE rescue.report_type = 'report' 
       AND (
           rescue.report_date LIKE :report_date OR 
+          rescue.report_type LIKE :report_type OR
           animals.animal_id LIKE :animal_id OR 
           users.first_name LIKE :first_name OR 
           users.last_name LIKE :last_name OR 
@@ -50,8 +57,9 @@ if (isset($_POST["query"])) {
           rescue.location LIKE :location OR
           rescue.deny_reason LIKE :deny_reason
       )
-    ORDER BY rescue.rescue_id DESC
-    ";
+    ORDER BY rescue.report_date $sort_order
+";
+
 
     $filter_query = $query . ' LIMIT ' . $start . ', ' . $limit;
 
@@ -72,8 +80,10 @@ if (isset($_POST["query"])) {
     foreach ($result as $row) {
         $data[] = array(
             'rescue_id'     => $row["rescue_id"],
+            'animal_id'     => $row["animal_id"],
             'report_date'   => str_ireplace($escaped_condition, $highlighted_condition, htmlspecialchars($row["report_date"])),
             'type'          => str_ireplace($escaped_condition, $highlighted_condition, htmlspecialchars($row["type"])),
+            'report_type'          => str_ireplace($escaped_condition, $highlighted_condition, htmlspecialchars($row["report_type"])),
             'location'      => str_ireplace($escaped_condition, $highlighted_condition, htmlspecialchars($row["location"])),
             'first_name'    => str_ireplace($escaped_condition, $highlighted_condition, htmlspecialchars($row["first_name"])),
             'last_name'     => str_ireplace($escaped_condition, $highlighted_condition, htmlspecialchars($row["last_name"])),

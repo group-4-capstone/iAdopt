@@ -1,11 +1,12 @@
 <?php include_once 'includes/session-handler.php';
 include_once 'includes/db-connect.php';
 
-if (!isset($_SESSION['role']) || ($_SESSION['role'] !== 'admin' && $_SESSION['role'] !== 'head_admin')) { 
+if (!isset($_SESSION['role']) || ($_SESSION['role'] !== 'admin' && $_SESSION['role'] !== 'head_admin')) {
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
+  <!DOCTYPE html>
+  <html lang="en">
+
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,48 +24,53 @@ if (!isset($_SESSION['role']) || ($_SESSION['role'] !== 'admin' && $_SESSION['ro
     <!-- Bootstrap Icons-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-    
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   </head>
+
   <body>
 
-   <?php include_once 'components/topnavbar.php'; ?>
+    <?php include_once 'components/topnavbar.php'; ?>
 
-   <section class="user-banner-section">
+    <section class="user-banner-section">
       <div class="content">
         <h2>Shop Merchandise</h2>
         <h4>Buy for a cause.</h4>
-          <p>
-            Please consider purchasing our merchandise as a way to show your support for our shelter.
-          </p>
+        <p>
+          Please consider purchasing our merchandise as a way to show your support for our shelter.
+        </p>
       </div>
     </section>
 
     <section class="shop-section">
       <div class="content">
+        <div class="no-merch"></div>
         <div class="grid">
           <div class="section_container">
-            <div class="grid_container"> 
+            <div class="grid_container">
               <div class="merch">
-                
+
               </div>
             </div>
           </div>
         </div>
+
       </div>
       <div class="row">
-        
-      </div>
-  </section>
 
-   
-   <?php include_once 'components/footer.php'; ?>
-   <script src="scripts/shop.js"></script>
-</body>
-</html>
+      </div>
+
+    </section>
+
+
+    <?php include_once 'components/footer.php'; ?>
+    <script src="scripts/shop.js"></script>
+  </body>
+
+  </html>
 
 <?php
 } else {
-    header("Location: home.php");
+  header("Location: home.php");
 }
 ?>

@@ -5,8 +5,9 @@ if (!isset($_SESSION['role']) || ($_SESSION['role'] !== 'admin' && $_SESSION['ro
 ?>
 
 
-<!DOCTYPE html>
-<html lang="en">
+  <!DOCTYPE html>
+  <html lang="en">
+
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -24,31 +25,29 @@ if (!isset($_SESSION['role']) || ($_SESSION['role'] !== 'admin' && $_SESSION['ro
     <!-- Bootstrap Icons-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-    
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   </head>
+
   <body>
 
-   <?php include_once 'components/topnavbar.php'; ?>
+    <?php include_once 'components/topnavbar.php'; ?>
 
-   <section class="user-banner-section">
+    <section class="user-banner-section">
       <div class="content">
-        <h2>Report Stray Animal</h2>
-        <h4>Every report can save a life.</h4>
-        <p>
-        Your report will help get animals the care and safety they need. By letting us know when an animal is in danger, you are
-        helping to protect them and give them a chance 
-        at a better life.
-        </p>
+        <h2>Report Animal Abuse</h2>
+        <h4>Every Report Can Save a Life</h4>
+        <p>By notifying us when an animal is in danger, you play a vital role in protecting them and offering a chance at a better life. </p>
+        <p>We collaborate with trusted organizations, including the <b>Animal Welfare Society</b>, <b>Animal Kingdom Foundation</b>, and <b>CARA Welfare Philippines</b>, to forward cases and provide timely assistance for animals in need. </p>
       </div>
     </section>
 
     <section class="form-section pb-5">
       <div class="content">
-        <h4><img src="styles/assets/secaspi-logo.png">Report Stray Form</h4>
-        <?php 
-          $isDisabled = !isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true ? 'disabled' : '';
+        <h4><img src="styles/assets/secaspi-logo.png">Report Animal Abuse Form</h4>
+        <?php
+        $isDisabled = !isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true ? 'disabled' : '';
         ?>
         <form id="rescueForm" method="post">
           <div class="step">
@@ -65,33 +64,33 @@ if (!isset($_SESSION['role']) || ($_SESSION['role'] !== 'admin' && $_SESSION['ro
             </div>
 
             <div class="mb-3">
-                <label class="mb-3">Current location of the animal:</label>
-                <div class="row">
-                 <div class="col-sm-12 col-lg-6 mb-3">
-                    <label>Region<span class="asterisk"> *</span></label>
-                    <select name="region" id="region" <?php echo $isDisabled; ?> required ></select>
-                    <input type="hidden" class="form-control form-control-md" name="region" id="region-text" required>
+              <label class="mb-3">Current location of the animal:</label>
+              <div class="row">
+                <div class="col-sm-12 col-lg-6 mb-3">
+                  <label>Region<span class="asterisk"> *</span></label>
+                  <select name="region" id="region" <?php echo $isDisabled; ?> required></select>
+                  <input type="hidden" class="form-control form-control-md" name="region" id="region-text" required>
                 </div>
                 <div class="col-sm-6 mb-3">
-                    <label>Province<span class="asterisk"> *</span></label>
-                    <select name="province" id="province" required <?php echo $isDisabled; ?>></select>
-                    <input type="hidden" class="form-control form-control-md" name="province"  id="province-text" required>
+                  <label>Province<span class="asterisk"> *</span></label>
+                  <select name="province" id="province" required <?php echo $isDisabled; ?>></select>
+                  <input type="hidden" class="form-control form-control-md" name="province" id="province-text" required>
                 </div>
                 <div class="col-sm-6 mb-3">
-                    <label>City / Municipality<span class="asterisk"> *</span></label>
-                    <select name="city" id="city" required <?php echo $isDisabled; ?>></select>
-                    <input type="hidden" class="form-control form-control-md" name="municipality" id="city-text">
+                  <label>City / Municipality<span class="asterisk"> *</span></label>
+                  <select name="city" id="city" required <?php echo $isDisabled; ?>></select>
+                  <input type="hidden" class="form-control form-control-md" name="municipality" id="city-text">
                 </div>
                 <div class="col-sm-6 mb-3">
-                    <label>Barangay<span class="asterisk"> *</span></label>
-                    <select name="barangay" id="barangay" required <?php echo $isDisabled; ?>></select>
-                    <input type="hidden" class="form-control form-control-md" name="barangay"  id="barangay-text">
+                  <label>Barangay<span class="asterisk"> *</span></label>
+                  <select name="barangay" id="barangay" required <?php echo $isDisabled; ?>></select>
+                  <input type="hidden" class="form-control form-control-md" name="barangay" id="barangay-text">
                 </div>
                 <div class="col-lg-12 mb-3">
-                    <label for="street-text">Street, Subdivision/Village<span class="asterisk"> *</span></label>
-                    <input type="text" class="form-control form-control-md" name="specific" <?php echo $isDisabled; ?> id="street-text" required>
+                  <label for="street-text">Street, Subdivision/Village<span class="asterisk"> *</span></label>
+                  <input type="text" class="form-control form-control-md" name="specific" <?php echo $isDisabled; ?> id="street-text" required>
                 </div>
-                </div>
+              </div>
             </div>
 
             <div class="mb-3">
@@ -116,52 +115,53 @@ if (!isset($_SESSION['role']) || ($_SESSION['role'] !== 'admin' && $_SESSION['ro
           </div>
         </form>
       </div>
-</section>
+    </section>
 
     <!-- Success Modal -->
     <div class="modal fade" id="successRescueModal" tabindex="-1" aria-labelledby="successRescueModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-      <div class="modal-body">
-        <button type="button" class="btn-close d-flex ms-auto" onclick="window.location.href='report-stray.php'"></button>
-          <div class="text-center">
-            <i class="bi bi-check-circle-fill" style="font-size: 8rem; color: #28a745;"></i>
-            <p class="mt-4 px-2"> Your rescue report has been submitted successfully! Thank you.</p>
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-body">
+            <button type="button" class="btn-close d-flex ms-auto" onclick="window.location.href='report-stray.php'"></button>
+            <div class="text-center">
+              <i class="bi bi-check-circle-fill" style="font-size: 8rem; color: #28a745;"></i>
+              <p class="mt-4 px-2"> Your rescue report has been submitted successfully! Thank you.</p>
+            </div>
           </div>
-        </div>     
+        </div>
       </div>
     </div>
-  </div>
 
-<!-- Wrong file type Modal -->
-<div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-    <div class="modal-dialog modal-dialog-centered">
+    <!-- Wrong file type Modal -->
+    <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+      <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-body">
+          <div class="modal-body">
             <button type="button" class="btn-close d-flex ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
-                <div class="text-center">
-                    <i class="bi bi-exclamation-triangle-fill" style="font-size: 8rem; color: #dc3545;"></i>
-                    <p class="mt-4 px-2">Invalid file type! Please upload only .jpg, .jpeg, .png, .mp4, or .mov files.</p>
-                </div>
+            <div class="text-center">
+              <i class="bi bi-exclamation-triangle-fill" style="font-size: 8rem; color: #dc3545;"></i>
+              <p class="mt-4 px-2">Invalid file type! Please upload only .jpg, .jpeg, .png, .mp4, or .mov files.</p>
             </div>
+          </div>
         </div>
+      </div>
     </div>
-</div>
 
 
 
 
-  <script src="scripts/form.js"></script>
-  <script src="scripts/report-stray.js"></script>
-  <script src="scripts/ph-address-selector.js"></script>
-   
-   <?php include_once 'components/footer.php'; ?>
+    <script src="scripts/form.js"></script>
+    <script src="scripts/report-stray.js"></script>
+    <script src="scripts/ph-address-selector.js"></script>
 
-</body>
-</html>
+    <?php include_once 'components/footer.php'; ?>
+
+  </body>
+
+  </html>
 
 <?php
 } else {
-    header("Location: home.php");
+  header("Location: home.php");
 }
 ?>

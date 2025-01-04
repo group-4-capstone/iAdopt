@@ -12,6 +12,8 @@ if (isset($_POST["query"])) {
     $page = $_POST["page"] > 1 ? $_POST["page"] : 1;
     $start = ($page - 1) * $limit;
 
+    $sort_order = isset($_POST["sort_order"]) && $_POST["sort_order"] === 'asc' ? 'ASC' : 'DESC';
+
     // Clean the search query
     $condition = trim(preg_replace('/[^A-Za-z0-9\- ]/', '', $_POST["query"]));
 
@@ -31,7 +33,7 @@ if (isset($_POST["query"])) {
         addition_date LIKE :addition_date OR
         name LIKE :name
     )
-    ORDER BY addition_date DESC
+    ORDER BY date_of_rest $sort_order
     ";
 
     // Add LIMIT for pagination

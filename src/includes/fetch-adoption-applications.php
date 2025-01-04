@@ -1,6 +1,6 @@
 <?php
 
-// process_data.php
+// fetch-adoption-applications.php
 
 if (isset($_POST["query"])) {
     $connect = new PDO("mysql:host=localhost;dbname=iadopt", "root", "");
@@ -9,13 +9,15 @@ if (isset($_POST["query"])) {
     $page = isset($_POST["page"]) && $_POST["page"] > 1 ? $_POST["page"] : 1;
     $start = ($page - 1) * $limit;
 
+    $sort_order = isset($_POST["sort_order"]) && strtolower($_POST["sort_order"]) === 'asc' ? 'ASC' : 'DESC';
+
     // Handle search condition
     $condition = preg_replace('/[^A-Za-z0-9\- ]/', '', $_POST["query"]);
     $condition = trim($condition);
     $condition = str_replace(" ", "%", $condition);
-    
+
     $query_params = [];
-    
+
     $base_query = "SELECT * FROM applications 
                    INNER JOIN users ON applications.user_id = users.user_id 
                    INNER JOIN animals ON applications.animal_id = animals.animal_id";
@@ -23,16 +25,21 @@ if (isset($_POST["query"])) {
     // Add search condition if provided
     if (!empty($condition)) {
         $base_query .= " WHERE name LIKE :name OR first_name LIKE :first_name OR last_name LIKE :last_name OR
-         application_date LIKE :application_date";
+         application_date LIKE :application_date OR
+          application_status LIKE :application_status OR
+         complete_address LIKE :complete_address";
         $query_params = [
             ':name' => '%' . $condition . '%',
             ':application_date' => '%' . $condition . '%',
+            ':application_status' => '%' . $condition . '%',
+            ':complete_address' => '%' . $condition . '%',
             ':first_name' => '%' . $condition . '%',
             ':last_name' => '%' . $condition . '%'
         ];
     }
 
-    $base_query .= " ORDER BY applications.application_id DESC";
+    // Add sorting and pagination
+    $base_query .= " ORDER BY application_date $sort_order";
     $filter_query = $base_query . " LIMIT $start, $limit";
 
     // Get total data count
@@ -59,8 +66,8 @@ if (isset($_POST["query"])) {
             'application_date'               => str_ireplace($replace_array_1, $replace_array_2, $row["application_date"]),
             'name'               => str_ireplace($replace_array_1, $replace_array_2, $row["name"]),
             'email'              => $row['email'],
-            'complete_address'   => $row['complete_address'],
-            'application_status' => $row['application_status']
+            'complete_address'   => str_ireplace($replace_array_1, $replace_array_2, $row["complete_address"]),
+            'application_status' =>  str_ireplace($replace_array_1, $replace_array_2, $row["application_status"])
         ];
     }
 
@@ -98,5 +105,3 @@ if (isset($_POST["query"])) {
         'total_data'  => $total_data
     ]);
 }
-
-?>

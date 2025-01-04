@@ -29,9 +29,6 @@ function load_data_announcements(query = '', page_number = 1) {
             
                     // Only display announcements with status "Published"
                     if (announcement_status === 'Published') {
-                      // Shorten content for preview
-        
-                    // Add each announcement item as a grid item
                     html += `
                         <div class="grid_items">
                             <img src="styles/assets/announcement/${image}" alt="${title}">

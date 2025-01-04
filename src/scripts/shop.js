@@ -34,11 +34,16 @@ function load_data_merch(query = '', page_number = 1) {
                 }
             } else {
                 // If no data, show a message in the grid
-                html = `<div class="text-center w-100">No Merchandise Found</div>`;
+                html1 = `<div class="col-lg-12 d-flex justify-content-center align-items-center" style="min-height: 300px;">
+                    <p class="fs-4 text-muted text-center">
+                      Sorry, there are no merch found. Please check back later.
+                    </p>
+                  </div>`;
             }
 
             // Update the grid with the generated HTML
             document.querySelector('.merch').innerHTML = html;
+            document.querySelector('.no-merch').innerHTML = html1;
         }
     };
 }

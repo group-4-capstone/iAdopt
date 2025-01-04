@@ -7,15 +7,17 @@ include_once 'includes/db-connect.php';
 if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['role'] == 'head_admin')) {
 
   // Fetch user details from the database based on email
-  $email = $_SESSION['email'];
-  $query = "SELECT * FROM users WHERE email = ?";
+  $user_id = $_SESSION['user_id'];
+  $query = "SELECT * FROM users WHERE user_id = ?";
   $stmt = $db->prepare($query);
 
   if ($stmt) {
-    $stmt->bind_param('s', $email);
+    $stmt->bind_param('i', $user_id);
     $stmt->execute();
     $result = $stmt->get_result();
     $user = $result->fetch_assoc();
+
+
 
     if ($user) {
       // Assign the fetched data to variables
@@ -26,7 +28,9 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
       $address = $user['address'];
       $fb_link = $user['fb_link'];
       $contact_num = $user['contact_num'];
+      $email = $user['email'];
     }
+  ;
 
     $stmt->close();
   }
@@ -42,6 +46,8 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
     <link rel="stylesheet" href="styles/sidebar.css">
     <link rel="stylesheet" href="styles/styles.css">
     <link rel="stylesheet" href="styles/profile.css">
+    <link rel="stylesheet" href="styles/settings.css">
+    
 
     <!-- Google Fonts Links For Icon -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0">
@@ -53,7 +59,11 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
 
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="scripts/settings.js"></script>
   </head>
 
@@ -64,117 +74,198 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
     <div class="admin-content">
       <section class="profile-section">
         <div class="container rounded bg-white mt-5 mb-5">
+         
           <div class="row">
-            <div class="col-md-3 border-right">
-              <div class="d-flex flex-column align-items-center text-center p-3 py-5">
-                <img class="rounded-circle mt-5" width="150px" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg">
-                <span class="font-weight-bold">Hi, <?= ucwords(htmlspecialchars($_SESSION['first_name'] . ' ' . $_SESSION['last_name'])) ?>!</span>
+            
+            <div class="col-md-12 border-right">
+              <div class="p-3 py-5">
+                <form action="includes/update-profile.php" method="POST" enctype="multipart/form-data">
+                      <div class="d-flex align-items-center mb-3">
+                          <div class="vertical-line me-3"></div>
+                          <h4>MY ACCOUNT</h4>
+                      </div>
+                      <div class="row mt-2">
+                          <div class="col-md-5">
+                              <label class="labels">Last Name</label>
+                              <input type="text" class="form-control" id="last-name" name="last_name" placeholder="Last Name" value="<?= htmlspecialchars($last_name); ?>">
+                              <div class="invalid-feedback d-none">Please enter a valid name. Only letters, spaces, hyphens, and apostrophes are allowed.</div>
+                          </div>
+                          <div class="col-md-6">
+                              <label class="labels">First Name</label>
+                              <input type="text" class="form-control" id="first-name"  name="first_name" value="<?= htmlspecialchars($first_name); ?>" placeholder="First Name">
+                              <div class="invalid-feedback d-none">Please enter a valid name. Only letters, spaces, hyphens, and apostrophes are allowed.</div>
+                          </div>
+                          <div class="col-md-1">
+                              <label class="labels">M.I</label>
+                              <input type="text" class="form-control" id="middle-initial"  name="middle_initial" value="<?= htmlspecialchars($middle_initial); ?>" placeholder="Middle Initial">
+                              <div class="invalid-feedback d-none"></div>
+                          </div>
+                      </div>
+                      <div class="row mt-3">
+                          <div class="col-md-12">
+                              <label class="labels">Email</label>
+                              <input type="email" class="form-control" id="email" name="email" placeholder="Enter email id" value="<?= htmlspecialchars($email); ?>" required>
+                              <div class="invalid-feedback d-none"></div>
+                            </div>
+                          <div class="col-md-2 mt-3">
+                              <label class="labels">Birthday</label>
+                              <input type="date" class="form-control" id="birthdate" name="birthdate" value="<?= htmlspecialchars($birthdate); ?>">
+                          </div>
+                          <div class="col-md-4 mt-3">
+                              <label class="labels">Contact Number</label>
+                              <input type="text" class="form-control" id="contact-number" name="contact_num" minlength="11" maxlength="11"  placeholder="Enter phone number" value="<?= htmlspecialchars($contact_num); ?>"  pattern="^[0-9]{11}$" inputmode="numeric" >
+                              <div class="invalid-feedback">Please enter a valid contact number (11 digits).</div>
+                          </div>
+                          <div class="col-md-6 mt-3">
+                              <label class="labels">Facebook Profile Link</label>
+                              <input type="text" class="form-control" name="fb_link" placeholder="Facebook Link" value="<?= htmlspecialchars($fb_link); ?>">
+                          </div>
+                      </div>
+
+                  </form>
+               <!-- buttons -->
+              
+               <div class="d-flex justify-content-end align-items-end text-center mt-5">
+                <span>
+                  <button id="change-password-button" class="btn me-2"><i class="bi bi-pencil-square me-2"></i>Change Password</button> 
+                </span>
                 <span>
                 <button class="btn edit-button" id="edit-button"><i class="bi bi-pencil-square me-2"></i>Edit Information</button>
                   <button class="btn d-none" id="save-button"><i class="bi bi-save me-2"></i>Save Changes</button>
+                  
                 </span>
-                <span><button id="change-password-button" class="btn"><i class="bi bi-pencil-square me-2"></i>Change Password</button></span>
+               </div> 
+            
+               <!-- buttons end-->
               </div>
-            </div>
-            <div class="col-md-9 border-right">
-              <div class="p-3 py-5">
-                <div class="d-flex align-items-center mb-3">
-                  <div class="vertical-line me-3"></div>
-                  <h4>MY ACCOUNT</h4>
-                </div>
-                <div class="row mt-2">
-                  <div class="col-md-5"><label class="labels">Last Name</label><input type="text" class="form-control" placeholder="Last Name" value="<?= htmlspecialchars($last_name); ?>"></div>
-                  <div class="col-md-6"><label class="labels">First Name</label><input type="text" class="form-control" value="<?= htmlspecialchars($first_name); ?>" placeholder="First Name"></div>
-                  <div class="col-md-1"><label class="labels">M.I</label><input type="text" class="form-control" value="<?= htmlspecialchars($middle_initial); ?>" placeholder="Middle Initial"></div>
-                </div>
-                <div class="row mt-3">
-                  <div class="col-md-12"><label class="labels">Birthday</label><input type="date" class="form-control" value="<?= htmlspecialchars($birthdate); ?>"></div>
-                  <div class="col-md-6 mt-3"><label class="labels">City/Municipality</label><input type="text" class="form-control" placeholder="enter address line 1" value="<?= htmlspecialchars($address); ?>"></div>
-                  <div class="col-md-6 mt-3"><label class="labels">Province</label><input type="text" class="form-control" placeholder="enter address line 2" value="<?= htmlspecialchars($address); ?>"></div>
-                  <div class="col-md-12 mt-3"><label class="labels">Facebook Profile Link</label><input type="text" class="form-control" placeholder="" value="<?= htmlspecialchars($fb_link); ?>"></div>
-                  <div class="col-md-4 mt-3"><label class="labels">Contact Number</label><input type="text" class="form-control" placeholder="enter phone number" value="<?= htmlspecialchars($contact_num); ?>"></div>
-                  <div class="col-md-8 mt-3"><label class="labels">Email</label><input type="text" class="form-control" placeholder="enter email id" value="<?= htmlspecialchars($email); ?>"></div>
-                </div>
-              </div>
+             
             </div>
           </div>
+          
         </div>
-
+        
     
     </section>
     </div>
+    
+    <!-- Verify Password Modal -->
+      <div class="modal fade" id="verifyPasswordModal" tabindex="-1" aria-labelledby="verifyPasswordModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <h5 class="modal-title" id="verifyPasswordModalLabel">Verify Password</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                      <form>
+                          <div class="mb-3">
+                              <label for="current-password" class="form-label">Current Password</label>
+                              <input type="password" class="form-control" id="current-password">
+                          </div>
+                      </form>
+                  </div>
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      <button type="button" id="verify-password-button" class="btn btn-primary">Verify</button>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+
     <!-- Change Password Modal -->
-<!-- Modal Structure -->
-<div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
+        <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="changePasswordModalLabel">Change Password</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="mb-3">
+                                <label for="new-password" class="form-label">New Password</label>
+                                <input type="password" class="form-control" id="new-password" aria-describedby="password-help">
+                                <div id="password-help" class="form-text"></div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="confirm-password" class="form-label">Confirm Password</label>
+                                <input type="password" class="form-control" id="confirm-password">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" id="save-password-button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+     
+
+
+        
+        <!-- Success Modal Structure  without Timer-->
+        <div class="modal fade" id="successModal" tabindex="-1" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-body">
+                <!-- Close button on the left -->
+                <button type="button" class="btn-close d-flex ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
+                <!-- Bootstrap check icon and success message -->
+                <div class="text-center">
+                  <i class="bi bi-check-circle-fill" style="font-size: 8rem; color: #28a745;"></i>
+                  <p class="mt-3">Changed successfully!</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Success Modal Structure  with Timer -->
+        <div class="modal fade" id="successModal2" tabindex="-1" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-body">
+                <button type="button" class="btn-close d-flex ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="text-center">
+                  <i class="bi bi-check-circle-fill" style="font-size: 8rem; color: #28a745;"></i>
+                  <p class="mt-3">Changed successfully!</p>
+                  <p id="logoutTimer">You will be logged out in 5 seconds...</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- Change Password Modal Structure -->
+        <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
                 <h5 class="modal-title" id="changePasswordModalLabel">Change Password</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
+              </div>
+              <div class="modal-body">
+                <!-- Form for changing password -->
                 <form>
-                    <div class="mb-3">
-                        <label for="new-password" class="form-label">New Password</label>
-                        <input type="password" class="form-control" id="new-password" aria-describedby="password-help">
-                        <div id="password-help" class="form-text"></div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="confirm-password" class="form-label">Confirm Password</label>
-                        <input type="password" class="form-control" id="confirm-password">
-                    </div>
+                  <div class="mb-3">
+                    <label for="new-password" class="form-label">New Password</label>
+                    <input type="password" class="form-control" id="new-password">
+                    <small id="password-help" class="form-text"></small>
+                  </div>
+                  <div class="mb-3">
+                    <label for="confirm-password" class="form-label">Confirm Password</label>
+                    <input type="password" class="form-control" id="confirm-password">
+                  </div>
+                  <button type="button" id="save-password-button" class="btn btn-primary">Save</button>
                 </form>
+              </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" id="save-password-button" class="btn btn-primary">Save changes</button>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Success Modal Structure -->
-<div class="modal fade" id="successModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-body">
-        <!-- Close button on the left -->
-        <button type="button" class="btn-close d-flex ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
-        <!-- Bootstrap check icon and success message -->
-        <div class="text-center">
-          <i class="bi bi-check-circle-fill" style="font-size: 8rem; color: #28a745;"></i>
-          <p class="mt-3">Changed successfully!</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Change Password Modal Structure -->
-<div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="changePasswordModalLabel">Change Password</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <!-- Form for changing password -->
-        <form>
-          <div class="mb-3">
-            <label for="new-password" class="form-label">New Password</label>
-            <input type="password" class="form-control" id="new-password">
-            <small id="password-help" class="form-text"></small>
           </div>
-          <div class="mb-3">
-            <label for="confirm-password" class="form-label">Confirm Password</label>
-            <input type="password" class="form-control" id="confirm-password">
-          </div>
-          <button type="button" id="save-password-button" class="btn btn-primary">Save</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
+        </div>
 
 
 

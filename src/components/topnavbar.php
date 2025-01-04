@@ -5,7 +5,7 @@
       <span id="close-menu-btn" class="material-symbols-outlined">Close</span>
       <li><a href="home.php">Home</a></li>
       <li><a href="adopt.php">Adopt</a></li>
-      <li><a href="report-stray.php">Report</a></li>
+      <li><a href="report.php">Report</a></li>
       <li><a href="donate.php">Donate</a></li>
       <li><a href="shop.php">Shop</a></li>
       <?php if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) { ?>
@@ -48,7 +48,7 @@
         </ul>
       </div>
       <div class="pb-3 text-center">
-      <a class="text-danger" id="clearNotificationsBtn" onclick="clearNotifications()">Clear Notifications</a>
+        <a class="text-danger" id="clearNotificationsBtn" onclick="clearNotifications()">Clear Notifications</a>
       </div>
     </div>
   </div>
@@ -62,7 +62,7 @@
         <h5 class="modal-title fw-bold" id="notificationDetailModalLabel">
           <i class="bi bi-bell-fill me-2"></i>Notification Details
         </h5>
-        <button type="button" class="btn-close"  data-bs-dismiss="modal" onclick="window.location.reload();" aria-label="Close"></button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" onclick="window.location.reload();" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <h6 id="notificationType" class="text-primary fw-bold mb-3"></h6>
@@ -74,65 +74,61 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary"  data-bs-dismiss="modal" onclick="window.location.reload();">Close</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="window.location.reload();">Close</button>
       </div>
     </div>
   </div>
 </div>
 
-
-
-
-<!-- Modal Structure for Post-Adoption
+<!-- Post-Adoption -->
 <div class="modal fade" id="postAdoptionModal" tabindex="-1" aria-labelledby="postAdoptionModalLabel" aria-hidden="true">
-  <div class="modal-dialog py-4">
+  <div class="modal-dialog">
     <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="postAdoptionModalLabel">Post-Adoption Form</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
       <div class="modal-body">
-      <section class="form-section">
-      <div class="content">
-      <h4 class="text-center"><img src="styles/assets/secaspi-logo.png">POST- ADOPTION FORM</h4>
-        <form id="signUpForm" action="#!">
-        <div class="step">
-            <p class="text-center mb-4">Kindly upload the current picture/ video of your adopted pet.</p>
+        <form id="postAdoptionForm" method="post">
+            <!-- Current Situation Description -->
             <div class="mb-3">
-                <label>Current situation description:</label>
-                  <input type="text" placeholder="Briefly describe the current situation of your pet." name="address1">
+              <label for="currentDescription" class="form-label">Current Situation Description:</label>
+              <textarea class="form-control" id="currentDescription" name="currentDescription" placeholder="Briefly describe the current situation of your pet." rows="3" ></textarea>
             </div>
+
+            <!-- File Upload -->
             <div class="mb-3">
-                <label for="placeUploads">Upload video and pictures of the place where dogs/cats will be kept</label>
-                <input type="file" id="placeUploads" name="place_uploads[]" accept=".jpg,.jpeg,.png,.mp4,.mov" multiple required>
+              <label for="uploadFiles" class="form-label">Upload Pictures/Videos:</label>
+              <input type="file" class="form-control" id="uploadFiles" name="uploadFiles[]" accept=".jpg,.jpeg,.png,.mp4,.mov" multiple>
             </div>
-          </div>
-        <div class="form-footer d-flex">
-            <button type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
-            <button type="button" id="nextBtn" onclick="nextPrev(1)">Next</button>
+
+            <input type="hidden" id="application_id" name="application_id" readonly>
+            <input type="hidden" id="notification_id" name="notification_id" readonly>
         </div>
-    </form>
-      </div>
-    </div>
-  </section>
-      </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+        </form>
     </div>
   </div>
-</div> -->
+</div>
 
+<!-- Adoption Modal -->
 <div class="modal fade" id="adoptionModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-xl">
     <div class="modal-content">
       <div class="modal-body d-flex">
         <button type="button" class="btn-close position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Close"></button>
-        <!-- Left side: GIF -->
         <div class="row p-5">
           <div class="col-12 col-md-12 col-sm-12 col-lg-6">
             <img src="styles/assets/success.gif" alt="Adoption Approved GIF" style="width:85%; transform: scaleX(-1);">
           </div>
-          <!-- Right side: Text content -->
           <div class="col-12 col-md-12 col-sm-12 col-lg-6">
             <h4 class="mt-5 mb-3"><i class="bi bi-check-circle-fill pe-3" style="color: green; font-size:30px"></i>Adoption Application Approved!</h4>
             <p>Congratulations! Your adoption application has been reviewed and you may now proceed to the next step:</p>
             <p><strong>Online Interview</strong></p>
-            <p><strong>Date:</strong> September 20, 2024</p>
-            <p><strong>Time:</strong> 8pm</p>
+            <p><strong>Date:</strong> <span id="applicationDate"></span></p>
+            <p><strong>Time:</strong> <span id="applicationTime"></span></p>
             <p><em>Note: Meeting link will be sent on the day of the interview.</em></p>
           </div>
         </div>
@@ -140,6 +136,23 @@
     </div>
   </div>
 </div>
+
+<!-- Success Modal -->
+<div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body">
+        <button type="button" class="btn-close d-flex ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div class="text-center">
+          <i class="bi bi-check-circle-fill" style="font-size: 8rem; color: #28a745;"></i>
+          <p class="mt-4 px-2">Your response has been successfully recorded. Thank you</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 
 <script>
   const currentPath = window.location.pathname.split("/").pop();
@@ -168,89 +181,206 @@
   load_data();
 
   function load_data(query = '') {
-  var form_data = new FormData();
-  form_data.append('query', query);
+    var form_data = new FormData();
+    form_data.append('query', query);
 
-  var ajax_request = new XMLHttpRequest();
+    var ajax_request = new XMLHttpRequest();
 
-  ajax_request.open('POST', 'includes/fetch-notifications.php');
-  ajax_request.send(form_data);
+    ajax_request.open('POST', 'includes/fetch-notifications.php');
+    ajax_request.send(form_data);
 
-  ajax_request.onreadystatechange = function() {
-    if (ajax_request.readyState == 4 && ajax_request.status == 200) {
-      var response = JSON.parse(ajax_request.responseText);
+    ajax_request.onreadystatechange = function() {
+      if (ajax_request.readyState == 4 && ajax_request.status == 200) {
+        var response = JSON.parse(ajax_request.responseText);
 
-      var html = '';
+        var html = '';
 
-      if (response.data.length > 0) {
-  for (var count = 0; count < response.data.length; count++) {
-    var notificationClass = response.data[count].css_class;  // 'read' or 'unread'
-    html += '<li class="notification-item pt-3 ' + notificationClass + '" data-id="' + response.data[count].notification_id + '">';
-    html += '<a href="#">';
-    html += '<p>' + response.data[count].message + '</p>';
-    html += '</a>';
-    html += '</li>';
-  }
+        if (response.data.length > 0) {
+          for (var count = 0; count < response.data.length; count++) {
+            var notificationClass = response.data[count].css_class; // 'read' or 'unread'
+            html += '<li class="notification-item pt-3 ' + notificationClass + '" data-id="' + response.data[count].notification_id + '">';
+            html += '<a href="#">';
+            html += '<p>' + response.data[count].message + '</p>';
+            html += '</a>';
+            html += '</li>';
+          }
 
-  // Show the "Clear Notifications" button if there are notifications
-  document.getElementById('clearNotificationsBtn').style.display = 'block';
-} else {
-  // Add a <li> with a class for styling when there are no notifications
-  html += '<li class="no-notifications px-5 py-2 text-muted"> -- No Notifications Yet -- </li>';
+          // Show the "Clear Notifications" button if there are notifications
+          document.getElementById('clearNotificationsBtn').style.display = 'block';
+        } else {
+          // Add a <li> with a class for styling when there are no notifications
+          html += '<li class="no-notifications px-5 py-2 text-muted"> -- No Notifications Yet -- </li>';
 
-  // Hide the "Clear Notifications" button when there are no notifications
-  document.getElementById('clearNotificationsBtn').style.display = 'none';
-}
+          // Hide the "Clear Notifications" button when there are no notifications
+          document.getElementById('clearNotificationsBtn').style.display = 'none';
+        }
 
 
-      document.getElementById('post_data').innerHTML = html;
-      const unreadBadge = document.querySelector('.notification-item .badge');
-      if (unreadBadge) {
-        unreadBadge.innerText = response.unread_count;
-        unreadBadge.style.display = response.unread_count > 0 ? 'inline-block' : 'none';
-      }
+        document.getElementById('post_data').innerHTML = html;
+        const unreadBadge = document.querySelector('.notification-item .badge');
+        if (unreadBadge) {
+          unreadBadge.innerText = response.unread_count;
+          unreadBadge.style.display = response.unread_count > 0 ? 'inline-block' : 'none';
+        }
 
-      // Add event listeners to open the detail modal on click
-      var notificationItems = document.querySelectorAll('.notification-item');
-      notificationItems.forEach(function(item) {
-        item.addEventListener('click', function() {
-          var notificationId = this.getAttribute('data-id');
-          $('#notificationModal').modal('hide');
-          markAsRead(notificationId);
-          showNotificationDetails(notificationId);
+        // Add event listeners to open the detail modal on click
+        var notificationItems = document.querySelectorAll('.notification-item');
+        notificationItems.forEach(function(item) {
+          item.addEventListener('click', function() {
+            var notificationId = this.getAttribute('data-id');
+            $('#notificationModal').modal('hide');
+            markAsRead(notificationId);
+            showNotificationDetails(notificationId);
+          });
         });
-      });
-    }
-  }
-}
-
-// Function to clear notifications
-function clearNotifications() {
- 
-  var currentUserId = <?php echo $_SESSION['user_id']; ?>;  // Pass the user_id from PHP to JavaScript
-  console.log(currentUserId);
-  var form_data = new FormData();
-  form_data.append('user_id', currentUserId);  // Append the user_id to FormData
-
-  var ajax_request = new XMLHttpRequest();
-  
-  ajax_request.open('POST', 'includes/clear-notifications.php');
-  ajax_request.send(form_data);
-
-  ajax_request.onreadystatechange = function() {
-    if (ajax_request.readyState == 4 && ajax_request.status == 200) {
-      var response = JSON.parse(ajax_request.responseText);
-      if (response.success) {
-        // Optionally reload the notifications
-        load_data(); // Reload notifications to reflect the update
-      } else {
-        alert('Failed to clear notifications');
       }
     }
-  };
+  }
+
+  document.getElementById('postAdoptionForm').addEventListener('submit', function (event) {
+    event.preventDefault(); // Prevent default form submission
+
+    // Get the form element and initialize FormData
+    var postAdoptionForm = document.getElementById('postAdoptionForm');
+    var formData = new FormData(postAdoptionForm);
+
+    // Clear previous error messages
+    clearErrorMessages();
+
+    // Validate form fields
+    let isValid = true;
+
+    const description = document.getElementById('currentDescription');
+    const uploadFiles = document.getElementById('uploadFiles');
+    const applicationId = document.getElementById('application_id');
+    const notificationId = document.getElementById('notification_id');
+
+    // Validate inputs
+    isValid = isValid && validateField(description, "This field is required.");
+    isValid = isValid && validateFileField(uploadFiles, "Please upload at least one file.");
+    isValid = isValid && validateField(applicationId, "Invalid application ID.");
+    isValid = isValid && validateField(notificationId, "Invalid notification ID.");
+
+    // Debugging logs
+    console.log("Application ID:", applicationId.value);
+    console.log("Notification ID:", notificationId.value);
+
+    // If validation passes, submit form via AJAX
+    if (isValid) {
+        // Append files (already added by FormData due to 'postAdoptionForm')
+        for (let i = 0; i < uploadFiles.files.length; i++) {
+            formData.append('uploadFiles[]', uploadFiles.files[i]);
+        }
+
+        // Debug FormData content
+        for (let pair of formData.entries()) {
+            console.log(pair[0] + ': ' + pair[1]);
+        }
+
+        // AJAX request
+        $.ajax({
+            url: 'includes/submit-post-adoption.php', // PHP handler
+            type: 'POST',
+            data: formData,
+            processData: false, // Important for FormData
+            contentType: false, // Important for FormData
+            success: function (response) {
+              console.log("Form submitted successfully:", response);
+              // Hide the modal and show a success message
+             $(`#postAdoptionModal`).modal('hide');
+            $('#successModal').modal('show');
+            },
+            error: function (xhr, status, error) {
+                console.error('Error:', xhr.responseText);
+                showErrorMessage(uploadFiles, 'An unexpected error occurred.');
+            }
+        });
+    }
+});
+
+// Validation Functions
+function validateField(inputElement, message) {
+    if (!inputElement.value.trim()) {
+        showErrorMessage(inputElement, message);
+        return false;
+    }
+    return true;
 }
 
-  // Function to show notification details in a new modal
+function validateFileField(inputElement, message) {
+    if (!inputElement.files.length) {
+        showErrorMessage(inputElement, message);
+        return false;
+    }
+    return true;
+}
+
+// Show Error Message
+function showErrorMessage(inputElement, message) {
+    clearSpecificErrorMessage(inputElement);
+
+    const errorMessage = document.createElement('div');
+    errorMessage.className = 'error-message text-danger';
+    errorMessage.innerText = message;
+
+    inputElement.classList.add('is-invalid');
+    inputElement.parentNode.appendChild(errorMessage);
+}
+
+// Clear Error Messages
+function clearErrorMessages() {
+    const errorMessages = document.querySelectorAll('.error-message');
+    errorMessages.forEach(msg => msg.remove());
+    const invalidInputs = document.querySelectorAll('.is-invalid');
+    invalidInputs.forEach(input => input.classList.remove('is-invalid'));
+}
+
+// Clear Specific Error Message
+function clearSpecificErrorMessage(inputElement) {
+    const errorMessage = inputElement.parentNode.querySelector('.error-message');
+    if (errorMessage) {
+        errorMessage.remove();
+    }
+    inputElement.classList.remove('is-invalid');
+}
+
+// Attach event listeners to clear errors dynamically
+document.querySelectorAll('input, textarea').forEach(element => {
+    element.addEventListener('input', function () {
+        clearSpecificErrorMessage(this);
+    });
+
+    element.addEventListener('change', function () {
+        clearSpecificErrorMessage(this);
+    });
+});
+
+
+  // Function to clear notifications
+  function clearNotifications() {
+
+    var currentUserId = <?php echo $_SESSION['user_id']; ?>; // Pass the user_id from PHP to JavaScript
+    console.log(currentUserId);
+    var form_data = new FormData();
+    form_data.append('user_id', currentUserId); // Append the user_id to FormData
+
+    var ajax_request = new XMLHttpRequest();
+
+    ajax_request.open('POST', 'includes/clear-notifications.php');
+    ajax_request.send(form_data);
+
+    ajax_request.onreadystatechange = function() {
+      if (ajax_request.readyState == 4 && ajax_request.status == 200) {
+        var response = JSON.parse(ajax_request.responseText);
+        if (response.success) {
+          load_data();
+        } else {
+          alert('Failed to clear notifications');
+        }
+      }
+    };
+  }
+
   function showNotificationDetails(notificationId) {
     var form_data = new FormData();
     form_data.append('notification_id', notificationId);
@@ -265,43 +395,105 @@ function clearNotifications() {
         var response = JSON.parse(ajax_request.responseText);
 
         if (response.success) {
+          var applicationId = response.data.application_id;
           document.getElementById('notificationMessage').innerText = response.data.message;
           document.getElementById('notificationDate').innerText = response.data.created_at;
           document.getElementById('notificationType').innerText = response.data.notification_type;
 
-          // Open the modal
-          var myModal = new bootstrap.Modal(document.getElementById('notificationDetailModal'));
-          myModal.show();
-         
+          // Open specific modal based on notification type
+          if (response.data.notification_type === "Application Approved") {
+            var myModal2 = new bootstrap.Modal(document.getElementById('adoptionModal'));
+            myModal2.show();
+            fetchApplicationDetails(applicationId);
+          } else if (response.data.notification_type === "Post-Adoption Form Reminder") {
+            var myModal3 = new bootstrap.Modal(document.getElementById('postAdoptionModal'));
+            document.getElementById('application_id').value = applicationId;
+            document.getElementById('notification_id').value = notificationId;
+            myModal3.show();
+          } else {
+            var myModal = new bootstrap.Modal(document.getElementById('notificationDetailModal'));
+            myModal.show();
+          }
+        }
+      }
+    }
+  }
+
+  function fetchApplicationDetails(applicationId) {
+    var form_data = new FormData();
+    form_data.append('application_id', applicationId);
+
+    var ajax_request = new XMLHttpRequest();
+
+    ajax_request.open('POST', 'includes/fetch-application-details.php');
+    ajax_request.send(form_data);
+
+    ajax_request.onreadystatechange = function() {
+      if (ajax_request.readyState == 4 && ajax_request.status == 200) {
+        var response = JSON.parse(ajax_request.responseText);
+
+        if (response.success) {
+          document.getElementById('applicationDate').innerText = formatDate(response.data.sched_interview);
+          document.getElementById('applicationTime').innerText = formatTime(response.data.sched_interview);
+
+
+          function formatDate(datetime) {
+            var date = new Date(datetime);
+
+            // Array of month names
+            var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+            var month = months[date.getMonth()]; // Get the full month name
+            var day = date.getDate(); // Get the day of the month
+            var year = date.getFullYear(); // Get the full year
+
+            return month + ' ' + day + ', ' + year;
+          }
+
+          function formatTime(datetime) {
+            var date = new Date(datetime);
+            var hours = date.getHours();
+            var minutes = date.getMinutes();
+            var period = hours >= 12 ? 'PM' : 'AM'; // Determine AM or PM
+
+            // Convert to 12-hour format
+            hours = hours % 12;
+            hours = hours ? hours : 12; // Convert '0' to '12'
+            minutes = minutes < 10 ? '0' + minutes : minutes; // Add leading zero to minutes if needed
+
+            return hours + ':' + minutes + ' ' + period; // Return formatted time
+          }
+
+        } else {
+          console.log("Error: " + response.message);
         }
       }
     }
   }
 
   function markAsRead(notificationId) {
-  var form_data = new FormData();
-  form_data.append('notification_id', notificationId);
+    var form_data = new FormData();
+    form_data.append('notification_id', notificationId);
 
-  var ajax_request = new XMLHttpRequest();
+    var ajax_request = new XMLHttpRequest();
 
-  ajax_request.open('POST', 'includes/mark-as-read.php');
-  ajax_request.send(form_data);
+    ajax_request.open('POST', 'includes/mark-as-read.php');
+    ajax_request.send(form_data);
 
-  ajax_request.onreadystatechange = function() {
-    if (ajax_request.readyState == 4 && ajax_request.status == 200) {
-      var response = JSON.parse(ajax_request.responseText);
-      if (response.success) {
-        var notificationItem = document.querySelector('.notification-item[data-id="' + notificationId + '"]');
-        if (notificationItem && notificationItem.classList.contains('unread')) {
-          notificationItem.classList.remove('unread');
+    ajax_request.onreadystatechange = function() {
+      if (ajax_request.readyState == 4 && ajax_request.status == 200) {
+        var response = JSON.parse(ajax_request.responseText);
+        if (response.success) {
+          var notificationItem = document.querySelector('.notification-item[data-id="' + notificationId + '"]');
+          if (notificationItem && notificationItem.classList.contains('unread')) {
+            notificationItem.classList.remove('unread');
+            notificationItem.classList.add('read');
+          }
+        } else {
           notificationItem.classList.add('read');
+          alert('Failed to mark as read');
         }
-      } else {
-        notificationItem.classList.add('read');
-        alert('Failed to mark as read');
       }
     }
   }
-}
-
 </script>
