@@ -52,13 +52,18 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <div class="d-flex align-items-center ms-auto">
-                        
-                        <button class="btn btn-delete d-flex align-items-center">
-                            <span class="badge text-bg-danger"><i class="bi bi-trash-fill me-1"></i><span>Delete</span></span>
-                        </button>
-                        <button class="btn btn-sort d-flex align-items-center" style="white-space: nowrap;">
-                            <span class="badge text-bg-secondary"> <i class="bi bi-arrow-down-up me-1"></i><span>Sort By</span></span>
-                        </button>
+                         <div class="dropdown">
+                                <button class="btn btn-sort d-flex align-items-center" id="applicationsSortToggle"
+                                    data-bs-toggle="dropdown" aria-expanded="false" style="white-space: nowrap;">
+                                    <span class="badge text-bg-secondary">
+                                        <i class="bi bi-arrow-down-up me-1"></i><span id="sortLabel">Sort By</span>
+                                    </span>
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="applicationsSortToggle">
+                                    <li><a class="dropdown-item application-sort-option" data-sort="desc" href="#">Newest to Oldest</a></li>
+                                    <li><a class="dropdown-item application-sort-option" data-sort="asc" href="#">Oldest to Newest</a></li>
+                                </ul>
+                            </div>
 
                         <div class="input-group input-group-md">
                             <input type="text" class="form-control" placeholder="Search" onkeyup="load_data(this.value);">

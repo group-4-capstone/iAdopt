@@ -339,7 +339,6 @@ if (!isset($_SESSION['role']) || ($_SESSION['role'] !== 'admin' && $_SESSION['ro
   <?php include_once 'components/footer.php'; ?>
 
   <script src="scripts/home.js"></script>
-  <script src="scripts/adoption-form.js"></script>
 </body>
 
 </html>

@@ -34,10 +34,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $notification_type = 'Application Approved';
             $is_read = 0; // Unread by default
             $display = 1;
-            $notifSql = "INSERT INTO notifications (user_id, message, notification_type, is_read, created_at, display) VALUES (?, ?, ?, ?, NOW(), ?)";
+            $notifSql = "INSERT INTO notifications (user_id, application_id, message, notification_type, is_read, created_at, display) VALUES (?, ?, ?, ?, ?, NOW(), ?)";
 
             $notifStmt = $db->prepare($notifSql);
-            $notifStmt->bind_param("issi", $user_id, $message, $notification_type, $is_read, $display);
+            $notifStmt->bind_param("iissii", $user_id, $application_id, $message, $notification_type, $is_read, $display);
             $notifStmt->execute();
 
             echo json_encode(['success' => true]);
@@ -59,9 +59,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $is_read = 0; // Unread by default
             $display = 1;
 
-            $notifSql = "INSERT INTO notifications (user_id, message, notification_type, is_read, created_at, display) VALUES (?, ?, ?, ?, NOW(), ?)";
+            $notifSql = "INSERT INTO notifications (user_id, application_id, message, notification_type, is_read, created_at, display) VALUES (?, ?, ?, ?, ?, NOW(), ?)";
             $notifStmt = $db->prepare($notifSql);
-            $notifStmt->bind_param("issi", $user_id, $message, $notification_type, $is_read, $display );
+            $notifStmt->bind_param("iissii", $user_id, $application_id, $message, $notification_type, $is_read, $display );
             $notifStmt->execute();
 
             echo json_encode(['success' => true]);

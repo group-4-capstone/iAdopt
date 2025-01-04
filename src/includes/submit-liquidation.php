@@ -13,6 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Get the shared form data
     $amount = $_POST['amount'];
+    $description = $_POST['description'];
     $user_id = $_SESSION['user_id'];
 
     // Handle donation submission
@@ -86,17 +87,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $liquidation_status = 'For Verification';
     $donor_name = isset($_POST['donor_name']) && !empty($_POST['donor_name']) ? $_POST['donor_name'] : 'Anonymous';
 
-    $stmt = $db->prepare("INSERT INTO liquidation (mode, amount, donor, type, liquidation_status, user_id, proof) VALUES (?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("sdsssis", $mode_of_donation, $amount, $donor_name, $type, $liquidation_status, $user_id, $proof);
+    $stmt = $db->prepare("INSERT INTO liquidation (mode, amount, donor, type, liquidation_status, user_id, proof, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("sdsssiss", $mode_of_donation, $amount, $donor_name, $type, $liquidation_status, $user_id, $proof , $description);
     
     
     } elseif ($buttonId === 'submitExpense') {
-        // Set the type
-        $description = $_POST['description'];
-
-        if ($description === "Others") {
-            $description = $_POST['other_description'];
-        }
+       
+        $or_number = !empty(trim($_POST['or_number'])) ? $_POST['or_number'] : null;
+        $payee = $_POST['payee'];
+        
         $type = 'Expense';
 
            // Set target directory
@@ -161,8 +160,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit;
     }
         // Prepare and bind the SQL statement for expense
-        $stmt = $db->prepare("INSERT INTO liquidation (amount, description, type, user_id, proof) VALUES (?, ?, ?, ?, ?)");
-        $stmt->bind_param("dssis", $amount, $description, $type, $user_id , $proof);
+        $stmt = $db->prepare("INSERT INTO liquidation (payee, amount, description, type, user_id, proof, or_number) VALUES (?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("sdssisi", $payee, $amount, $description, $type, $user_id, $proof, $or_number);        
         
     } else {
         echo "Invalid button ID.";
