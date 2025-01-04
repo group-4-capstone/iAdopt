@@ -74,12 +74,8 @@
   <div class="user-account">
     <div class="user-profile d-flex align-items-center justify-content-between">
         <div class="user-detail">
-            <h3><?php    
-                 // Display the user's full name if available, otherwise show 'Guest' etp din 
-                    echo isset($_SESSION['first_name']) && isset($_SESSION['last_name'])
-                    ? ucwords(htmlspecialchars($_SESSION['first_name'] . ' ' . $_SESSION['last_name']))
-                    : 'Guest';
-                ?>
+            <h3>
+              <span id="sidebar-fullname" style="font-weight: bold; font-size: 1.10rem;"></span>
             </h3>
             <span><a href="settings.php">Profile</a></span>
         </div>
@@ -91,6 +87,28 @@
 </aside>
 
 <script>
+
+$(document).ready(function() {
+    loadUserData();  // Load user data on page load
+});
+
+function loadUserData() {
+    $.ajax({
+        url: 'includes/sidebar-data.php',
+        method: 'GET',
+        dataType: 'json',
+        success: function (response) {
+            const fullName = `${response.first_name} ${response.last_name}`.trim() || 'Guest';
+            $('#sidebar-fullname').text(fullName);
+        },
+        error: function () {
+            $('#sidebar-fullname').text('Guest');
+        }
+    });
+}
+
+
+//--------------------------------------------- Old Part -------------------------------------------//
         const aside = document.querySelector("aside");
         const hamburgerBtn = document.querySelector("#hamburger-btn");
         const closeMenuBtn = document.querySelector("#close-menu-btn");
