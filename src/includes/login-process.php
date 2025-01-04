@@ -70,54 +70,67 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-// Function to handle notifications
 function checkNotifications($conn, $user_id)
 {
     $is_read = 0;
     $display = 1;
     $current_date = new DateTime();
 
-
-    $stmt = $conn->prepare("SELECT animals.adoption_date, animals.name, animals.animal_id 
+    // Prepare query to fetch user applications and associated animals
+    $stmt = $conn->prepare("SELECT animals.adoption_date, animals.name, animals.animal_id, applications.application_id
             FROM applications 
             INNER JOIN animals 
             ON applications.animal_id = animals.animal_id
-            WHERE applications.user_id = ?
-            ");
+            WHERE applications.user_id = ?");
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
     $result = $stmt->get_result();
 
-    while ($row = $result->fetch_assoc()) {
-        $adoption_date = new DateTime($row['adoption_date']);
-        $interval = $adoption_date->diff($current_date);
+    // Always target January 1 of the current year
+    $target_date = new DateTime($current_date->format('Y') . '-12-20');
 
-        // Check if a notification has already been sent within the last 6 months
+    // Collect all rows first to handle multiple results
+    $rows = [];
+    while ($row = $result->fetch_assoc()) {
+        $rows[] = $row;
+    }
+
+    // Process each row for notification
+    foreach ($rows as $row) {
+        $send_notification = true;
+
+        // Check if a notification has already been sent for this year
         $check_stmt = $conn->prepare("SELECT created_at FROM notifications 
                 WHERE user_id = ? AND notification_type = 'Post-Adoption Form Reminder' 
                 AND message LIKE ? 
                 ORDER BY created_at DESC LIMIT 1");
-        $search_message = "%" . $row['name'] . "%";
+
+        $search_message = "%" . $row['name'] . "%"; // Search message for specific animal name
         $check_stmt->bind_param("is", $user_id, $search_message);
         $check_stmt->execute();
         $check_result = $check_stmt->get_result();
 
-        $send_notification = true;
+        // Evaluate if a notification was already sent this year
         if ($check_row = $check_result->fetch_assoc()) {
             $last_notification_date = new DateTime($check_row['created_at']);
-            $notification_interval = $last_notification_date->diff($current_date);
-            if ($notification_interval->m < 6 && $notification_interval->y == 0) {
-                $send_notification = false;
+            if ($last_notification_date->format('Y') == $current_date->format('Y')) {
+                $send_notification = false; // Already sent this year
             }
         }
 
-        if ($send_notification && ($interval->m >= 6 || $interval->y > 0)) {
-            $message = "It's been over 6 months since you adopted " . $row['name'] . ". Kindly fill out the adoption form!";
+        // Send notification if conditions are met
+        if ($send_notification && $current_date >= $target_date) {
+            $message = "How's " . $row['name'] . " doing? Kindly fill out the post-adoption form :) Click here";
             $notification_type = 'Post-Adoption Form Reminder';
 
-            $insert_stmt = $conn->prepare("INSERT INTO notifications (user_id, message, notification_type, is_read, display) VALUES (?, ?, ?, ?, ?)");
-            $insert_stmt->bind_param("issii", $user_id, $message, $notification_type, $is_read, $display);
+            $insert_stmt = $conn->prepare("INSERT INTO notifications (user_id, application_id, message, notification_type, is_read, display) 
+                VALUES (?, ?, ?, ?, ?, ?)");
+            $insert_stmt->bind_param("iissii", $user_id, $row['application_id'], $message, $notification_type, $is_read, $display);
             $insert_stmt->execute();
         }
     }
 }
+
+
+
+
