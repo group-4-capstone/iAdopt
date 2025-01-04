@@ -3,92 +3,190 @@
   background-color: white !important;
 }
 
-.admin-content .banner-section {
-  background-color: #FFF8CC;
-  padding: 30px 30px;
-  border-radius: 30px;
-  margin-bottom: 20px;
-  background-image: url("assets/paws.png");
-  background-blend-mode: overlay;
+
+.pagination-container {
+  text-align: center; 
+  margin: 20px 0;
+  float: right;
+}
+
+.pagination {
+  display: inline-flex;
+  list-style-type: none; 
+  padding: 0;
+  margin: 0; 
+}
+
+.pagination li {
+  margin: 0 5px;
+}
+
+.pagination a {
+  display: block;
+  padding: 8px 12px; 
+  color: black; 
+  text-decoration: none; 
+  border-radius: 4px; 
+}
+
+.pagination a.active {
+  background-color: #C0690A;
+  color: white; 
+  border-color: #C0690A; 
+}
+
+.pagination a:hover {
+  background-color: #6d3d09; 
+  color: white;
 }
 
 /* Style tab links */
 .tablink {
-    background-color: gray;
-    color: black;
-    float: left;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    padding: 14px 16px;
-    font-size: 17px;
-    width: 25%;
-  }
-  
-  .tablink:hover {
-    background-color: #777;
-  }
-
-  .head-title {
-    margin-top: 5px;
-    border-radius: 10px;
-    box-shadow: 0 0 0 rgba(0, 0, 0, 0); /* Remove box shadow */
-    padding-bottom: 30px;
-    position: relative;
+  font-weight: bold;
+  background-color: white;
+  color: black;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  font-size: 17px;
+  width: 25%;
+  text-align: center; /* Center text horizontally */
+  position: relative; /* For positioning the underline */
+  transition: background-color 0.3s ease, text-decoration-color 0.3s ease; /* Smooth transitions */
 }
 
-  .head-title h1{
-    color: #C06B3E !important;
-    padding-bottom: 10px;
-  }
+/* Hover effect on tabs */
+.tablink:hover {
+  text-decoration: underline;
+  text-decoration-color: #ffdb5a; /* Yellow underline on hover */
+  text-decoration-thickness: 4px; /* Make the underline thicker */
+  text-underline-offset: 6px; /* Adds space between text and underline */
+}
+
+/* Active tab underline */
+.tablink.active {
+  text-decoration: underline;
+  text-decoration-color: #ffdb5a; /* Color for the active tab's underline */
+  text-decoration-thickness: 10px !important; /* Make the underline thicker */
+  font-weight: bold; /* Optional: Add bold style to active tab */
+}
+
+
+.head-title {
+  margin-top: 5px;
+  border-radius: 10px;
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+  /* Remove box shadow */
+  padding-bottom: 30px;
+  position: relative;
+}
+
+.head-title h1 {
+  color: #C06B3E !important;
+  padding-bottom: 10px;
+}
 
 .head-title h1 u {
-    text-underline-offset: 30px; /* Adds space between the text and the underline */
-    text-decoration-thickness: 5px; /* Adjusts the thickness of the underline if needed */
-}
-  
-  /* Style the tab content (and add height:100% for full page content) */
-  .tabcontent {
-    color: black;
-    display: none;
-    padding: 100px 20px;
-    height: 100%;
-  }
-  
-  #Home {background-color: #FFF8CC;}
-  #News {background-color: #FFF8CC;}
-  #Contact {background-color: #FFF8CC;}
-  #About {background-color: #FFF8CC;}
-
-
-
-thead th {
-  color: #092E5A !important;
-  background-color: transparent !important;
-  border-bottom: gray solid 2px !important;
+  text-underline-offset: 30px;
+  /* Adds space between the text and the underline */
+  text-decoration-thickness: 5px;
+  /* Adjusts the thickness of the underline if needed */
 }
 
-tbody th, tbody td {
-  color: black !important;
-  background-color: #F7FAFC !important;
-  border-bottom: 2px !important;
+.custom-badge {
+  display: inline-block;
+  padding: 0.3em 1.2em;
+  font-size: 12px;
+  font-weight: bold;
+  border-radius: 50px; /* Creates the oval shape */
+  background-color: white; /* White background */
+  border: 2px solid transparent; /* Default transparent border */
 }
 
-tbody th .blank, tbody tr .blank{
-  color: black !important;
-  background-color: transparent !important;
-  border-bottom: 2px !important;
+.badge-draft {
+  border-color: gray; /* Gray border for Draft */
+  color: gray; /* Text color */
+}
+
+.badge-published {
+  border-color: green; /* Green border for Published */
+  color: green; /* Text color */
+}
+
+.badge-unpublished {
+  border-color: red; /* Red border for Unpublished */
+  color: red; /* Text color */
+}
+
+.badge-scheduled {
+  border-color: orange; /* Orange border for Scheduled Post */
+  color: orange; /* Text color */
 }
 
 
-  .table .badge.bg-green {
-    background-color: #ffff; /* Red background */
-    color: #9AE6B4 !important; /* Dark text color */
-    border: 1px solid #9AE6B4; /* Red border */
-    border-radius: 50px; /* Oval shape */
-    padding: 0.45rem  0.85rem; /* Adjust padding for oval effect */
-    font-size: 0.75rem; /* Adjust text size */
-    font-weight: 500px; 
+/* Style the tab content (and add height:100% for full page content) */
+.tabcontent {
+  color: black;
+  display: none;
+  padding: 50px 20px;
+  height: 100%;
+}
+
+
+
+#errorModal {
+  z-index: 1060;
+}
+
+.table {
+  margin-bottom: 0;
+}
+
+.table thead th {
+  background-color: #F4D03F;
+  font-weight: normal;
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
+  padding-left: 10px !important;
+  text-align: center !important;
+  /* Centers text and inline content horizontally */
+  vertical-align: middle !important;
+  /* Centers content vertically within the cell */
+}
+
+.table tbody tr td {
+  background-color: #fff;
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
+  padding-left: 10px !important;
+  color: #00000088;
+  text-align: center !important;
+  /* Centers text and inline content horizontally */
+  vertical-align: middle !important;
+  /* Centers content vertically within the cell */
+}
+
+.table tbody tr:hover {
+  background-color: #fff;
+
+}
+
+.table .badge.bg-green {
+  background-color: #ffff;
+  /* Red background */
+  color: #9AE6B4 !important;
+  /* Dark text color */
+  border: 1px solid #9AE6B4;
+  /* Red border */
+  border-radius: 50px;
+  /* Oval shape */
+  padding: 0.45rem 0.85rem;
+  /* Adjust padding for oval effect */
+  font-size: 0.75rem;
+  /* Adjust text size */
+  font-weight: 500px;
 }
 
 .asterisk {

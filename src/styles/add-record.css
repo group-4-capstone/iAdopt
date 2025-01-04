@@ -1,88 +1,238 @@
-.head-title {
-    background-color: #FFF8CC !important;
-    margin-top: 5px;
-    border-radius: 10px;
-    box-shadow: 0 0 0 rgba(0, 0, 0, 0); /* Remove box shadow */
-    padding-top: 80px;
-    padding-left: 30px;
-    padding-right: 30px;
-    padding-bottom: 30px;
-    position: relative;
-}
-.head-title h1{
-   color: #C06B3E !important;
-   padding-bottom: 30px;
-}
-
-.head-title h1 u {
-    text-underline-offset: 30px; /* Adds space between the text and the underline */
-    text-decoration-thickness: 5px; /* Adjusts the thickness of the underline if needed */
-}
-.info-card {
-    border-radius: 10px;
-    padding: 20px;
-    background-color: #f9f9f9;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    position: relative;
-}
-
-.info-card .title {
-    font-family: 'Poppins', bold;
-    color: #002a5c;
-    font-weight: bold;
-    font-size: 28px;
-    text-align: left; /* Center the title on smaller screens */
-    margin-top: 10px;
-}
-
-.info-card img {
-    border-radius: 8px;
-    width: 250px;
-    height: auto; /* Maintain aspect ratio */
-    max-width: 100%; /* Ensure it scales on smaller screens */
-    margin-bottom: 280px;
-}
-
-@media (max-width: 768px) {
-    .info-card img {
-        margin-bottom: 0; /* Remove margin on smaller screens */
+    body {
+        overflow-x: hidden;
+        /* Hides horizontal scrollbar */
     }
-}
 
-.form-control, .form-select {
-    background-color: #D9D9D9 !important;
-    border-radius: 20px !important;
-    padding: 10px 15px;
-    border: none;
-}
+    .head-title h1 {
+        color: #C06B3E !important;
+        padding-bottom: 30px;
+    }
 
-.btn {
-    border-radius: 10px;
-    padding: 10px 30px;
-    font-weight: bold;
-}
+    .head-title {
+        margin-top: 5px;
+        border-radius: 10px;
+        box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+        /* Remove box shadow */
+        padding-bottom: 30px;
+        position: relative;
+    }
 
-.btn-cancel {
-    background-color: #d32f2f !important;
-    color: #fff !important;
-}
+    .head-title h1 {
+        color: #C06B3E !important;
+        padding-bottom: 10px;
+    }
 
-.btn-add {
-    background-color: #0d6efd !important;
-    color: #fff !important;
-}
+    .head-title h1 u {
+        text-underline-offset: 30px;
+        /* Adds space between the text and the underline */
+        text-decoration-thickness: 5px;
+        /* Adjusts the thickness of the underline if needed */
+    }
 
-.form-label {
-    font-weight: bold;
-}
+    .paw-prints-down {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        display: flex;
+    }
 
-.remarks {
-    resize: none;
-    height: 120px;
-    padding-left: 30px !important; /* Adjust padding as needed */
-}
+    .paw-prints-down img {
+        width: 30%;
+        height: auto;
+        margin: 0 0 30px 50px;
+    }
+
+    .card {
+        background-color: rgba(250, 250, 250, 0.585) !important;
+    }
+
+    .info-card {
+        position: relative;
+    }
 
 
-.form-group {
-    margin-bottom: 20px;
-}
+    .btn-tags {
+        background-color: white !important;
+        color: #161A2D !important;
+        border: 2px solid #161A2D !important;
+    }
+
+    .btn-tags:hover {
+        background-color: #0049e86b !important;
+        color: #fff !important;
+    }
+
+    .btn-selected {
+        background-color: #0048E8 !important;
+        color: #fff !important;
+    }
+
+
+    @media (max-width: 768px) {
+        .info-card {
+            height: fit-content !important;
+        }
+    }
+
+    .info-card .title {
+        font-family: 'Poppins', bold;
+        color: #002a5c;
+        font-weight: bold;
+        font-size: 28px;
+        text-align: left;
+        /* Center the title on smaller screens */
+        margin-top: 10px;
+        padding-left: 20px;
+        margin-bottom: 20px;
+    }
+
+    @media (max-width: 768px) {
+        .info-card .title {
+            justify-content: center !important;
+            align-content: center !important;
+        }
+    }
+
+    .info-card img {
+        border-radius: 8px;
+        width: 250px;
+        height: auto;
+        /* Maintain aspect ratio */
+        max-width: 100%;
+        /* Ensure it scales on smaller screens */
+    }
+
+    .animal-image {
+        border-radius: 8px !important;
+        width: 280px !important;
+        height: 250px !important; /* 4:3 aspect ratio for 250px width */
+        object-fit: cover !important; /* Ensures the image covers the area without stretching */
+        object-position: center !important;  /* Center the image within the cropped area */
+    }
+    
+
+    @media (max-width: 768px) {
+        .info-card img {
+            margin-bottom: 10px;
+            /* Remove margin on smaller screens */
+        }
+    }
+
+    .form-control,
+    .form-select {
+        background-color: #D9D9D9 !important;
+        border-radius: 20px !important;
+        padding: 10px 15px;
+        border: none;
+    }
+
+    .btn {
+        border-radius: 10px;
+        padding: 10px 30px;
+        font-weight: bold;
+        width: 200px;
+        z-index: 2;
+    }
+
+    .btn-cancel {
+        background-color: #d32f2f !important;
+        color: #fff !important;
+    }
+
+    .btn-add {
+        background-color: #0d6efd !important;
+        color: #fff !important;
+    }
+
+    .form-label {
+        font-weight: bold;
+    }
+
+    .form-group {
+        position: relative;
+        /* Ensure relative positioning for stacking context */
+        z-index: 1;
+        /* Adjust the z-index to be above other elements */
+        margin-bottom: 20px;
+    }
+
+    .upload-placeholder {
+        margin-left: 20px;
+        width: 100%;
+        max-width: 280px;
+        height: 200px;
+        border: 2px dashed #ccc;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        color: #666;
+        font-size: 16px;
+        text-align: center;
+        background-color: #f9f9f9;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        position: relative; /* Added for positioning child elements */
+        overflow: hidden;
+    }
+    
+    .upload-placeholder i {
+        margin-right: 8px;
+        font-size: 24px;
+        color: #666;
+    }
+    
+    #placeholderText {
+        font-size: 16px;
+        color: #666;
+    }
+    
+    .upload-placeholder:hover {
+        border-color: #aaa;
+    }
+    
+    /* New styles for uploaded image */
+    .upload-placeholder img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: none; /* Hidden by default */
+    }
+    
+    /* Overlay styles */
+    .upload-placeholder .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+        color: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        font-size: 14px;
+        display: none; /* Hidden by default */
+    }
+    
+    .upload-placeholder:hover .overlay {
+        display: flex; /* Show overlay on hover */
+    }
+    
+    /* Portrait image container */
+        .image-container {
+            width: 100%;
+            max-width: 300px;
+            position: relative;
+            padding-bottom: 133.33%; /* 3:4 aspect ratio (height > width) */
+            overflow: hidden;
+        }
+
+    
+

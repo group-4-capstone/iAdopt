@@ -8,6 +8,12 @@
     font-family: 'Poppins', sans-serif;
   }
 
+  .page-item.disabled .page-link {
+    color: gray !important;
+    pointer-events: none !important; 
+    cursor: default !important;     
+  }
+
   /* Banner Section */
 .user-banner-section {
   height: 50vh;
@@ -26,30 +32,40 @@
 }
 
 .user-banner-section .content h2 {
-  font-size: 52px;
+  font-size: 50px;
   color: #F90B1B;
   font-weight: 900;
-  line-height: 70px;
+  line-height: 60px;
   margin: 0 auto;
 }
 
 .user-banner-section .content h4 {
-  font-size: 36px;
+  font-size: 32px;
   color: #1A1385;
   font-weight:bold;
-  line-height: 70px;
+  line-height: 60px;
   margin: 0 auto;
 }
 
 .user-banner-section .content p {
   font-weight: 500;
-  max-width: 500px;
-  font-size: 16px;
+  max-width: 520px;
+  font-size: 15px;
   margin: 0; 
   padding: 0 3px;
   text-align: left; 
   color: black;
 }
+
+.admin-content .banner-section {
+  background-color: #ffdb5a;
+  padding: 30px 40px;
+  border-radius: 30px;
+  margin-bottom: 20px;
+  background-image: url("assets/paws.png");
+  background-blend-mode: overlay;
+}
+
 
   .admin-content {
     margin-left: 281px !important;
@@ -57,7 +73,6 @@
     background-color: white;
   }
 
-  /* Responsive Adjustments for Tablets and Mobile Devices */
   @media (max-width: 768px) {
     .admin-content {
         margin-left: 61px !important;
@@ -68,5 +83,97 @@
     .admin-content .grid-s h3 {
         font-size: 14px;
     }
+
+    .user-banner-section .content h2 {
+      font-size: 38px;
+      color: #F90B1B;
+      font-weight: 900;
+      line-height: 70px;
+      margin: 0 auto;
+    }
+    
+    .user-banner-section .content h4 {
+      font-size: 28px;
+      color: #1A1385;
+      font-weight: bold;
+      line-height: 70px;
+      margin: 0 auto;
+    }
+    
+    .user-banner-section .content p {
+      font-weight: 500;
+      max-width: 500px;
+      font-size: 20px;
+      margin: 0; 
+      padding: 0 3px;
+      text-align: left; 
+      color: black;
+    }
   }
+
+  @media (max-width: 430px) {
+    .user-banner-section {
+      height: 70vh;
+      background-color: #C0690A;
+      background-image: url('assets/all-banner.png');
+      background-repeat: no-repeat;
+      background-size: cover;
+      padding: 60px 10px 0 10px;
+    }
+  }
+
+  th {
+    font-weight: bold !important;
+ }
+
+ td {
+  color: black !important;
+}
+
+  .dog-details {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.adopter-info {
+    background-color: #ffffff;
+    padding: 20px;
+    border: 1px solid #dee2e6;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.accordion-item {
+    border: none;
+    margin-bottom: 10px;
+}
+.accordion-header {
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+}
+.accordion-button {
+    background-color: #161A2D;
+    color: white;
+    border: none;
+}
+.accordion-button:not(.collapsed) {
+    background-color: #343a40;
+}
+.error-message {
+  font-size: 0.875rem; /* Adjust the size as needed */
+  margin-top: 0.25rem; /* Space between input and error message */
+}
+.is-invalid {
+  border-color: #dc3545 !important; 
+}
+
+button:disabled {
+  opacity: 0.65; /* Slightly transparent to indicate it's inactive */
+  border: none; /* No border or use a lighter border */
+}
+
+
+
   

@@ -1,0 +1,384 @@
+body {
+  overflow-x: hidden; /* Hides horizontal scrollbar */
+}
+
+.welcome-section {
+  background-color: #fff6da;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: left;
+  padding-top: 60px;
+  padding-left: 90px;
+  height: 380px;
+}
+
+.welcome-title h1 {
+  color: #C06B3E;
+  font-weight: bold;
+}
+
+.welcome-title h1 img {
+  margin-left: 10px;
+  width: 40px;
+  height: auto;
+  position: relative;
+  left: 1%;
+  top: 25% !important;
+}
+
+.welcome-section p {
+  margin-top: 20px;
+  color: #666;
+}
+
+.welcome-section img {
+  max-width: 80%;
+  height: auto;
+  margin-top: 20px;
+  position: relative;
+  left: 33%;
+  top: -210px !important;
+}
+
+#reportContainer {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  background-color: #fff;
+}
+
+#reportContainer table {
+  width: 100%;
+}
+
+#reportContainer th, #reportContainer td {
+  padding: 8px;
+  border: 1px solid #ddd;
+}
+
+#reportContainer th {
+  background-color: #f4f4f4;
+}
+
+
+@media (max-width: 1024px) {
+  .welcome-section img {
+    left: 25%; 
+    top: -100px !important; 
+  }
+}
+
+@media (max-width: 768px) {
+  .welcome-title h1 img {
+    width: 35px;
+    top: 20%;
+  }
+
+  .welcome-section img {
+    left: 15%;
+    top: -80px !important;
+  }
+
+  .welcome-section p {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .welcome-title h1 {
+    font-size: 1.5rem;
+  }
+
+  .welcome-section img {
+    left: 10%;
+    top: -60px !important;
+  }
+
+  .welcome-section p {
+    font-size: 0.85rem;
+  }
+}
+
+/* Statistics section */
+.statistics {
+  margin-top: 20px;
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.statistics h5 {
+  font-weight: bold;
+  color: #333;
+}
+
+/* Infographic boxes */
+.stat-box {
+  background-color: #F8F8FF;
+  border: 1px solid #eaeaea;
+  border-radius: 10px;
+  text-align: left;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  height: 180px;
+}
+
+.stat-box h6 {
+  color: #666;
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.stat-box h3 {
+  color: #C06B3E;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.stat-box h2 {
+  color: #C06B3E;
+  font-size: 3rem;
+  font-weight: bold;
+}
+
+.stat-box img {
+  max-width: 80px;
+  height: auto;
+  align-items: right !important;
+  
+}
+.stat-content {
+  margin-left: 10px;
+  margin-bottom: 10px;
+}
+/* Image Box Buttons */
+.img-box {
+  background-color: #fff;
+  border: 1px solid #eaeaea;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  height: 350px;
+  transition: transform 0.3s ease; /* Optional hover effect */
+}
+
+.img-box img {
+  max-width: 100px;
+  height: 100px;
+  margin-bottom: 15px;
+
+}
+
+.img-box h3 {
+  font-size: 2.25rem;
+  color: #79440E;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.img-box p {
+  color: #79440E;
+  font-size: 0.9rem;
+  margin-bottom: 0;
+}
+
+.img-box:hover {
+  transform: translateY(-5px); /* Optional hover effect */
+}
+
+
+a.text-decoration-none {
+  color: inherit; /* Inherits the color from the element */
+  text-decoration: none; /* Removes the default underline from links */
+}
+/* Button Styling */
+.months-btn {
+  background-color: #F8F8FF;
+  color: #615E83;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 16px;
+  height: 20px;
+  align-items: center;
+  padding-bottom: 30px !important;
+}
+
+/* Donations Overview Section */
+.donations-overview {
+  margin-top: 40px;
+  padding: 20px;
+  background-color: #fff;
+}
+
+.donations-overview h2 {
+  text-align: left;
+  font-weight: bold;
+  color: #79440E;
+  margin-bottom: 20px;
+}
+
+.donate-stat-box {
+  border: 1px solid #eaeaea;
+  border-radius: 10px;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.donate-stat-box img.donate-stat-icon {
+  width: 50px;
+  height: auto;
+  margin-bottom: 10px;
+}
+
+.donate-stat-box h3 {
+  color: #C06B3E;
+  font-size: 0.9rem;
+  font-weight: bold;
+  margin-left: 5px;
+}
+
+.donate-stat-box p {
+  color: #666;
+  font-size: 0.9rem;
+  white-space: nowrap; /* Prevents text from wrapping to the next line */
+  overflow: hidden; /* Ensures content that overflows is hidden */
+  text-overflow: ellipsis; /* Adds an ellipsis (...) if the text is too long */
+  max-width: 100%; /* Optional: Sets a maximum width for truncation */
+  margin-left: 5px;
+}
+/*------------------ donation chart line graph part --------------------------*/
+.chart-container {
+  background-color: #d9d9d992 !important; /* Example background color */
+  position: relative;
+  margin-top: 15px;
+  border-radius: 5px;
+  padding: 20px;
+}
+
+.dropdown-toggle {
+  border: 1px solid #ccc;
+  padding: 3px 10px;
+  border-radius: 4px;
+}
+
+.dropdown-menu {
+  max-width: 200px;
+}
+
+.donationchart {
+  padding: 15px;
+  border-radius: 10px; /* Optional: add rounded corners */
+  margin-top: 10px; /* Optional: add spacing */
+  text-align: center;
+}
+
+.dropdown .btn-liquidation-report {
+  float: right; /* Move button to the right */
+  text-align: center;
+  height: 30px;
+  margin-top: 50px;
+  align-content: end !important;
+  background-color: #79440E; /* Example button color */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: x-small;
+  font-weight: lighter;
+}
+
+.dropdown .btn-liquidation-report:hover {
+  background-color: #a35c14; /* Darker on hover */
+}
+
+/* FAQ Section */
+.faq-section {
+  padding: 40px 20px;
+  position: relative;
+  background-color: #F8C613;
+  margin-top: -5px; /* Slight overlap with the wave */
+}
+
+.faq-section .faq-dog-image {
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+  position: absolute;
+  bottom: 110px;
+  transform: translate(0, 10);
+}
+
+.faq-section .faq-content {
+  text-align: left;
+  color: white;
+  position: relative;
+}
+
+.faq-section h2 {
+  margin-right: 20%;
+  font-size: 2.7rem;
+  font-weight: semi-bold;
+}
+
+.faq-section p {
+  margin-top: 20px;
+  font-size: 0.8rem;
+  color: white;
+  margin-right: 40%;
+  font-weight: lighter;
+}
+
+.faq-section .btn {
+  background-color: transparent;
+  color: white;
+  border-radius: 50px;
+  padding: 10px 20px;
+  margin-top: 20px;
+  text-transform: uppercase;
+  border-color: #fff;
+  border: 3px solid;
+}
+
+.faq-section .btn:hover {
+  background-color: #fff;
+  border-color: #092E5A;
+  color: #092E5A;
+}
+
+@media (max-width: 768px) {
+  .faq-section .faq-content {
+    padding-left: 0;
+    text-align: center;
+  }
+}
+
+/* Wave container */
+.wave-container {
+  height: 20vh; /* Adjust height as needed */
+  background-color: transparent;
+  position: relative;
+  margin-bottom: -1px; /* To join with the FAQ section */
+  margin-top: 200px;
+}
+
+.wave-container::before {
+  content: "";
+  width: 100%;
+  height: 168px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-image: url('assets/faqbackground.png');
+}
+
+@media (max-width: 850px) {
+  .wave-container::before {
+    height: 84px;
+  }
+}

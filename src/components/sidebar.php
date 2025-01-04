@@ -24,7 +24,7 @@
       </a>
     </li>
     <li>
-      <a href="#">
+      <a href="adoption-records.php">
         <i class="bi bi-folder"></i>
         <span>Adoption Records</span>
       </a>
@@ -36,13 +36,13 @@
       </a>
     </li>
     <li>
-      <a href="#">
+      <a href="visitor-log.php">
         <i class="bi bi-person-lines-fill"></i> 
         <span>Visitor Log</span>
       </a>
     </li>
     <li>
-      <a href="#">
+      <a href="history.php">
         <i class="bi bi-clock-history"></i>
         <span>History Log</span>
       </a>
@@ -62,20 +62,24 @@
         <span>Content Management</span>
       </a>
     </li>
+    <?php if (isset($_SESSION['email']) && $_SESSION['role'] == 'head_admin') { ?>
     <li>
       <a href="account-management.php">
        <i class="bi bi-people-fill"></i>
         <span>Account Management</span>
       </a>
     </li>
+   <?php } ?>
   </ul>
   <div class="user-account">
     <div class="user-profile d-flex align-items-center justify-content-between">
         <div class="user-detail">
-            <h3>Juan Dela Cruz</h3>
+            <h3>
+              <span id="sidebar-fullname" style="font-weight: bold; font-size: 1.10rem;"></span>
+            </h3>
             <span><a href="settings.php">Profile</a></span>
         </div>
-        <a href="#" class="logout-icon">
+        <a href="logout.php" class="logout-icon">
             <i class="bi bi-box-arrow-right"></i> <!-- Logout icon -->
         </a>
     </div>
@@ -83,6 +87,28 @@
 </aside>
 
 <script>
+
+$(document).ready(function() {
+    loadUserData();  // Load user data on page load
+});
+
+function loadUserData() {
+    $.ajax({
+        url: 'includes/sidebar-data.php',
+        method: 'GET',
+        dataType: 'json',
+        success: function (response) {
+            const fullName = `${response.first_name} ${response.last_name}`.trim() || 'Guest';
+            $('#sidebar-fullname').text(fullName);
+        },
+        error: function () {
+            $('#sidebar-fullname').text('Guest');
+        }
+    });
+}
+
+
+//--------------------------------------------- Old Part -------------------------------------------//
         const aside = document.querySelector("aside");
         const hamburgerBtn = document.querySelector("#hamburger-btn");
         const closeMenuBtn = document.querySelector("#close-menu-btn");
@@ -98,7 +124,9 @@
         menuLinks.forEach(link => {
         const href = link.getAttribute('href').split("/").pop(); 
          // Add conditions for multiple pages
-         if ((href === 'animal-profiles.php' && (currentPath === 'animal-profiles.php' || currentPath === 'view-animal-profile.php')) ||
+         if ((href === 'animal-profiles.php' && (currentPath === 'animal-profiles.php' || currentPath === 'animal-record.php')) || 
+            (href === 'rescue-records.php' && (currentPath === 'rescue-records.php' || currentPath === 'add-record.php')) ||
+            (href === 'adoption-records.php' && (currentPath === 'adoption-records.php' || currentPath === 'adoption-details.php')) ||
             href === currentPath) {
             link.classList.add('active');
         }

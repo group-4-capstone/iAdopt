@@ -1,164 +1,463 @@
 header {
-    position: relative;
-    top: 0;
-    left: 0;
-    width: 100%;
-    padding: 5px;
-    background-color: #283531;
-  }
-  
-  header .navbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    max-width: 1250px;
-    margin: 0 auto;
-  }
-  
-  .navbar .logo img {
-    width: 50px;
-    height: auto;
-    vertical-align: middle;
-  }
-  
-  .navbar .logo {
-    color: #fff;
-    font-weight: 600;
-    font-size: 2.0rem;
-    text-decoration: none;
-    display: flex; 
-    align-items: center; 
-  }
-  
-  .navbar .logo span {
-    margin-left: 10px; 
-  }
-  
-  .navbar .menu-links {
-    display: flex;
-    list-style: none;
-    gap: 35px;
-    padding-top: 10px;
-  }
-  
-  .navbar a {
-    color: #fff;
-    text-decoration: none;
-    transition: color 0.3s ease, border-bottom 0.3s ease;
-    padding: 8px 10px;
-    position: relative;
-  }
-  
-  .navbar a.active {
-    color: #58A5B7;
-    border-bottom: 3px solid #58A5B7; 
-  }
-  
-  .navbar a.active:hover {
-    border-bottom: 3px solid #283531; 
-  }
-  
-  .navbar a:hover {
-    color: #58A5B7;
-    border-bottom: 3px solid #58A5B7;
-  }
-  
-  .navbar a::before {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 3px;
-    bottom: 0;
-    left: 0;
-    background-color: #58A5B7;
-    visibility: hidden;
-    transform: scaleX(0);
-    transition: all 0.3s ease-in-out;
-  }
-  
-  .navbar a:hover::before,
-  .navbar a.active::before {
-    visibility: visible;
-    transform: scaleX(1);
-  }
-  
-  .navbar a.active:hover::before {
-    background-color: #283531;
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 5px;
+  background-color: #283531;
+}
+
+header .navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1250px;
+  margin: 0 auto;
+}
+
+.navbar .logo img {
+  width: 50px;
+  height: auto;
+  vertical-align: middle;
+}
+
+.navbar .logo {
+  color: #fff;
+  font-weight: 600;
+  font-size: 2.0rem;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+
+.navbar .logo span {
+  margin-left: 10px;
+}
+
+.navbar .menu-links {
+  display: flex;
+  list-style: none;
+  gap: 35px;
+  padding-top: 10px;
+}
+
+.navbar a {
+  color: #fff;
+  text-decoration: none;
+  padding: 8px 10px;
+  position: relative;
+}
+
+.navbar a.active {
+  color: #58A5B7 !important;
+}
+
+.navbar .nav-item.dropdown a:hover{
+  border-bottom: none !important;
+}
+
+.navbar a:hover {
+  border-bottom: none !important;
+}
+
+.navbar a::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 3px;
+  bottom: 0;
+  left: 0;
+  background-color: #58A5B7;
+  visibility: hidden;
+  transform: scaleX(0);
+  transition: transform 0.3s ease, visibility 0.3s ease;
+}
+
+.navbar a:hover::before,
+.navbar a.active::before {
+  visibility: visible;
+  transform: scaleX(1);
+}
+
+.navbar a.active:hover::before {
+  background-color: #283531;
+}
+
+#close-menu-btn {
+  position: absolute !important;
+  right: 20px !important;
+  top: 20px !important;
+  cursor: pointer !important;
+  display: none !important;
+}
+
+#hamburger-btn {
+  color: #fff !important;
+  cursor: pointer !important;
+  display: none !important;
+}
+
+.nav-item.dropdown .nav-link {
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  color: #fff;
+  border-bottom: none !important;
+  transition: none !important; 
+  position: relative; 
+}
+
+.nav-item.dropdown .nav-link::before {
+  content: ''; 
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background-color: transparent; 
+  visibility: hidden;
+  transform: scaleX(0);
+  transition: none !important; 
+}
+
+.nav-item.dropdown .nav-link:hover {
+  color: #58A5B7 !important; 
+  background-color: transparent !important; 
+  border-bottom: none !important;
+  transition: none !important; 
+}
+
+.nav-item.dropdown .dropdown-item:before {
+  content: ''; 
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background-color: transparent; 
+  visibility: hidden;
+  transform: scaleX(0);
+  transition: none !important; 
+}
+
+.nav-item.dropdown .dropdown-item:hover {
+  color: white !important; 
+  background-color: #58A5B7 !important; 
+  border-bottom: none !important;
+  transition: none !important; 
+}
+
+.nav-item .dropdown-item {
+  border-bottom: none !important; 
+  transition: none !important; 
+}
+
+.nav-item .dropdown-menu {
+  background-color: #fff !important;
+  border: none !important;
+  padding: 5px !important;
+}
+
+.nav-item .dropdown-menu.show {
+  display: block !important; 
+}
+
+.nav-item .dropdown-item {
+  color: #000 !important; 
+}
+
+.nav-item .dropdown-item:hover {
+  background-color: #58A5B7 !important; 
+  color: #fff !important;
+}
+
+.notification-item {
+  position: relative;
+}
+
+.notification-item .dropdown-menu {
+  max-height: 500px;
+  overflow-y: auto;
+  width: 100%;
+  max-width: 300px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 10px 0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.notification-item .dropdown-item:before {
+  content: ''; 
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background-color: transparent; 
+  visibility: hidden;
+  transform: scaleX(0);
+  transition: none !important; 
+  padding: 10px 15px;
+  text-decoration: none;
+  white-space: normal;
+  word-wrap: break-word;
+}
+
+.notification-item .dropdown-item {
+  color: #333;
+  padding: 10px 15px;
+  text-decoration: none;
+  white-space: normal;
+  word-wrap: break-word;
+}
+
+.notification-item .dropdown-item:hover {
+  background-color: #f0f0f0;
+}
+
+.badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background-color: #F8C613;
+  color: #fff;
+  border-radius: 50%;
+  padding: 2px 6px;
+  font-size: 0.75rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#postAdoptionModal .modal-dialog {
+  max-width: 1200px; 
+}
+
+#postAdoptionModal .modal-dialog  .form-section{
+ background-color: white !important;
+ padding: 0 !important;
+ margin: 0 !important;
+}
+
+#notificationModal .modal-dialog {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  margin: 0;
+  max-width: 300px; 
+}
+
+#notificationModal .modal-content {
+  border-radius: 8px;
+}
+
+#notificationModal .modal-header {
+  border-bottom: 1px solid gray !important;
+}
+
+#notificationModal .modal-body {
+  padding: 0 !important;
+}
+
+#notificationModal .modal-body p {
+  padding: 0 10px !important;
+}
+
+#notificationModal .modal-body i {
+  font-size: 32px !important;
+  padding-left: 10px !important;
+  color: #F8C613;
+}
+
+#notificationModal .notification-item {
+  border-bottom: 1px solid gray;
+}
+
+#notificationModal .notification-item a {
+  text-decoration: none;
+  color: #000;
+}
+
+#notificationModal .notification-item:hover {
+  background-color: #ddd;
+}
+
+
+
+@media (max-width: 1100px) {
+  header {
+    padding: 10px !important;
+    z-index: 1000 !important;
   }
 
-  #close-menu-btn {
+  header.show-mobile-menu::before {
+    content: "" !important;
+    position: fixed !important;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(5px);
+  }
+
+  .navbar .logo {
+    font-size: 1.7rem !important;
+  }
+
+  #hamburger-btn, #close-menu-btn {
+    display: block !important;
+  }
+
+
+  header.show-mobile-menu .navbar .menu-links {
+    left: 0 !important;
+  }
+
+  .navbar .menu-links {
+    position: fixed !important;
+    top: 0 !important;
+    left: -250px !important;
+    width: 250px !important;
+    height: 100vh !important;
+    background: #fff !important;
+    display: flex !important; /* Flexbox to vertically align */
+    flex-direction: column !important;
+    justify-content: center !important; /* Center vertically */
+    align-items: center !important; /* Align links horizontally */
+    padding: 0 40px 0 !important;
+    transition: left 0.3s ease !important; 
+  }
+  
+  .nav-item.dropdown .dropdown-menu {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important; /* Center vertically */
+    align-items: center !important; /* Align dropdown items horizontally */
+    position: static !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+  }
+  
+  .nav-item .dropdown-item {
+    display: block !important;
+    background-color: transparent !important;
+    color: #000 !important;
+    padding: 10px 0 !important;
+    text-align: center; /* Ensure text is centered */
+  }
+  
+  .navbar .menu-links a,
+  .nav-item .dropdown-item {
+    color: #000 !important;
+    width: 100%; /* Ensure full-width links */
+    text-align: center; /* Center the text */
+  }
+  
+  .nav-item .dropdown-item:hover {
+    background-color: #f0f0f0 !important;
+    color: #000 !important;
+    border-bottom: 2px solid #58A5B7 !important;
+  }
+  
+
+  .nav-item .dropdown-item:hover {
+    background-color: #58A5B7 !important;
+    color: #fff !important;
+  }
+
+  .nav-item .dropdown-item i {
+    margin-right: 10px;
+  }
+
+  #notification {
     position: absolute;
     right: 20px;
     top: 20px;
-    cursor: pointer;
-    display: none;
+    display: none; 
   }
-  
-  #hamburger-btn {
-    color: #fff;
-    cursor: pointer;
-    display: none;
-  }
-  
 
-  @media (max-width: 768px) {
-    header {
-      padding: 10px;
-    }
-  
-    header.show-mobile-menu::before {
-      content: "";
-      position: fixed;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      backdrop-filter: blur(5px);
-    }
-  
-    .navbar .logo {
-      font-size: 1.7rem;
-    }
-  
-      
-    #hamburger-btn, #close-menu-btn {
-      display: block;
-    }
-  
-    .navbar .menu-links {
-      position: fixed;
-      top: 0;
-      left: -250px;
-      width: 250px;
-      height: 100vh;
-      background: #fff;
-      flex-direction: column;
-      padding: 70px 40px 0;
-      transition: left 0.2s ease;
-    }
-  
-    header.show-mobile-menu .navbar .menu-links {
-      left: 0;
-    }
-  
-    .navbar a {
-      color: #000;
-    }
-  
-    .hero-section .content {
-      text-align: center;
-    }
-  
-    .hero-section .content :is(h2, p) {
-      max-width: 100%;
-    }
-  
-    .hero-section .content h2 {
-      font-size: 2.3rem;
-      line-height: 60px;
-    }
-    
-    .hero-section .content button {
-      padding: 9px 18px;
-    }
+  header.show-mobile-menu #notification {
+    display: block;
+    right: 60px; 
   }
+
+  .nav-item.dropdown .nav-link {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .navbar .dropdown-item {
+    color: #000;
+  }
+
+  .nav-item.dropdown .nav-link {
+    display: none !important;
+  }
+
+  .nav-item.dropdown .dropdown-menu {
+    display: flex !important;
+    flex-direction: column;
+    position: static !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+  }
+
+  .nav-item.dropdown .dropdown-item {
+    display: block !important;
+    background-color: transparent !important;
+    color: #fff !important;
+    padding: 10px 0 !important;
+    color: #000 !important;
+  }
+
+  .nav-item .dropdown-item:hover {
+    background-color: #f0f0f0 !important; 
+    color: #000 !important;
+    border-bottom: 2px solid #58A5B7 !important; 
+  }
+}
+
+@media (max-width: 430px) {
+  .navbar .logo {
+    font-size: 1.2rem !important;
+  }
+
+#notificationModal .modal-dialog {
+  position: absolute;
+  left: 50%;
+  top: 28%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+  width: 350px;
+}
+}
+#clearNotificationsBtn {
+  transition: color 0.3s ease, text-decoration 0.3s ease;
+}
+
+#clearNotificationsBtn:hover {
+  color: #dc3545; /* Red color for hover */
+  text-decoration: underline; /* Underline on hover */
+}
+
+/* Style for unread notifications */
+.notification-item.unread {
+  background-color: #f1fcff;
+  border-left: 5px solid #58A5B7; 
+}
+
+/* Style for read notifications */
+.notification-item.read {
+  background-color: #e2e3e5; /* Light gray background */
+  color: #6c757d; /* Gray text */
+}
+
+.notification-item {
+  transition: background-color 0.3s ease, font-weight 0.3s ease;
+}
+
+

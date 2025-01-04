@@ -1,25 +1,37 @@
-body, html {
+* {
     margin: 0;
     padding: 0;
-    height: 100%;
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
 }
 
-.login-container {
-    display: flex;
+body {
+    min-height: 100vh;
+    background: #F0F4FF;
+    overflow-x: hidden;
+}
+
+h2 {
+    letter-spacing: 2px; 
+}
+
+.bg-image {
+    background-image: url('assets/loginbg.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     height: 100vh;
-}
-
-.image-section {
-    flex: 1;
-    background-color: #f0f0f0; /* fallback for browsers that don't support background image */
-}
-
-.image-section img {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.logo {
+    width: 250px;
+    height: 250px;
 }
 
 .login-form-section {
@@ -29,68 +41,6 @@ body, html {
     justify-content: center;
     background-color: #fff;
     padding: 20px;
-}
-
-form {
-    width: 80%;
-    max-width: 400px;
-}
-
-
-.logo {
-    position: absolute; /* Position the logo absolutely within .image-section */
-    top: 15%; /* Align it to the top */
-    left: 25%; /* Center horizontally */
-    transform: translateX(-50%); /* Offset by 50% of its own width to center */
-    text-align: center; /* Center text under the logo */
-}
-
-.logo img {
-    width: 250px; /* Adjust size as needed */
-    height: 250px;
-    margin-bottom: 10px; /* Space between image and text */
-}
-
-.logo span {
-    font-size: 20px; /* Adjust font size as needed */
-    font-weight: bold;
-    color: #fff; /* Set text color for visibility */
-}
-
-h3{
-        position: absolute; /* Position the logo absolutely within .image-section */
-        top: 57%; /* Align it to the top */
-        left: 25%; /* Center horizontally */
-        transform: translateX(-50%); /* Offset by 50% of its own width to center */
-        text-align: center; /* Center text under the logo */     
-}
-
-h4 {
-    position: absolute; /* Position absolutely within the parent container */
-    top: 65%; /* Align it towards the bottom */
-    left: 25%; /* Center horizontally */
-    transform: translateX(-50%); /* Offset by 50% of its own width to center */
-    text-align: center; /* Center the text */
-    width: 50%; /* Adjust width to control text wrapping */
-    word-wrap: break-word; /* Allow long words to wrap */
-    overflow-wrap: break-word; /* Break words if necessary */
-}
-
-
-h2 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #333;
-    font-size: 24px;
-    font-family: 'Poppins', sans-serif; /* Corrected property and included a fallback font */
-    font-weight: bold; /* Makes the text bold */
-}
-p {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #333;
-    font-family: 'Poppins', sans-serif; /* Corrected property and included a fallback font */
-    font-size: 15px;
 }
 
 .input-group {
@@ -130,30 +80,29 @@ p {
 }
 
 .login-btn {
-    max-width: 100%; /* Ensure the button doesn't exceed its container's width */
-    padding: 1em 2em; /* Relative padding, adjusts with font size */
-    background-color: #FF7F50; /* Coral color for the button */
+    max-width: 100%;
+    padding: 0.5em 2em;
+    background-color: #C0690A;
     color: white;
     border: none;
     border-radius: 50px;
-    font-size: 1rem; /* Responsive font size */
+    font-size: 1rem;
     text-align: center;
-    font-size:  1rem; /* Responsive font size */
+    font-size: 1rem;
     cursor: pointer;
     outline: none;
     transition: background-color 0.3s ease;
-    box-sizing: border-box; /* Ensures padding is included within the width */
+    box-sizing: border-box;
 }
 
 .login-btn:hover {
-    background-color: #FF6347; /* Darker shade of Coral on hover */
+    background-color: #784106;
 }
+
 .login-button-container {
-    width: 25%;
-    max-width: 300px; /* Limit the maximum width for larger screens */
-    margin: 0 auto; /* Center the button container */
-    padding: 20px;
+    padding: 0px 20px;
 }
+
 .signup-option {
     text-align: center;
     margin-top: 20px;
@@ -168,3 +117,68 @@ p {
 .signup-option a:hover {
     text-decoration: underline;
 }
+
+.is-invalid {
+    border-color: red !important;
+}
+
+@media (max-width: 768px) {
+    body {
+        font-size: 14px; 
+    }
+
+    .bg-image h3 {
+        font-size: 1.5rem; 
+    }
+
+    .bg-image h4 {
+        font-size: 1rem; 
+    }
+
+    .logo {
+        width: 150px;
+        height: 150px;
+    }
+
+
+    .login-btn {
+        font-size: 0.9rem; 
+        padding: 0.4em 1.5em; 
+    }
+
+    .forgot-password,
+    .signup-option a {
+        font-size: 0.85rem; 
+    }
+}
+
+
+@media (max-width: 400px) {
+    body {
+        font-size: 13px; 
+    }
+
+    .bg-image h3 {
+        font-size: 1.2rem; 
+    }
+
+    .bg-image h4 {
+        font-size: 0.9rem; 
+    }
+
+    .logo {
+        width: 120px;
+        height: 120px;
+    }
+
+    .login-btn {
+        font-size: 0.8rem; 
+        padding: 0.3em 1.2em; 
+    }
+
+    .forgot-password,
+    .signup-option a {
+        font-size: 0.8rem; 
+    }
+}
+
