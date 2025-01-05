@@ -8,12 +8,12 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
         $application_id = $_GET['id'];
 
         $query = "
-            SELECT *
-            FROM applications 
-            INNER JOIN users ON applications.user_id = users.user_id
-            INNER JOIN animals ON applications.animal_id = animals.animal_id
-            WHERE applications.application_id = ? 
-        ";
+        SELECT *
+        FROM applications 
+        INNER JOIN users ON applications.user_id = users.user_id
+        INNER JOIN animals ON applications.animal_id = animals.animal_id
+        WHERE applications.application_id = ? 
+    ";
 
         $stmt = $db->prepare($query);
         $stmt->bind_param("i", $application_id);
@@ -22,10 +22,18 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
 
         if ($result->num_rows > 0) {
             $application = $result->fetch_assoc();
-        } else {
-            // Redirect to not-found.php if the application is not found
-            header("Location: not-found.php");
-            exit(); // Ensure no further code is executed
+
+            // Additional query for post_adoption table
+            $queryPostAdoption = "
+            SELECT *
+            FROM post_adoption
+            WHERE application_id = ?
+        ";
+
+            $stmtPostAdoption = $db->prepare($queryPostAdoption);
+            $stmtPostAdoption->bind_param("i", $application_id);
+            $stmtPostAdoption->execute();
+            $resultPostAdoption = $stmtPostAdoption->get_result();
         }
     } else {
         // Redirect to not-found.php if the request is invalid
@@ -163,6 +171,7 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                             ?>
                         </p>
                         <p><strong>Description:</strong> <?php echo $application['description'] ?></p>
+                        <p><a href="animal-record.php?animal_id=<?php echo $application['animal_id']; ?>">View Profile</a></p>
 
                         <?php if ($application['application_status'] === 'Approved' && $application['animal_status'] !== 'Adopted') { ?>
                             <div style="text-align: right; margin-top: 20px;">
@@ -223,10 +232,6 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                         </div>
                     </div>
                 </div>
-
-
-
-
                 <!-- Accordion for Questionnaire Response and Proof -->
                 <div class="accordion" id="adoptionDetailsAccordion">
                     <!-- Questionnaire Response -->
@@ -412,8 +417,56 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                                 </div>
                             </div>
                         </div>
-
                     </div>
+                    <?php
+                    if ($resultPostAdoption->num_rows > 0) {
+                        // Initialize counter
+                        $counter = 1; ?>
+                        <br>
+                        <h4 class="mb-2"> > Post- Adoption Forms</h4>
+                        <?php  // Loop through all rows
+                        while ($postAdoption = $resultPostAdoption->fetch_assoc()) { ?>
+                            <!-- Post Adoption Section -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingPost<?php echo $postAdoption['post_id']; ?>">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePost<?php echo $postAdoption['post_id']; ?>" aria-expanded="false" aria-controls="collapsePost<?php echo $postAdoption['post_id']; ?>">
+                                        Post-Adoption Form No. <?php echo $counter; ?>
+                                    </button>
+                                </h2>
+                                <div id="collapsePost<?php echo $postAdoption['post_id']; ?>" class="accordion-collapse collapse" aria-labelledby="headingPost<?php echo $postAdoption['post_id']; ?>" data-bs-parent="#adoptionPostAccordion">
+                                    <div class="accordion-body">
+                                        <p><strong>Submitted Date:</strong> <?php
+                                                                            // Format the date
+                                                                            $date = new DateTime($postAdoption['submit_date']);
+                                                                            echo $date->format('F j, Y');
+                                                                            ?></p>
+                                        <p><strong>Description:</strong> <?php echo htmlspecialchars($postAdoption['adoption_description']); ?></p>
+                                        <div class="row">
+                                            <?php
+                                            $images = json_decode($postAdoption['adoption_image']);
+                                            if (!empty($images)) {
+                                                foreach ($images as $image) { ?>
+                                                    <div class="col-md-4 mb-3">
+                                                        <img src="styles/assets/post-adoption/<?php echo htmlspecialchars($image); ?>" class="img-fluid rounded" alt="Adoption Image">
+                                                    </div>
+                                            <?php }
+                                            } ?>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                    <?php
+                            // Increment counter for the next post
+                            $counter++;
+                        }
+                    } else {
+                        $postAdoption = null; // No post-adoption data found
+                    }
+                    ?>
+
+
+
 
                 </div>
 
@@ -439,6 +492,13 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                             </div>
                             <div class="modal-body">
                                 <form id="scheduleInterviewForm" method="post">
+                                    <?php
+                                    // Extract date and time from 'sched_interview'
+                                    $schedInterview = $application['sched_interview'] ?? null; // Example: '2025-01-03 09:30:00'
+                                    $interviewDate = $schedInterview ? date('Y-m-d', strtotime($schedInterview)) : ''; // Extract date if available
+                                    $interviewTime = $schedInterview ? date('H:i', strtotime($schedInterview)) : ''; // Extract time if available
+                                    ?>
+
                                     <input type="hidden" name="application_id" id="interview_application_id" value="<?php echo $application['application_id']; ?>" readonly>
                                     <input type="hidden" name="application_status" value="Approved" readonly>
 
@@ -448,20 +508,23 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                                     <!-- Date Selection -->
                                     <div class="mb-3">
                                         <label for="interviewDate" class="form-label">Select Interview Date:</label>
-                                        <input type="date" id="interviewDate" class="form-control" required>
+                                        <input type="date" id="interviewDate" class="form-control" value="<?php echo $interviewDate; ?>" required>
                                     </div>
 
                                     <!-- Time Selection -->
                                     <div class="mb-3">
                                         <label for="interviewTime" class="form-label">Select Interview Time:</label>
+
                                         <select id="interviewTime" class="form-select" required>
-                                            <option value="" selected disabled>-- Kindly select a time --</option>
-                                            <!-- Generate Time Options from 8:00 AM to 10:00 PM at 30-minute intervals -->
+                                            <option value="" disabled selected>-- Kindly select a time --</option>
                                             <?php
                                             $startTime = strtotime('08:00 AM');
                                             $endTime = strtotime('10:00 PM');
                                             while ($startTime <= $endTime) {
-                                                echo '<option value="' . date('H:i', $startTime) . '">' . date('h:i A', $startTime) . '</option>';
+                                                $formattedTime = date('H:i', $startTime); // Value format 'HH:mm'
+                                                $displayTime = date('h:i A', $startTime); // Display format 'hh:mm AM/PM'
+                                                $selected = ($formattedTime === $interviewTime) ? 'selected' : ''; // Pre-select if matches
+                                                echo '<option value="' . $formattedTime . '" ' . $selected . '>' . $displayTime . '</option>';
                                                 $startTime = strtotime('+30 minutes', $startTime);
                                             }
                                             ?>
