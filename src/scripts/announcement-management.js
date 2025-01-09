@@ -246,18 +246,39 @@ checkStatus();
 // Add change event listener to update publishDate based on selection
 statusSelect.addEventListener('change', checkStatus);
 
-// Enable Editing for Specific Modal
 function toggleEditAnnouncement(id) {
     const formId = `announcementForm_${id}`;
+    const saveButtonId = `saveAnnouncementBtn_${id}`;
+    const editButtonId = `editAnnouncementBtn_${id}`;
+
+    // Enable inputs for editing
+    const formElement = document.getElementById(formId);
     const titleInput = document.getElementById(`announcementTitle_${id}`);
     const statusSelect = document.getElementById(`announcementStatus_${id}`);
     const publishDateInput = document.getElementById(`publishDate_${id}`);
-    const contentHiddenInput = document.getElementById(`announcementContentHidden_${id}`);
-    const saveButton = document.getElementById(`saveAnnouncementBtn_${id}`);
-    const editButton = document.getElementById(`editAnnouncementBtn_${id}`);
     const imageInput = document.getElementById(`annImageInput_${id}`);
+    const quillContainerId = `announcementContent_${id}`;
+    const hiddenContentInputId = `announcementContentHidden_${id}`;
 
-    function checkStatus1() {
+    // Enable inputs by removing readonly/disabled attributes
+    titleInput.removeAttribute('readonly');
+    statusSelect.removeAttribute('disabled');
+    publishDateInput.removeAttribute('readonly');
+    imageInput.style.display = 'block'; // Assuming you're showing an image input for editing
+
+    // Make Quill editor content editable
+    const quillEditor = new Quill(`#${quillContainerId}`, {
+        theme: 'snow'
+    });
+
+    // Show Save Changes button and hide Edit button
+    document.getElementById(editButtonId).style.display = 'none';
+    const saveButton = document.getElementById(saveButtonId);
+    saveButton.style.display = 'inline-block';
+    saveButton.disabled = false;
+
+    // Check status on page load to disable/enable publishDate
+    function checkStatus() {
         if (statusSelect.value === 'Draft' || statusSelect.value === 'Published') {
             publishDateInput.disabled = true; // Disable publishDate if status is draft
             publishDateInput.value = ''; // Optionally clear the date value
@@ -267,82 +288,89 @@ function toggleEditAnnouncement(id) {
     }
 
     // Check status on page load
-    checkStatus1();
+    checkStatus();
 
     // Add change event listener to update publishDate based on selection
-    statusSelect.addEventListener('change', checkStatus1);
-    // Enable inputs
-    titleInput.readOnly = false;
-    statusSelect.disabled = false;
-    publishDateInput.readOnly = false;
-    imageInput.style.display = 'block';
+    statusSelect.addEventListener('change', checkStatus);
 
-    // Check and enable publish date input based on status value
-    if (statusSelect.value === 'Scheduled Post') {
-        publishDateInput.disabled = false;
-    } else {
-        publishDateInput.disabled = true;
-    }
+    // Save button click event with dynamic form ID
+    saveButton.addEventListener('click', function(event) {
+        event.preventDefault(); // Prevent the default form submission
 
-    // Toggle buttons visibility
-    editButton.style.display = 'none';
-    saveButton.style.display = 'inline-block';
-    saveButton.disabled = false;
+        // Clear any existing error messages
+        clearErrorMessages();
 
-    // Quill Editor content update
-    const quill = new Quill(`#announcementContent_${id}`, { theme: 'snow', readOnly: false });
-    const announcementContentHTML = quill.root.innerHTML;
-    contentHiddenInput.value = announcementContentHTML;
+        // Validate fields
+        let isValid = true;
+
+        // Validate the fields
+        isValid &= validateField(titleInput, "Title is required.");
+        isValid &= validateField(statusSelect, "Please select a status.");
+
+        if (!publishDateInput.disabled) {
+            isValid &= validateField(publishDateInput, "Please select a valid publish date.");
+        }
+
+        const announcementContentHTML = quillEditor.root.innerHTML; // Get Quill content
+        const contentHiddenInput = document.getElementById(hiddenContentInputId);
+        contentHiddenInput.value = announcementContentHTML; // Store Quill content in hidden input
+
+        isValid &= validateContentField(announcementContentHTML, "Content is required.");
+
+        // If the form is valid, submit via AJAX
+        if (isValid) {
+            const formData = new FormData(formElement);
+
+            $.ajax({
+                type: 'POST',
+                url: 'includes/edit-announcement.php', // Use edit-announcement.php for editing
+                data: formData,
+                processData: false, // Important for FormData
+                contentType: false, // Important for FormData
+                success: function(response) {
+                    console.log("Form edited successfully:", response);
+                    // Hide modal and show a success message
+                    $(`#announcementModal_${id}`).modal('hide');
+                    $('#successEditAnnouncementModal').modal('show');
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error occurred:", xhr.responseText);
+                }
+            });
+        }
+    });
 }
 
-// Save Button Click Event (Reusable Validation)
-$(document).on('click', '[id^="saveAnnouncementBtn_"]', function (event) {
-    event.preventDefault();
-    clearErrorMessages();
 
-    const buttonId = this.id;
-    const id = buttonId.split('_')[1];
-    const formId = `announcementForm_${id}`;
-    const formElement = document.getElementById(formId);
-
-    const title = document.getElementById(`announcementTitle_${id}`);
-    const status = document.getElementById(`announcementStatus_${id}`);
-    const publishDate = document.getElementById(`publishDate_${id}`);
-    const imageUpload = document.getElementById(`annImageInput_${id}`);
-    const contentHiddenInput = document.getElementById(`announcementContentHidden_${id}`);
-
-    const quillEditor = new Quill(`#announcementContent_${id}`, { theme: 'snow' });
-    const announcementContentHTML = quillEditor.root.innerHTML;
-    contentHiddenInput.value = announcementContentHTML;
-
-    // Validate Fields
-    let isValid = true;
-    isValid &= validateField(title, "This field is required.");
-    isValid &= validateField(status, "Please select a status.");
-
-    if (!publishDate.disabled) {
-        isValid &= validateField(publishDate, "Please select a valid publish date.");
+// Helper functions for validation (assuming these exist in your code)
+function validateField(field, errorMessage) {
+    if (!field.value.trim()) {
+        showErrorMessage(field, errorMessage);
+        return false;
     }
+    return true;
+}
 
-    isValid &= validateContentField(announcementContentHTML, "Content is required.");
-
-    if (isValid) {
-        const formData = new FormData(formElement);
-
-        $.ajax({
-            type: 'POST',
-            url: 'includes/edit-announcement.php',
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function (response) {
-                console.log("Form submitted successfully:", response);
-                $(`#announcementModal_${id}`).modal('hide');
-                $('#successEditAnnouncementModal').modal('show');
-            },
-            error: function (xhr, status, error) {
-                console.error("Error occurred:", xhr.responseText);
-            }
-        });
+function validateContentField(content, errorMessage) {
+    if (!content.trim()) {
+        showErrorMessage(document.getElementById('announcementContent_' + id), errorMessage);
+        return false;
     }
-});
+    return true;
+}
+
+function showErrorMessage(field, message) {
+    // Assuming you have a way to display error messages next to the field
+    const errorElement = field.nextElementSibling; // Assuming the next sibling is the error message container
+    errorElement.textContent = message;
+    errorElement.style.display = 'block';
+}
+
+function clearErrorMessages() {
+    // Clear all error messages
+    const errorMessages = document.querySelectorAll('.error-message'); // Assuming you have a class for error messages
+    errorMessages.forEach(errorMessage => {
+        errorMessage.textContent = '';
+        errorMessage.style.display = 'none';
+    });
+}
