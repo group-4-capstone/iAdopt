@@ -206,7 +206,7 @@
           }
 
           // Show the "Clear Notifications" button if there are notifications
-          document.getElementById('clearNotificationsBtn').style.display = 'block';
+          document.getElementById('clearNotificationsBtn').style.display = 'none';
         } else {
           // Add a <li> with a class for styling when there are no notifications
           html += '<li class="no-notifications px-5 py-2 text-muted"> -- No Notifications Yet -- </li>';
@@ -356,30 +356,7 @@ document.querySelectorAll('input, textarea').forEach(element => {
 });
 
 
-  // Function to clear notifications
-  function clearNotifications() {
-
-    var currentUserId = <?php echo $_SESSION['user_id']; ?>; // Pass the user_id from PHP to JavaScript
-    console.log(currentUserId);
-    var form_data = new FormData();
-    form_data.append('user_id', currentUserId); // Append the user_id to FormData
-
-    var ajax_request = new XMLHttpRequest();
-
-    ajax_request.open('POST', 'includes/clear-notifications.php');
-    ajax_request.send(form_data);
-
-    ajax_request.onreadystatechange = function() {
-      if (ajax_request.readyState == 4 && ajax_request.status == 200) {
-        var response = JSON.parse(ajax_request.responseText);
-        if (response.success) {
-          load_data();
-        } else {
-          alert('Failed to clear notifications');
-        }
-      }
-    };
-  }
+ 
 
   function showNotificationDetails(notificationId) {
     var form_data = new FormData();
