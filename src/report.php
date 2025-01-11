@@ -38,8 +38,8 @@ if (!isset($_SESSION['role']) || ($_SESSION['role'] !== 'admin' && $_SESSION['ro
       <div class="content">
         <h2>Report Animal Abuse</h2>
         <h4>Every Report Can Save a Life</h4>
-        <p>By notifying us when an animal is in danger, you play a vital role in protecting them and offering a chance at a better life. </p>
-        <p>We collaborate with trusted organizations, including the <b>Animal Welfare Society</b>, <b>Animal Kingdom Foundation</b>, and <b>CARA Welfare Philippines</b>, to forward cases and provide timely assistance for animals in need. </p>
+        <p>By notifying us when an animal is in danger, you play a vital role in protecting them and offering a chance at a better life.
+        We collaborate with trusted organizations, including the <b>Animal Welfare Society</b>, <b>Animal Kingdom Foundation</b>, and <b>CARA Welfare Philippines</b>, to forward cases and provide timely assistance for animals in need. </p>
       </div>
     </section>
 
@@ -122,7 +122,7 @@ if (!isset($_SESSION['role']) || ($_SESSION['role'] !== 'admin' && $_SESSION['ro
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-body">
-            <button type="button" class="btn-close d-flex ms-auto" onclick="window.location.href='report-stray.php'"></button>
+            <button type="button" class="btn-close d-flex ms-auto" onclick="window.location.href='report.php'"></button>
             <div class="text-center">
               <i class="bi bi-check-circle-fill" style="font-size: 8rem; color: #28a745;"></i>
               <p class="mt-4 px-2"> Your rescue report has been submitted successfully! Thank you.</p>
