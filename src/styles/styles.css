@@ -16,7 +16,8 @@
 
 /* Banner Section */
 .user-banner-section {
-  height: 50vh;
+  min-height: 50vh; /* Minimum height for larger screens */
+  height: auto; /* Allow height to adjust automatically */
   background-color: #C0690A;
   background-image: url('assets/all-banner.png');
   background-repeat: no-repeat;
@@ -86,6 +87,10 @@
     font-size: 16px;
     max-width: 500px;
   }
+
+  .user-banner-section {
+    min-height: auto; /* Allow for auto height in medium screens */
+  }
 }
 
 @media (max-width: 768px) {
@@ -110,7 +115,8 @@
   }
 
   .user-banner-section {
-    height: 60vh; /* Slightly higher height for mobile */
+    height: auto; /* Dynamic height based on content */
+    padding: 40px 10px; /* Ensure padding remains consistent */
   }
 
   .admin-content .grid-s h3 {
@@ -120,15 +126,18 @@
 
 @media (max-width: 430px) {
   .user-banner-section {
-    height: 60vh;
+    height: auto; /* Let the height adjust dynamically */
+    padding: 40px 20px;
   }
 
   .user-banner-section .content h2 {
-    font-size: 30px; /* Much smaller font size for small screens */
+    font-size: 30px; /* Smaller font size for small screens */
+    line-height: 50px;
   }
 
   .user-banner-section .content h4 {
     font-size: 24px;
+    line-height: 40px;
   }
 
   .user-banner-section .content p {
@@ -140,8 +149,8 @@
 /* Extra Small Screen (below 320px) */
 @media (max-width: 320px) {
   .user-banner-section {
-    height: 45vh; /* Even taller height to make room for content */
-    padding: 50px 5px; /* Less padding for tighter space */
+    height: auto; /* Automatically adjust height */
+    padding: 40px 5px; /* Less padding for tighter space */
   }
 
   .user-banner-section .content h2 {
