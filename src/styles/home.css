@@ -534,10 +534,18 @@
   .row .card a button {
     font-size: 14px;
   }
+  
+  .image-back {
+    display: none;
+  }
 }
 
 /* For mobile devices */
 @media (max-width: 480px) {
+  .image-back {
+    display: none;
+  }
+  
   .hero-section .content h2 {
     font-size: 1.5rem;
     line-height: 35px;
