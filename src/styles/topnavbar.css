@@ -1,3 +1,4 @@
+/* Base Styles */
 header {
   position: relative;
   top: 0;
@@ -237,17 +238,19 @@ header .navbar {
 }
 
 #postAdoptionModal .modal-dialog  .form-section{
- background-color: white !important;
- padding: 0 !important;
- margin: 0 !important;
+  background-color: white !important;
+  padding: 0 !important;
+  margin: 0 !important;
 }
 
 #notificationModal .modal-dialog {
-  position: absolute;
-  top: 20px;
+  position: fixed;
   right: 20px;
+  top: 20px;
   margin: 0;
-  max-width: 300px; 
+  width: 300px; /* Default width for larger screens */
+  max-width: 100%; /* Prevent modal from exceeding screen width */
+  z-index: 1050;
 }
 
 #notificationModal .modal-content {
@@ -285,8 +288,100 @@ header .navbar {
   background-color: #ddd;
 }
 
+/* Small Screen Sizes - Mobile (up to 430px) */
+@media (max-width: 430px) {
+  #notificationModal .modal-dialog {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+    width: 90%; /* Adjust width to 90% of the screen */
+    max-width: 350px; /* Set a maximum width to prevent modal from being too large */
+  }
 
+  #notificationModal .modal-header {
+    font-size: 1.2rem; /* Adjust header font size for small screens */
+  }
 
+  #notificationModal .modal-body i {
+    font-size: 28px; /* Slightly reduce icon size */
+  }
+}
+
+/* Medium Screen Sizes (from 431px to 768px) */
+@media (min-width: 431px) and (max-width: 768px) {
+  #notificationModal .modal-dialog {
+    position: fixed;
+    left: 50%;
+    top: 20px;
+    transform: translateX(-50%);
+    width: 85%; /* Set width to 85% of the screen width */
+    max-width: 400px; /* Set a max width for moderate screens */
+  }
+
+  #notificationModal .modal-body i {
+    font-size: 30px; /* Adjust icon size for medium screens */
+  }
+}
+
+/* Large Screen Sizes (from 769px to 1100px) */
+@media (min-width: 769px) and (max-width: 1100px) {
+  #notificationModal .modal-dialog {
+    position: fixed;
+    right: 20px;
+    top: 20px;
+    margin: 0;
+    width: 350px; /* Set a fixed width for larger screens */
+  }
+
+  #notificationModal .modal-body i {
+    font-size: 32px; /* Set icon size for larger screens */
+  }
+}
+
+/* Extra Large Screen Sizes (above 1100px) */
+@media (min-width: 1101px) {
+  #notificationModal .modal-dialog {
+    position: fixed;
+    right: 20px;
+    top: 20px;
+    margin: 0;
+    width: 350px; /* Set fixed width for very large screens */
+  }
+
+  #notificationModal .modal-body i {
+    font-size: 34px; /* Adjust icon size for very large screens */
+  }
+}
+
+/* Other styles */
+#clearNotificationsBtn {
+  transition: color 0.3s ease, text-decoration 0.3s ease;
+}
+
+#clearNotificationsBtn:hover {
+  color: #dc3545; /* Red color for hover */
+  text-decoration: underline; /* Underline on hover */
+}
+
+/* Style for unread notifications */
+.notification-item.unread {
+  background-color: #f1fcff;
+  border-left: 5px solid #58A5B7; 
+}
+
+/* Style for read notifications */
+.notification-item.read {
+  background-color: #e2e3e5; /* Light gray background */
+  color: #6c757d; /* Gray text */
+}
+
+.notification-item {
+  transition: background-color 0.3s ease, font-weight 0.3s ease;
+}
+
+/* Media queries for mobile navigation and responsiveness */
 @media (max-width: 1100px) {
   header {
     padding: 10px !important;
@@ -311,7 +406,6 @@ header .navbar {
     display: block !important;
   }
 
-
   header.show-mobile-menu .navbar .menu-links {
     left: 0 !important;
   }
@@ -323,45 +417,44 @@ header .navbar {
     width: 250px !important;
     height: 100vh !important;
     background: #fff !important;
-    display: flex !important; /* Flexbox to vertically align */
+    display: flex !important;
     flex-direction: column !important;
-    justify-content: center !important; /* Center vertically */
-    align-items: center !important; /* Align links horizontally */
+    justify-content: center !important;
+    align-items: center !important;
     padding: 0 40px 0 !important;
     transition: left 0.3s ease !important; 
   }
-  
+
   .nav-item.dropdown .dropdown-menu {
     display: flex !important;
     flex-direction: column !important;
-    justify-content: center !important; /* Center vertically */
-    align-items: center !important; /* Align dropdown items horizontally */
+    justify-content: center !important;
+    align-items: center !important;
     position: static !important;
     background-color: transparent !important;
     box-shadow: none !important;
   }
-  
+
   .nav-item .dropdown-item {
     display: block !important;
     background-color: transparent !important;
     color: #000 !important;
     padding: 10px 0 !important;
-    text-align: center; /* Ensure text is centered */
+    text-align: center;
   }
-  
+
   .navbar .menu-links a,
   .nav-item .dropdown-item {
     color: #000 !important;
     width: 100%; /* Ensure full-width links */
-    text-align: center; /* Center the text */
+    text-align: center;
   }
-  
+
   .nav-item .dropdown-item:hover {
     background-color: #f0f0f0 !important;
     color: #000 !important;
     border-bottom: 2px solid #58A5B7 !important;
   }
-  
 
   .nav-item .dropdown-item:hover {
     background-color: #58A5B7 !important;
@@ -420,44 +513,3 @@ header .navbar {
     border-bottom: 2px solid #58A5B7 !important; 
   }
 }
-
-@media (max-width: 430px) {
-  .navbar .logo {
-    font-size: 1.2rem !important;
-  }
-
-#notificationModal .modal-dialog {
-  position: absolute;
-  left: 50%;
-  top: 28%;
-  transform: translate(-50%, -50%);
-  margin: 0;
-  width: 350px;
-}
-}
-#clearNotificationsBtn {
-  transition: color 0.3s ease, text-decoration 0.3s ease;
-}
-
-#clearNotificationsBtn:hover {
-  color: #dc3545; /* Red color for hover */
-  text-decoration: underline; /* Underline on hover */
-}
-
-/* Style for unread notifications */
-.notification-item.unread {
-  background-color: #f1fcff;
-  border-left: 5px solid #58A5B7; 
-}
-
-/* Style for read notifications */
-.notification-item.read {
-  background-color: #e2e3e5; /* Light gray background */
-  color: #6c757d; /* Gray text */
-}
-
-.notification-item {
-  transition: background-color 0.3s ease, font-weight 0.3s ease;
-}
-
-
