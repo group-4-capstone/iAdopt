@@ -68,7 +68,7 @@ include_once 'includes/session-manager.php';
             <?php endif; ?>
 
             <div class="mb-5 text-end">
-                <a href="#" class="forgot-password">Forgot Password?</a>
+                <a href="forgot-password.php" class="forgot-password">Forgot Password?</a>
             </div>
 
             <div class="d-grid mb-3 login-button-container">
