@@ -292,7 +292,7 @@
   width: 500px;
   height: 500px;
   overflow: hidden;
-  margin: 20px 10px;
+  margin: 20px auto;
 }
 
 .solo-section .picture-frame img {
@@ -510,7 +510,7 @@
     width: 360px;
     height: 360px;
     overflow: hidden;
-    margin: 55px 10px;
+    margin: 55px auto;
   }
   
   .solo-section .picture-frame img {
@@ -574,7 +574,31 @@
     width: 325px;
     height: 325px;
     overflow: hidden;
-    margin: 15px 10px;
+    margin: 15px auto;
+  }
+  
+  .solo-section .picture-frame img {
+    width: 190px;
+    height: 220px;
+    max-height: 320px;
+    object-fit: cover;
+    margin-top: 75px;
+    transform: rotate(-3deg);
+    margin-left: 32px;
+  }
+}
+
+/* For mobile devices */
+@media (max-width: 420px) {
+  .solo-section .picture-frame {
+    background-image: url("assets/profile.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 325px;
+    height: 325px;
+    overflow: hidden;
+    margin: 15px auto;
   }
   
   .solo-section .picture-frame img {
