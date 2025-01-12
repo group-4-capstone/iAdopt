@@ -27,7 +27,7 @@
 }
 
 #rescueForm {
-  max-width: 100%; /* Increased for better use of space on small screens */
+  max-width: 100%; 
   background-color: #ffffff;
   margin: 0 auto;
   padding: 25px; /* Smaller padding for better fit */

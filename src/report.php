@@ -50,7 +50,7 @@ if (!isset($_SESSION['role']) || ($_SESSION['role'] !== 'admin' && $_SESSION['ro
         $isDisabled = !isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true ? 'disabled' : '';
         ?>
         <form id="rescueForm" method="post" class="mx-lg-5">
-          <div class="step">
+          <div class="step p-2">
             <h5 class="text-center">Report Details</h5>
             <p class="text-center mb-4">Kindly supply the following details of the dog/cat you want to be rescued.</p>
 
@@ -106,7 +106,9 @@ if (!isset($_SESSION['role']) || ($_SESSION['role'] !== 'admin' && $_SESSION['ro
 
           <?php if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) { ?>
             <div class="mb-3">
-              <i>Note: You must be <a href="login.php"> logged into your account </a> submit a rescue report. Please log in to continue.</i>
+              <small class="text-muted fst-italic">
+                Note: You must be <a href="login.php">logged into your account</a> to submit a rescue report. Please log in to continue.
+              </small>
             </div>
           <?php } ?>
 
