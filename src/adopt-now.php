@@ -168,7 +168,7 @@ $tagsArray = explode(",", $tags);
         </div>
 
         <!-- Step two -->
-        <div class="step">
+        <div class="step p-sm-2 p-2">
             <p class="text-center mb-4">We want to know if you are fit to adopt. Kindly answer the following truthfully.</p>
             <div class="mb-3">
                 <label>Why did you decide to adopt an animal?</label>
@@ -354,7 +354,7 @@ $tagsArray = explode(",", $tags);
 
 
         <!-- Step three -->
-        <div class="step">
+        <div class="step p-sm-2 p-2">
             <p class="text-center mb-4">Few more things, please upload the following:</p>
             
             <div class="mb-3">
