@@ -95,8 +95,9 @@
 
 @media (max-width: 768px) {
   .admin-content {
-    margin-left: 61px !important;
-    padding: 20px 30px;
+    margin-left: 0 !important;
+    margin-top: 50px;
+    padding: 20px 20px;
   }
 
   .user-banner-section .content h2 {
@@ -125,9 +126,16 @@
 }
 
 @media (max-width: 430px) {
+
+  .admin-content {
+    margin-left: 0 !important;
+    margin-top: 50px;
+    padding: 20px 10px;
+  }
+
   .user-banner-section {
     height: auto; /* Let the height adjust dynamically */
-    padding: 40px 20px;
+    padding: 20px 20px;
   }
 
   .user-banner-section .content h2 {
@@ -170,7 +178,7 @@
 
   .admin-content {
     margin-left: 10px !important; /* Reduce left margin for very small screens */
-    padding: 10px 15px; /* Smaller padding */
+    padding: 10px 10px; /* Smaller padding */
   }
 
   .admin-content .grid-s h3 {
