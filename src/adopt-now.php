@@ -121,7 +121,7 @@ $tagsArray = explode(",", $tags);
         </div>
 
         <!-- Step one -->
-        <div class="step">
+        <div class="step p-sm-2 p-2">
             <p class="text-center mb-4">We already have your other details upon signing up. Please supply other needed information.</p>
             <div class="mb-3">
                 <label class="mb-3">Complete Address</label>
