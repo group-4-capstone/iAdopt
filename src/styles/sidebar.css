@@ -25,7 +25,7 @@ body {
   padding: 22px 20px;
   transition: all 0.4s ease;
   overflow-x: hidden;
-  z-index: 1100;
+  z-index: 1;
   /* Higher than the overlay */
 }
 
@@ -156,7 +156,6 @@ body.menu-open {
   position: absolute;
   top: 20px;
   left: 20px;
-  z-index: 1102;
 }
 
 /* Default: Hide the top navigation bar */
@@ -186,8 +185,8 @@ body.menu-open {
     position: fixed;
     top: 0;
     width: 100%;
-    z-index: 1101;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 5;
   }
 
   .top-nav h2 {
