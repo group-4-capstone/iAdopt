@@ -60,22 +60,22 @@
 
             <div class="col-12 col-lg-6">
                 <form method="POST" action="includes/signup-process.php" novalidate>
-                    <div class="row mt-4 mb-3">
+                    <div class="row mt-4">
                         <!-- Last Name Field -->
-                        <div class="col-12 col-sm-5">
+                        <div class="col-12 col-sm-5 mb-3">
                             <label for="last-name" class="form-label">Last Name *</label>
                             <input type="text" id="last-name" name="last-name" class="form-control" placeholder="Dela Cruz" maxlength="50" required>
                             <div class="invalid-feedback">Please provide a valid last name. Only letters, spaces, hyphens, and apostrophes are allowed.</div>
                         </div>
 
                         <!-- First Name Field -->
-                        <div class="col-10 col-sm-5">
+                        <div class="col-10 col-sm-5 mb-3">
                             <label for="first-name" class="form-label">First Name *</label>
                             <input type="text" id="first-name" name="first-name" class="form-control" placeholder="Juan" maxlength="50" required>
                             <div class="invalid-feedback">Please provide a valid first name. Only letters, spaces, hyphens, and apostrophes are allowed.</div>
                         </div>
 
-                        <div class="col-2 col-sm-2">
+                        <div class="col-2 col-sm-2 mb-3">
                             <label for="mi" class="form-label">M.I</label>
                             <input type="text" id="mi" name="mi" class="form-control" placeholder="J" maxlength="2">
                             <div class="invalid-feedback">Please enter only letters for middle initial.</div>
@@ -83,8 +83,8 @@
                     </div>
 
 
-                    <div class="row mb-3">
-                        <div class="col-12 col-sm-6">
+                    <div class="row">
+                        <div class="col-12 col-sm-6 mb-3">
                             <label for="birthdate" class="form-label">Birthdate *</label>
                             <input type="date" id="birthdate" name="birthdate" class="form-control" required>
                         </div>
@@ -104,13 +104,13 @@
                         <div class="invalid-feedback">Please enter a valid Facebook profile link (e.g., https://facebook.com/your-profile).</div>
                     </div>
 
-                    <div class="row mb-3">
-                        <div class="col-12 col-sm-6">
+                    <div class="row">
+                        <div class="col-12 col-sm-6 mb-3">
                             <label for="contact-number" class="form-label">Contact Number *</label>
                             <input type="tel" id="contact-number" name="contact-number" class="form-control" placeholder="09123456789" minlength="11" maxlength="11" pattern="^[0-9]{11}$" inputmode="numeric" required>
                             <div class="invalid-feedback">Please enter a valid contact number (11 digits).</div>
                         </div>
-                        <div class="col-12 col-sm-6">
+                        <div class="col-12 col-sm-6 mb-3">
                             <label for="email" class="form-label">Email *</label>
                             <input type="email" id="email" name="email" class="form-control" placeholder="juan.delacruz@example.com" maxlength="80" required>
                             <div class="invalid-feedback">Please enter a valid email address.</div>
