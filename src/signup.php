@@ -20,10 +20,11 @@
     <!-- JS Script CDN -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- jQuery Library -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
+
 <body>
-<?php include_once 'components/topnavbar.php'; ?>   
+    <?php include_once 'components/topnavbar.php'; ?>
     <div class="body">
         <div class="form-left row col-sm-12 d-flex justify-content-center">
             <h1>Adopt a PAW-some friend</h1>
@@ -53,40 +54,42 @@
         <?php endif; ?>
 
         <div class="row">
-            <div class="form-left col-sm-12 col-lg-6 col-6">
-
-                <div class="image-container">
-                    <img src="styles/assets/signup.png" alt="Family with pets">
-                </div>
+            <div class="col-sm-12 col-lg-6">
+                <img src="styles/assets/signup.png" alt="Family with pets" class="img-fluid w-100">
             </div>
 
-            <div class="col-sm-12 col-lg-6 col-6">
-            <form method="POST" action="includes/signup-process.php" novalidate>
-                    <div class="input-group">
-                        <div class="input-container col-sm-12 col-lg-12 col-12">
-                            <label for="last-name">Last Name *</label>
+            <div class="col-12 col-lg-6">
+                <form method="POST" action="includes/signup-process.php" novalidate>
+                    <div class="row mt-4 mb-3">
+                        <!-- Last Name Field -->
+                        <div class="col-12 col-sm-5">
+                            <label for="last-name" class="form-label">Last Name *</label>
                             <input type="text" id="last-name" name="last-name" class="form-control" placeholder="Dela Cruz" maxlength="50" required>
                             <div class="invalid-feedback">Please provide a valid last name. Only letters, spaces, hyphens, and apostrophes are allowed.</div>
                         </div>
-                        <div class="input-container col-sm-12 col-lg-9 col-9">
-                            <label for="first-name">First Name *</label>
+
+                        <!-- First Name Field -->
+                        <div class="col-10 col-sm-5">
+                            <label for="first-name" class="form-label">First Name *</label>
                             <input type="text" id="first-name" name="first-name" class="form-control" placeholder="Juan" maxlength="50" required>
                             <div class="invalid-feedback">Please provide a valid first name. Only letters, spaces, hyphens, and apostrophes are allowed.</div>
                         </div>
-                        <div class="input-container col-sm-12 col-lg-2 col-2">
-                            <label for="mi">M.I</label>
+
+                        <div class="col-2 col-sm-2">
+                            <label for="mi" class="form-label">M.I</label>
                             <input type="text" id="mi" name="mi" class="form-control" placeholder="J" maxlength="2">
                             <div class="invalid-feedback">Please enter only letters for middle initial.</div>
                         </div>
                     </div>
 
-                    <div class="input-group">
-                        <div class="input-container">
-                            <label for="birthdate">Birthdate *</label>
+
+                    <div class="row mb-3">
+                        <div class="col-12 col-sm-6">
+                            <label for="birthdate" class="form-label">Birthdate *</label>
                             <input type="date" id="birthdate" name="birthdate" class="form-control" required>
                         </div>
-                        <div class="input-container">
-                            <label for="gender">Sex *</label>
+                        <div class="col-12 col-sm-6">
+                            <label for="gender" class="form-label">Sex *</label>
                             <select id="gender" name="gender" class="form-select" required>
                                 <option value="" disabled selected>Select Gender</option>
                                 <option value="male">Male</option>
@@ -95,65 +98,52 @@
                         </div>
                     </div>
 
-                    <div class="input-group">
-                        <div class="input-container col-sm-12 col-lg-12 col-12">
-                            <label for="facebook-profile">Facebook Profile Link *</label>
-                            <input type="url" id="facebook-profile" name="facebook-profile" class="form-control" placeholder="https://facebook.com/your-profile" maxlength="100" required pattern="https://facebook\.com/.+">
-                            <div class="invalid-feedback">Please enter a valid Facebook profile link (e.g., https://facebook.com/your-profile).</div>
-                        </div>
+                    <div class="mb-3">
+                        <label for="facebook-profile" class="form-label">Facebook Profile Link *</label>
+                        <input type="url" id="facebook-profile" name="facebook-profile" class="form-control" placeholder="https://facebook.com/your-profile" maxlength="100" required pattern="https://facebook\.com/.+">
+                        <div class="invalid-feedback">Please enter a valid Facebook profile link (e.g., https://facebook.com/your-profile).</div>
                     </div>
 
-                    <div class="input-group">
-                        <div class="input-container">
-                            <label for="contact-number">Contact Number *</label>
-                            <input type="tel" id="contact-number" name="contact-number" class="form-control" 
-                                placeholder="09123456789" minlength="11" maxlength="11" 
-                                pattern="^[0-9]{11}$" inputmode="numeric" required>
+                    <div class="row mb-3">
+                        <div class="col-12 col-sm-6">
+                            <label for="contact-number" class="form-label">Contact Number *</label>
+                            <input type="tel" id="contact-number" name="contact-number" class="form-control" placeholder="09123456789" minlength="11" maxlength="11" pattern="^[0-9]{11}$" inputmode="numeric" required>
                             <div class="invalid-feedback">Please enter a valid contact number (11 digits).</div>
                         </div>
-
-                        <div class="input-container">
-                            <label for="email">Email *</label>
+                        <div class="col-12 col-sm-6">
+                            <label for="email" class="form-label">Email *</label>
                             <input type="email" id="email" name="email" class="form-control" placeholder="juan.delacruz@example.com" maxlength="80" required>
                             <div class="invalid-feedback">Please enter a valid email address.</div>
                         </div>
                     </div>
 
-                    <div class="input-group">
-                    <!-- Password Field -->
-                    <div class="input-container col-sm-12 col-lg-12 col-12">
-                        <label for="password">Password *</label>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password *</label>
                         <input type="password" id="password" name="password" class="form-control" placeholder="Enter your password" maxlength="80" required>
                         <div class="invalid-feedback">Password must be at least 8 characters, include uppercase, lowercase, a number, and a special character.</div>
                     </div>
 
-                    <!-- Confirm Password Field -->
-                    <div class="input-container col-sm-12 col-lg-12 col-12">
-                        <label for="confirm-password">Confirm Password *</label>
-                        <input type="password" id="confirm-password" maxlength="80" name="confirm-password" class="form-control" placeholder="Confirm your password" required>
+                    <div class="mb-5">
+                        <label for="confirm-password" class="form-label">Confirm Password *</label>
+                        <input type="password" id="confirm-password" name="confirm-password" class="form-control" placeholder="Confirm your password" maxlength="80" required>
                         <div class="invalid-feedback">Passwords do not match.</div>
                     </div>
-                </div>
 
-
-
-                    <div class="row">
-                        <div class="col-12 d-flex justify-content-center">
-                            <div class="input-container col-sm-12 col-lg-4 col-4 d-flex justify-content-center">
-                                <button type="submit" class="btn btn-primary">Sign Up</button>
-                            </div>
-                        </div>
+                    <div class="d-flex justify-content-center input-container">
+                        <button type="submit">Sign Up</button>
                     </div>
                 </form>
             </div>
+
+
         </div>
 
 
     </div>
 
-    
+
     <?php include_once 'components/footer.php'; ?>
-     <!-- JS Files -->
+    <!-- JS Files -->
     <script src="scripts/ph-address-selector.js"></script>
     <script src="scripts/signup.js"></script>
 </body>

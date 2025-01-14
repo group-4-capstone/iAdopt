@@ -88,14 +88,14 @@ if (!isset($_SESSION['role']) || ($_SESSION['role'] !== 'admin' && $_SESSION['ro
                 </div>
                 <div class="col-lg-12 mb-3">
                   <label for="street-text">Street, Subdivision/Village<span class="asterisk"> *</span></label>
-                  <input type="text" class="form-control form-control-md" name="specific" <?php echo $isDisabled; ?> id="street-text" required>
+                  <input type="text" class="form-control form-control-md" name="specific" <?php echo $isDisabled; ?> id="street-text" required maxlength="100">
                 </div>
               </div>
             </div>
 
             <div class="mb-3">
               <label>Rescue Report Details: <span class="asterisk"> *</span></label>
-              <input type="text" name="rescue_description" placeholder="Input details regarding the rescue of the animal" <?php echo $isDisabled; ?>>
+              <input type="text" name="rescue_description" placeholder="Input details regarding the rescue of the animal" <?php echo $isDisabled; ?> maxlength="500">
             </div>
 
             <div class="mb-4">

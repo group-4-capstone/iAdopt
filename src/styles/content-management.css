@@ -17,11 +17,11 @@
   margin: 0; 
 }
 
-.pagination li {
+.pagination .page-item {
   margin: 0 5px;
 }
 
-.pagination a {
+.pagination .page-link {
   display: block;
   padding: 8px 12px; 
   color: black; 
@@ -29,16 +29,22 @@
   border-radius: 4px; 
 }
 
-.pagination a.active {
-  background-color: #C0690A;
+.pagination .page-link.active {
+  background-color: #C0690A !important;
   color: white; 
-  border-color: #C0690A; 
+  border-color: #C0690A !important;
 }
 
-.pagination a:hover {
+.pagination .page-link:hover {
   background-color: #6d3d09; 
   color: white;
 }
+
+.pagination .page-item.disabled .page-link {
+  color: gray;
+  pointer-events: none;
+}
+
 
 /* Style tab links */
 .tablink {
@@ -134,8 +140,6 @@
   height: 100%;
 }
 
-
-
 #errorModal {
   z-index: 1060;
 }
@@ -196,5 +200,5 @@
 
 button .btn-theme {
   color: white !important;
-  background-color: #092E5A !important;
+  background-color: #C0690A !important;
 }

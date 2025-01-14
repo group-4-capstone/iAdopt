@@ -47,9 +47,6 @@
 
 .form-left .image-container img {
     max-width: 100%;
-    height: auto;
-    border-radius: 10px;
-    margin-top: none;
 }
 
 .form-right {
@@ -64,10 +61,6 @@
     flex-wrap: wrap;
 }
 
-.input-container {
-    width: 48%;
-    margin-bottom: 20px;
-}
 
 .input-container label {
     display: block;
@@ -93,7 +86,7 @@
 }
 
 .input-container button {
-    width: 80%;
+    width: 40%;
     padding: 12px;
     border: none;
     background-color: #F57C00;
@@ -102,22 +95,9 @@
     font-size: 16px;
     cursor: pointer;
     margin: 0 auto; 
-    
 }
 
 .input-container button:hover {
     background-color: #FF8A00;
 }
 
-/* Responsive Styles */
-@media (max-width: 768px) {
-    .container {
-        flex-direction: column;
-    }
-
-    .input-container {
-        width: 100%;
-    }
-
-   
-}

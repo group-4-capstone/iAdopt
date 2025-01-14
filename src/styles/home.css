@@ -599,38 +599,50 @@
   }
 }
 
-  .pagination-container {
-    text-align: center; 
-    margin: 20px 0;
-    float: right;
-  }
-  
-  .pagination {
-    display: inline-flex;
-    list-style-type: none; 
-    padding: 0;
-    margin: 0; 
-  }
-  
-  .pagination li {
-    margin: 0 5px;
-  }
-  
-  .pagination a {
-    display: block;
-    padding: 8px 12px; 
-    color: black; 
-    text-decoration: none; 
-    border-radius: 4px; 
-  }
-  
-  .pagination a.active {
-    background-color: #C0690A;
-    color: white; 
-    border-color: #C0690A; 
-  }
-  
-  .pagination a:hover {
-    background-color: #6d3d09; 
-    color: white;
-  }
+/* Pagination */
+.pagination-container {
+  text-align: center;
+  margin: 20px 0;
+  float: right;
+}
+
+.pagination {
+  display: inline-flex;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.pagination li {
+  margin: 0 5px;
+}
+
+.pagination a {
+  display: block;
+  padding: 8px 12px;
+  color: black;
+  background-color: #ddd;
+  text-decoration: none;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+}
+
+/* Active Page */
+.pagination a.active {
+  background-color: #C0690A !important; 
+  color: white !important; 
+  border-color: #C0690A !important; 
+}
+
+/* Hover Effect */
+.pagination a:hover {
+  background-color: #6d3d09 !important; 
+  color: white !important;
+}
+
+/* Disabled Page Link */
+.pagination a.disabled {
+  color: #aaa !important;  
+  pointer-events: none !important; 
+  background-color: #f0f0f0 !important; 
+}

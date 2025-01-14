@@ -106,15 +106,15 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                   <label for="anonymousDonation" class="form-label">Donate Anonymously</label>
                 </div>
 
+                <div class="mb-3" id="donorNameField" style="display: none;">
+                  <label for="donorName" class="form-label">Donor Name</label>
+                  <input type="text" class="form-control" id="donorName" name="donor_name" placeholder="Enter donor's name"  maxlength="50">
+                </div>
+
                 <div class="mb-3">
                     <label for="donationPurpose" class="form-label">Allotment:</label>
                     <input type="text" class="form-control" id="donationPurpose" name="description" placeholder="Type to Search" autocomplete="off" />
                     <ul id="suggestionsList2" class="list-group position-absolute" style="width: 95%; max-height: 150px; overflow-y: auto;"></ul>
-                </div>
-
-                <div class="mb-3" id="donorNameField" style="display: none;">
-                  <label for="donorName" class="form-label">Donor Name</label>
-                  <input type="text" class="form-control" id="donorName" name="donor_name" placeholder="Enter your name">
                 </div>
 
                   <div class="mb-3 col-md-12">
@@ -162,24 +162,22 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                   <label for="payee" class="form-label">Payee's Name:</label>
                   <input type="text" class="form-control" id="payee" name="payee" placeholder="Enter Payee's Name" maxlength="50">
                 </div>
-
                 <div class="mb-3 position-relative">
                   <label for="expensePurpose" class="form-label">Allocated for:</label>
                   <input type="text" class="form-control" name="description" id="expensePurpose" placeholder="Type to search..." autocomplete="off" />
                   <ul id="suggestionsList1" class="list-group position-absolute" style="width: 95%;; max-height: 150px; overflow-y: auto;"></ul>
               </div>
-
                 <div class="mb-3">
                   <label for="expenseAmount" class="form-label">Amount</label>
                   <input type="number" class="form-control" id="expenseAmount" name="amount" placeholder="Enter amount" step="0.01" min="0.01">
                 </div>
                 <div class="mb-3">
-                  <label for="expenseProof" class="form-label">Proof of Expense:</label>
-                  <input type="file" class="form-control" id="expenseProof" name="proof_of_expense" accept=".jpg, .jpeg, .png, .webp">
-                </div>
-                <div class="mb-3">
                   <label for="or_number" class="form-label">OR Number:</label>
                   <input type="text" class="form-control" id="or_number" name="or_number" placeholder="Enter OR Number" maxlength="50">
+                </div>
+                <div class="mb-3">
+                  <label for="expenseProof" class="form-label">Proof of Expense:</label>
+                  <input type="file" class="form-control" id="expenseProof" name="proof_of_expense" accept=".jpg, .jpeg, .png, .webp">
                 </div>
                 <input type="hidden" name="button_id" value="submitExpense">
                 <button type="submit" id="submitExpense" class="btn yellow-btn">Submit Expense</button>

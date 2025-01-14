@@ -148,7 +148,7 @@ $tagsArray = explode(",", $tags);
                 </div>
                 <div class="col-lg-12 mb-3">
                     <label for="street-text">Street, Subdivision/Village<span class="asterisk"> *</span></label>
-                    <input type="text" class="form-control form-control-md" name="address1" id="street-text" required>
+                    <input type="text" class="form-control form-control-md" name="address1" id="street-text" required maxlength="100">
                 </div>
                 </div>
             </div>
@@ -163,7 +163,7 @@ $tagsArray = explode(",", $tags);
           </div>
         <div class="mb-3 ms-4" id="professionField" style="display: none;">
             <label>> What is your profession?<span class="asterisk"> *</span></label>
-            <input type="text" placeholder="Profession" name="profession">
+            <input type="text" placeholder="Profession" name="profession" maxlength="100">
         </div>
         </div>
 
@@ -172,7 +172,7 @@ $tagsArray = explode(",", $tags);
             <p class="text-center mb-4">We want to know if you are fit to adopt. Kindly answer the following truthfully.</p>
             <div class="mb-3">
                 <label>Why did you decide to adopt an animal?</label>
-                <input type="text" name="purpose" required>
+                <input type="text" name="purpose" required maxlength="50">
             </div>
             <div class="mb-3">
                 <label>What type of residence do you live in?</label>
@@ -188,18 +188,18 @@ $tagsArray = explode(",", $tags);
             </div>
             <div class="mb-3 ms-4" id="fencedYardField" style="display: none;">
               <label>> Please specify the height and type of your fence.</label>
-              <input type="text" id="fence" name="fence">
+              <input type="text" id="fence" name="fence" maxlength="100">
             </div>
             <div class="mb-3 ms-4" id="nofencedYardField" style="display: none;">
               <label>> How will you handle the dog's exercise and toilet duties if there is no fence?</label>
-              <input type="text" id="no_fence" name="no_fence">
+              <input type="text" id="no_fence" name="no_fence" maxlength="100">
             </div>
 
             <!-- If cat selected pet -->
              <?php if ($animal['type'] == 'Cat') { ?>
               <div class="mb-3">
                  If adopting a cat, where will be the litter box be kept?
-              <input type="text" id="litter_place" name="litter_place">
+              <input type="text" id="litter_place" name="litter_place" maxlength="100">
               </div>
               <?php } ?>
 
@@ -227,15 +227,15 @@ $tagsArray = explode(",", $tags);
             </div>
             <div class="mb-3">
                 <label>Where will this animal be kept during the day and during night? Please specify.</label>
-                <input type="text" name="stay_place" required>
+                <input type="text" name="stay_place" required maxlength="100">
             </div>
             <div class="mb-3">
                 <label>Who do you live with? Please be specific.</label>
-                <input type="text" name="household_members" required>
+                <input type="text" name="household_members" required maxlength="100">
             </div>
             <div class="mb-3">
                 <label>How many years have you lived in the address registered here?</label>
-                <input type="number" name="reg_years" required>
+                <input type="number" name="reg_years" required maxlength="2">
             </div>
             <div class="mb-3">
               Are you planning to move in the next six (6) months?
@@ -259,7 +259,7 @@ $tagsArray = explode(",", $tags);
             </div>
             <div class="mb-3 ms-4" id="familyInvolveField" style="display: none;">
               <label>> Please explain why no.</label>
-              <input type="text" id="involve_reason" name="involve_reason">
+              <input type="text" id="involve_reason" name="involve_reason" maxlength="100">
             </div>
 
             <div class="mb-3">
@@ -272,7 +272,7 @@ $tagsArray = explode(",", $tags);
             </div>
             <div class="mb-3 ms-4" id="familyObjectionField" style="display: none;">
               <label>> Please explain why yes.</label>
-              <input type="text" id="objection_reason" name="objection_reason">
+              <input type="text" id="objection_reason" name="objection_reason" maxlength="100">
             </div>
 
             <div class="mb-3">
@@ -303,24 +303,24 @@ $tagsArray = explode(",", $tags);
             </div>
             <div class="mb-3 ms-4" id="familyAllergyField" style="display: none;">
               <label>> Who?</label>
-              <input type="text" id="member_allergy" name="member_allergy">
+              <input type="text" id="member_allergy" name="member_allergy" maxlength="100">
             </div>
 
             <div class="mb-3">
                 <label>What will happen to this animal if you have to move unexpectedly?</label>
-                <input type="text" name="move_unexpectedly" required>
+                <input type="text" name="move_unexpectedly" required maxlength="100">
             </div>
             <div class="mb-3">
                 <label>What kind of behavior(s) of the dog do you feel you will be unable to accept?</label>
-                <input type="text" name="unacceptable_behavior" required>
+                <input type="text" name="unacceptable_behavior" required maxlength="100">
             </div>
             <div class="mb-3">
                 <label>How many hours in an average work day will your companion animal spend without a human?</label>
-                <input type="number" name="no_human_hours" required>
+                <input type="number" name="no_human_hours" required maxlength="2">
             </div>
             <div class="mb-3">
                 <label>What will happen to your companion animal when you go on vacation or in case of emergency?</label>
-                <input type="text" name="emergency" required>
+                <input type="text" name="emergency" required maxlength="100">
             </div>
             <div class="mb-3">
             Do you have other companion animals?
@@ -332,7 +332,7 @@ $tagsArray = explode(",", $tags);
             </div>
             <div class="mb-3 ms-4" id="companionField" style="display: none;">
               <label>> Please specify what type and the total number.</label>
-              <input type="text" id="other_animals" name="other_animals">
+              <input type="text" id="other_animals" name="other_animals" maxlength="200">
               <div class="mt-4 mb-3">
                 > Do you have a regular veterinarian?
                     <select name="veterinarian" id="veterinarian">
@@ -344,11 +344,11 @@ $tagsArray = explode(",", $tags);
             </div>
             <div class="mb-3 ms-4" id="veterinarianField" style="display: none;">
               <label>> Veterinarian Name</label>
-              <input type="text" id="vet_name" name="vet_name" >
+              <input type="text" id="vet_name" name="vet_name" maxlength="100">
               <label>> Veterinarian Address/Location</label>
-              <input type="text" id="vet_address" name="vet_address">
+              <input type="text" id="vet_address" name="vet_address" maxlength="100">
               <label>> Veterinarian Contact Number</label>
-              <input type="text" id="vet_number" name="vet_number">
+              <input type="text" id="vet_number" name="vet_number" maxlength="12">
             </div>
         </div>
 
