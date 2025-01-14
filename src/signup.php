@@ -88,7 +88,7 @@
                             <label for="birthdate" class="form-label">Birthdate *</label>
                             <input type="date" id="birthdate" name="birthdate" class="form-control" required>
                         </div>
-                        <div class="col-12 col-sm-6">
+                        <div class="col-12 col-sm-6 mb-3">
                             <label for="gender" class="form-label">Sex *</label>
                             <select id="gender" name="gender" class="form-select" required>
                                 <option value="" disabled selected>Select Gender</option>
