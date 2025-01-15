@@ -225,3 +225,45 @@ form.addEventListener('submit', function (e) {
         e.preventDefault();
     }
 });
+
+//============================ Terms & Conditions and Privacy Policy =======================//
+
+document.addEventListener("DOMContentLoaded", () => {
+    const termsModal = document.getElementById("termsModal");
+    const privacyModal = document.getElementById("privacyModal");
+    const openTermsBtn = document.getElementById("openTerms");
+    const openPrivacyBtn = document.getElementById("openPrivacy");
+    const closeTermsBtn = document.getElementById("closeTerms");
+    const closePrivacyBtn = document.getElementById("closePrivacy");
+
+    // Open Terms Modal
+    openTermsBtn.addEventListener("click", (event) => {
+        event.preventDefault();
+        termsModal.style.display = "block";
+        history.pushState({ modalOpen: "terms" }, null, "#terms");
+    });
+
+    // Open Privacy Modal
+    openPrivacyBtn.addEventListener("click", (event) => {
+        event.preventDefault();
+        privacyModal.style.display = "block";
+        history.pushState({ modalOpen: "privacy" }, null, "#privacy");
+    });
+
+    // Close Modals
+    closeTermsBtn.addEventListener("click", () => {
+        termsModal.style.display = "none";
+        history.back();
+    });
+
+    closePrivacyBtn.addEventListener("click", () => {
+        privacyModal.style.display = "none";
+        history.back();
+    });
+
+    // Handle Back Navigation
+    window.addEventListener("popstate", () => {
+        termsModal.style.display = "none";
+        privacyModal.style.display = "none";
+    });
+});

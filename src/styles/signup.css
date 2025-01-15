@@ -101,3 +101,28 @@
     background-color: #FF8A00;
 }
 
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100% !important; 
+    height: 100% !important;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 10% auto;
+    padding: 20px;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 800px;
+}
+
+.close {
+    float: right;
+    font-size: 28px;
+    cursor: pointer;
+}
