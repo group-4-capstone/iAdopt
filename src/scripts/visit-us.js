@@ -63,6 +63,18 @@ function validatePaxField(inputElement) {
     return true;
 }
 
+function preventEKeyPress(event) {
+    // Prevent 'e', 'E', '+', and '-' keys from being entered
+    if (event.key === 'e' || event.key === 'E' || event.key === '+' || event.key === '-') {
+        event.preventDefault();
+    }
+}
+
+// Attach this event listener to the input field
+document.querySelector('#pax').addEventListener('keypress', preventEKeyPress);
+
+
+
 function showErrorMessage(inputElement, message) {
     clearSpecificErrorMessage(inputElement); 
     const errorMessage = document.createElement('div');
@@ -158,17 +170,33 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Set the min attribute to tomorrow's date
     visitDate.min = tomorrowStr;
-  
 
     function updateVisitDateTime() {
-      if (visitDate.value && visitTime.value) {
-        let visitDateTime = `${visitDate.value} ${visitTime.value}`;
-        hiddenVisitDateTime.value = visitDateTime;
-        console.log('Concatenated visitDateTime:', visitDateTime); // For debugging
-      }
+        if (visitDate.value && visitTime.value) {
+            let visitDateTime = `${visitDate.value} ${visitTime.value}`;
+            hiddenVisitDateTime.value = visitDateTime;
+            console.log('Concatenated visitDateTime:', visitDateTime); // For debugging
+        }
+    }
+
+    function validateVisitDate() {
+        clearSpecificErrorMessage(visitDate); // Clear existing errors
+        const selectedDate = new Date(visitDate.value);
+        const minDate = new Date(tomorrowStr);
+
+        // If the selected date is earlier than the minimum, show an error
+        if (selectedDate < minDate) {
+            showErrorMessage(visitDate, `Please select a date on or after ${tomorrowStr}.`);
+            
+        }
     }
 
     // Update the hidden input whenever the date or time changes
-    visitDate.addEventListener('change', updateVisitDateTime);
+    visitDate.addEventListener('change', () => {
+        validateVisitDate();
+        updateVisitDateTime();
+    });
+
+    visitDate.addEventListener('input', validateVisitDate);
     visitTime.addEventListener('change', updateVisitDateTime);
-  });
+});
