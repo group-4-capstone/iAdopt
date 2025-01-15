@@ -146,38 +146,6 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
             </div>
         </div>
 
-
-        <!-- Confirmation Modal -->
-        <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true" data-bs-backdrop="static">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="confirmationModalLabel">Confirm Action</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <p id="confirmationText">Are you sure you want to proceed with this action?</p>
-                        <div id="denyReasonContainer" class="row align-items-center" style="display: none;">
-                            <label for="denyReason" class="col-3 form-label">Reason:<span class="asterisk"> *</span></label>
-                            <div class="col-9">
-                                <select id="denyReason" class="form-select" name="deny_reason">
-                                    <option selected disabled>--- Select a reason ---</option>
-                                    <option value="Shelter is in full capacity">Shelter is in full capacity</option>
-                                    <option value="Unable to rescue due to the animal's condition">Unable to rescue due to the animal's condition</option>
-                                    <option value="Invalid report">Invalid report</option>
-                                    <option value="Duplicate report">Duplicate report</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-primary" id="confirmActionButton">Confirm</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <!-- Success Modal -->
         <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successContentModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
             <div class="modal-dialog modal-dialog-centered">
@@ -194,16 +162,16 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
         </div>
 
         <!-- Toast Notification -->
-            <div class="toast-container position-fixed top-0 end-0 p-3">
-                <div id="copyToast" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="polite" aria-atomic="true">
-                    <div class="d-flex">
-                        <div class="toast-body">
-                            Verification message copied to clipboard!
-                        </div>
-                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        <div class="toast-container position-fixed top-0 end-0 p-3">
+            <div id="copyToast" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="polite" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        Message copied to clipboard!
                     </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
                 </div>
             </div>
+        </div>
 
         <?php
         $report_query = "SELECT * FROM rescue INNER JOIN animals ON rescue.animal_id = animals.animal_id INNER JOIN users ON rescue.user_id = users.user_id
@@ -241,7 +209,65 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                                             Best regards,  
                                             SECASPI
                                             EOD;
+
+                $forwardMessage = <<<EOD
+                                            Greetings,
+
+                                            We would like to inform you that we are forwarding the following case to your organization for further action. Below are the details of the report:
+
+                                            - Report Date: $reportDate
+                                            - Type: $animalType
+                                            - Location: $reportLocation
+                                            - Description: $reportDescription
+
+                                            Please review the information and let us know if any further action or clarification is required. We appreciate your cooperation in assisting with this case.
+
+                                            Thank you for your attention to this matter.
+
+                                            Best regards,  
+                                            SECASPI
+                                            EOD;
+
         ?>
+
+                <!-- Confirmation Modal -->
+                <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true" data-bs-backdrop="static">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header border-bottom-0">
+                                <h5 class="modal-title" id="confirmationModalLabel">Confirm Action</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p id="confirmationText" class="mb-3">Are you sure you want to proceed with this action?</p>
+
+                                <!-- Deny Reason Section -->
+                                <div id="denyReasonContainer" class="row align-items-center mb-3" style="display: none;">
+                                    <label for="denyReason" class="col-3 form-label">Reason:<span class="asterisk text-danger"> *</span></label>
+                                    <div class="col-9">
+                                        <select id="denyReason" class="form-select" name="deny_reason">
+                                            <option selected disabled>--- Select a reason ---</option>
+                                            <option value="Shelter is in full capacity">Shelter is in full capacity</option>
+                                            <option value="Unable to rescue due to the animal's condition">Unable to rescue due to the animal's condition</option>
+                                            <option value="Invalid report">Invalid report</option>
+                                            <option value="Duplicate report">Duplicate report</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <!-- Additional Fields Section -->
+                                <div id="additionalFields" class="mt-3 pt-3" style="display: none;">
+                                    <p class="d-inline me-2"><strong>> Forward Report Case</strong></p>
+                                    <a href="#" class="btn btn-outline-primary btn-sm d-inline ms-2" id="copyLinkforward_<?php echo $row['rescue_id'] ?>"> Copy Report Details</a>
+                                    <textarea id="forwardMessage_<?php echo $row['rescue_id'] ?>" class="d-none"><?php echo $forwardMessage; ?></textarea>
+                                </div>
+                            </div>
+                            <div class="modal-footer border-top-0">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-danger text-white" id="confirmActionButton">Confirm</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <!-- View rescue details modal -->
                 <div class="modal fade" id="reportModal_<?php echo $row['rescue_id']; ?>" data-bs-backdrop="static" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
@@ -265,7 +291,7 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                                         <p><strong>Location:</strong> <?php echo $reportLocation ?> </p>
                                         <p><strong>Report Description:</strong> <?php echo $reportDescription ?></p>
                                         <br>
-                                        <p><strong>Reporter:</strong> <?php echo $reporterName?></p>
+                                        <p><strong>Reporter:</strong> <?php echo $reporterName ?></p>
                                         <div class="ms-2">
                                             <strong>Contact Details:</strong>
                                             <ul>

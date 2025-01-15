@@ -82,6 +82,16 @@ document.querySelectorAll('.record-sort-option').forEach(item => {
     });
 });
 
+    // Handle reason selection
+    document.getElementById('denyReason').addEventListener('change', function () {
+        const additionalFields = document.getElementById('additionalFields');
+        if (this.value === "Shelter is in full capacity" || this.value === "Unable to rescue due to the animal's condition" ) {
+            additionalFields.style.display = 'block';
+        } else {
+            additionalFields.style.display = 'none';
+        }
+    });
+
 // ----------------------------- DISPLAY AND PAGINATION -------------------------- //
 // ----------------------------- REPORTS TABLE ----------------------------------- //
 load_data_report();
@@ -155,6 +165,28 @@ document.querySelectorAll('[id^="copyLink_"]').forEach(function(copyLink) {
     });
 });
 
+document.querySelectorAll('[id^="copyLinkforward_"]').forEach(function(copyLink) {
+    copyLink.addEventListener('click', function (e) {
+        e.preventDefault();
+        
+        // Get the rescue_id from the link's id
+        const rescueId = this.id.split('_')[1];
+        
+        // Find the corresponding textarea by using the same rescue_id
+        const message = document.getElementById('forwardMessage_' + rescueId);
+        
+        // Copy the message to clipboard
+        message.classList.remove('d-none');  // Make it visible temporarily
+        message.select();
+        document.execCommand('copy');
+        message.classList.add('d-none');  // Hide it again
+        
+        // Show Bootstrap toast
+        const toastElement = document.getElementById('copyToast');
+        const toast = new bootstrap.Toast(toastElement);
+        toast.show();
+    });
+});
 // ----------------------------- RESCUE TABLE ----------------------------------- //
 load_data();
 

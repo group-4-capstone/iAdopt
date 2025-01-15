@@ -1,6 +1,6 @@
 <?php
 include_once 'session-handler.php';
-include_once 'db-connect.php'; 
+include_once 'db-connect.php';
 
 // Make sure to validate and sanitize input
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt->bind_param("ssi", $application_status, $sched_interview, $application_id);
 
         if ($stmt->execute()) {
-            
+
             $formattedDate = date("F j, Y g:i A", strtotime($sched_interview));
             // Insert notification for approved application
             $message = "Congratulations! Your application has been approved. Interview scheduled on: $formattedDate.";
@@ -47,6 +47,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     } elseif ($application_status == 'Rejected') {
         $status_message = $_POST['status_message'];
 
+        if ($status_message === "Other" && !empty($_POST['custom_status_message'])) {
+            $status_message = $_POST['custom_status_message'];
+        }
+
+        // Now $status_message contains either the selected predefined reason or the custom reason
+
+
         // Update application status with rejection message
         $sql = "UPDATE applications SET application_status = ?, status_message = ? WHERE application_id = ?";
         $stmt = $db->prepare($sql);
@@ -61,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             $notifSql = "INSERT INTO notifications (user_id, application_id, message, notification_type, is_read, created_at, display) VALUES (?, ?, ?, ?, ?, NOW(), ?)";
             $notifStmt = $db->prepare($notifSql);
-            $notifStmt->bind_param("iissii", $user_id, $application_id, $message, $notification_type, $is_read, $display );
+            $notifStmt->bind_param("iissii", $user_id, $application_id, $message, $notification_type, $is_read, $display);
             $notifStmt->execute();
 
             echo json_encode(['success' => true]);
@@ -72,4 +79,3 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $db->close();
 }
-?>

@@ -540,27 +540,61 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                 </div>
 
 
-                <!-- Modal for Reject Reason -->
-                <div class="modal fade" id="rejectReasonModal" tabindex="-1" aria-labelledby="rejectReasonModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="rejectReasonModalLabel">Enter Reject Reason</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <form id="rejectReasonForm" method="post" action="includes/update-adoption-status.php">
-                                    <input type="hidden" name="application_id" id="reject_application_id" value="<?php echo $application['application_id']; ?>" readonly>
-                                    <input type="hidden" name="application_status" value="Rejected" readonly>
-                                    <textarea id="rejectReason" class="form-control" rows="4" required placeholder="Enter reason for rejection" name="status_message"></textarea>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-danger" id="submitRejectBtn">Submit</button>
-                                </form>
-                            </div>
-                        </div>
+             <!-- Modal for Reject Reason -->
+<div class="modal fade" id="rejectReasonModal" tabindex="-1" aria-labelledby="rejectReasonModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="rejectReasonModalLabel">Enter Reject Reason</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="rejectReasonForm" method="post" action="includes/update-adoption-status.php">
+                    <input type="hidden" name="application_id" id="reject_application_id" value="<?php echo $application['application_id']; ?>" readonly>
+                    <input type="hidden" name="application_status" value="Rejected" readonly>
+
+                    <!-- Predefined Reasons -->
+                    <label for="rejectReasonDropdown" class="form-label">Select a reason for rejection:</label>
+                    <select id="rejectReasonDropdown" class="form-select" name="status_message" required>
+                        <option value="" disabled selected>Select a reason</option>
+                        <option value="Inadequate living space">Inadequate living space</option>
+                        <option value="Financial constraints">Financial constraints</option>
+                        <option value="Lack of experience with pets">Lack of experience with pets</option>
+                        <option value="Concerns about commitment">Concerns about commitment</option>
+                        <option value="Other">Other</option>
+                    </select>
+
+                    <!-- Custom Reason -->
+                    <div id="customReasonContainer" class="mt-3 d-none">
+                        <label for="customRejectReason" class="form-label">Enter custom reason:</label>
+                        <textarea id="customRejectReason" class="form-control" rows="4" name="custom_status_message" placeholder="Enter custom reason"></textarea>
                     </div>
-                </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" id="submitRejectBtn">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Show/hide custom reason input based on dropdown selection
+    const rejectReasonDropdown = document.getElementById('rejectReasonDropdown');
+    const customReasonContainer = document.getElementById('customReasonContainer');
+    const customRejectReason = document.getElementById('customRejectReason');
+
+    rejectReasonDropdown.addEventListener('change', () => {
+        if (rejectReasonDropdown.value === 'Other') {
+            customReasonContainer.classList.remove('d-none');
+            customRejectReason.setAttribute('required', 'required');
+        } else {
+            customReasonContainer.classList.add('d-none');
+            customRejectReason.removeAttribute('required');
+        }
+    });
+</script>
+
 
 
                 <!-- Success Status Update Modal -->
