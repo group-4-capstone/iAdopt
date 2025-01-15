@@ -474,7 +474,9 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
 
                 <?php if ($application['application_status'] == 'Under Review') { ?>
                     <div class="d-flex justify-content-end mt-4">
+                    <?php if ($application['animal_status'] !== 'Adopted') { ?>
                         <button type="button" class="btn btn-success me-2" id="approveBtn" data-bs-toggle="modal" data-bs-target="#scheduleInterviewModal">Approve</button>
+                        <?php } ?>
                         <button type="button" class="btn btn-danger" id="rejectBtn" data-bs-toggle="modal" data-bs-target="#rejectReasonModal">Reject</button>
                     </div>
                 <?php } else { ?>
