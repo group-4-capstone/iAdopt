@@ -59,7 +59,7 @@
             </div>
 
             <div class="col-12 col-lg-6">
-                <form method="POST" action="includes/signup-process.php" novalidate>
+                <form id="signup-form" novalidate>
                     <div class="row mt-4">
                         <!-- Last Name Field -->
                         <div class="col-12 col-sm-5 mb-3">
@@ -100,7 +100,7 @@
 
                     <div class="mb-3">
                         <label for="facebook-profile" class="form-label">Facebook Profile Link *</label>
-                        <input type="url" id="facebook-profile" name="facebook-profile" class="form-control" placeholder="https://facebook.com/your-profile" maxlength="100" required pattern="https://facebook\.com/.+">
+                        <input type="url" id="facebook-profile" name="facebook-profile" class="form-control" placeholder="https://facebook.com/your-profile" maxlength="100" required>
                         <div class="invalid-feedback">Please enter a valid Facebook profile link (e.g., https://facebook.com/your-profile).</div>
                     </div>
 
@@ -130,15 +130,46 @@
                     </div>
 
                     <div class="d-flex justify-content-center input-container">
-                        <button type="submit">Sign Up</button>
+                        <button type="button" id="sign-up-btn">Sign Up</button>
                     </div>
                 </form>
             </div>
 
-
+            <!-- Verification Modal -->
+            <div class="modal fade" id="verificationModal" tabindex="-1" aria-labelledby="verificationModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="verificationModalLabel">Enter Verification Code</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>A 6-digit verification code has been sent to your email. Please enter it below to proceed.</p>
+                            <div class="mb-3">
+                                <label for="verification-code" class="form-label">Verification Code</label>
+                                <input type="text" id="verification-code" class="form-control" maxlength="6" pattern="^[0-9]{6}$" required>
+                                <div class="invalid-feedback">Please enter a valid 6-digit code.</div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="button" id="verify-btn" class="btn btn-primary">Verify</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
-
+        <!-- Toast for Success -->
+        <div class="toast" id="success-toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="5000">
+            <div class="toast-header">
+                <strong class="me-auto">Success</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                You have successfully signed up! You will be redirected to the login page in 5 seconds.
+            </div>
+        </div>
     </div>
 
 

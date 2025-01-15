@@ -1,159 +1,172 @@
-//============================Last-Name Special Characters===========================// 
-document.getElementById('last-name').addEventListener('input', function (e) {
-    const regex = /^[a-zA-Z\s'-]*$/; // Allow only letters, spaces, hyphens, and apostrophes
-    const inputField = e.target;
+// When the "Sign Up" button is clicked
+$('#sign-up-btn').click(function(e) {
+    e.preventDefault();  // Prevent form submission
 
-    // Check if input contains invalid characters or is only spaces
-    if (!regex.test(inputField.value) || inputField.value.trim() === '') {
-        // Remove invalid characters by keeping only valid ones
-        inputField.value = inputField.value.replace(/[^a-zA-Z\s'-]/g, '').trim();
+    var form = $('#signup-form')[0];
+    var email = $('#email').val();
 
-        // Add the invalid class and show the error
-        inputField.classList.add('is-invalid');
-        const error = document.querySelector('.invalid-feedback');
-        error.classList.remove('d-none');
-
-        // Hide error after 2 seconds
-        setTimeout(() => {
-            inputField.classList.remove('is-invalid');
-            error.classList.add('d-none');
-        }, 2000); // Hide error after 2 seconds
+    // Form validation
+    if (form.checkValidity()) {
+        if (email) {
+            $.ajax({
+                type: 'POST',
+                url: 'includes/send-verification-code.php',
+                data: { email: email },
+                success: function(response) {
+                    $('#verificationModal').modal('show');
+                },
+                error: function() {
+                    alert('There was an issue sending the verification code.');
+                }
+            });
+        } else {
+            alert('Please enter a valid email.');
+        }
     } else {
-        // If input is valid, remove the invalid class and hide the error
-        inputField.classList.remove('is-invalid');
-        const error = document.querySelector('.invalid-feedback');
-        error.classList.add('d-none');
-    }
-});
-//============================Last-Name Special Characters===========================// 
-document.getElementById('first-name').addEventListener('input', function (e) {
-    const regex = /^[a-zA-Z\s'-]*$/; // Allow only letters, spaces, hyphens, and apostrophes
-    const inputField = e.target;
-
-    // Check if input contains invalid characters or is only spaces
-    if (!regex.test(inputField.value) || inputField.value.trim() === '') {
-        // Remove invalid characters by keeping only valid ones
-        inputField.value = inputField.value.replace(/[^a-zA-Z\s'-]/g, '').trim();
-
-        // Add the invalid class and show the error
-        inputField.classList.add('is-invalid');
-        const error = document.querySelector('.invalid-feedback');
-        error.classList.remove('d-none');
-
-        // Hide error after 2 seconds
-        setTimeout(() => {
-            inputField.classList.remove('is-invalid');
-            error.classList.add('d-none');
-        }, 2000); // Hide error after 2 seconds
-    } else {
-        // If input is valid, remove the invalid class and hide the error
-        inputField.classList.remove('is-invalid');
-        const error = document.querySelector('.invalid-feedback');
-        error.classList.add('d-none');
-    }
-});
-//============================Middle-Name Special Characters===========================// 
-document.getElementById('mi').addEventListener('input', function (e) {
-    const regex = /^[a-zA-Z\s'-]*$/; // Allow only letters, spaces, hyphens, and apostrophes
-    const inputField = e.target;
-
-    // Check if input contains invalid characters or is only spaces
-    if (!regex.test(inputField.value) || inputField.value.trim() === '') {
-        // Remove invalid characters by keeping only valid ones
-        inputField.value = inputField.value.replace(/[^a-zA-Z\s'-]/g, '').trim();
-
-        // Add the invalid class and show the error
-        inputField.classList.add('is-invalid');
-        const error = document.querySelector('.invalid-feedback');
-        error.classList.remove('d-none');
-
-        // Hide error after 2 seconds
-        setTimeout(() => {
-            inputField.classList.remove('is-invalid');
-            error.classList.add('d-none');
-        }, 2000); // Hide error after 2 seconds
-    } else {
-        // If input is valid, remove the invalid class and hide the error
-        inputField.classList.remove('is-invalid');
-        const error = document.querySelector('.invalid-feedback');
-        error.classList.add('d-none');
+        form.reportValidity();  // Show HTML5 validation errors
     }
 });
 
+// When the "Verify" button is clicked (email verification code validation)
+$('#verify-btn').click(function(e) {
+    e.preventDefault();  // Prevent form submission
+    var verificationCode = $('#verification-code').val();
 
-    
-    //============================ Birthdate only 18 y/o ===========================// 
-    
-        const birthdateInput = document.getElementById('birthdate');
-        
-        // Get today's date and subtract 18 years
-        const today = new Date();
-        const minDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
-        
-        // Set the max attribute to allow only birthdates for users who are at least 18 years old
-        birthdateInput.max = minDate.toISOString().split('T')[0];
+    if (verificationCode.match(/^\d{6}$/)) {
+        $.ajax({
+            type: 'POST',
+            url: 'includes/verify-code.php',
+            data: { verification_code: verificationCode },
+            success: function(response) {
+                if (response === 'valid') {
+                    // If the verification code is valid, submit the form via AJAX
+                    var form = $('#signup-form')[0];  // Get the form element
+                    var formData = new FormData(form);  // Gather all form data
+                    $.ajax({
+                        type: 'POST',
+                        url: 'includes/signup-process.php',  // Target PHP script to process the signup
+                        data: formData,
+                        processData: false,  // Prevent jQuery from processing the data
+                        contentType: false,  // Prevent jQuery from setting content-type header
+                        success: function(response) {
+                            // Trigger the success toast
+                            var toast = new bootstrap.Toast($('#success-toast')[0]);
+                            toast.show();  // Show the toast
 
+                            // Optionally, you can hide the modal after successful signup
+                            $('#verificationModal').modal('hide');
 
+                            // After 5 seconds, redirect to the login page
+                            setTimeout(function() {
+                                window.location.href = "login.php";  // Redirect to the login page
+                            }, 5000);  // 5000ms = 5 seconds delay before redirection
+                        },
+                        error: function() {
+                            alert('There was an issue during the signup process.');
+                        }
+                    });
+                } else {
+                    $('#verification-code').addClass('is-invalid');
+                    alert('Invalid verification code!');
+                }
+            }
+        });
+    } else {
+        $('#verification-code').addClass('is-invalid');
+    }
+});
 
-   //============================ Contact Number Validation =======================//
+// Clear the invalid feedback for verification code input
+$('#verification-code').on('input', function() {
+    $(this).removeClass('is-invalid');
+});
+
+// Enable/Disable the "Verify" button based on verification code length
+$('#verification-code').on('input', function() {
+    var verificationCode = $(this).val();
+    $('#verify-btn').prop('disabled', verificationCode.length !== 6);
+});
+
+//============================ Last Name, First Name, Middle Name Special Characters ==========================//
+['last-name', 'first-name', 'mi'].forEach(function(id) {
+    document.getElementById(id).addEventListener('input', function (e) {
+        const regex = /^[a-zA-Z\s'-]*$/;
+        const inputField = e.target;
+
+        if (!regex.test(inputField.value) || inputField.value.trim() === '') {
+            inputField.value = inputField.value.replace(/[^a-zA-Z\s'-]/g, '').trim();
+            inputField.classList.add('is-invalid');
+            const error = document.querySelector('.invalid-feedback');
+            error.classList.remove('d-none');
+            setTimeout(() => {
+                inputField.classList.remove('is-invalid');
+                error.classList.add('d-none');
+            }, 2000);
+        } else {
+            inputField.classList.remove('is-invalid');
+            const error = document.querySelector('.invalid-feedback');
+            error.classList.add('d-none');
+        }
+    });
+});
+
+//============================ Birthdate (18 years old) Validation ==========================//
+const birthdateInput = document.getElementById('birthdate');
+const today = new Date();
+const minDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
+birthdateInput.max = minDate.toISOString().split('T')[0];
+
+//============================ Contact Number Validation =======================//
 document.getElementById('contact-number').addEventListener('input', function (e) {
     const contactNumberInput = e.target;
-    const contactError = contactNumberInput.nextElementSibling; // Get the next sibling which is the invalid-feedback div
-    const contactNumber = contactNumberInput.value;
+    const contactNumber = contactNumberInput.value.replace(/\D/g, '');  // Remove non-digit characters
+    const contactError = contactNumberInput.nextElementSibling; // Error message div
 
-    // Remove any non-numeric characters (allow only digits)
-    contactNumberInput.value = contactNumber.replace(/\D/g, '');  // \D matches any non-digit character
+    contactNumberInput.value = contactNumber;
 
     // Contact number regex: only allow exactly 11 digits
     const contactRegex = /^[0-9]{11}$/;
 
-    // If contact number is invalid, display error and mark as invalid
-    if (!contactRegex.test(contactNumberInput.value)) {
+    if (!contactRegex.test(contactNumber)) {
         contactNumberInput.classList.add('is-invalid');
-        contactError.style.display = 'block';  // Show the invalid-feedback message
+        contactError.style.display = 'block';  // Show error message
     } else {
-        // If valid, hide error and mark as valid
         contactNumberInput.classList.remove('is-invalid');
-        contactError.style.display = 'none';  // Hide the invalid-feedback message
+        contactError.style.display = 'none';  // Hide error message
     }
 });
 
+//============================ Space Only / Validation =========================// 
+document.querySelector('form').addEventListener('submit', function (e) {
+    let valid = true;
+    const inputs = document.querySelectorAll('input[required]');
+    const facebookInput = document.getElementById('facebook-profile');
+    const facebookPattern = /^https:\/\/facebook\.com\/.+$/;
 
-    //============================== Space Only / Validation =========================// 
+    inputs.forEach(input => {
+        const trimmedValue = input.value.trim();
 
-    document.querySelector('form').addEventListener('submit', function (e) {
-        let valid = true;
-        const inputs = document.querySelectorAll('input[required]');
-        const facebookInput = document.getElementById('facebook-profile');
-        const facebookPattern = /^https:\/\/facebook\.com\/.+$/;
-
-        inputs.forEach(input => {
-            const trimmedValue = input.value.trim();
-            
-            // Check if input is empty or consists of spaces
-            if (trimmedValue === "" || /^\s+$/.test(trimmedValue)) {
-                valid = false;
-                input.classList.add('is-invalid'); // Add red border for invalid inputs
-            } else {
-                input.classList.remove('is-invalid');
-            }
-
-            input.value = trimmedValue; // Trim spaces in the input field
-        });
-
-        // Additional validation for Facebook link pattern
-        if (!facebookPattern.test(facebookInput.value)) {
+        if (trimmedValue === "" || /^\s+$/.test(trimmedValue)) {
             valid = false;
-            facebookInput.classList.add('is-invalid');
+            input.classList.add('is-invalid');
         } else {
-            facebookInput.classList.remove('is-invalid');
+            input.classList.remove('is-invalid');
         }
 
-        if (!valid) {
-            e.preventDefault(); // Prevent form submission if any input is invalid
-        }
+        input.value = trimmedValue;  // Trim spaces in the input field
     });
 
+    if (!facebookPattern.test(facebookInput.value)) {
+        valid = false;
+        facebookInput.classList.add('is-invalid');
+    } else {
+        facebookInput.classList.remove('is-invalid');
+    }
+
+    if (!valid) {
+        e.preventDefault();  // Prevent form submission if validation fails
+    }
+});
 
 //============================ Password Validation =======================//
 const passwordInput = document.getElementById('password');
@@ -168,22 +181,22 @@ passwordInput.addEventListener('input', function () {
     const passwordError = passwordInput.nextElementSibling; // Invalid-feedback div
     if (!strongPasswordRegex.test(passwordInput.value)) {
         passwordInput.classList.add('is-invalid');
-        passwordError.style.display = 'block'; // Show the invalid-feedback message
+        passwordError.style.display = 'block';
     } else {
         passwordInput.classList.remove('is-invalid');
-        passwordError.style.display = 'none'; // Hide the invalid-feedback message
+        passwordError.style.display = 'none';
     }
 });
 
 // Real-time validation for password confirmation
 confirmPasswordInput.addEventListener('input', function () {
-    const confirmPasswordError = confirmPasswordInput.nextElementSibling; // Invalid-feedback div
+    const confirmPasswordError = confirmPasswordInput.nextElementSibling;
     if (passwordInput.value !== confirmPasswordInput.value) {
         confirmPasswordInput.classList.add('is-invalid');
-        confirmPasswordError.style.display = 'block'; // Show the invalid-feedback message
+        confirmPasswordError.style.display = 'block';
     } else {
         confirmPasswordInput.classList.remove('is-invalid');
-        confirmPasswordError.style.display = 'none'; // Hide the invalid-feedback message
+        confirmPasswordError.style.display = 'none';
     }
 });
 

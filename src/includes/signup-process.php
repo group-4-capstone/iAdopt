@@ -72,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             if ($emailResult === true) {
                 // Email sent successfully
-                header("Location: ../signup.php?success=true&email_sent=true");
+                header("Location: ../login.php?success=true&email_sent=true");
                 exit();
             } else {
                 // Email failed to send, but registration was successful
