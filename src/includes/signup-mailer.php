@@ -26,7 +26,7 @@ function sendWelcomeEmail($recipientEmail, $recipientName) {
         $mail->Host       = 'smtp.gmail.com'; // Replace with your SMTP server
         $mail->SMTPAuth   = true;
         $mail->Username   = 'secaspiiadopt@gmail.com'; // Your SMTP username
-        $mail->Password   = 'hznpjsvzbuzssdun'; // Your SMTP password or app password
+        $mail->Password   = 'zshenjmqasmtgnbd'; // Your SMTP password or app password
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; // Encryption
         $mail->Port       = 587; // TCP port to connect to
 
@@ -41,7 +41,7 @@ function sendWelcomeEmail($recipientEmail, $recipientName) {
             <h1>Welcome to iADOPT, {$recipientName}!</h1>
             <p>Thank you for registering an account with us. We're excited to help you adopt a PAW-some friend!</p>
             <p>Log in the provided link below:</p>
-            <a href='http://localhost/iAdopt/src/login.php'>Login</a>
+            <a href='secaspi.org/login.php'>Login</a>
             <br>
             <p>Best Regards,<br>The iADOPT Team</p>
         ";
