@@ -32,6 +32,7 @@ if(isset($_POST["query"])) {
         SELECT user_id, first_name, last_name, email, role, status 
         FROM users 
         WHERE (first_name LIKE :name OR last_name LIKE :name OR email LIKE :email) 
+        AND role IN ('admin', 'head_admin')
         ORDER BY user_id DESC
         ";
 
@@ -62,6 +63,7 @@ if(isset($_POST["query"])) {
         $query = "
         SELECT user_id, first_name, last_name, email, role, acc_creation, status 
         FROM users 
+        WHERE role IN ('admin', 'head_admin')
         ORDER BY user_id DESC
         ";
 
