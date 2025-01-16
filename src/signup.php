@@ -180,8 +180,8 @@
     </div>
 
     <!-- Terms and Conditions Modal -->
-    <div id="termsModal" class="modal">
-        <div class="modal-content">
+    <div id="termsModal" class="modal" style="overflow: hidden !important;">
+        <div class="modal-content custom-scroll" style="max-height: 95vh; overflow-y: auto; overflow-x: hidden; margin-top: 20px;">
         <span class="close position-absolute end-0 top-0 me-3 mt-2"  id="closeTerms" data-bs-dismiss="modal" style="font-size: 1.5rem; cursor: pointer;">&times;</span>
             <h2>Terms and Conditions</h2>
             <br>
@@ -228,8 +228,8 @@
     </div>
 
     <!-- Privacy Policy Modal -->
-    <div id="privacyModal" class="modal">
-        <div class="modal-content">
+    <div id="privacyModal" class="modal" style="overflow: hidden !important;">
+        <div class="modal-content custom-scroll" style="max-height: 95vh; overflow-y: auto; overflow-x: hidden; margin-top: 20px;">
         <span class="close position-absolute end-0 top-0 me-3 mt-2" id="closePrivacy" data-bs-dismiss="modal" style="font-size: 1.5rem; cursor: pointer;">&times;</span>
             <h2>Privacy Policy</h2>
             <br>
