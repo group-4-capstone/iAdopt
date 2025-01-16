@@ -27,7 +27,7 @@
 }
 
 #rescueForm {
-  max-width: 100%; 
+  max-width: 85%; 
   background-color: #ffffff;
   margin: 0 auto;
   padding: 25px; /* Smaller padding for better fit */
@@ -185,6 +185,7 @@
 
   #rescueForm {
     padding: 20px; /* Smaller form padding */
+    max-width: 95%; 
   }
 
   #rescueForm input,
