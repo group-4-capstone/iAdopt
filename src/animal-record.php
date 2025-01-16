@@ -304,7 +304,6 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                                                         Update Status:
                                                     </label>
                                                 </div>
-                                                <input type="hidden" name="current_animal_status" value="<?= htmlspecialchars($status) ?>">
                                                 <div class="col-md-9">
                                                     <select id="status" class="form-select" name="animal_status" disabled>
                                                         <option selected disabled>----- Kindly select a new status -----</option>
@@ -318,6 +317,7 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                                             </div>
                                         </div>
                                     <?php endif; ?>
+                                    <input type="hidden" name="current_animal_status" value="<?php echo $status ?>">
 
                                     <input type="hidden" name="animal_id" value="<?php echo $animal_id ?>" readonly>
 

@@ -1,4 +1,3 @@
-
 let initialFormValues = {};
 
 // Function to get all current values of the form, including button states
@@ -22,9 +21,8 @@ function getCurrentFormValues() {
     return values;
 }
 
-
 // Save initial form values when "Edit" button is clicked
-document.getElementById('editBtn').addEventListener('click', function() {
+document.getElementById('editBtn').addEventListener('click', function () {
     // Enable form inputs and buttons
     let inputs = document.querySelectorAll('#animalInfoForm input, #animalInfoForm textarea, #animalInfoForm select');
     inputs.forEach(input => {
@@ -43,20 +41,22 @@ document.getElementById('editBtn').addEventListener('click', function() {
     // Show "Editing Mode" toast
     let toast = new bootstrap.Toast(document.getElementById('editToast'));
     toast.show();
+    document.getElementById('editBtn').style.display = 'none';
+    document.getElementById('backBtn').style.display = 'none';
+    document.getElementById('qrBtn').style.display = 'none';
+    // Show "Apply Changes" and "Cancel" buttons
+    document.getElementById('applyBtn').style.display = 'block';
+    document.getElementById('cancelBtn').style.display = 'block';
+    document.getElementById('applyBtn').setAttribute('disabled', true);
+
 
     // Show file upload input and status
     document.getElementById('fileUploadContainer').style.display = 'block';
     document.getElementById('status_input').style.display = 'block';
 
-    // Hide "Edit Information" and "Back to Records" buttons
-    document.getElementById('editBtn').style.display = 'none';
-    document.getElementById('backBtn').style.display = 'none';
-    document.getElementById('qrBtn').style.display = 'none';
 
-    // Show "Apply Changes" and "Cancel" buttons
-    document.getElementById('applyBtn').style.display = 'inline-block';
-    document.getElementById('cancelBtn').style.display = 'inline-block';
-    document.getElementById('applyBtn').setAttribute('disabled', true); // Initially disable the apply button
+
+
 });
 
 // Function to check if any form value has changed
@@ -70,11 +70,9 @@ function hasFormChanged() {
     return false;
 }
 
-
-
 // Add event listeners to all form inputs to detect changes
 document.querySelectorAll('#animalInfoForm input, #animalInfoForm textarea, #animalInfoForm select').forEach(input => {
-    input.addEventListener('input', function() {
+    input.addEventListener('input', function () {
         if (hasFormChanged()) {
             document.getElementById('applyBtn').removeAttribute('disabled');
         } else {
@@ -84,17 +82,17 @@ document.querySelectorAll('#animalInfoForm input, #animalInfoForm textarea, #ani
 });
 
 // Submit the form when "Apply Changes" button is clicked
-document.getElementById('applyBtn').addEventListener('click', function() {
+document.getElementById('applyBtn').addEventListener('click', function () {
     var animalInfoForm = document.getElementById('animalInfoForm');
     var formData = new FormData(animalInfoForm); // Use FormData for file uploads
 
     $.ajax({
         type: 'POST',
-        url: 'includes/edit-record.php', 
+        url: 'includes/edit-record.php',
         data: formData,
-        processData: false, 
-        contentType: false, 
-        success: function(response) {
+        processData: false,
+        contentType: false,
+        success: function (response) {
             console.log("Form submitted successfully:", response);
 
             let inputs = document.querySelectorAll('#animalInfoForm input, #animalInfoForm textarea, #animalInfoForm select');
@@ -108,24 +106,22 @@ document.getElementById('applyBtn').addEventListener('click', function() {
                 button.setAttribute('disabled', true);
             });
 
-              
             $('#successEditModal').modal('show');
 
-             // Hide "Apply Changes" and "Cancel" buttons
-             document.getElementById('applyBtn').style.display = 'none';
-             document.getElementById('cancelBtn').style.display = 'none';
-             document.getElementById('applyBtn').setAttribute('disabled', true);
- 
-             document.getElementById('fileUploadContainer').style.display = 'none';
-             document.getElementById('status_input').style.display = 'none';
+            // Hide "Apply Changes" and "Cancel" buttons
+            document.getElementById('applyBtn').style.display = 'none';
+            document.getElementById('cancelBtn').style.display = 'none';
+            document.getElementById('applyBtn').setAttribute('disabled', true);
+
+            document.getElementById('fileUploadContainer').style.display = 'none';
+            document.getElementById('status_input').style.display = 'none';
 
             // Show "Edit" and "Back" buttons again
             document.getElementById('editBtn').style.display = 'inline-block';
             document.getElementById('backBtn').style.display = 'inline-block';
             document.getElementById('qrBtn').style.display = 'inline-block';
-          
         },
-        error: function(xhr, status, error) {
+        error: function (xhr, status, error) {
             console.error("Error occurred:", xhr.responseText);
             // Show an error message toast
             let errorToast = new bootstrap.Toast(document.getElementById('errorToast'));
@@ -135,7 +131,7 @@ document.getElementById('applyBtn').addEventListener('click', function() {
 });
 
 // Cancel button functionality
-document.getElementById('cancelBtn').addEventListener('click', function() {
+document.getElementById('cancelBtn').addEventListener('click', function () {
     // Reset form values to initial values
     for (let name in initialFormValues) {
         let element = document.querySelector(`#animalInfoForm [name="${name}"]`);
@@ -162,11 +158,9 @@ document.getElementById('cancelBtn').addEventListener('click', function() {
     document.getElementById('editBtn').style.display = 'inline-block';
     document.getElementById('backBtn').style.display = 'inline-block';
     document.getElementById('qrBtn').style.display = 'inline-block';
-   
+
     document.getElementById('applyBtn').setAttribute('disabled', true);
 });
-
-
 
 function toggleButton(button) {
     button.classList.toggle('btn-selected');
@@ -204,10 +198,9 @@ function downloadQRCode() {
     // Create a temporary link element
     const downloadLink = document.createElement('a');
     downloadLink.href = qrSrc;
-    downloadLink.download = `animal_id#${animalId}_qrcode.png`; 
+    downloadLink.download = `animal_id#${animalId}_qrcode.png`;
     downloadLink.click();
 }
-
 
 // Function to print the QR code
 function printQRCode() {
@@ -247,6 +240,7 @@ function printQRCode() {
         printWindow.close();
     };
 }
+
 function toggleOtherInput() {
     var vaccineSelect = document.getElementById('vaccine_name');
     var otherVaccineInput = document.getElementById('other_vaccine_input');
@@ -262,15 +256,14 @@ function toggleOtherInput() {
 const fields = document.querySelectorAll('input, textarea');
 
 fields.forEach(field => {
-    field.addEventListener('keypress', function(event) {
+    field.addEventListener('keypress', function (event) {
         if (event.key === ' ' && field.selectionStart === 0) {
             event.preventDefault();
         }
     });
 });
 
-
-$('#submitVaccineBtn').click(function(event) {
+$('#submitVaccineBtn').click(function (event) {
     event.preventDefault();
 
     var form = $('#vaccineForm')[0];
@@ -280,8 +273,8 @@ $('#submitVaccineBtn').click(function(event) {
         url: 'includes/submit-vaccine.php',
         type: 'POST',
         data: formData,
-        processData: false, 
-        contentType: false, 
+        processData: false,
+        contentType: false,
         dataType: 'json',
         success: function (response) {
             if (response.status === 'success') {
@@ -304,7 +297,7 @@ document.querySelectorAll('a[data-bs-toggle="modal"]').forEach(function (element
         const vetName = this.getAttribute('data-vet-name');
         const vetContact = this.getAttribute('data-vet-contact');
         const remarks = this.getAttribute('data-remarks');
-        
+
         // Set the values inside the modal
         document.getElementById('modalVaccineName').textContent = vaccineName;
         document.getElementById('modalVaccinationDate').textContent = vaccinationDate;
@@ -315,7 +308,7 @@ document.querySelectorAll('a[data-bs-toggle="modal"]').forEach(function (element
     });
 });
 
-$('#submitHealthInfoBtn').click(function(event) {
+$('#submitHealthInfoBtn').click(function (event) {
     event.preventDefault();
 
     var form = $('#healthInfoForm')[0];
@@ -342,5 +335,3 @@ $('#submitHealthInfoBtn').click(function(event) {
         }
     });
 });
-
-
