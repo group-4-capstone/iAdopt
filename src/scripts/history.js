@@ -136,9 +136,9 @@ function load_data(query = '', page_number = 1, sort_order = 'desc')  {
                         'data-date-of-rest="' + date_of_rest + '" ' +
                         'data-addition-date="' + addition_date + '" ' +
                         'data-image="' + image + '">'; // Include the image data
-                    html += '<td>' + date_of_rest + '</td>';
-                    html += '<td>' + name + '</td>';
-                    html += '<td>' + addition_date + '</td>';
+                        html += '<td>' + (date_of_rest || '-') + '</td>';
+                        html += '<td>' + (name || '-') + '</td>';
+                        html += '<td>' + (addition_date || '-') + '</td>';     
                     html += '</tr>';
                     serial_no++;
                 }
@@ -198,6 +198,7 @@ function load_data_deny(query = '', page_number = 1, sort_order = 'desc')  {
             if (response.data.length > 0) {
                 for (var count = 0; count < response.data.length; count++) {
 
+                    var rescue_id = response.data[count].rescue_id;
                     var report_date = response.data[count].report_date;
                     var report_type = response.data[count].report_type;
                     var first_name = response.data[count].first_name;
@@ -231,6 +232,7 @@ function load_data_deny(query = '', page_number = 1, sort_order = 'desc')  {
                     html += '<td>' + statusDisplay + '</td>'; // Display status with a badge
                     html += '<td style="display:none;">' +  // Hidden data for modal trigger
                         '<span class="data-location">' + location + '</span>' +
+                        '<span class="data-rescue_id">' + rescue_id + '</span>' +
                         '<span class="data-report-date">' + report_date + '</span>' +
                         '<span class="data-reporter">' + first_name + " " + last_name + '</span>' +
                         '<span class="data-reason">' + deny_reason + '</span>' +
@@ -259,6 +261,7 @@ function attachDenytRowClickEvent() {
     rows.forEach(function (row) {
         row.addEventListener('click', function () {
             // Retrieve the hidden data from the spans
+            var rescue_id = row.querySelector('.data-rescue_id').textContent;
             var location = row.querySelector('.data-location').textContent;
             var reportDate = row.querySelector('.data-report-date').textContent;
             var reporter = row.querySelector('.data-reporter').textContent;
@@ -266,6 +269,7 @@ function attachDenytRowClickEvent() {
             var animalImage = row.querySelector('.data-animal-image').textContent;
 
             // Update the modal content
+            document.getElementById('denyrescueID').innerText = rescue_id;
             document.getElementById('denyLocation').innerText = location;
             document.getElementById('denyReportDate').innerText = reportDate;
             document.getElementById('denyReporter').innerText = reporter;

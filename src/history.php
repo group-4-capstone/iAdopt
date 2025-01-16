@@ -39,7 +39,7 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                         <h1><u><b>HISTORY LOG</b></u></h1>
                     </div>
                     <p>
-                        View list of animals that are up for adoption and manage their profiles.
+                        Access and manage the logs of adopted animals, animals at rest, and reported cases.
                     </p>
                 </div>
             </section>
