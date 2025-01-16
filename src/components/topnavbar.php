@@ -5,9 +5,19 @@
       <span id="close-menu-btn" class="material-symbols-outlined">Close</span>
       <li><a href="home.php">Home</a></li>
       <li><a href="adopt.php">Adopt</a></li>
-      <li><a href="report.php">Report</a></li>
+
+      <?php include 'includes/waitlist-status.php'; ?>
+
+      <li>
+        <?php if ($reportDisabled === 'disabled') { ?>
+          <a href="#" class="disabled-link">Report</a>
+        <?php } else { ?>
+          <a href="report.php">Report</a>
+        <?php } ?>
+      </li>
       <li><a href="donate.php">Donate</a></li>
       <li><a href="shop.php">Shop</a></li>
+
       <?php if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) { ?>
         <li class="nav-item dropdown">
           <a class="nav-link d-flex align-items-center" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -33,6 +43,7 @@
     <span id="hamburger-btn" class="material-symbols-outlined">Menu</span>
   </nav>
 </header>
+
 
 <!-- Modal Structure for Notifications -->
 <div class="modal fade" id="notificationModal" tabindex="-1" aria-labelledby="notificationModalLabel" data-bs-backdrop="static" aria-hidden="true">
@@ -90,25 +101,25 @@
       </div>
       <div class="modal-body">
         <form id="postAdoptionForm" method="post">
-            <!-- Current Situation Description -->
-            <div class="mb-3">
-              <label for="currentDescription" class="form-label">Current Situation Description:</label>
-              <textarea class="form-control" id="currentDescription" name="currentDescription" placeholder="Briefly describe the current situation of your pet." rows="3" ></textarea>
-            </div>
+          <!-- Current Situation Description -->
+          <div class="mb-3">
+            <label for="currentDescription" class="form-label">Current Situation Description:</label>
+            <textarea class="form-control" id="currentDescription" name="currentDescription" placeholder="Briefly describe the current situation of your pet." rows="3"></textarea>
+          </div>
 
-            <!-- File Upload -->
-            <div class="mb-3">
-              <label for="uploadFiles" class="form-label">Upload Pictures/Videos:</label>
-              <input type="file" class="form-control" id="uploadFiles" name="uploadFiles[]" accept=".jpg,.jpeg,.png,.mp4,.mov" multiple>
-            </div>
+          <!-- File Upload -->
+          <div class="mb-3">
+            <label for="uploadFiles" class="form-label">Upload Pictures/Videos:</label>
+            <input type="file" class="form-control" id="uploadFiles" name="uploadFiles[]" accept=".jpg,.jpeg,.png,.mp4,.mov" multiple>
+          </div>
 
-            <input type="hidden" id="application_id" name="application_id" readonly>
-            <input type="hidden" id="notification_id" name="notification_id" readonly>
-        </div>
-        <div class="modal-footer">
-          <button type="submit" class="btn btn-primary">Submit</button>
-        </div>
-        </form>
+          <input type="hidden" id="application_id" name="application_id" readonly>
+          <input type="hidden" id="notification_id" name="notification_id" readonly>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </div>
+      </form>
     </div>
   </div>
 </div>
@@ -237,7 +248,7 @@
     }
   }
 
-  document.getElementById('postAdoptionForm').addEventListener('submit', function (event) {
+  document.getElementById('postAdoptionForm').addEventListener('submit', function(event) {
     event.preventDefault(); // Prevent default form submission
 
     // Get the form element and initialize FormData
@@ -267,56 +278,56 @@
 
     // If validation passes, submit form via AJAX
     if (isValid) {
-        // Append files (already added by FormData due to 'postAdoptionForm')
-        for (let i = 0; i < uploadFiles.files.length; i++) {
-            formData.append('uploadFiles[]', uploadFiles.files[i]);
-        }
+      // Append files (already added by FormData due to 'postAdoptionForm')
+      for (let i = 0; i < uploadFiles.files.length; i++) {
+        formData.append('uploadFiles[]', uploadFiles.files[i]);
+      }
 
-        // Debug FormData content
-        for (let pair of formData.entries()) {
-            console.log(pair[0] + ': ' + pair[1]);
-        }
+      // Debug FormData content
+      for (let pair of formData.entries()) {
+        console.log(pair[0] + ': ' + pair[1]);
+      }
 
-        // AJAX request
-        $.ajax({
-            url: 'includes/submit-post-adoption.php', // PHP handler
-            type: 'POST',
-            data: formData,
-            processData: false, // Important for FormData
-            contentType: false, // Important for FormData
-            success: function (response) {
-              console.log("Form submitted successfully:", response);
-              // Hide the modal and show a success message
-             $(`#postAdoptionModal`).modal('hide');
-            $('#successModal').modal('show');
-            },
-            error: function (xhr, status, error) {
-                console.error('Error:', xhr.responseText);
-                showErrorMessage(uploadFiles, 'An unexpected error occurred.');
-            }
-        });
+      // AJAX request
+      $.ajax({
+        url: 'includes/submit-post-adoption.php', // PHP handler
+        type: 'POST',
+        data: formData,
+        processData: false, // Important for FormData
+        contentType: false, // Important for FormData
+        success: function(response) {
+          console.log("Form submitted successfully:", response);
+          // Hide the modal and show a success message
+          $(`#postAdoptionModal`).modal('hide');
+          $('#successModal').modal('show');
+        },
+        error: function(xhr, status, error) {
+          console.error('Error:', xhr.responseText);
+          showErrorMessage(uploadFiles, 'An unexpected error occurred.');
+        }
+      });
     }
-});
+  });
 
-// Validation Functions
-function validateField(inputElement, message) {
+  // Validation Functions
+  function validateField(inputElement, message) {
     if (!inputElement.value.trim()) {
-        showErrorMessage(inputElement, message);
-        return false;
+      showErrorMessage(inputElement, message);
+      return false;
     }
     return true;
-}
+  }
 
-function validateFileField(inputElement, message) {
+  function validateFileField(inputElement, message) {
     if (!inputElement.files.length) {
-        showErrorMessage(inputElement, message);
-        return false;
+      showErrorMessage(inputElement, message);
+      return false;
     }
     return true;
-}
+  }
 
-// Show Error Message
-function showErrorMessage(inputElement, message) {
+  // Show Error Message
+  function showErrorMessage(inputElement, message) {
     clearSpecificErrorMessage(inputElement);
 
     const errorMessage = document.createElement('div');
@@ -325,38 +336,38 @@ function showErrorMessage(inputElement, message) {
 
     inputElement.classList.add('is-invalid');
     inputElement.parentNode.appendChild(errorMessage);
-}
+  }
 
-// Clear Error Messages
-function clearErrorMessages() {
+  // Clear Error Messages
+  function clearErrorMessages() {
     const errorMessages = document.querySelectorAll('.error-message');
     errorMessages.forEach(msg => msg.remove());
     const invalidInputs = document.querySelectorAll('.is-invalid');
     invalidInputs.forEach(input => input.classList.remove('is-invalid'));
-}
+  }
 
-// Clear Specific Error Message
-function clearSpecificErrorMessage(inputElement) {
+  // Clear Specific Error Message
+  function clearSpecificErrorMessage(inputElement) {
     const errorMessage = inputElement.parentNode.querySelector('.error-message');
     if (errorMessage) {
-        errorMessage.remove();
+      errorMessage.remove();
     }
     inputElement.classList.remove('is-invalid');
-}
+  }
 
-// Attach event listeners to clear errors dynamically
-document.querySelectorAll('input, textarea').forEach(element => {
-    element.addEventListener('input', function () {
-        clearSpecificErrorMessage(this);
+  // Attach event listeners to clear errors dynamically
+  document.querySelectorAll('input, textarea').forEach(element => {
+    element.addEventListener('input', function() {
+      clearSpecificErrorMessage(this);
     });
 
-    element.addEventListener('change', function () {
-        clearSpecificErrorMessage(this);
+    element.addEventListener('change', function() {
+      clearSpecificErrorMessage(this);
     });
-});
+  });
 
 
- 
+
 
   function showNotificationDetails(notificationId) {
     var form_data = new FormData();

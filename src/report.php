@@ -1,7 +1,9 @@
 <?php include_once 'includes/session-handler.php';
 include_once 'includes/db-connect.php';
+include_once 'includes/waitlist-status.php';
 
 if (!isset($_SESSION['role']) || ($_SESSION['role'] !== 'admin' && $_SESSION['role'] !== 'head_admin')) {
+   if ($reportDisabled !== 'disabled') { 
 ?>
 
 
@@ -149,9 +151,6 @@ if (!isset($_SESSION['role']) || ($_SESSION['role'] !== 'admin' && $_SESSION['ro
       </div>
     </div>
 
-
-
-
     <script src="scripts/form.js"></script>
     <script src="scripts/report-stray.js"></script>
     <script src="scripts/ph-address-selector.js"></script>
@@ -163,6 +162,9 @@ if (!isset($_SESSION['role']) || ($_SESSION['role'] !== 'admin' && $_SESSION['ro
   </html>
 
 <?php
+   } else {
+    header("Location: not-found.php");
+   }
 } else {
   header("Location: home.php");
 }

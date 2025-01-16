@@ -8,6 +8,14 @@ header {
   background-color: #283531;
 }
 
+.disabled-link {
+  pointer-events: none; 
+  color: gray !important ;         
+  cursor: not-allowed; 
+  text-decoration: none;
+}
+
+
 header .navbar {
   display: flex;
   align-items: center;
