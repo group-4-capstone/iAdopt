@@ -23,6 +23,37 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
         if ($result->num_rows > 0) {
             $application = $result->fetch_assoc();
 
+            // Query to check for later applications with the same animal_id
+            $animal_id = $application['animal_id'];
+
+            // Query to get the first application_id for the same animal_id
+            $firstApplicationQuery = "
+    SELECT application_id
+    FROM applications
+    WHERE animal_id = ?
+    ORDER BY application_id ASC
+    LIMIT 1
+";
+            $firstAppStmt = $db->prepare($firstApplicationQuery);
+            $firstAppStmt->bind_param("i", $animal_id);
+            $firstAppStmt->execute();
+            $firstAppResult = $firstAppStmt->get_result();
+            $firstApplicationId = $firstAppResult->fetch_assoc()['application_id'];
+
+            // Query to check if there are earlier applications with the same animal_id
+            $checkQuery = "
+    SELECT COUNT(*) AS earlier_applications
+    FROM applications
+    WHERE animal_id = ? AND application_id < ?
+";
+            $checkStmt = $db->prepare($checkQuery);
+            $checkStmt->bind_param("ii", $animal_id, $application_id);
+            $checkStmt->execute();
+            $checkResult = $checkStmt->get_result();
+            $earlierApplicationCount = $checkResult->fetch_assoc()['earlier_applications'];
+
+            // Disable buttons if there are earlier applications
+            $disableButtons = $earlierApplicationCount > 0 ? 'disabled' : '';
             // Additional query for post_adoption table
             $queryPostAdoption = "
             SELECT *
@@ -473,15 +504,22 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                 <!-- Approve and Reject Buttons -->
 
                 <?php if ($application['application_status'] == 'Under Review') { ?>
+                    <?php if ($disableButtons === 'disabled') { ?>
+                        <div class="alert alert-warning mt-3">
+                            Kindly check first   <a href="adoption-details.php?id=<?= $firstApplicationId ?>"> Application 
+                          #<?= $firstApplicationId ?></a>.
+                        </div>
+                    <?php } ?>
                     <div class="d-flex justify-content-end mt-4">
-                    <?php if ($application['animal_status'] !== 'Adopted') { ?>
-                        <button type="button" class="btn btn-success me-2" id="approveBtn" data-bs-toggle="modal" data-bs-target="#scheduleInterviewModal">Approve</button>
+                        <?php if ($application['animal_status'] !== 'Adopted') { ?>
+                            <button type="button" class="btn btn-success me-2" id="approveBtn" data-bs-toggle="modal" data-bs-target="#scheduleInterviewModal" <?= $disableButtons ?>>Approve</button>
                         <?php } ?>
-                        <button type="button" class="btn btn-danger" id="rejectBtn" data-bs-toggle="modal" data-bs-target="#rejectReasonModal">Reject</button>
+                        <button type="button" class="btn btn-danger" id="rejectBtn" data-bs-toggle="modal" data-bs-target="#rejectReasonModal" <?= $disableButtons ?>>Reject</button>
                     </div>
-                <?php } else { ?>
-
+                   
                 <?php } ?>
+
+
 
 
                 <!-- Modal for Scheduling Interview -->
@@ -542,60 +580,60 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                 </div>
 
 
-             <!-- Modal for Reject Reason -->
-<div class="modal fade" id="rejectReasonModal" tabindex="-1" aria-labelledby="rejectReasonModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="rejectReasonModalLabel">Enter Reject Reason</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="rejectReasonForm" method="post" action="includes/update-adoption-status.php">
-                    <input type="hidden" name="application_id" id="reject_application_id" value="<?php echo $application['application_id']; ?>" readonly>
-                    <input type="hidden" name="application_status" value="Rejected" readonly>
+                <!-- Modal for Reject Reason -->
+                <div class="modal fade" id="rejectReasonModal" tabindex="-1" aria-labelledby="rejectReasonModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="rejectReasonModalLabel">Enter Reject Reason</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="rejectReasonForm" method="post" action="includes/update-adoption-status.php">
+                                    <input type="hidden" name="application_id" id="reject_application_id" value="<?php echo $application['application_id']; ?>" readonly>
+                                    <input type="hidden" name="application_status" value="Rejected" readonly>
 
-                    <!-- Predefined Reasons -->
-                    <label for="rejectReasonDropdown" class="form-label">Select a reason for rejection:</label>
-                    <select id="rejectReasonDropdown" class="form-select" name="status_message" required>
-                        <option value="" disabled selected>Select a reason</option>
-                        <option value="Inadequate living space">Inadequate living space</option>
-                        <option value="Financial constraints">Financial constraints</option>
-                        <option value="Lack of experience with pets">Lack of experience with pets</option>
-                        <option value="Concerns about commitment">Concerns about commitment</option>
-                        <option value="Other">Other</option>
-                    </select>
+                                    <!-- Predefined Reasons -->
+                                    <label for="rejectReasonDropdown" class="form-label">Select a reason for rejection:</label>
+                                    <select id="rejectReasonDropdown" class="form-select" name="status_message" required>
+                                        <option value="" disabled selected>Select a reason</option>
+                                        <option value="Inadequate living space">Inadequate living space</option>
+                                        <option value="Financial constraints">Financial constraints</option>
+                                        <option value="Lack of experience with pets">Lack of experience with pets</option>
+                                        <option value="Concerns about commitment">Concerns about commitment</option>
+                                        <option value="Other">Other</option>
+                                    </select>
 
-                    <!-- Custom Reason -->
-                    <div id="customReasonContainer" class="mt-3 d-none">
-                        <label for="customRejectReason" class="form-label">Enter custom reason:</label>
-                        <textarea id="customRejectReason" class="form-control" rows="4" name="custom_status_message" placeholder="Enter custom reason"></textarea>
+                                    <!-- Custom Reason -->
+                                    <div id="customReasonContainer" class="mt-3 d-none">
+                                        <label for="customRejectReason" class="form-label">Enter custom reason:</label>
+                                        <textarea id="customRejectReason" class="form-control" rows="4" name="custom_status_message" placeholder="Enter custom reason"></textarea>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" id="submitRejectBtn">Submit</button>
+                            </div>
+                        </div>
                     </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" id="submitRejectBtn">Submit</button>
-            </div>
-        </div>
-    </div>
-</div>
+                </div>
 
-<script>
-    // Show/hide custom reason input based on dropdown selection
-    const rejectReasonDropdown = document.getElementById('rejectReasonDropdown');
-    const customReasonContainer = document.getElementById('customReasonContainer');
-    const customRejectReason = document.getElementById('customRejectReason');
+                <script>
+                    // Show/hide custom reason input based on dropdown selection
+                    const rejectReasonDropdown = document.getElementById('rejectReasonDropdown');
+                    const customReasonContainer = document.getElementById('customReasonContainer');
+                    const customRejectReason = document.getElementById('customRejectReason');
 
-    rejectReasonDropdown.addEventListener('change', () => {
-        if (rejectReasonDropdown.value === 'Other') {
-            customReasonContainer.classList.remove('d-none');
-            customRejectReason.setAttribute('required', 'required');
-        } else {
-            customReasonContainer.classList.add('d-none');
-            customRejectReason.removeAttribute('required');
-        }
-    });
-</script>
+                    rejectReasonDropdown.addEventListener('change', () => {
+                        if (rejectReasonDropdown.value === 'Other') {
+                            customReasonContainer.classList.remove('d-none');
+                            customRejectReason.setAttribute('required', 'required');
+                        } else {
+                            customReasonContainer.classList.add('d-none');
+                            customRejectReason.removeAttribute('required');
+                        }
+                    });
+                </script>
 
 
 
