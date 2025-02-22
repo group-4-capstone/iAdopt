@@ -204,10 +204,11 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                         <p><strong>Description:</strong> <?php echo $application['description'] ?></p>
                         <p><a href="animal-record.php?animal_id=<?php echo $application['animal_id']; ?>">View Profile</a></p>
 
-                        <?php if ($application['application_status'] === 'Approved' && $application['animal_status'] !== 'Adopted') { ?>
+                        <?php if ($application['application_status'] === 'For Interview' && $application['animal_status'] !== 'Adopted') { ?>
                             <div style="text-align: right; margin-top: 20px;">
                                 <form id="markAdoptedForm">
                                     <input type="hidden" id="animalId" value="<?php echo $application['animal_id'] ?>" readonly>
+                                    <input type="hidden" id="applicationId" value="<?php echo $application['application_id'] ?>" readonly>
                                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmationModal">
                                         <span><i class="fa-solid fa-check me-1"></i> Mark as Adopted</span>
                                     </button>
@@ -223,19 +224,21 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                         <div class="col-lg-4 col-md-5">
                             <h4 class="mt-2">Adopter Information</h4>
                             <p class="mt-3 ps-3">Application Status:
-                                <span class="badge 
-                                    <?php
-                                    if ($application['application_status'] === 'Under Review') echo 'bg-warning text-dark';
-                                    elseif ($application['application_status'] === 'Rejected') echo 'bg-danger';
-                                    elseif ($application['application_status'] === 'Approved') echo 'bg-success';
-                                    ?>">
-                                    <?php echo $application['application_status']; ?>
-                                </span>
+                            <span class="badge 
+                                <?php
+                                if ($application['application_status'] === 'For Interview') echo 'bg-warning text-dark';
+                                elseif ($application['application_status'] === 'Rejected') echo 'bg-danger';
+                                elseif ($application['application_status'] === 'Approved') echo 'bg-success';
+                                elseif ($application['application_status'] === 'Under Review') echo 'bg-secondary';  // Gray color for Under Review
+                                ?>">
+                                <?php echo $application['application_status']; ?>
+                            </span>
+
                             </p>
                             <?php if ($application['application_status'] === 'Rejected') echo 'Reason: ' . $application['status_message']; ?>
                             <p class="ps-2">
                                 <?php
-                                if ($application['application_status'] === 'Approved') {
+                                if ($application['application_status'] === 'For Interview') {
                                     $interviewDate = new DateTime($application['sched_interview']);
                                     echo '<br>Scheduled Interview:<br> ' . $interviewDate->format('d F Y, h:i A');
                                     if ($application['animal_status'] !== 'Adopted') {
@@ -512,7 +515,7 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                     <?php } ?>
                     <div class="d-flex justify-content-end mt-4">
                         <?php if ($application['animal_status'] !== 'Adopted') { ?>
-                            <button type="button" class="btn btn-success me-2" id="approveBtn" data-bs-toggle="modal" data-bs-target="#scheduleInterviewModal" <?= $disableButtons ?>>Approve</button>
+                            <button type="button" class="btn btn-success me-2" id="approveBtn" data-bs-toggle="modal" data-bs-target="#scheduleInterviewModal" <?= $disableButtons ?>>Proceed to Interview</button>
                         <?php } ?>
                         <button type="button" class="btn btn-danger" id="rejectBtn" data-bs-toggle="modal" data-bs-target="#rejectReasonModal" <?= $disableButtons ?>>Reject</button>
                     </div>
@@ -540,7 +543,7 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                                     ?>
 
                                     <input type="hidden" name="application_id" id="interview_application_id" value="<?php echo $application['application_id']; ?>" readonly>
-                                    <input type="hidden" name="application_status" value="Approved" readonly>
+                                    <input type="hidden" name="application_status" value="For Interview" readonly>
 
                                     <!-- Hidden input to store concatenated date and time -->
                                     <input type="hidden" id="sched_interview" name="sched_interview">

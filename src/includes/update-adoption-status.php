@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $userRow = $userResult->fetch_assoc();
     $user_id = $userRow['user_id'];
 
-    if ($application_status == 'Approved') {
+    if ($application_status == 'For Interview') {
         $sched_interview = $_POST['sched_interview'];
 
         // Update application status and schedule interview
@@ -29,9 +29,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if ($stmt->execute()) {
 
             $formattedDate = date("F j, Y g:i A", strtotime($sched_interview));
-            // Insert notification for approved application
-            $message = "Congratulations! Your application has been approved. Interview scheduled on: $formattedDate.";
-            $notification_type = 'Application Approved';
+          // Insert notification for approved application
+          $message = "Congratulations! Your application has been marked as passed for an interview. The interview is scheduled for: $formattedDate.";
+          $notification_type = 'Application Update';          
+
             $is_read = 0; // Unread by default
             $display = 1;
             $notifSql = "INSERT INTO notifications (user_id, application_id, message, notification_type, is_read, created_at, display) VALUES (?, ?, ?, ?, ?, NOW(), ?)";

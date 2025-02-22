@@ -5,7 +5,6 @@ const professionField = document.getElementById('professionField');
 
 occupationSelect.addEventListener('change', function() {
     if (occupationSelect.value === 'Employee') {
-
         professionField.style.display = 'block';
     } else {
         professionField.style.display = 'none';

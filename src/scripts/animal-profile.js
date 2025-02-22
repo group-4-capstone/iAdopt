@@ -311,20 +311,19 @@ document.querySelectorAll('a[data-bs-toggle="modal"]').forEach(function (element
 $('#submitHealthInfoBtn').click(function (event) {
     event.preventDefault();
 
-    var form = $('#healthInfoForm')[0];
-    var formData = new FormData(form);
+    var form1 = $('#healthInfoForm')[0];
+    var formData1 = new FormData(form1);
 
     $.ajax({
         url: 'includes/submit-health-info.php',
         type: 'POST',
-        data: formData,
+        data: formData1,
         processData: false,
         contentType: false,
         dataType: 'json',
         success: function (response) {
             if (response.status === 'success') {
                 $('#updateHealthInfoModal').modal('hide');
-                $('#healthStatusMessage').text(response.message);
                 $('#successHealthModal').modal('show');
             } else {
                 alert(response.message || "Failed to update health information. Please try again.");

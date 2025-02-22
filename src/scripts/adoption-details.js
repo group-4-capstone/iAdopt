@@ -107,8 +107,10 @@
 
 document.getElementById('confirmBtn').addEventListener('click', function () {
     const animalId = document.getElementById('animalId').value;
+    const applicationId = document.getElementById('applicationId').value;
     const formData = new FormData();
     formData.append('animal_id', animalId);
+    formData.append('application_id', applicationId);
 
     $.ajax({
         type: 'POST',

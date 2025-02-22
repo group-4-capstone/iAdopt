@@ -31,7 +31,7 @@ function load_data(query = '', page_number = 1, sort_order = 'desc') {
                     html += '<td>' + response.data[count].complete_address + '</td>';
                     html += '<td>' + response.data[count].name + '</td>';
                     var badgeClass = '';
-                    if (response.data[count].application_status === 'Under Review') {
+                    if (response.data[count].application_status === 'For Interview') {
                         badgeClass = 'badge-review';
                     } else if (response.data[count].application_status === 'Approved') {
                         badgeClass = 'badge-approved';
