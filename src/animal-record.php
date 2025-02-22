@@ -660,7 +660,7 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                             <button type="button" class="btn-close d-flex ms-auto" onclick="window.location.reload();"></button>
                             <div class="text-center">
                                 <i class="bi bi-check-circle-fill" style="font-size: 8rem; color: #28a745;"></i>
-                                <p class="mt-4 px-2" id="healthStatusMessage"></p>
+                                <p class="mt-4 px-2" id="healthStatusMessage">Health record has been successfully updated.</p>
                             </div>
                         </div>
                     </div>
