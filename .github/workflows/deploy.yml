@@ -1,4 +1,4 @@
-name: 🚀 Deploy to Hostinger
+name: Deploy to Hostinger
 
 on:
   release:
@@ -9,14 +9,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 📥 Checkout repo
+      - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: 📤 Upload to Hostinger via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
-        with:
-          server: ${{ secrets.FTP_HOST }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: ./ # upload everything (unless you want to limit it)
-          server-dir: /public_html/
+      - name: Upload to Hostinger (example)
+        run: echo "Pretend we deploy here"
