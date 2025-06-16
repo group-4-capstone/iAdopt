@@ -1,61 +1,21 @@
-name: Create Release
+name: Auto Release on Commit
 
 on:
   push:
     branches:
-      - main  # Adjust to the branch you want to monitor, e.g., main or master
-    paths:
-      - VERSION  # Trigger the workflow when the VERSION file changes (no 'iAdopt/' needed)
+      - main
 
 jobs:
-  bump_and_release:
+  release:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
+      - name: Run semantic-release
+        uses: cycjimmy/semantic-release-action@v4
         with:
-          node-version: '16'  # Use the version of Node.js that your project requires
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Run bump-version script
-        run: node bump-version.js patch  # Change 'patch' to 'minor' or 'major' as needed
-
-      - name: Get the version from VERSION file
-        id: get_version
-        run: |
-          VERSION=$(cat VERSION)  # Read the VERSION file in the root
-          echo "VERSION=$VERSION"  # Print the VERSION value for visibility
-          echo "::set-output name=version::$VERSION"  # Set the VERSION as an output for this step
-
-      - name: Debug VERSION content
-        run: |
-          cat VERSION  # Ensure the VERSION file content is correct
-          echo "VERSION=${{ steps.get_version.outputs.version }}"  # Print out VERSION output from previous step
-
-      - name: Commit new version
-        run: |
-          git config user.name "GitHub Actions"
-          git config user.email "actions@github.com"
-          git add VERSION
-          git commit -m "Bump version to ${{ steps.get_version.outputs.version }}"
-          git push origin main  # Change to the appropriate branch
-
-      - name: Create GitHub Release
-        uses: actions/create-release@v1
+          semantic_version: 19.0.5
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: "v${{ steps.get_version.outputs.version }}"
-          release_name: "Release ${{ steps.get_version.outputs.version }}"
-          body: |
-            ## What's New
-            Version ${{ steps.get_version.outputs.version }} is now live!
-            - Changes: (describe your changes here)
-          draft: false
-          prerelease: false
