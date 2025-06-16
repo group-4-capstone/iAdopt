@@ -34,7 +34,7 @@ if (!isset($_SESSION['role']) || ($_SESSION['role'] !== 'admin' && $_SESSION['ro
 
   <section class="hero-section">
     <div class="content">
-      <h2>Adopt a PAW-some friend</h2>
+      <h2>TRIAL 1 Adopt a PAW-some friend</h2>
       <p>
         Bring joy and love into your life by adopting a furry friend.
         Explore our wide selection of lovable pets ready to find their forever home.
