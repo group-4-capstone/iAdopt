@@ -1,27 +1,8 @@
 {
   "name": "iadopt",
-  "version": "0.0.0",
-  "scripts": {
-    "release": "semantic-release",
-    "bump:major": "node bump-version.js major",
-    "bump:minor": "node bump-version.js minor",
-    "bump:patch": "node bump-version.js patch"
-  },
-  "devDependencies": {
-    "@semantic-release/changelog": "^6.0.3",
-    "@semantic-release/git": "^10.0.1",
-    "@semantic-release/github": "^11.0.3",
-    "@semantic-release/npm": "^12.0.1",
-    "semantic-release": "^24.2.5",
-    "semver": "^7.6.3"
-  },
-  "release": {
-    "branches": [
-      "main"
-    ]
-  },
+  "version": "1.0.0",
   "description": "The **iADOPT: Animal Rescuing to Adoption Management System** is designed to streamline the process of managing animals in shelters, from rescue through to adoption. This system, tailored specifically for the **Second Chance Animal Aspin Shelter** in the Philippines, integrates **QR code technology** to ensure efficient tracking and management of animals.",
-  "main": "index.js",
+  "main": "bump-version.js",
   "dependencies": {
     "agent-base": "^7.1.1",
     "aggregate-error": "^5.0.0",
@@ -36,7 +17,7 @@
     "bottleneck": "^2.19.5",
     "braces": "^3.0.3",
     "callsites": "^3.1.0",
-    "chalk": "^5.3.0",
+    "chalk": "^5.4.1",
     "char-regex": "^1.0.2",
     "clean-stack": "^5.2.0",
     "cli-highlight": "^2.1.11",
@@ -53,7 +34,7 @@
     "convert-hrtime": "^5.0.0",
     "core-util-is": "^1.0.3",
     "cosmiconfig": "^9.0.0",
-    "cross-spawn": "^7.0.3",
+    "cross-spawn": "^7.0.6",
     "crypto-random-string": "^4.0.0",
     "debug": "^4.3.6",
     "deep-extend": "^0.6.0",
@@ -69,6 +50,7 @@
     "escalade": "^3.2.0",
     "escape-string-regexp": "^5.0.0",
     "execa": "^9.3.1",
+    "fast-content-type-parse": "^3.0.0",
     "fast-glob": "^3.3.2",
     "fastq": "^1.17.1",
     "figures": "^6.1.0",
@@ -123,6 +105,7 @@
     "lines-and-columns": "^1.2.4",
     "load-json-file": "^4.0.0",
     "locate-path": "^2.0.0",
+    "lodash": "^4.17.21",
     "lodash-es": "^4.17.21",
     "lodash.capitalize": "^4.2.1",
     "lodash.escaperegexp": "^4.1.2",
@@ -131,7 +114,7 @@
     "lodash.uniqby": "^4.7.0",
     "lru-cache": "^10.4.3",
     "marked": "^12.0.2",
-    "marked-terminal": "^7.1.0",
+    "marked-terminal": "^7.3.0",
     "meow": "^13.2.0",
     "merge-stream": "^2.0.0",
     "merge2": "^1.4.1",
@@ -143,7 +126,7 @@
     "mz": "^2.7.0",
     "neo-async": "^2.6.2",
     "nerf-dart": "^1.0.0",
-    "node-emoji": "^2.1.3",
+    "node-emoji": "^2.2.0",
     "normalize-package-data": "^6.0.2",
     "normalize-url": "^8.0.1",
     "npm": "^10.8.3",
@@ -184,6 +167,8 @@
     "reusify": "^1.0.4",
     "run-parallel": "^1.2.0",
     "safe-buffer": "^5.1.2",
+    "semantic-release": "^24.2.5",
+    "semver": "^7.6.3",
     "semver-diff": "^4.0.0",
     "semver-regex": "^4.0.5",
     "shebang-command": "^2.0.0",
@@ -200,8 +185,8 @@
     "spdx-license-ids": "^3.0.20",
     "split2": "^1.0.0",
     "stream-combiner2": "^1.1.1",
-    "string_decoder": "^1.1.1",
     "string-width": "^4.2.3",
+    "string_decoder": "^1.1.1",
     "strip-ansi": "^6.0.1",
     "strip-bom": "^3.0.0",
     "strip-final-newline": "^4.0.0",
@@ -235,6 +220,10 @@
     "yargs": "^17.7.2",
     "yargs-parser": "^21.1.1",
     "yoctocolors": "^2.1.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
