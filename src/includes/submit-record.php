@@ -1,4 +1,5 @@
 <?php
+include_once 'session-handler.php';
 include_once 'db-connect.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -10,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $rescued_by = htmlspecialchars($_POST['rescued_by'], ENT_QUOTES, 'UTF-8');
         $rescued_at = htmlspecialchars($_POST['rescued_at'], ENT_QUOTES, 'UTF-8');
         $description = htmlspecialchars($_POST['description'], ENT_QUOTES, 'UTF-8');
-        $animal_status = 'under review'; // Set animal status to "under review"
+        $animal_status = 'On Process';
 
         // Handle image upload and convert to WebP
         $upload_dir = '../styles/assets/animals/';
@@ -58,10 +59,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $animal_id = $stmt->insert_id;
 
             // Insert into rescue table with report_type
-            $report_type = 'rescue'; // Set report type
-            $stmt = $db->prepare("INSERT INTO rescue (animal_id, rescued_by, rescued_at, report_type) 
-                                  VALUES (?, ?, ?, ?)");
-            $stmt->bind_param("isss", $animal_id, $rescued_by, $rescued_at, $report_type);
+            $user_id = $_SESSION['user_id'];
+
+            // Set report type
+            $report_type = 'rescue';
+            
+            // Update the query to include user_id
+            $stmt = $db->prepare("INSERT INTO rescue (animal_id, rescued_by, rescued_at, report_type, user_id) 
+                                  VALUES (?, ?, ?, ?, ?)");
+            
+            // Bind the parameters, including user_id
+            $stmt->bind_param("isssi", $animal_id, $rescued_by, $rescued_at, $report_type, $user_id);
 
             if ($stmt->execute()) {
                 echo 'Rescue record successfully submitted.';

@@ -5,7 +5,7 @@
   background-color: #58A5B7;
   background-repeat: no-repeat;
   background-size: cover;
-  padding: 60px 10px 0 10px;
+  padding: 60px 20px 0 20px; /* Slightly smaller padding */
   margin: 0 auto;
 }
 
@@ -27,10 +27,10 @@
 }
 
 #rescueForm {
-  max-width: 83%;
+  max-width: 85%; 
   background-color: #ffffff;
   margin: 0 auto;
-  padding: 40px;
+  padding: 25px; /* Smaller padding for better fit */
   box-shadow: 0px 6px 18px rgb(0 0 0 / 9%);
   border-radius: 12px;
 }
@@ -105,9 +105,9 @@
 
 #rescueForm input,
 #rescueForm select {
-  padding: 15px 20px;
+  padding: 12px 15px; /* Smaller padding */
   width: 100%;
-  font-size: 1em;
+  font-size: 0.95em; /* Smaller font size */
   border: 1px solid #e3e3e3;
   border-radius: 5px;
   margin-top: 8px;
@@ -137,7 +137,7 @@
   background-color: #58A5B7;
   border: 1px solid #58A5B7;
   color: #ffffff;
-  padding: 13px 30px;
+  padding: 12px 25px; /* Smaller button padding */
   font-size: 1em;
   cursor: pointer;
   border-radius: 5px;
@@ -154,39 +154,86 @@
 }
 
 .error-message {
-  font-size: 0.875rem; /* Adjust the size as needed */
+  font-size: 0.875rem; /* Adjusted error message size */
   margin-top: 0.25rem; /* Space between input and error message */
 }
+
 .is-invalid {
   border-color: #dc3545 !important; /* Bootstrap danger color */
 }
 
 /* For tablets and mobile devices */
 @media (max-width: 768px) {
+  .form-section {
+    padding: 40px 15px; /* Smaller padding for tablets */
+  }
+
   .shop-section {
     height: auto;
-    padding: 60px 20px;
+    padding: 40px 15px; /* Smaller padding */
     text-align: center;
   }
 
   .shop-section .content h2 {
-    font-size: 2rem;
-    line-height: 40px;
+    font-size: 1.75rem; /* Smaller font size for headings */
+    line-height: 35px;
   }
 
   .shop-section .content p {
-    font-size: 14px;
+    font-size: 14px; /* Adjust paragraph font size */
+  }
+
+  #rescueForm {
+    padding: 20px; /* Smaller form padding */
+    max-width: 95%; 
+  }
+
+  #rescueForm input,
+  #rescueForm select {
+    font-size: 0.9em; /* Smaller font size */
+  }
+
+  #rescueForm .form-footer button {
+    padding: 10px 20px; /* Smaller button padding */
   }
 }
 
 /* For mobile devices */
 @media (max-width: 480px) {
+  .form-section {
+    padding: 30px 10px; /* Even smaller padding for mobile */
+  }
+
+  .form-section h4 {
+    font-size: 1.2rem !important; /* Smaller font size for tablets */
+  }
+
   .shop-section .content h2 {
-    font-size: 1.5rem;
-    line-height: 35px;
+    font-size: 1.5rem; /* Further reduce font size */
+    line-height: 30px;
   }
 
   .shop-section .content p {
-    font-size: 12px;
+    font-size: 12px; /* Reduce paragraph font size */
+  }
+
+  #rescueForm {
+    padding: 15px; /* Much smaller form padding */
+  }
+
+  #rescueForm input,
+  #rescueForm select {
+    font-size: 0.85em; /* Further reduce font size */
+    padding: 10px 12px; /* Even smaller padding */
+  }
+
+  #rescueForm .form-footer button {
+    padding: 8px 15px; /* Smaller button padding */
+  }
+}
+
+@media (max-width: 320px) {
+  .form-section h4 {
+    font-size: 0.5rem; /* Smaller font size for tablets */
   }
 }

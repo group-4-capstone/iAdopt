@@ -1,14 +1,15 @@
 <?php
+date_default_timezone_set('Asia/Manila'); // Set timezone to Manila
+
 include 'db-connect.php';
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Get the form data, but do not include the fields to be removed
-    $animal_id = $_POST['animal_id'] ?? '';
+    $animal_id = mysqli_real_escape_string($db, $_POST['animal_id']);
     $weight = $_POST['weight'] ?? '';
     $age = $_POST['age'] ?? '';
     $medical_treatments = $_POST['medical_treatments'] ?? '';
     $illness_injuries = $_POST['illness_injuries'] ?? '';
-    $remarks = $_POST['remarks'] ?? '';
 
     // Check if all required fields are provided
     if (empty($animal_id) || empty($weight) || empty($age)) {
@@ -25,7 +26,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $age = $db->real_escape_string($age);
     $medical_treatments = $db->real_escape_string($medical_treatments);
     $illness_injuries = $db->real_escape_string($illness_injuries);
-    $remarks = $db->real_escape_string($remarks);
 
     // Check if a medical record already exists for this animal
     $checkQuery = "SELECT * FROM medical WHERE animal_id = '$animal_id'";
@@ -34,7 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if ($result && $result->num_rows > 0) {
         // Record exists, update it (excluding removed fields)
         $updateQuery = "UPDATE medical 
-                        SET weight = '$weight', age = '$age', medical_treatments = '$medical_treatments', illness_injuries = '$illness_injuries', remarks = '$remarks', last_updated = NOW() 
+                        SET weight = '$weight', age = '$age', medical_treatments = '$medical_treatments', illness_injuries = '$illness_injuries', last_updated = NOW() 
                         WHERE animal_id = '$animal_id'";
 
         if ($db->query($updateQuery)) {
@@ -50,8 +50,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
     } else {
         // No record found, insert new record (excluding removed fields)
-        $insertQuery = "INSERT INTO medical (animal_id, weight, age, medical_treatments, illness_injuries, remarks, age_added) 
-                        VALUES ('$animal_id', '$weight', '$age', '$medical_treatments', '$illness_injuries', '$remarks', NOW())";
+        $insertQuery = "INSERT INTO medical (animal_id, weight, age, medical_treatments, illness_injuries) 
+                        VALUES ('$animal_id', '$weight', '$age', '$medical_treatments', '$illness_injuries')";
 
         if ($db->query($insertQuery)) {
             echo json_encode([
@@ -75,5 +75,4 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         "message" => "Invalid request method."
     ]);
 }
-
 ?>

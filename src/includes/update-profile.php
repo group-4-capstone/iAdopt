@@ -1,55 +1,64 @@
 <?php
+include_once 'db-connect.php';
 session_start();
-include_once 'db-connect.php'; // Include your database connection file
 
-// Set the response type to JSON
-header('Content-Type: application/json');
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_SESSION['user_id'])) {
+    $user_id = $_SESSION['user_id'];
 
-// Check if the request is valid
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Validate and sanitize input
-    if (empty($_POST['current_password'])) {
-        echo json_encode(['success' => false, 'error' => 'Current password is required']);
-        exit;
-    }
+    // Get POST data
+    $first_name = $_POST['first_name'] ?? null;
+    $last_name = $_POST['last_name'] ?? null;
+    $middle_initial = $_POST['middle_initial'] ?? null;
+    $birthdate = $_POST['birthdate'] ?? null;
+    $contact_num = $_POST['contact_num'] ?? null;
+    $fb_link = $_POST['fb_link'] ?? null;
+    $email = $_POST['email'] ?? null;
 
-    $currentPassword = trim($_POST['current_password']); // Ensure no leading/trailing spaces
+    // Prepare SQL query
+    $query = "UPDATE users SET 
+                first_name = ?, 
+                last_name = ?, 
+                middle_initial = ?, 
+                birthdate = ?, 
+                contact_num = ?, 
+                fb_link = ?, 
+                email = ?
+              WHERE user_id = ?";
+    $stmt = $db->prepare($query);
+    $stmt->bind_param(
+        "sssssssi",
+        $first_name,
+        $last_name,
+        $middle_initial,
+        $birthdate,
+        $contact_num,
+        $fb_link,
+        $email,
+        $user_id
+    );
 
-    // Get the user's hashed password from the database
-    $userId = $_SESSION['user_id']; // Assuming user_id is stored in the session
-
-    // Check if the user is logged in
-    if (!$userId) {
-        echo json_encode(['success' => false, 'error' => 'User not logged in']);
-        exit;
-    }
-
-    // Prepare and execute the query to fetch the user's hashed password
-    $query = $db->prepare("SELECT password FROM users WHERE user_id = ?");
-    $query->bind_param("i", $userId);
-    $query->execute();
-    $result = $query->get_result();
-
-    if ($result->num_rows > 0) {
-        $row = $result->fetch_assoc();
-        $hashedPassword = $row['password'];
-
-        // Verify the password against the hashed password
-        if (password_verify($currentPassword, $hashedPassword)) {
-            echo json_encode(['success' => true]);
-        } else {
-            echo json_encode(['success' => false, 'error' => 'Incorrect password']);
-        }
+    if ($stmt->execute()) {
+        // Update session data
+        $_SESSION['first_name'] = $first_name;
+        $_SESSION['last_name'] = $last_name;
+        
+        echo json_encode([
+            
+            "status" => "success",
+            "message" => "Profile updated successfully."
+        ]);
     } else {
-        echo json_encode(['success' => false, 'error' => 'User not found']);
+        echo json_encode([
+            "status" => "error",
+            "message" => "Failed to update profile. Please try again."
+        ]);
     }
 
-    // Close the query statement
-    $query->close();
+    $stmt->close();
 } else {
-    echo json_encode(['success' => false, 'error' => 'Invalid request method']);
+    echo json_encode([
+        "status" => "error",
+        "message" => "Invalid request."
+    ]);
 }
-
-// Close the database connection
-$db->close();
 ?>

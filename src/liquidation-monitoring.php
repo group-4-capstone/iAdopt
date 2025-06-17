@@ -1,11 +1,8 @@
 <?php include_once 'includes/session-handler.php';
 include_once 'includes/db-connect.php';
 
-
 // Check session and role
 if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['role'] == 'head_admin')) {
-
-
 
 ?>
   <!DOCTYPE html>
@@ -84,7 +81,9 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
             <h1 class="pb-4">₱ <?php echo number_format($donation_balance, 2); ?></h1>
           </center>
           <button class="btn" data-bs-toggle="modal" data-bs-target="#donationModal">Record Donation</button>
-          <button class="btn" data-bs-toggle="modal" data-bs-target="#expenseModal">Record Expense</button>
+          <?php if (isset($_SESSION['email']) && $_SESSION['role'] == 'head_admin') { ?>
+            <button class="btn" data-bs-toggle="modal" data-bs-target="#expenseModal">Record Expense</button>
+          <?php } ?>
         </div>
       </section>
 
@@ -100,22 +99,22 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
             <div class="modal-body">
               <form method="post" id="donationForm">
                 <div class="mb-3 row">
-                  
-                <div class="mb-3">
-                  <input type="checkbox" id="anonymousDonation" name="anonymous" checked>
-                  <label for="anonymousDonation" class="form-label">Donate Anonymously</label>
-                </div>
 
-                <div class="mb-3">
+                  <div class="mb-3">
+                    <input type="checkbox" id="anonymousDonation" name="anonymous" checked>
+                    <label for="anonymousDonation" class="form-label">Donate Anonymously</label>
+                  </div>
+
+                  <div class="mb-3" id="donorNameField" style="display: none;">
+                    <label for="donorName" class="form-label">Donor Name</label>
+                    <input type="text" class="form-control" id="donorName" name="donor_name" placeholder="Enter donor's name" maxlength="50">
+                  </div>
+
+                  <div class="mb-3">
                     <label for="donationPurpose" class="form-label">Allotment:</label>
                     <input type="text" class="form-control" id="donationPurpose" name="description" placeholder="Type to Search" autocomplete="off" />
                     <ul id="suggestionsList2" class="list-group position-absolute" style="width: 95%; max-height: 150px; overflow-y: auto;"></ul>
-                </div>
-
-                <div class="mb-3" id="donorNameField" style="display: none;">
-                  <label for="donorName" class="form-label">Donor Name</label>
-                  <input type="text" class="form-control" id="donorName" name="donor_name" placeholder="Enter your name">
-                </div>
+                  </div>
 
                   <div class="mb-3 col-md-12">
                     <label for="donationMode" class="form-label">Mode of Donation</label>
@@ -158,28 +157,26 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
             </div>
             <div class="modal-body">
               <form method="post" id="expenseForm">
-              <div class="mb-3">
+                <div class="mb-3">
                   <label for="payee" class="form-label">Payee's Name:</label>
                   <input type="text" class="form-control" id="payee" name="payee" placeholder="Enter Payee's Name" maxlength="50">
                 </div>
-
                 <div class="mb-3 position-relative">
                   <label for="expensePurpose" class="form-label">Allocated for:</label>
                   <input type="text" class="form-control" name="description" id="expensePurpose" placeholder="Type to search..." autocomplete="off" />
                   <ul id="suggestionsList1" class="list-group position-absolute" style="width: 95%;; max-height: 150px; overflow-y: auto;"></ul>
-              </div>
-
+                </div>
                 <div class="mb-3">
                   <label for="expenseAmount" class="form-label">Amount</label>
                   <input type="number" class="form-control" id="expenseAmount" name="amount" placeholder="Enter amount" step="0.01" min="0.01">
                 </div>
                 <div class="mb-3">
-                  <label for="expenseProof" class="form-label">Proof of Expense:</label>
-                  <input type="file" class="form-control" id="expenseProof" name="proof_of_expense" accept=".jpg, .jpeg, .png, .webp">
-                </div>
-                <div class="mb-3">
                   <label for="or_number" class="form-label">OR Number:</label>
                   <input type="text" class="form-control" id="or_number" name="or_number" placeholder="Enter OR Number" maxlength="50">
+                </div>
+                <div class="mb-3">
+                  <label for="expenseProof" class="form-label">Proof of Expense:</label>
+                  <input type="file" class="form-control" id="expenseProof" name="proof_of_expense" accept=".jpg, .jpeg, .png, .webp">
                 </div>
                 <input type="hidden" name="button_id" value="submitExpense">
                 <button type="submit" id="submitExpense" class="btn yellow-btn">Submit Expense</button>
@@ -235,10 +232,10 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                         </td>
                       </tr>
                       <?php if ($row['type'] == "Donation") { ?>
-                      <tr>
-                        <th>Donor</th>
-                        <td colspan="3"> <?php echo $row['donor']; ?></td>
-                      </tr>
+                        <tr>
+                          <th>Donor</th>
+                          <td colspan="3"> <?php echo $row['donor']; ?></td>
+                        </tr>
                       <?php } ?>
                       <tr>
                         <?php if ($row['type'] == "Donation") { ?>
@@ -281,9 +278,9 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
               </div>
             </div>
           </div>
-        <?php }
+      <?php }
       }  ?>
-        
+
 
 
       <!-- Success Modal -->
@@ -363,54 +360,54 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
 
     <script src="scripts/liquidation.js"></script>
     <script>
-    // Purpose lists for each input
-    const purposes1 = [
+      // Purpose lists for each input
+      const purposes1 = [
         "Rent", "Salary (Renato Corpuz Jr.)", "Salary (Monalisa Villar)", "PhilHealth & SSS",
         "Rental E VAT", "Professional Fee of Filer", "Tricycle Gasoline", "Bus Fare",
         "Van Rental for Dog Food", "Electric and Water Bill", "Dog Food", "Sawdust, Liver",
         "Honey, Cleaning Materials, Reno, Bar Soap, Powder Soap", "Vinegar", "Dishwashing Liquid",
         "Bleach", "Gasul", "BPI Loan for Shelter Transfer", "Others"
-    ];
+      ];
 
-    const purposes2 = [
+      const purposes2 = [
         "Shelter Operations", "13th Month Pay", "Dog Food and Cat Food", "Salary"
-    ];
+      ];
 
-    // Autocomplete function
-    function setupAutocomplete(inputId, suggestionsId, purposes) {
+      // Autocomplete function
+      function setupAutocomplete(inputId, suggestionsId, purposes) {
         const input = document.getElementById(inputId);
         const suggestionsList = document.getElementById(suggestionsId);
 
         input.addEventListener('input', () => {
-            const query = input.value.toLowerCase();
-            suggestionsList.innerHTML = '';
-            if (query) {
-                purposes
-                    .filter(purpose => purpose.toLowerCase().includes(query))
-                    .forEach(purpose => {
-                        const li = document.createElement('li');
-                        li.className = 'list-group-item list-group-item-action';
-                        li.textContent = purpose;
-                        li.addEventListener('click', () => {
-                            input.value = purpose;
-                            suggestionsList.innerHTML = '';
-                        });
-                        suggestionsList.appendChild(li);
-                    });
-            }
+          const query = input.value.toLowerCase();
+          suggestionsList.innerHTML = '';
+          if (query) {
+            purposes
+              .filter(purpose => purpose.toLowerCase().includes(query))
+              .forEach(purpose => {
+                const li = document.createElement('li');
+                li.className = 'list-group-item list-group-item-action';
+                li.textContent = purpose;
+                li.addEventListener('click', () => {
+                  input.value = purpose;
+                  suggestionsList.innerHTML = '';
+                });
+                suggestionsList.appendChild(li);
+              });
+          }
         });
 
         document.addEventListener('click', (e) => {
-            if (!e.target.closest('.mb-3')) {
-                suggestionsList.innerHTML = '';
-            }
+          if (!e.target.closest('.mb-3')) {
+            suggestionsList.innerHTML = '';
+          }
         });
-    }
+      }
 
-    // Initialize autocomplete for both fields
-    setupAutocomplete('expensePurpose', 'suggestionsList1', purposes1);
-    setupAutocomplete('donationPurpose', 'suggestionsList2', purposes2);
-</script>
+      // Initialize autocomplete for both fields
+      setupAutocomplete('expensePurpose', 'suggestionsList1', purposes1);
+      setupAutocomplete('donationPurpose', 'suggestionsList2', purposes2);
+    </script>
 
 
   </body>

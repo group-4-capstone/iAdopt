@@ -190,43 +190,42 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
         </div>
 
 
-        <!-- Image Box Buttons -->
-        <div class="row mb-5 px-4">
-          <!-- Rescue Records -->
-          <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
-            <a href="rescue-records.php" class="text-decoration-none">
-              <div class="img-box p-4">
-                <img src="styles/assets/rescue-records-button.png" alt="Rescue Icon" class="img-fluid">
-                <h3>Rescue Records</h3>
-                <br>
-                <p>Bring joy and love into your life by adopting a furry friend. Explore our wide selection.</p>
-              </div>
-            </a>
-          </div>
-          <!-- Adoption Records -->
-          <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
-            <a href="adoption-records.php" class="text-decoration-none">
-              <div class="img-box p-4">
-                <img src="styles/assets/adoption-records-button.png" alt="Adoption Icon" class="img-fluid">
-                <h3>Adoption Records</h3>
-                <br>
-                <p>Selection of lovable pets ready to find their forever home.</p>
-              </div>
-            </a>
-          </div>
-          <!-- Manage Profiles -->
-          <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
-            <a href="manage-profile.php" class="text-decoration-none">
-              <div class="img-box p-4">
-                <img src="styles/assets/manage-profile.png" alt="Manage Profiles Icon" class="img-fluid">
-                <h3>Manage Profiles</h3>
-                <br>
-                <p>Selection of lovable pets ready to find their forever home.</p>
-              </div>
-            </a>
-          </div>
+      <!-- Image Box Buttons -->
+      <div class="row mb-5 px-4">
+        <!-- Rescue Records -->
+        <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+          <a href="rescue-records.php" class="text-decoration-none">
+            <div class="img-box p-4">
+              <img src="styles/assets/rescue-records-button.png" alt="Rescue Icon" class="img-fluid">
+              <h3>Rescue Records</h3>
+              <br>
+              <p>Track and manage records of rescued animals, ensuring they receive the care they need.</p>
+            </div>
+          </a>
         </div>
-
+        <!-- Adoption Records -->
+        <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+          <a href="adoption-records.php" class="text-decoration-none">
+            <div class="img-box p-4">
+              <img src="styles/assets/adoption-records-button.png" alt="Adoption Icon" class="img-fluid">
+              <h3>Adoption Records</h3>
+              <br>
+              <p>View and manage records of successful adoptions, connecting pets with loving homes.</p>
+            </div>
+          </a>
+        </div>
+        <!-- Manage Profiles -->
+        <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+          <a href="animal-profiles.php" class="text-decoration-none">
+            <div class="img-box p-4">
+              <img src="styles/assets/manage-profile.png" alt="Manage Profiles Icon" class="img-fluid">
+              <h3>Manage Profiles</h3>
+              <br>
+              <p>Create, edit, and update profiles of animals to ensure accurate information is available.</p>
+            </div>
+          </a>
+        </div>
+      </div>
 
 
         <!-- FAQ Section with Dog Image -->

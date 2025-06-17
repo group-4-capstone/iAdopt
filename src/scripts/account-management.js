@@ -119,25 +119,32 @@
 //========================= For Adding Account ===================================//
 document.addEventListener("DOMContentLoaded", function() {
     // Handle form submission
-    document.getElementById('addAdminModal').querySelector('form').addEventListener('submit', function(event) {
-        event.preventDefault(); // Prevent the default form submission
+    document.getElementById('addAdminModal')
+            .querySelector('form')
+            .addEventListener('submit', function(event) {
+                event.preventDefault(); // Prevent the default form submission
 
         // Create a FormData object from the form
-        var formData = new FormData(this);
+        const formData = new FormData(this);
 
         // Send the AJAX request
         fetch('includes/add-acc.php', {
             method: 'POST',
             body: formData
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json(); // Attempt to parse JSON
+        })
         .then(data => {
             if (data.success) {
                  // Hide the addAdminModal before showing the success modal
-                 var addAdminModal = bootstrap.Modal.getInstance(document.getElementById('addAdminModal'));
+                 const  addAdminModal = bootstrap.Modal.getInstance(document.getElementById('addAdminModal'));
                  addAdminModal.hide();
                 // Show the success modal
-                var successModal = new bootstrap.Modal(document.getElementById('successAddModal'));
+                const  successModal = new bootstrap.Modal(document.getElementById('successAddModal'));
                 successModal.show();
 
                 // Optionally reset the form here
@@ -151,6 +158,9 @@ document.addEventListener("DOMContentLoaded", function() {
                 alert(data.error); // Show error if any
             }
         })
-        .catch(error => console.error('Error:', error));
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An unexpected error occurred. Please try again.');
+        });
     });
 });

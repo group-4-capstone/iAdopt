@@ -304,7 +304,6 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                                                         Update Status:
                                                     </label>
                                                 </div>
-                                                <input type="hidden" name="current_animal_status" value="<?= htmlspecialchars($status) ?>">
                                                 <div class="col-md-9">
                                                     <select id="status" class="form-select" name="animal_status" disabled>
                                                         <option selected disabled>----- Kindly select a new status -----</option>
@@ -318,6 +317,7 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                                             </div>
                                         </div>
                                     <?php endif; ?>
+                                    <input type="hidden" name="current_animal_status" value="<?php echo $status ?>">
 
                                     <input type="hidden" name="animal_id" value="<?php echo $animal_id ?>" readonly>
 
@@ -408,7 +408,6 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                                                 $medical_treatments = $row['medical_treatments'];
                                                 $illness_injuries = $row['illness_injuries'];
                                                 $last_updated = date('F j, Y, g:i a', strtotime($row['last_updated'])); // Format timestamp
-                                                $age_added = date('F j, Y, g:i a', strtotime($row['age_added'])); // Format timestamp
 
                                                 echo "<ul class='list-unstyled ps-5'>";
                                                 echo "<li><strong>Weight:</strong> $weight kg</li>";
@@ -438,15 +437,15 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                                                         </div>
                                                         <div class="modal-body">
                                                             <form id="healthInfoForm" method="POST">
-                                                                <input type="hidden" id="animal_id" name="animal_id" value="<?php echo $animal_id; ?>" readonly>
+                                                                <input type="hidden" id="animal_id_info" name="animal_id" value="<?php echo $animal_id; ?>" readonly>
                                                                 <div class="mb-3">
-                                                                    <label for="weight" class="form-label">Weight (kg)</label>
+                                                                    <label for="weight" class="form-label">Weight (kg)*</label>
                                                                     <input type="number" step="0.1" class="form-control" id="weight" name="weight"
                                                                         placeholder="Enter weight" value="<?php echo $weight; ?>" required>
                                                                 </div>
                                                                 <div class="mb-3">
-                                                                    <label for="age" class="form-label">Age (months)</label>
-                                                                    <input type="number" class="form-control" id="age" name="age"
+                                                                    <label for="age" class="form-label">Age (months)*</label>
+                                                                    <input type="number" class="form-control" id="age" name="age" step="1"
                                                                         placeholder="Enter age in months" value="<?php echo $age; ?>" required>
                                                                 </div>
                                                                 <div class="mb-3">
@@ -485,12 +484,15 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                                                     $remarks = htmlspecialchars($row['remarks']);
 
                                                     echo "<p> > <a href='#' data-bs-toggle='modal' data-bs-target='#vaccineModal' 
-                                                        data-vaccine-name='$vaccine_name' 
-                                                        data-vaccination-date='$vaccination_date' 
-                                                        data-next-due-date='$next_due_date' 
-                                                        data-vet-name='$vet_name' 
-                                                        data-vet-contact='$vet_contact' 
-                                                        data-remarks='$remarks'>$vaccine_name</a></p>";
+                                                    data-vaccine-name='$vaccine_name' 
+                                                    data-vaccination-date='$vaccination_date' 
+                                                    data-next-due-date='$next_due_date' 
+                                                    data-vet-name='$vet_name' 
+                                                    data-vet-contact='$vet_contact' 
+                                                    data-remarks='$remarks'>
+                                                    $vaccine_name ($vaccination_date)
+                                                </a></p>";
+                                     
                                                 }
                                             } else {
                                                 // No records found

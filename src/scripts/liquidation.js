@@ -105,10 +105,13 @@ document.getElementById('submitDonation').addEventListener('click', function (ev
     const modeOfDonation = document.querySelector('#donationMode');
     const proof = document.querySelector('#donationProof');
     const donorNameInput = document.getElementById('donorName'); 
+    const donationPurposeInput = document.getElementById('donationPurpose'); 
+    
 
     isValid &= validateAmountField(amount);
     isValid &= validateField(modeOfDonation, "Please select a mode of donation.");
     isValid &= validateImageField(proof, "Proof of donation is required.");
+    isValid &= validateField(donationPurposeInput, "This field is required.");
 
     const anonymousCheckbox = document.getElementById('anonymousDonation');
     
@@ -147,10 +150,15 @@ document.getElementById('submitExpense').addEventListener('click', function (eve
     const amount = document.querySelector('#expenseAmount');
     const purpose = document.querySelector('#expensePurpose');
     const proof = document.querySelector('#expenseProof');
+    const or_number = document.querySelector('#or_number');
+    const payee = document.querySelector('#payee');
+    
 
 
     isValid &= validateAmountField(amount);
     isValid &= validateField(purpose, "This field is required.");
+    isValid &= validateField(or_number, "This field is required.");
+    isValid &= validateField(payee, "This field is required.");
     isValid &= validateImageField(proof, "Proof of expense is required.");
 
     if (isValid) {

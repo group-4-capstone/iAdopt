@@ -1,7 +1,9 @@
 <?php include_once 'includes/session-handler.php';
 include_once 'includes/db-connect.php';
+include_once 'includes/waitlist-status.php';
 
 if (!isset($_SESSION['role']) || ($_SESSION['role'] !== 'admin' && $_SESSION['role'] !== 'head_admin')) {
+   if ($reportDisabled !== 'disabled') { 
 ?>
 
 
@@ -38,8 +40,8 @@ if (!isset($_SESSION['role']) || ($_SESSION['role'] !== 'admin' && $_SESSION['ro
       <div class="content">
         <h2>Report Animal Abuse</h2>
         <h4>Every Report Can Save a Life</h4>
-        <p>By notifying us when an animal is in danger, you play a vital role in protecting them and offering a chance at a better life. </p>
-        <p>We collaborate with trusted organizations, including the <b>Animal Welfare Society</b>, <b>Animal Kingdom Foundation</b>, and <b>CARA Welfare Philippines</b>, to forward cases and provide timely assistance for animals in need. </p>
+        <p>By notifying us when an animal is in danger, you play a vital role in protecting them and offering a chance at a better life.
+        We collaborate with trusted organizations, including the <b>Animal Welfare Society</b>, <b>Animal Kingdom Foundation</b>, and <b>CARA Welfare Philippines</b>, to forward cases and provide timely assistance for animals in need. </p>
       </div>
     </section>
 
@@ -50,7 +52,7 @@ if (!isset($_SESSION['role']) || ($_SESSION['role'] !== 'admin' && $_SESSION['ro
         $isDisabled = !isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true ? 'disabled' : '';
         ?>
         <form id="rescueForm" method="post">
-          <div class="step">
+          <div class="step p-2">
             <h5 class="text-center">Report Details</h5>
             <p class="text-center mb-4">Kindly supply the following details of the dog/cat you want to be rescued.</p>
 
@@ -88,14 +90,14 @@ if (!isset($_SESSION['role']) || ($_SESSION['role'] !== 'admin' && $_SESSION['ro
                 </div>
                 <div class="col-lg-12 mb-3">
                   <label for="street-text">Street, Subdivision/Village<span class="asterisk"> *</span></label>
-                  <input type="text" class="form-control form-control-md" name="specific" <?php echo $isDisabled; ?> id="street-text" required>
+                  <input type="text" class="form-control form-control-md" name="specific" <?php echo $isDisabled; ?> id="street-text" required maxlength="100">
                 </div>
               </div>
             </div>
 
             <div class="mb-3">
               <label>Rescue Report Details: <span class="asterisk"> *</span></label>
-              <input type="text" name="rescue_description" placeholder="Input details regarding the rescue of the animal" <?php echo $isDisabled; ?>>
+              <input type="text" name="rescue_description" placeholder="Input details regarding the rescue of the animal" <?php echo $isDisabled; ?> maxlength="500">
             </div>
 
             <div class="mb-4">
@@ -106,7 +108,9 @@ if (!isset($_SESSION['role']) || ($_SESSION['role'] !== 'admin' && $_SESSION['ro
 
           <?php if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) { ?>
             <div class="mb-3">
-              <i>Note: You must be <a href="login.php"> logged into your account </a> submit a rescue report. Please log in to continue.</i>
+              <small class="text-muted fst-italic">
+                Note: You must be <a href="login.php">logged into your account</a> to submit a rescue report. Please log in to continue.
+              </small>
             </div>
           <?php } ?>
 
@@ -122,7 +126,7 @@ if (!isset($_SESSION['role']) || ($_SESSION['role'] !== 'admin' && $_SESSION['ro
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-body">
-            <button type="button" class="btn-close d-flex ms-auto" onclick="window.location.href='report-stray.php'"></button>
+            <button type="button" class="btn-close d-flex ms-auto" onclick="window.location.href='report.php'"></button>
             <div class="text-center">
               <i class="bi bi-check-circle-fill" style="font-size: 8rem; color: #28a745;"></i>
               <p class="mt-4 px-2"> Your rescue report has been submitted successfully! Thank you.</p>
@@ -147,9 +151,6 @@ if (!isset($_SESSION['role']) || ($_SESSION['role'] !== 'admin' && $_SESSION['ro
       </div>
     </div>
 
-
-
-
     <script src="scripts/form.js"></script>
     <script src="scripts/report-stray.js"></script>
     <script src="scripts/ph-address-selector.js"></script>
@@ -161,6 +162,9 @@ if (!isset($_SESSION['role']) || ($_SESSION['role'] !== 'admin' && $_SESSION['ro
   </html>
 
 <?php
+   } else {
+    header("Location: not-found.php");
+   }
 } else {
   header("Location: home.php");
 }

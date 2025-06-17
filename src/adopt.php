@@ -1,46 +1,38 @@
-<?php include_once 'includes/session-handler.php';
+<?php
+include_once 'includes/session-handler.php';
 include_once 'includes/db-connect.php';
 
 if (!isset($_SESSION['role']) || ($_SESSION['role'] !== 'admin' && $_SESSION['role'] !== 'head_admin')) {
 
   $itemsPerPage = 9;
-
-  // Get the current page from the URL, default is 1
   $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
   $offset = ($currentPage - 1) * $itemsPerPage;
 
-  // Get the type and gender filter values from the URL (if set)
   $typeFilter = isset($_GET['type']) && in_array(strtolower($_GET['type']), ['dog', 'cat']) ? ucfirst(strtolower($_GET['type'])) : '';
   $genderFilter = isset($_GET['gender']) && in_array(strtolower($_GET['gender']), ['male', 'female']) ? ucfirst(strtolower($_GET['gender'])) : '';
 
   // Start building the base count query
-  $countQuery = "SELECT COUNT(*) AS total FROM animals WHERE animal_status = 'adoptable'";
-  $conditions = [];
+  $countQuery = "SELECT COUNT(*) AS total FROM animals WHERE animal_status = 'Adoptable'";
   $params = [];
   $types = "";
 
   // Add type filter condition if set
   if ($typeFilter) {
-    $conditions[] = "type = ?";
+    $countQuery .= " AND type = ?";
     $params[] = $typeFilter;
     $types .= "s";
   }
 
   // Add gender filter condition if set
   if ($genderFilter) {
-    $conditions[] = "gender = ?";
+    $countQuery .= " AND gender = ?";
     $params[] = $genderFilter;
     $types .= "s";
   }
 
-  // Append conditions to the count query
-  if (!empty($conditions)) {
-    $countQuery .= " AND " . implode(" AND ", $conditions);
-  }
-
   // Prepare and execute the count query
   $countStmt = $db->prepare($countQuery);
-  if (!empty($params)) {
+  if ($params) {
     $countStmt->bind_param($types, ...$params);
   }
   $countStmt->execute();
@@ -48,33 +40,34 @@ if (!isset($_SESSION['role']) || ($_SESSION['role'] !== 'admin' && $_SESSION['ro
   $totalItems = $countResult->fetch_assoc()['total'];
   $totalPages = ceil($totalItems / $itemsPerPage);
 
-  // Start building the main query with pagination
+  // Main query for fetching animals
   $query = "SELECT animal_id, type, name, gender, image, tags, description, animal_status 
-            FROM animals 
-            WHERE animal_status = 'adoptable'";
+              FROM animals 
+              WHERE animal_status = 'Adoptable'";
 
-  // Append conditions to the main query
-  if (!empty($conditions)) {
-    $query .= " AND " . implode(" AND ", $conditions);
+  // Append filters if set
+  if ($typeFilter) {
+    $query .= " AND type = ?";
+  }
+  if ($genderFilter) {
+    $query .= " AND gender = ?";
   }
 
-  // Add LIMIT and OFFSET for pagination
+  // Pagination
   $query .= " LIMIT ? OFFSET ?";
 
-  // Prepare the main query
+  // Prepare the query
   $stmt = $db->prepare($query);
-
-  // Add pagination parameters to the existing ones
   $params[] = $itemsPerPage;
   $params[] = $offset;
   $types .= "ii";
 
-  // Bind all parameters
+  // Bind parameters and execute
   $stmt->bind_param($types, ...$params);
   $stmt->execute();
   $result = $stmt->get_result();
 
-  // Check if it's an AJAX request for pagination
+  // Handle AJAX request for pagination
   if (isset($_GET['page']) && !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
     while ($row = $result->fetch_assoc()) {
       $animalId = htmlspecialchars($row['animal_id']);
@@ -84,6 +77,7 @@ if (!isset($_SESSION['role']) || ($_SESSION['role'] !== 'admin' && $_SESSION['ro
       $image = htmlspecialchars($row['image']);
       $tags = htmlspecialchars($row['tags']);
       $tagsArray = explode(",", $tags);
+
 ?>
 
       <div class="grid_items">
@@ -111,14 +105,11 @@ if (!isset($_SESSION['role']) || ($_SESSION['role'] !== 'admin' && $_SESSION['ro
           </a>
         </div>
       </div>
-
   <?php
     }
-    exit; // End script for AJAX response
+    exit;
   }
   ?>
-
-
   <!DOCTYPE html>
   <html lang="en">
 
@@ -131,7 +122,6 @@ if (!isset($_SESSION['role']) || ($_SESSION['role'] !== 'admin' && $_SESSION['ro
     <link rel="stylesheet" href="styles/footer.css">
     <link rel="stylesheet" href="styles/styles.css">
     <link rel="stylesheet" href="styles/adopt.css">
-
 
     <!-- Google Fonts Links For Icon -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0">
@@ -170,11 +160,11 @@ if (!isset($_SESSION['role']) || ($_SESSION['role'] !== 'admin' && $_SESSION['ro
               <i class="bi bi-chevron-down"></i>
             </button>
             <ul class="dropdown-menu" aria-labelledby="filterDropdown">
-              <li><a class="dropdown-item" data-filter="All" href="#"> All</a></li>
-              <li><a class="dropdown-item" data-filter="Dog" href="#">Dog</a></li>
-              <li><a class="dropdown-item" data-filter="Cat" href="#">Cat</a></li>
-              <li><a class="dropdown-item" data-filter="Male" href="#">Male</a></li>
-              <li><a class="dropdown-item" data-filter="Female" href="#">Female</a></li>
+              <li><a class="dropdown-item dropdown-item-filter" data-filter="All" href="#"> All</a></li>
+              <li><a class="dropdown-item dropdown-item-filter" data-filter="Dog" href="#">Dog</a></li>
+              <li><a class="dropdown-item dropdown-item-filter" data-filter="Cat" href="#">Cat</a></li>
+              <li><a class="dropdown-item dropdown-item-filter" data-filter="Male" href="#">Male</a></li>
+              <li><a class="dropdown-item dropdown-item-filter" data-filter="Female" href="#">Female</a></li>
             </ul>
           </div>
         </div>
@@ -236,7 +226,7 @@ if (!isset($_SESSION['role']) || ($_SESSION['role'] !== 'admin' && $_SESSION['ro
                 </div>
               </div>
             </div>
-            <nav class="pagination-container mt-4">
+            <div class="pagination-container mt-4">
               <ul class="pagination">
                 <!-- "<" Previous Page Link -->
                 <li class="page-item">
@@ -258,7 +248,7 @@ if (!isset($_SESSION['role']) || ($_SESSION['role'] !== 'admin' && $_SESSION['ro
                     data-page="<?php echo $currentPage + 1; ?>">&gt;</a>
                 </li>
               </ul>
-            </nav>
+            </div>
 
           </div>
       </div>
@@ -268,33 +258,33 @@ if (!isset($_SESSION['role']) || ($_SESSION['role'] !== 'admin' && $_SESSION['ro
     <?php include_once 'components/footer.php'; ?>
 
     <script>
-  // When any filter item is clicked
-  document.querySelectorAll('.dropdown-item').forEach(item => {
-    item.addEventListener('click', function(e) {
-      e.preventDefault(); // Prevent the default link behavior
-      
-      const filter = e.target.getAttribute('data-filter');
-      let url = new URL(window.location.href); // Get the current URL
+      // When any filter item is clicked
+      document.querySelectorAll('.dropdown-item-filter').forEach(item => {
+        item.addEventListener('click', function(e) {
+          e.preventDefault(); // Prevent the default link behavior
 
-      // Clear specific filter parameters based on the selected filter
-      if (filter === 'All') {
-        // Remove 'type' and 'gender' from the URL if 'All' is selected
-        url.searchParams.delete('type');
-        url.searchParams.delete('gender');
-      } else {
-        // Add the filter to the URL as query parameters
-        if (filter === 'Dog' || filter === 'Cat') {
-          url.searchParams.set('type', filter.toLowerCase()); // Add type filter
-        } else if (filter === 'Male' || filter === 'Female') {
-          url.searchParams.set('gender', filter); // Add gender filter
-        }
-      }
+          const filter = e.target.getAttribute('data-filter');
+          let url = new URL(window.location.href); // Get the current URL
 
-      // Redirect the page with the updated URL
-      window.location.href = url.toString();
-    });
-  });
-</script>
+          // Clear specific filter parameters based on the selected filter
+          if (filter === 'All') {
+            // Remove 'type' and 'gender' from the URL if 'All' is selected
+            url.searchParams.delete('type');
+            url.searchParams.delete('gender');
+          } else {
+            // Add the filter to the URL as query parameters
+            if (filter === 'Dog' || filter === 'Cat') {
+              url.searchParams.set('type', filter.toLowerCase()); // Add type filter
+            } else if (filter === 'Male' || filter === 'Female') {
+              url.searchParams.set('gender', filter); // Add gender filter
+            }
+          }
+
+          // Redirect the page with the updated URL
+          window.location.href = url.toString();
+        });
+      });
+    </script>
 
 
   </body>

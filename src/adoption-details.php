@@ -23,6 +23,37 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
         if ($result->num_rows > 0) {
             $application = $result->fetch_assoc();
 
+            // Query to check for later applications with the same animal_id
+            $animal_id = $application['animal_id'];
+
+            // Query to get the first application_id for the same animal_id
+            $firstApplicationQuery = "
+    SELECT application_id
+    FROM applications
+    WHERE animal_id = ?
+    ORDER BY application_id ASC
+    LIMIT 1
+";
+            $firstAppStmt = $db->prepare($firstApplicationQuery);
+            $firstAppStmt->bind_param("i", $animal_id);
+            $firstAppStmt->execute();
+            $firstAppResult = $firstAppStmt->get_result();
+            $firstApplicationId = $firstAppResult->fetch_assoc()['application_id'];
+
+            // Query to check if there are earlier applications with the same animal_id
+            $checkQuery = "
+    SELECT COUNT(*) AS earlier_applications
+    FROM applications
+    WHERE animal_id = ? AND application_id < ?
+";
+            $checkStmt = $db->prepare($checkQuery);
+            $checkStmt->bind_param("ii", $animal_id, $application_id);
+            $checkStmt->execute();
+            $checkResult = $checkStmt->get_result();
+            $earlierApplicationCount = $checkResult->fetch_assoc()['earlier_applications'];
+
+            // Disable buttons if there are earlier applications
+            $disableButtons = $earlierApplicationCount > 0 ? 'disabled' : '';
             // Additional query for post_adoption table
             $queryPostAdoption = "
             SELECT *
@@ -173,10 +204,11 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                         <p><strong>Description:</strong> <?php echo $application['description'] ?></p>
                         <p><a href="animal-record.php?animal_id=<?php echo $application['animal_id']; ?>">View Profile</a></p>
 
-                        <?php if ($application['application_status'] === 'Approved' && $application['animal_status'] !== 'Adopted') { ?>
+                        <?php if ($application['application_status'] === 'For Interview' && $application['animal_status'] !== 'Adopted') { ?>
                             <div style="text-align: right; margin-top: 20px;">
                                 <form id="markAdoptedForm">
                                     <input type="hidden" id="animalId" value="<?php echo $application['animal_id'] ?>" readonly>
+                                    <input type="hidden" id="applicationId" value="<?php echo $application['application_id'] ?>" readonly>
                                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmationModal">
                                         <span><i class="fa-solid fa-check me-1"></i> Mark as Adopted</span>
                                     </button>
@@ -192,19 +224,21 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                         <div class="col-lg-4 col-md-5">
                             <h4 class="mt-2">Adopter Information</h4>
                             <p class="mt-3 ps-3">Application Status:
-                                <span class="badge 
-                                    <?php
-                                    if ($application['application_status'] === 'Under Review') echo 'bg-warning text-dark';
-                                    elseif ($application['application_status'] === 'Rejected') echo 'bg-danger';
-                                    elseif ($application['application_status'] === 'Approved') echo 'bg-success';
-                                    ?>">
-                                    <?php echo $application['application_status']; ?>
-                                </span>
+                            <span class="badge 
+                                <?php
+                                if ($application['application_status'] === 'For Interview') echo 'bg-warning text-dark';
+                                elseif ($application['application_status'] === 'Rejected') echo 'bg-danger';
+                                elseif ($application['application_status'] === 'Approved') echo 'bg-success';
+                                elseif ($application['application_status'] === 'Under Review') echo 'bg-secondary';  // Gray color for Under Review
+                                ?>">
+                                <?php echo $application['application_status']; ?>
+                            </span>
+
                             </p>
                             <?php if ($application['application_status'] === 'Rejected') echo 'Reason: ' . $application['status_message']; ?>
                             <p class="ps-2">
                                 <?php
-                                if ($application['application_status'] === 'Approved') {
+                                if ($application['application_status'] === 'For Interview') {
                                     $interviewDate = new DateTime($application['sched_interview']);
                                     echo '<br>Scheduled Interview:<br> ' . $interviewDate->format('d F Y, h:i A');
                                     if ($application['animal_status'] !== 'Adopted') {
@@ -473,13 +507,22 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                 <!-- Approve and Reject Buttons -->
 
                 <?php if ($application['application_status'] == 'Under Review') { ?>
+                    <?php if ($disableButtons === 'disabled') { ?>
+                        <div class="alert alert-warning mt-3">
+                            Kindly check first   <a href="adoption-details.php?id=<?= $firstApplicationId ?>"> Application 
+                          #<?= $firstApplicationId ?></a>.
+                        </div>
+                    <?php } ?>
                     <div class="d-flex justify-content-end mt-4">
-                        <button type="button" class="btn btn-success me-2" id="approveBtn" data-bs-toggle="modal" data-bs-target="#scheduleInterviewModal">Approve</button>
-                        <button type="button" class="btn btn-danger" id="rejectBtn" data-bs-toggle="modal" data-bs-target="#rejectReasonModal">Reject</button>
+                        <?php if ($application['animal_status'] !== 'Adopted') { ?>
+                            <button type="button" class="btn btn-success me-2" id="approveBtn" data-bs-toggle="modal" data-bs-target="#scheduleInterviewModal" <?= $disableButtons ?>>Proceed to Interview</button>
+                        <?php } ?>
+                        <button type="button" class="btn btn-danger" id="rejectBtn" data-bs-toggle="modal" data-bs-target="#rejectReasonModal" <?= $disableButtons ?>>Reject</button>
                     </div>
-                <?php } else { ?>
-
+                   
                 <?php } ?>
+
+
 
 
                 <!-- Modal for Scheduling Interview -->
@@ -500,7 +543,7 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                                     ?>
 
                                     <input type="hidden" name="application_id" id="interview_application_id" value="<?php echo $application['application_id']; ?>" readonly>
-                                    <input type="hidden" name="application_status" value="Approved" readonly>
+                                    <input type="hidden" name="application_status" value="For Interview" readonly>
 
                                     <!-- Hidden input to store concatenated date and time -->
                                     <input type="hidden" id="sched_interview" name="sched_interview">
@@ -552,15 +595,49 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'admin' || $_SESSION['rol
                                 <form id="rejectReasonForm" method="post" action="includes/update-adoption-status.php">
                                     <input type="hidden" name="application_id" id="reject_application_id" value="<?php echo $application['application_id']; ?>" readonly>
                                     <input type="hidden" name="application_status" value="Rejected" readonly>
-                                    <textarea id="rejectReason" class="form-control" rows="4" required placeholder="Enter reason for rejection" name="status_message"></textarea>
+
+                                    <!-- Predefined Reasons -->
+                                    <label for="rejectReasonDropdown" class="form-label">Select a reason for rejection:</label>
+                                    <select id="rejectReasonDropdown" class="form-select" name="status_message" required>
+                                        <option value="" disabled selected>Select a reason</option>
+                                        <option value="Inadequate living space">Inadequate living space</option>
+                                        <option value="Financial constraints">Financial constraints</option>
+                                        <option value="Lack of experience with pets">Lack of experience with pets</option>
+                                        <option value="Concerns about commitment">Concerns about commitment</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+
+                                    <!-- Custom Reason -->
+                                    <div id="customReasonContainer" class="mt-3 d-none">
+                                        <label for="customRejectReason" class="form-label">Enter custom reason:</label>
+                                        <textarea id="customRejectReason" class="form-control" rows="4" name="custom_status_message" placeholder="Enter custom reason"></textarea>
+                                    </div>
+                                </form>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-danger" id="submitRejectBtn">Submit</button>
-                                </form>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                <script>
+                    // Show/hide custom reason input based on dropdown selection
+                    const rejectReasonDropdown = document.getElementById('rejectReasonDropdown');
+                    const customReasonContainer = document.getElementById('customReasonContainer');
+                    const customRejectReason = document.getElementById('customRejectReason');
+
+                    rejectReasonDropdown.addEventListener('change', () => {
+                        if (rejectReasonDropdown.value === 'Other') {
+                            customReasonContainer.classList.remove('d-none');
+                            customRejectReason.setAttribute('required', 'required');
+                        } else {
+                            customReasonContainer.classList.add('d-none');
+                            customRejectReason.removeAttribute('required');
+                        }
+                    });
+                </script>
+
 
 
                 <!-- Success Status Update Modal -->
