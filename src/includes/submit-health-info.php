@@ -1,4 +1,6 @@
 <?php
+date_default_timezone_set('Asia/Manila'); // Set timezone to Manila
+
 include 'db-connect.php';
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -24,7 +26,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $age = $db->real_escape_string($age);
     $medical_treatments = $db->real_escape_string($medical_treatments);
     $illness_injuries = $db->real_escape_string($illness_injuries);
-
 
     // Check if a medical record already exists for this animal
     $checkQuery = "SELECT * FROM medical WHERE animal_id = '$animal_id'";
@@ -74,5 +75,4 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         "message" => "Invalid request method."
     ]);
 }
-
 ?>
